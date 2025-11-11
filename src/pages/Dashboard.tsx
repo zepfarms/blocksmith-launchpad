@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -433,8 +435,42 @@ const Dashboard = () => {
 
           <TabsContent value="account" className="mt-8">
             <div className="glass-card p-8 rounded-3xl border border-white/10">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Account Settings</h2>
-              <p className="text-muted-foreground">Account settings coming soon...</p>
+              <h2 className="text-2xl font-bold text-foreground mb-6">Account Settings</h2>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label className="text-foreground">Email</Label>
+                  <Input
+                    type="email"
+                    value={businessData?.email || ''}
+                    disabled
+                    className="bg-background/50 text-muted-foreground"
+                  />
+                  <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-foreground">Business Name</Label>
+                  <Input
+                    type="text"
+                    value={businessData?.business_name || ''}
+                    onChange={async (e) => {
+                      const newName = e.target.value;
+                      if (businessData?.id) {
+                        const { error } = await supabase
+                          .from('user_businesses')
+                          .update({ business_name: newName })
+                          .eq('id', businessData.id);
+                        
+                        if (!error) {
+                          setBusinessData({ ...businessData, business_name: newName });
+                        }
+                      }
+                    }}
+                    className="bg-background/50 text-foreground"
+                  />
+                  <p className="text-xs text-yellow-500">⚠️ Changing your business name will affect future assets. Existing assets keep their original name.</p>
+                </div>
+              </div>
             </div>
           </TabsContent>
 
@@ -524,11 +560,17 @@ const Dashboard = () => {
                             size="sm"
                             variant="outline"
                             className="flex-1 rounded-full"
-                            onClick={() => {
+                            onClick={async () => {
+                              const response = await fetch(asset.file_url);
+                              const blob = await response.blob();
+                              const url = window.URL.createObjectURL(blob);
                               const link = document.createElement('a');
-                              link.href = asset.file_url;
+                              link.href = url;
                               link.download = `logo-${asset.metadata?.logo_number || 'download'}.png`;
+                              document.body.appendChild(link);
                               link.click();
+                              window.URL.revokeObjectURL(url);
+                              document.body.removeChild(link);
                             }}
                           >
                             <Download className="w-3 h-3 mr-1" />

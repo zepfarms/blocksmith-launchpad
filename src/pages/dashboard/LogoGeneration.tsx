@@ -191,7 +191,10 @@ export default function LogoGeneration() {
 
         <div className="glass-card p-6 rounded-3xl border border-white/10">
           <h1 className="text-3xl font-bold text-foreground mb-2">Generate Logos</h1>
-          <p className="text-muted-foreground">Business: {businessName}</p>
+          <p className="text-muted-foreground mb-3">Business: {businessName}</p>
+          <p className="text-sm text-yellow-500 bg-yellow-500/10 px-4 py-2 rounded-lg border border-yellow-500/20">
+            ⚠️ Once you save selected logos to your Briefcase, they will be locked and cannot be edited. Choose carefully before saving.
+          </p>
         </div>
 
         {isGenerating ? (
