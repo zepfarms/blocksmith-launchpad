@@ -117,36 +117,7 @@ const Index = () => {
       <HeroSection onCTAClick={handleHeroCTA} />
       
       {/* Conversational Form Section */}
-      <section ref={ideaInputRef} className="relative py-16 px-4 sm:px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-background to-background-elevated" />
-        
-        <div className="relative z-10">
-          {!showForm && !showBlockSelector && !businessData && <div className="text-center space-y-6 mb-12 px-4 animate-slide-up-fade">
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-px w-12 sm:w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
-                <span className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-                  Not Sure?
-                </span>
-                <div className="h-px w-12 sm:w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
-              </div>
-              
-              <p className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground/90">
-                Tell us your idea
-              </p>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
-                We'll guide you
-              </p>
-            </div>}
-          
-          {showForm && (
-            <ConversationalForm onComplete={handleFormComplete} />
-          )}
-          
-          {showBlockSelector && businessData && <div id="block-selector">
-              <SmartBlockSelector starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""} growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""} onComplete={handleBlocksComplete} />
-            </div>}
-        </div>
-      </section>
+      
       
       <div id="business-ideas">
         <BetaSection />
