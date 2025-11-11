@@ -18,7 +18,7 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-6 pb-16 pt-32 overflow-hidden">
       {/* Ambient background orbs with parallax */}
       <div 
         className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/20 blur-[120px] animate-float parallax-float"
