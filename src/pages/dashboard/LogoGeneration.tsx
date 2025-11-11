@@ -92,6 +92,13 @@ export default function LogoGeneration() {
     setSelectedLogos([]);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        console.error('No active session');
+        navigate('/');
+        return;
+      }
+
       const { data, error }: any = await supabase.functions.invoke('generate-logos', {
         body: {
           business_name: name,
