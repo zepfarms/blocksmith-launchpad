@@ -1,308 +1,238 @@
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { 
   Sparkles, 
-  Layout, 
-  Store, 
-  CreditCard, 
-  FileText, 
-  Mail, 
+  Zap, 
   Users, 
-  BarChart3, 
-  Shield, 
-  Zap,
-  CheckCircle2,
-  Rocket,
-  Building2,
-  Palette,
-  Globe,
-  MessageSquare,
-  Calendar,
+  CreditCard, 
+  Globe, 
+  Mail,
+  ShieldCheck,
   TrendingUp,
-  Lock,
-  Clock
+  Package,
+  Megaphone,
+  FileText,
+  Briefcase,
+  ArrowLeft
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Features = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("start");
 
-  const coreFeatures = [
-    {
-      icon: Sparkles,
-      title: "AI-Powered Business Planning",
-      description: "Our AI analyzes your business idea and creates a personalized roadmap. Get intelligent recommendations for what you need to launch, tailored to your specific business type."
-    },
-    {
-      icon: Palette,
-      title: "Complete Brand Identity",
-      description: "Professional logo designs, brand colors, typography, and visual guidelines. We create a cohesive brand that stands out and resonates with your target audience."
-    },
-    {
-      icon: Layout,
-      title: "Custom Website Builder",
-      description: "Beautiful, responsive websites built specifically for your business. Mobile-optimized, SEO-ready, and designed to convert visitors into customers."
-    },
-    {
-      icon: Store,
-      title: "E-Commerce Setup",
-      description: "Complete online store with product catalog, shopping cart, checkout, and inventory management. Start selling online in days, not months."
-    },
-    {
-      icon: CreditCard,
-      title: "Payment Processing",
-      description: "Integrated payment solutions supporting credit cards, digital wallets, and more. Secure, compliant, and ready to accept money from day one."
-    },
-    {
-      icon: FileText,
-      title: "Legal & Compliance",
-      description: "Business registration, LLC formation, EIN filing, terms of service, privacy policies, and all legal documents you need to operate legitimately."
-    },
-    {
-      icon: Mail,
-      title: "Email Marketing System",
-      description: "Professional email templates, automated campaigns, customer lists, and analytics. Build relationships and drive repeat business."
-    },
-    {
-      icon: Users,
-      title: "Customer Management",
-      description: "CRM system to track customers, manage contacts, follow up on leads, and build lasting relationships that grow your business."
-    },
-    {
-      icon: BarChart3,
-      title: "Marketing Strategy",
-      description: "Complete marketing plan including social media strategy, content calendar, advertising recommendations, and growth tactics."
-    },
-    {
-      icon: MessageSquare,
-      title: "Social Media Kit",
-      description: "Profile images, cover photos, post templates, and content ideas for all major platforms. Maintain a professional presence everywhere."
-    },
-    {
-      icon: Globe,
-      title: "Domain & Hosting",
-      description: "Custom domain recommendations, professional email addresses, and reliable hosting. Your online presence, professionally managed."
-    },
-    {
-      icon: Calendar,
-      title: "Booking & Scheduling",
-      description: "Online appointment booking, calendar integration, automated reminders, and client management for service-based businesses."
-    }
+  const tabs = [
+    { id: "start", label: "Getting Started", icon: Sparkles },
+    { id: "building", label: "Building", icon: Package },
+    { id: "launch", label: "Launch & Grow", icon: TrendingUp },
+    { id: "support", label: "Support", icon: Users },
   ];
 
-  const additionalServices = [
-    {
-      icon: Building2,
-      title: "Business Plan Documents",
-      description: "Comprehensive business plans, financial projections, and pitch decks for investors or loan applications."
-    },
-    {
-      icon: TrendingUp,
-      title: "Growth & Scaling Tools",
-      description: "Advanced analytics, conversion optimization, A/B testing, and strategies to scale from first customer to 100+."
-    },
-    {
-      icon: Shield,
-      title: "Security & Compliance",
-      description: "SSL certificates, GDPR compliance, data protection, and security audits to keep your business and customers safe."
-    },
-    {
-      icon: Zap,
-      title: "Automation & Integrations",
-      description: "Connect your tools, automate workflows, and integrate with popular platforms to save time and reduce manual work."
-    }
-  ];
+  const features = {
+    start: [
+      {
+        icon: Sparkles,
+        title: "AI-Powered Idea Analysis",
+        description: "Tell us your business idea and our AI analyzes it instantly, understanding exactly what you want to build and recommending the perfect blocks for your needs."
+      },
+      {
+        icon: Package,
+        title: "Smart Block Selection",
+        description: "Choose from 200+ pre-built business blocks covering everything from websites to marketing, legal setup to payment processing. Each block is designed to work together seamlessly."
+      },
+      {
+        icon: Users,
+        title: "Personalized Onboarding",
+        description: "Our conversational onboarding flow guides you step-by-step, asking the right questions to understand your business and build a customized launch plan just for you."
+      },
+      {
+        icon: Briefcase,
+        title: "500+ Business Ideas",
+        description: "Browse our curated library of 500+ proven business ideas across 20+ categories. Get inspired or find your perfect match with AI-powered recommendations."
+      }
+    ],
+    building: [
+      {
+        icon: Globe,
+        title: "Professional Website",
+        description: "Get a beautiful, mobile-responsive website built for you. No coding required. We handle design, hosting, and setup so you can focus on your business."
+      },
+      {
+        icon: Zap,
+        title: "Brand Identity & Logo",
+        description: "Receive custom logo designs, brand colors, typography, and complete brand guidelines. Build a professional identity that stands out."
+      },
+      {
+        icon: CreditCard,
+        title: "Payment Processing",
+        description: "Accept payments instantly with integrated Stripe or PayPal. We set up everything from checkout pages to subscription billing."
+      },
+      {
+        icon: Mail,
+        title: "Email Marketing Setup",
+        description: "Launch with professional email campaigns. We create templates, set up automation, and connect your email service provider."
+      },
+      {
+        icon: ShieldCheck,
+        title: "Legal & Compliance",
+        description: "Get essential legal documents including terms of service, privacy policy, and business registration guidance. Stay compliant from day one."
+      },
+      {
+        icon: FileText,
+        title: "Business Documentation",
+        description: "Receive business cards, letterheads, invoices, contracts, and all the professional documents you need to run your business."
+      }
+    ],
+    launch: [
+      {
+        icon: Megaphone,
+        title: "Marketing Strategy",
+        description: "Launch with a complete marketing plan including social media strategy, content calendar, ad templates, and growth tactics tailored to your business."
+      },
+      {
+        icon: TrendingUp,
+        title: "Growth Missions",
+        description: "Get step-by-step missions designed to help you acquire your first 10, 50, and 100 customers. Each mission includes proven tactics and templates."
+      },
+      {
+        icon: Globe,
+        title: "SEO & Online Presence",
+        description: "Optimize your site for search engines, claim your Google My Business listing, and establish your presence across relevant online directories."
+      },
+      {
+        icon: Users,
+        title: "Customer Acquisition Tools",
+        description: "Access lead magnets, conversion-optimized landing pages, and automated follow-up sequences to turn visitors into paying customers."
+      }
+    ],
+    support: [
+      {
+        icon: Users,
+        title: "Real Human Help",
+        description: "You're not alone. Get access to real human experts who can answer questions, provide guidance, and help you succeed. Not just AI—actual people who care."
+      },
+      {
+        icon: Sparkles,
+        title: "AI Co-Founder",
+        description: "Your AI business partner works 24/7 to build, optimize, and improve your business. Ask questions anytime and get intelligent, personalized responses."
+      },
+      {
+        icon: ShieldCheck,
+        title: "You Own Everything",
+        description: "Every asset we create is 100% yours. Download your logo files, export your website, keep all your content. No lock-in, no hidden fees."
+      },
+      {
+        icon: Zap,
+        title: "Fast Turnaround",
+        description: "Most businesses are ready to launch within 48 hours. We work fast so you can start getting customers and making money quickly."
+      }
+    ]
+  };
 
-  const howItWorks = [
-    {
-      step: "1",
-      title: "Tell Us Your Idea",
-      description: "Share your business vision. Our AI analyzes it and creates a personalized plan with exactly what you need."
-    },
-    {
-      step: "2",
-      title: "Choose Your Blocks",
-      description: "Select from our comprehensive catalog of services. Start with essentials or go all-in with advanced features."
-    },
-    {
-      step: "3",
-      title: "We Build Everything",
-      description: "Our team and AI work together to create your complete business infrastructure. You review and approve each component."
-    },
-    {
-      step: "4",
-      title: "Launch & Grow",
-      description: "When you're ready, launch with one click. Your website goes live, payments activate, and you're ready for customers."
-    }
-  ];
-
-  const benefits = [
-    { icon: Clock, text: "Launch in days, not months" },
-    { icon: CheckCircle2, text: "No technical skills required" },
-    { icon: Lock, text: "You own everything we create" },
-    { icon: Users, text: "Real human support available" },
-    { icon: Zap, text: "AI + expert team working for you" },
-    { icon: Shield, text: "Secure and compliant from day one" }
-  ];
+  const TabIcon = tabs.find(t => t.id === activeTab)?.icon || Sparkles;
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center px-4 sm:px-6 overflow-hidden">
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                             linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "100px 100px"
-          }}
-        />
-
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8 pt-20">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white">
-            Everything You Need
-            <br />
-            <span className="text-white/80">To Launch Your Business</span>
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto">
-            From idea to first customer in days. We handle the tech, legal, marketing, and everything in between.
-          </p>
-          <button
-            onClick={() => navigate("/start")}
-            className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
-          >
-            Start Building
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </button>
-        </div>
-      </section>
-
-      {/* Core Features Grid */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-black to-gray-950">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Core Features</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Everything included to launch and grow a professional business
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreFeatures.map((feature, index) => (
-              <div 
-                key={index}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 group"
-              >
-                <feature.icon className="w-12 h-12 text-white mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Additional Services */}
-      <section className="py-20 px-4 sm:px-6 bg-gray-950">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Advanced Services</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Scale and optimize your business with professional-grade tools
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {additionalServices.map((service, index) => (
-              <div 
-                key={index}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300"
-              >
-                <service.icon className="w-10 h-10 text-white mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">{service.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-gray-950 to-black">
+      <main className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">How It Works</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Four simple steps from idea to launch
+          {/* Back Button */}
+          <button
+            onClick={() => navigate("/")}
+            className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back to Home</span>
+          </button>
+
+          {/* Header */}
+          <div className="mb-12">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">Knowledge Base</h1>
+            <p className="text-xl text-gray-400">
+              Everything you need to know about building with SpaceBlocks
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {howItWorks.map((item, index) => (
-              <div key={index} className="text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center text-2xl font-bold mx-auto">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{item.description}</p>
+          {/* Tabs */}
+          <div className="flex flex-wrap gap-3 mb-8 bg-white/5 p-2 rounded-full">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
+                    activeTab === tab.id
+                      ? "bg-white text-black"
+                      : "text-gray-400 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Content Card */}
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12">
+            {/* Section Header */}
+            <div className="flex items-start gap-4 mb-8">
+              <div className="bg-white/10 rounded-2xl p-4">
+                <TabIcon className="w-8 h-8 text-white" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section className="py-20 px-4 sm:px-6 bg-black">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">Why Choose SpaceBlocks</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center gap-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
-                <benefit.icon className="w-8 h-8 text-white flex-shrink-0" />
-                <span className="text-white font-medium">{benefit.text}</span>
+              <div>
+                <h2 className="text-3xl font-bold mb-2">
+                  {tabs.find(t => t.id === activeTab)?.label}
+                </h2>
+                <p className="text-gray-400">
+                  {activeTab === "start" && "Everything you need to know to start building amazing businesses"}
+                  {activeTab === "building" && "All the tools and services to build your complete business"}
+                  {activeTab === "launch" && "Strategies and tools to launch and grow your customer base"}
+                  {activeTab === "support" && "The support and resources to ensure your success"}
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-black to-gray-950">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white">
-            Ready to Build Your Business?
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Join hundreds of entrepreneurs who turned their ideas into real businesses with SpaceBlocks.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Features Grid */}
+            <div className="space-y-8">
+              {features[activeTab as keyof typeof features].map((feature, index) => {
+                const FeatureIcon = feature.icon;
+                return (
+                  <div key={index} className="border-b border-white/10 pb-8 last:border-0 last:pb-0">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary/20 rounded-xl p-3 flex-shrink-0">
+                        <FeatureIcon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                        <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-12 text-center">
+            <h3 className="text-2xl font-bold mb-4">Ready to Build Your Business?</h3>
+            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+              Join thousands of entrepreneurs who are turning their ideas into real businesses with SpaceBlocks. Start building today.
+            </p>
             <button
               onClick={() => navigate("/start")}
-              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+              className="px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
             >
               Start Building Free
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </button>
-            <button
-              onClick={() => navigate("/start/browse")}
-              className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 inline-flex items-center gap-2"
-            >
-              Browse Business Ideas
-              <span>→</span>
+              <span className="transition-transform hover:translate-x-1">→</span>
             </button>
           </div>
-          <p className="text-sm text-gray-500 pt-4">
-            No credit card required • Pay only when you're ready to launch
-          </p>
         </div>
-      </section>
+      </main>
 
       <Footer />
     </div>
