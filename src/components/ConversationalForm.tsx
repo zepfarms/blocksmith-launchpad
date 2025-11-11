@@ -156,28 +156,26 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                variant="empire"
-                size="xl"
+              <button
                 onClick={() => {
                   setHasIdea(true);
                   setStep(2);
                 }}
-                className="flex-1 sm:flex-initial"
+                className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
               >
                 Yes, I have an idea
-              </Button>
-              <Button
-                variant="glass"
-                size="xl"
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+              <button
                 onClick={() => {
                   setHasIdea(false);
                   setStep(2);
                 }}
-                className="flex-1 sm:flex-initial"
+                className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 No, show me ideas
-              </Button>
+                <span>→</span>
+              </button>
             </div>
           </div>
         )}
