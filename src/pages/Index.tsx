@@ -9,7 +9,6 @@ import { Footer } from "@/components/Footer";
 import { JourneyFlow } from "@/components/JourneyFlow";
 import { Header } from "@/components/Header";
 import { toast } from "sonner";
-
 const Index = () => {
   const ideaInputRef = useRef<HTMLDivElement>(null);
   const blockSelectorRef = useRef<HTMLDivElement>(null);
@@ -19,36 +18,36 @@ const Index = () => {
     vision: string;
     industry: string;
   } | null>(null);
-
   const handleHeroCTA = () => {
-    ideaInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    ideaInputRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
   };
-
-  const handleJourneyComplete = (data: { name: string; vision: string; industry: string }) => {
+  const handleJourneyComplete = (data: {
+    name: string;
+    vision: string;
+    industry: string;
+  }) => {
     setJourneyData(data);
     setShowJourney(false);
     toast.success(`Welcome, ${data.name}!`, {
-      description: "Your business is being built. Check your dashboard.",
+      description: "Your business is being built. Check your dashboard."
     });
   };
-
   const handleJourneyBack = () => {
     setShowJourney(false);
   };
-
   const handleBlocksComplete = (selectedBlocks: string[]) => {
     const empireName = journeyData?.name || "Your Empire";
     toast.success("Assembly initiated!", {
-      description: `${empireName} is ready for launch with ${selectedBlocks.length} modules.`,
+      description: `${empireName} is ready for launch with ${selectedBlocks.length} modules.`
     });
   };
-
   if (showJourney) {
     return <JourneyFlow onComplete={handleJourneyComplete} onBack={handleJourneyBack} />;
   }
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Header />
       <HeroSection onCTAClick={handleHeroCTA} />
       
@@ -59,10 +58,8 @@ const Index = () => {
         <div className="relative z-10 max-w-4xl mx-auto">
           <div className="text-center space-y-8 mb-12">
             <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
-              <span className="block text-foreground mb-2">Start with</span>
-              <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
-                your idea
-              </span>
+              
+              
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
               Tell us what you want to build and we'll help you make it real.
@@ -70,12 +67,7 @@ const Index = () => {
           </div>
 
           <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-6">
-            <Button 
-              variant="empire" 
-              size="xl"
-              onClick={() => setShowJourney(true)}
-              className="w-full group"
-            >
+            <Button variant="empire" size="xl" onClick={() => setShowJourney(true)} className="w-full group">
               <span className="relative z-10 flex items-center justify-center gap-3">
                 Tell us your business idea
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
@@ -100,8 +92,6 @@ const Index = () => {
       <BetaSection />
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
