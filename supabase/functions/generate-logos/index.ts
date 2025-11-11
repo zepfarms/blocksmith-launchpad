@@ -100,17 +100,14 @@ serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openai/gpt-image-1",
+          model: "google/gemini-2.5-flash-image",
           messages: [
             {
               role: "user",
               content: prompt
             }
           ],
-          modalities: ["image", "text"],
-          output_format: "png",
-          background: "transparent",
-          size: "1024x1024"
+          modalities: ["image", "text"]
         })
       });
 
