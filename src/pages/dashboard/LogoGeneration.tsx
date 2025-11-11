@@ -61,12 +61,12 @@ export default function LogoGeneration() {
   };
 
   const checkGenerationCount = async (userId: string) => {
-    const response: any = await supabase
-      .from('logo_generation_sessions')
+    const { data: sessions, error } = await supabase
+      .from('logo_generation_sessions' as any)
       .select('*')
       .eq('user_id', userId);
 
-    const count = response.data?.length || 0;
+    const count = sessions?.length || 0;
     setGenerationCount(count);
 
     if (count === 0) {
@@ -132,7 +132,7 @@ export default function LogoGeneration() {
 
       for (const url of selectedUrls) {
         await supabase
-          .from('user_assets')
+          .from('user_assets' as any)
           .update({ status: 'saved' })
           .eq('user_id', user.id)
           .eq('asset_type', 'logo')
