@@ -1,4 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const stepMap: Record<string, number> = {
   "/start": 1,
@@ -10,12 +12,23 @@ const stepMap: Record<string, number> = {
   "/start/signup": 6,
 };
 
+const backPathMap: Record<string, string> = {
+  "/start/describe": "/start",
+  "/start/browse": "/start",
+  "/start/confirm": "/start/describe",
+  "/start/name": "/start/confirm",
+  "/start/blocks": "/start/name",
+  "/start/signup": "/start/blocks",
+};
+
 const totalSteps = 6;
 
 export const OnboardingLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentStep = stepMap[location.pathname] || 1;
   const progressPercentage = (currentStep / totalSteps) * 100;
+  const backPath = backPathMap[location.pathname];
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,6 +39,21 @@ export const OnboardingLayout = () => {
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
+
+      {/* Back Button */}
+      {backPath && (
+        <div className="fixed top-8 left-4 sm:left-8 z-40">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(backPath)}
+            className="gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        </div>
+      )}
 
       {/* Main Content */}
       <Outlet />

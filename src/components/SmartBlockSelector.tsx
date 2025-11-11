@@ -137,23 +137,30 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           .filter((block): block is Block => block !== null);
         
         setAllBlocks(blocks);
-        
-        // Auto-select starter blocks
-        const starterNames = starterBlocks.split(',').map(s => s.trim());
-        const starterIds = blocks
-          .filter(b => starterNames.some(name => b.title === name))
-          .map(b => b.id);
-        setSelectedBlocks(starterIds);
+        // Don't auto-select - let user choose
       });
   }, [starterBlocks]);
+
+  // Enhanced starter recommendations: always show these essential blocks for any business
+  const essentialStarterTitles = [
+    "Website Builder",
+    "Business Cards", 
+    "Social Media Kit",
+    "Email Setup",
+    "Name & Logo",
+    "Payment Processing"
+  ];
 
   const starterBlockNames = starterBlocks.split(',').map(s => s.trim()).filter(Boolean);
   const growthBlockNames = growthBlocks.split(',').map(s => s.trim()).filter(Boolean);
   
-  const starterBlockList = allBlocks.filter(b => starterBlockNames.includes(b.title));
-  const growthBlockList = allBlocks.filter(b => growthBlockNames.includes(b.title));
+  // Combine AI-recommended starters with essential starters
+  const combinedStarterNames = [...new Set([...essentialStarterTitles, ...starterBlockNames])];
+  
+  const starterBlockList = allBlocks.filter(b => combinedStarterNames.includes(b.title));
+  const growthBlockList = allBlocks.filter(b => growthBlockNames.includes(b.title) && !combinedStarterNames.includes(b.title));
   const otherBlocks = allBlocks.filter(b => 
-    !starterBlockNames.includes(b.title) && !growthBlockNames.includes(b.title)
+    !combinedStarterNames.includes(b.title) && !growthBlockNames.includes(b.title)
   );
 
   const freeBlocks = otherBlocks.filter(b => b.isFree);
@@ -179,13 +186,13 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
 
         </div>
 
-        {/* Starter Blocks (Pre-selected) */}
+        {/* Starter Blocks (Recommended but not pre-selected) */}
         {starterBlockList.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <h3 className="text-2xl font-bold">Starter Blocks</h3>
-              <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/30">
-                Pre-selected for you
+              <h3 className="text-2xl font-bold">Recommended Starter Blocks</h3>
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/30">
+                Essential for launch
               </Badge>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
