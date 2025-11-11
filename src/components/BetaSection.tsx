@@ -1,5 +1,4 @@
 export const BetaSection = () => {
-
   return (
     <section className="relative py-32 px-6">
       {/* Background ambient effects */}
@@ -36,6 +35,14 @@ export const BetaSection = () => {
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
                 Be among the first to launch your business with us
               </p>
+
+              <div className="max-w-3xl mx-auto pt-4">
+                <p className="text-lg text-foreground/90 leading-relaxed font-light">
+                  We're a new startup, and we're excited to help solve the real problems of entrepreneurship. 
+                  Starting a business can be overwhelming when you have to do it all alone. 
+                  Now you don't — meet your first business partner that works as hard as you do.
+                </p>
+              </div>
             </div>
           </div>
         </div>
