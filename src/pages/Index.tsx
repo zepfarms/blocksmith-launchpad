@@ -212,8 +212,12 @@ const Index = () => {
         </div>
       </section>
       
-      <WhySection />
-      <BetaSection />
+      <div id="features">
+        <WhySection />
+      </div>
+      <div id="business-ideas">
+        <BetaSection />
+      </div>
       <Footer />
 
       <AuthModal
