@@ -4,21 +4,48 @@ import { BlockSelector } from "@/components/BlockSelector";
 import { WhySection } from "@/components/WhySection";
 import { BetaSection } from "@/components/BetaSection";
 import { Footer } from "@/components/Footer";
+import { JourneyFlow } from "@/components/JourneyFlow";
 import { toast } from "sonner";
 
 const Index = () => {
   const blockSelectorRef = useRef<HTMLDivElement>(null);
+  const [showJourney, setShowJourney] = useState(false);
+  const [journeyData, setJourneyData] = useState<{
+    name: string;
+    vision: string;
+    industry: string;
+  } | null>(null);
 
   const handleHeroCTA = () => {
-    blockSelectorRef.current?.scrollIntoView({ behavior: "smooth" });
+    setShowJourney(true);
+  };
+
+  const handleJourneyComplete = (data: { name: string; vision: string; industry: string }) => {
+    setJourneyData(data);
+    setShowJourney(false);
+    toast.success(`Welcome, ${data.name}!`, {
+      description: "Let's build your empire together.",
+    });
+    // Scroll to block selector after journey completion
+    setTimeout(() => {
+      blockSelectorRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  };
+
+  const handleJourneyBack = () => {
+    setShowJourney(false);
   };
 
   const handleBlocksComplete = (selectedBlocks: string[]) => {
-    toast.success("Great choices!", {
-      description: `You've selected ${selectedBlocks.length} blocks. Ready to launch?`,
+    const empireName = journeyData?.name || "Your Empire";
+    toast.success("Assembly initiated!", {
+      description: `${empireName} is ready for launch with ${selectedBlocks.length} modules.`,
     });
-    // In a real app, this would proceed to the next step
   };
+
+  if (showJourney) {
+    return <JourneyFlow onComplete={handleJourneyComplete} onBack={handleJourneyBack} />;
+  }
 
   return (
     <div className="min-h-screen">
