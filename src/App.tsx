@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
@@ -33,6 +36,9 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/support" element={<Support />} />
               
               {/* Onboarding flow */}
               <Route path="/start" element={<OnboardingLayout />}>
