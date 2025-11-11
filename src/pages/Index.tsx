@@ -18,7 +18,6 @@ const Index = () => {
   const [showForm, setShowForm] = useState(false);
   const [showBlockSelector, setShowBlockSelector] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [email, setEmail] = useState("");
   const [businessData, setBusinessData] = useState<{
     businessIdea: string;
     aiAnalysis: string;
@@ -55,19 +54,6 @@ const Index = () => {
   const handleBlocksComplete = (blocks: string[]) => {
     setSelectedBlocks(blocks);
     setShowBlockSelector(false);
-    // Scroll to email input section
-    setTimeout(() => {
-      document.getElementById("email-section")?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }, 100);
-  };
-  const handleEmailSubmit = () => {
-    if (!email.trim()) {
-      toast.error("Please enter your email");
-      return;
-    }
     setShowAuthModal(true);
   };
   const handleAuthSuccess = async () => {
@@ -159,32 +145,6 @@ const Index = () => {
           {showBlockSelector && businessData && <div id="block-selector">
               <SmartBlockSelector starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""} growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""} onComplete={handleBlocksComplete} />
             </div>}
-          
-          {/* Email Section - Shows after blocks selected */}
-          {!showBlockSelector && businessData && !showAuthModal && <div id="email-section" className="max-w-4xl mx-auto animate-slide-up-fade">
-              <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-8">
-                <div className="space-y-3 text-center">
-                  <h3 className="text-3xl md:text-4xl font-bold text-foreground">
-                    Almost there!
-                  </h3>
-                  <p className="text-lg text-muted-foreground font-light">
-                    Enter your email to create your account
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <Input type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="h-16 text-lg glass-card border-white/10 bg-white/[0.02]" autoFocus />
-
-                  <Button variant="empire" size="xl" onClick={handleEmailSubmit} className="w-full">
-                    Continue
-                  </Button>
-                </div>
-
-                <div className="text-center text-sm text-muted-foreground/70">
-                  You only pay when you're ready to launch
-                </div>
-              </div>
-            </div>}
         </div>
       </section>
       
@@ -196,7 +156,7 @@ const Index = () => {
       </div>
       <Footer />
 
-      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} defaultView="signup" onSuccess={handleAuthSuccess} prefillEmail={email} />
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} defaultView="signup" onSuccess={handleAuthSuccess} />
     </div>;
 };
 export default Index;
