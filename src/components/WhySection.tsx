@@ -196,23 +196,6 @@ export const WhySection = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center space-y-6 pt-12">
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
-            <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-              Not Sure?
-            </span>
-            <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
-          </div>
-          
-          <p className="text-3xl md:text-4xl font-light text-foreground/90">
-            Tell us your idea
-          </p>
-          <p className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
-            We'll guide you
-          </p>
-        </div>
       </div>
     </section>
   );
