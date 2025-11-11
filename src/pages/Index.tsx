@@ -4,6 +4,7 @@ import { BetaSection } from "@/components/BetaSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StartBuildingModal } from "@/components/StartBuildingModal";
+import { AuthModal } from "@/components/AuthModal";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -11,29 +12,24 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingBusinessData, setPendingBusinessData] = useState<{
+    businessIdea: string;
+    aiAnalysis: string;
+    selectedIdeaRow?: any;
+  } | null>(null);
 
   const handleHeroCTA = () => {
     setShowModal(true);
   };
 
-  const handleFormComplete = async (data: {
+  const saveBusinessData = async (data: {
     businessIdea: string;
     aiAnalysis: string;
     selectedIdeaRow?: any;
-  }) => {
-    setShowModal(false);
-    
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-
-    if (!session?.user) {
-      navigate("/");
-      return;
-    }
-
+  }, user: any) => {
     const { error } = await supabase.from('user_businesses').insert({
-      user_id: session.user.id,
+      user_id: user.id,
       business_name: "New Business",
       business_idea: data.businessIdea,
       ai_analysis: data.aiAnalysis,
@@ -51,9 +47,9 @@ const Index = () => {
     try {
       await supabase.functions.invoke('send-welcome-email', {
         body: {
-          email: session.user.email,
+          email: user.email,
           businessName: "Your Business",
-          userName: session.user.email?.split('@')[0]
+          userName: user.email?.split('@')[0]
         }
       });
     } catch (emailError) {
@@ -64,7 +60,7 @@ const Index = () => {
     try {
       await supabase.functions.invoke('send-admin-notification', {
         body: {
-          userEmail: session.user.email,
+          userEmail: user.email,
           businessName: "New Business",
           businessIdea: data.businessIdea,
           selectedBlocks: [],
@@ -80,10 +76,49 @@ const Index = () => {
     });
     navigate("/dashboard");
   };
+
+  const handleFormComplete = async (data: {
+    businessIdea: string;
+    aiAnalysis: string;
+    selectedIdeaRow?: any;
+  }) => {
+    setShowModal(false);
+    
+    const {
+      data: { session }
+    } = await supabase.auth.getSession();
+
+    if (!session?.user) {
+      // Store the data and show auth modal
+      setPendingBusinessData(data);
+      setShowAuthModal(true);
+      return;
+    }
+
+    // Save business data if user is logged in
+    await saveBusinessData(data, session.user);
+  };
+
+  const handleAuthSuccess = async () => {
+    if (pendingBusinessData) {
+      const {
+        data: { session }
+      } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        await saveBusinessData(pendingBusinessData, session.user);
+        setPendingBusinessData(null);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
-      <HeroSection onCTAClick={handleHeroCTA} />
+      <HeroSection 
+        onCTAClick={handleHeroCTA} 
+        onSignInClick={() => setShowAuthModal(true)}
+      />
       
       <div id="business-ideas">
         <BetaSection />
@@ -95,6 +130,13 @@ const Index = () => {
         open={showModal}
         onClose={() => setShowModal(false)}
         onComplete={handleFormComplete}
+      />
+
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultView="signup"
+        onSuccess={handleAuthSuccess}
       />
     </div>
   );
