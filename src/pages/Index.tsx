@@ -152,7 +152,9 @@ const Index = () => {
               </p>
             </div>}
           
-          {showForm}
+          {showForm && (
+            <ConversationalForm onComplete={handleFormComplete} />
+          )}
           
           {showBlockSelector && businessData && <div id="block-selector">
               <SmartBlockSelector starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""} growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""} onComplete={handleBlocksComplete} />

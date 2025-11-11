@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden bg-black">
       {/* Grid pattern overlay */}
@@ -43,6 +45,7 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
           <button
+            onClick={() => navigate("/dashboard")}
             className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center gap-2"
           >
             Sign In
