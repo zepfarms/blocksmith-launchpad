@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, ArrowLeft, Sparkles, Rocket } from "lucide-react";
+import { ArrowRight, ArrowLeft, Sparkles, Rocket, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface JourneyFlowProps {
   onComplete: (data: { name: string; vision: string; industry: string }) => void;
   onBack: () => void;
 }
 
-const industries = [
-  "E-commerce & Retail",
-  "SaaS & Technology",
-  "Consulting & Services",
-  "Content & Media",
-  "Health & Wellness",
-  "Education & Courses",
-  "Finance & Fintech",
-  "Creative & Design",
+const blocks = [
+  "Everything",
+  "Logo", 
+  "Website",
+  "Domain",
+  "Emails",
+  "Store Setup",
+  "Legal",
+  "Social Media",
+  "Marketing"
 ];
 
 export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
@@ -28,22 +30,65 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
     vision: "",
     industry: "",
   });
+  const [aiAnalysis, setAiAnalysis] = useState("");
+  const [analysisConfirmed, setAnalysisConfirmed] = useState(false);
+  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
+  const [email, setEmail] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 1 && !data.name.trim()) {
-      toast.error("Please enter your empire name");
+      toast.error("Please enter your business name");
       return;
     }
+    
     if (step === 2 && !data.vision.trim()) {
-      toast.error("Share your vision with us");
-      return;
-    }
-    if (step === 3 && !data.industry) {
-      toast.error("Select your industry");
+      toast.error("Share your idea with us");
       return;
     }
 
-    if (step < 3) {
+    if (step === 2) {
+      // Analyze the idea using AI
+      setIsAnalyzing(true);
+      try {
+        const { data: analysisData, error } = await supabase.functions.invoke('analyze-idea', {
+          body: { name: data.name, vision: data.vision }
+        });
+
+        if (error) {
+          console.error('Analysis error:', error);
+          toast.error("Couldn't analyze your idea. Please try again.");
+          setIsAnalyzing(false);
+          return;
+        }
+
+        setAiAnalysis(analysisData.analysis);
+        setIsAnalyzing(false);
+        setStep(3);
+      } catch (error) {
+        console.error('Analysis error:', error);
+        toast.error("Couldn't analyze your idea. Please try again.");
+        setIsAnalyzing(false);
+      }
+      return;
+    }
+
+    if (step === 3 && !analysisConfirmed) {
+      toast.error("Please confirm if this looks right");
+      return;
+    }
+
+    if (step === 4 && selectedBlocks.length === 0) {
+      toast.error("Please select at least one block");
+      return;
+    }
+
+    if (step === 5 && !email.trim()) {
+      toast.error("Please enter your email");
+      return;
+    }
+
+    if (step < 5) {
       setStep(step + 1);
     } else {
       onComplete(data);
@@ -52,11 +97,24 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
 
   const handleBack = () => {
     if (step > 1) {
+      if (step === 3) {
+        setAnalysisConfirmed(false);
+      }
       setStep(step - 1);
     } else {
       onBack();
     }
   };
+
+  const toggleBlock = (block: string) => {
+    setSelectedBlocks(prev => 
+      prev.includes(block) 
+        ? prev.filter(b => b !== block)
+        : [...prev, block]
+    );
+  };
+
+  const totalSteps = 5;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20">
@@ -68,121 +126,205 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
         {/* Progress indicator */}
         <div className="space-y-4">
           <div className="flex items-center justify-between text-sm font-semibold text-muted-foreground">
-            <span>Step {step} of 3</span>
-            <span>{Math.round((step / 3) * 100)}% Complete</span>
+            <span>Step {step} of {totalSteps}</span>
+            <span>{Math.round((step / totalSteps) * 100)}% Complete</span>
           </div>
           <div className="h-2 rounded-full bg-white/5 overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-neon-cyan to-electric-indigo transition-all duration-500 rounded-full"
-              style={{ width: `${(step / 3) * 100}%` }}
+              style={{ width: `${(step / totalSteps) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Step content */}
         <div className="glass-card p-12 rounded-3xl border border-neon-cyan/20 space-y-8">
-          {/* Step 1: Empire Name */}
+          {/* Step 1: Business Name */}
           {step === 1 && (
             <div className="space-y-6 animate-scale-in">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-neon-cyan/10 border border-neon-cyan/30">
                 <Sparkles className="w-4 h-4 text-neon-cyan" />
-                <span className="text-sm font-semibold">Empire Foundation</span>
+                <span className="text-sm font-semibold">Getting Started</span>
               </div>
 
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
                 <span className="block text-foreground mb-2">Name Your</span>
                 <span className="block bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
-                  Empire
+                  Business
                 </span>
               </h2>
 
               <p className="text-xl text-muted-foreground font-light leading-relaxed">
-                Every great empire begins with a name. What will yours be called?
+                What will you call your business?
               </p>
 
               <Input
                 type="text"
-                placeholder="Enter your empire name..."
+                placeholder="Enter your business name..."
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
                 className="h-16 text-lg rounded-2xl glass-card border-white/10 bg-white/[0.02] text-foreground placeholder:text-muted-foreground focus:border-neon-cyan/30 transition-all"
                 autoFocus
               />
-
-              <div className="pt-4 text-sm text-muted-foreground/60">
-                <p>Examples: NovaTech Solutions, Quantum Commerce, Empire Fitness</p>
-              </div>
             </div>
           )}
 
-          {/* Step 2: Vision */}
+          {/* Step 2: Idea/Vision */}
           {step === 2 && (
             <div className="space-y-6 animate-scale-in">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-electric-indigo/10 border border-electric-indigo/30">
                 <Sparkles className="w-4 h-4 text-electric-indigo" />
-                <span className="text-sm font-semibold">Empire Vision</span>
+                <span className="text-sm font-semibold">Your Idea</span>
               </div>
 
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
-                <span className="block text-foreground mb-2">Share Your</span>
+                <span className="block text-foreground mb-2">Tell us about</span>
                 <span className="block bg-gradient-to-r from-electric-indigo to-neon-purple bg-clip-text text-transparent">
-                  Vision
+                  your idea
                 </span>
               </h2>
 
               <p className="text-xl text-muted-foreground font-light leading-relaxed">
-                What problem are you solving? Who are you helping?
+                What do you want to build? Who will you help?
               </p>
 
               <textarea
-                placeholder="Describe your vision in a few sentences..."
+                placeholder="Describe your business idea..."
                 value={data.vision}
                 onChange={(e) => setData({ ...data, vision: e.target.value })}
                 className="w-full h-40 p-6 text-lg rounded-2xl glass-card border border-white/10 bg-white/[0.02] text-foreground placeholder:text-muted-foreground focus:border-electric-indigo/30 transition-all resize-none"
                 autoFocus
               />
-
-              <div className="pt-4 text-sm text-muted-foreground/60">
-                <p>Be specific about the impact you want to make</p>
-              </div>
             </div>
           )}
 
-          {/* Step 3: Industry */}
+          {/* Step 3: AI Analysis & Confirmation */}
           {step === 3 && (
             <div className="space-y-6 animate-scale-in">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-neon-purple/10 border border-neon-purple/30">
                 <Sparkles className="w-4 h-4 text-neon-purple" />
-                <span className="text-sm font-semibold">Empire Domain</span>
+                <span className="text-sm font-semibold">AI Analysis</span>
               </div>
 
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
-                <span className="block text-foreground mb-2">Choose Your</span>
+                <span className="block text-foreground mb-2">Here's what</span>
                 <span className="block bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
-                  Industry
+                  we understand
                 </span>
               </h2>
 
-              <p className="text-xl text-muted-foreground font-light leading-relaxed">
-                Select the sector where your empire will dominate
+              <div className="p-6 rounded-2xl bg-neon-cyan/5 border border-neon-cyan/20">
+                <p className="text-xl text-foreground font-light leading-relaxed">
+                  {aiAnalysis}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <p className="text-lg text-muted-foreground font-light">
+                  Does this look right?
+                </p>
+                <div className="flex gap-4">
+                  <Button
+                    variant={analysisConfirmed ? "neon" : "glass"}
+                    onClick={() => setAnalysisConfirmed(true)}
+                    className="flex-1"
+                  >
+                    Yes, that's right!
+                  </Button>
+                  <Button
+                    variant="glass"
+                    onClick={() => {
+                      setStep(2);
+                      setAnalysisConfirmed(false);
+                    }}
+                    className="flex-1"
+                  >
+                    Let me edit
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Choose Blocks */}
+          {step === 4 && (
+            <div className="space-y-6 animate-scale-in">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-neon-cyan/10 border border-neon-cyan/30">
+                <Sparkles className="w-4 h-4 text-neon-cyan" />
+                <span className="text-sm font-semibold">Choose Blocks</span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
+                <span className="block text-foreground mb-2">Pick the blocks</span>
+                <span className="block bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+                  you need help with
+                </span>
+              </h2>
+
+              <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                Start simple — you can add more blocks anytime.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {industries.map((industry) => (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {blocks.map((block) => (
                   <button
-                    key={industry}
-                    onClick={() => setData({ ...data, industry })}
+                    key={block}
+                    onClick={() => toggleBlock(block)}
                     className={cn(
-                      "p-5 rounded-2xl text-left transition-all duration-300",
-                      "border glass-card-hover",
-                      data.industry === industry
+                      "p-5 rounded-2xl text-center transition-all duration-300",
+                      "border glass-card-hover font-semibold",
+                      selectedBlocks.includes(block)
                         ? "border-neon-cyan/50 bg-neon-cyan/10 shadow-[0_0_30px_rgba(34,211,238,0.3)]"
                         : "border-white/10 hover:border-neon-cyan/20"
                     )}
                   >
-                    <span className="font-semibold">{industry}</span>
+                    {block}
                   </button>
                 ))}
+              </div>
+
+              {selectedBlocks.length > 0 && (
+                <p className="text-sm text-muted-foreground/60 text-center">
+                  {selectedBlocks.length} block{selectedBlocks.length !== 1 ? "s" : ""} selected
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Step 5: Email Signup */}
+          {step === 5 && (
+            <div className="space-y-6 animate-scale-in">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-neon-purple/10 border border-neon-purple/30">
+                <Rocket className="w-4 h-4 text-neon-purple" />
+                <span className="text-sm font-semibold">Almost There</span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter">
+                <span className="block text-foreground mb-2">Get</span>
+                <span className="block bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                  Early Access
+                </span>
+              </h2>
+
+              <p className="text-xl text-muted-foreground font-light leading-relaxed">
+                Join the first 100 entrepreneurs. We'll be in touch soon!
+              </p>
+
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-16 text-lg rounded-2xl glass-card border-white/10 bg-white/[0.02] text-foreground placeholder:text-muted-foreground focus:border-neon-purple/30 transition-all"
+                autoFocus
+              />
+
+              <div className="p-4 rounded-2xl bg-neon-cyan/5 border border-neon-cyan/20">
+                <p className="text-sm text-muted-foreground font-light">
+                  ✓ Priority access<br />
+                  ✓ Real human help<br />
+                  ✓ Special pricing
+                </p>
               </div>
             </div>
           )}
@@ -194,20 +336,27 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
               size="lg"
               onClick={handleBack}
               className="gap-2"
+              disabled={isAnalyzing}
             >
               <ArrowLeft className="w-5 h-5" />
               Back
             </Button>
 
             <Button
-              variant={step === 3 ? "empire" : "neon"}
+              variant={step === 5 ? "empire" : "neon"}
               size="lg"
               onClick={handleNext}
               className="gap-2"
+              disabled={isAnalyzing}
             >
-              {step === 3 ? (
+              {isAnalyzing ? (
                 <>
-                  Launch Empire
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Analyzing...
+                </>
+              ) : step === 5 ? (
+                <>
+                  Launch
                   <Rocket className="w-5 h-5" />
                 </>
               ) : (
@@ -223,7 +372,7 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
         {/* Helper text */}
         <div className="text-center">
           <p className="text-sm text-muted-foreground/60">
-            Your information helps us customize your empire launch experience
+            Tell us your idea. Pick your blocks. We build it with you.
           </p>
         </div>
       </div>
