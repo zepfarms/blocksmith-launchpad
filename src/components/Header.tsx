@@ -45,10 +45,10 @@ export const Header = () => {
           </div>
 
           <div className="flex items-center gap-8">
-            <a href="#features" className="text-white/80 hover:text-white transition-colors text-sm">
+            <a href="/features" className="text-white/80 hover:text-white transition-colors text-sm">
               Features
             </a>
-            <a href="#business-ideas" className="text-white/80 hover:text-white transition-colors text-sm">
+            <a href="/business-ideas" className="text-white/80 hover:text-white transition-colors text-sm">
               Business Ideas
             </a>
           </div>
