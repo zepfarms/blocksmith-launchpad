@@ -108,19 +108,6 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
           <span className="text-foreground/60">No credit card required to start.</span>
         </p>
 
-        {/* Trust line with modular aesthetic */}
-        <div className="pt-16 space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon-cyan/50" />
-            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-              Powered by AI & real humans
-            </p>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-neon-cyan/50" />
-          </div>
-          <p className="text-sm text-muted-foreground/70 font-light">
-            Built for everyday entrepreneurs
-          </p>
-        </div>
       </div>
     </section>
   );
