@@ -12,11 +12,12 @@ interface AuthModalProps {
   onClose: () => void;
   defaultView?: "login" | "signup";
   onSuccess?: () => void;
+  prefillEmail?: string;
 }
 
-export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess }: AuthModalProps) => {
+export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, prefillEmail = "" }: AuthModalProps) => {
   const [view, setView] = useState<"login" | "signup" | "confirm">(defaultView);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
