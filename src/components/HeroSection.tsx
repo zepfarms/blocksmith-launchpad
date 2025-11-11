@@ -67,10 +67,9 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
         {/* Cinematic hero typography */}
         <div className="space-y-8">
           <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]">
-            <span className="block text-foreground">Don't Just build useless</span>
-            <span className="block text-foreground">Websites, Build a</span>
+            <span className="block text-foreground">Don't Build Websites,</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-neon-blue to-electric-indigo bg-clip-text text-transparent">
-              Business
+              Build a Business
             </span>
           </h1>
 
