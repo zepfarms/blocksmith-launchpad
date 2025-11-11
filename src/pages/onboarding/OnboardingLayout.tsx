@@ -1,6 +1,14 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const stepMap: Record<string, number> = {
   "/start": 1,
@@ -10,6 +18,16 @@ const stepMap: Record<string, number> = {
   "/start/name": 4,
   "/start/blocks": 5,
   "/start/signup": 6,
+};
+
+const breadcrumbLabels: Record<string, string> = {
+  "/start": "Get Started",
+  "/start/describe": "Describe Idea",
+  "/start/browse": "Browse Ideas",
+  "/start/confirm": "Confirm Idea",
+  "/start/name": "Business Name",
+  "/start/blocks": "Select Blocks",
+  "/start/signup": "Create Account",
 };
 
 const backPathMap: Record<string, string> = {
@@ -54,6 +72,23 @@ export const OnboardingLayout = () => {
           </Button>
         </div>
       )}
+
+      {/* Breadcrumb Navigation */}
+      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
+                Home
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
 
       {/* Main Content */}
       <Outlet />
