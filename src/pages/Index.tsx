@@ -22,8 +22,7 @@ const Index = () => {
   const [businessData, setBusinessData] = useState<{
     businessIdea: string;
     aiAnalysis: string;
-    experienceLevel?: string;
-    additionalContext?: string;
+    selectedIdeaRow?: any;
   } | null>(null);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
 
@@ -38,50 +37,21 @@ const Index = () => {
   const handleFormComplete = (data: {
     businessIdea: string;
     aiAnalysis: string;
-    experienceLevel?: string;
-    additionalContext?: string;
+    selectedIdeaRow?: any;
   }) => {
     setBusinessData(data);
-    
-    // AI decides recommended blocks based on the analysis
-    const recommendedBlocks = getRecommendedBlocks(data);
-    setSelectedBlocks(recommendedBlocks);
-    
     setShowForm(false);
     setShowBlockSelector(true);
+    
+    // Scroll to block selector
+    setTimeout(() => {
+      const blockSelector = document.getElementById('block-selector');
+      if (blockSelector) {
+        blockSelector.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
-  const getRecommendedBlocks = (data: any): string[] => {
-    // Smart AI-driven block recommendations
-    const idea = data.businessIdea.toLowerCase();
-    const recommended: string[] = [];
-
-    // Always recommend basics
-    recommended.push("name-logo", "website");
-
-    // Business type detection
-    if (idea.includes("store") || idea.includes("sell") || idea.includes("product")) {
-      recommended.push("store-setup", "payments", "products");
-    }
-    if (idea.includes("service") || idea.includes("consultation") || idea.includes("coaching")) {
-      recommended.push("booking-system", "payments");
-    }
-    if (idea.includes("local") || idea.includes("dog walking") || idea.includes("cleaning")) {
-      recommended.push("booking-system", "customer-support", "business-cards");
-    }
-
-    // Marketing needs
-    if (data.experienceLevel === "first-time" || idea.includes("customers") || idea.includes("marketing")) {
-      recommended.push("marketing-plan", "social-media");
-    }
-
-    // Legal/admin
-    if (idea.includes("new") || idea.includes("start") || data.experienceLevel === "first-time") {
-      recommended.push("legal-setup", "ein-irs");
-    }
-
-    return recommended;
-  };
 
   const handleBlocksComplete = (blocks: string[]) => {
     setSelectedBlocks(blocks);
@@ -190,11 +160,14 @@ const Index = () => {
           
           {showForm && <ConversationalForm onComplete={handleFormComplete} />}
           
-          {showBlockSelector && (
-            <SmartBlockSelector
-              recommendedBlockIds={selectedBlocks}
-              onComplete={handleBlocksComplete}
-            />
+          {showBlockSelector && businessData && (
+            <div id="block-selector">
+              <SmartBlockSelector
+                starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""}
+                growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""}
+                onComplete={handleBlocksComplete}
+              />
+            </div>
           )}
           
           {/* Email Section - Shows after blocks selected */}
