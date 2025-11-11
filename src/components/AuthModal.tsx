@@ -139,6 +139,7 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="bg-background/50 pr-10"
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -161,6 +162,7 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="bg-background/50"
+                autoComplete="new-password"
               />
             </div>
           )}
