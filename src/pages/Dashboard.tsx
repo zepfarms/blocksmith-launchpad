@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -170,6 +171,33 @@ const Dashboard = () => {
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
 
       <div className="relative z-10 max-w-6xl mx-auto space-y-8">
+        {/* Dashboard Navigation Tabs */}
+        <Tabs defaultValue="dashboard" className="w-full">
+          <TabsList className="w-full bg-background/5 backdrop-blur-sm border border-white/10 p-2 h-auto rounded-2xl">
+            <TabsTrigger 
+              value="dashboard" 
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger 
+              value="account" 
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+            >
+              <User className="w-5 h-5" />
+              Account
+            </TabsTrigger>
+            <TabsTrigger 
+              value="billing" 
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+            >
+              <CreditCard className="w-5 h-5" />
+              Billing
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="dashboard" className="mt-8 space-y-8">
         {/* Top banner */}
         <div className="glass-card p-6 rounded-3xl border border-neon-cyan/20">
           <div className="flex items-center justify-between">
@@ -338,6 +366,22 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+          </TabsContent>
+
+          <TabsContent value="account" className="mt-8">
+            <div className="glass-card p-8 rounded-3xl border border-white/10">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Account Settings</h2>
+              <p className="text-muted-foreground">Account settings coming soon...</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="billing" className="mt-8">
+            <div className="glass-card p-8 rounded-3xl border border-white/10">
+              <h2 className="text-2xl font-bold text-foreground mb-4">Billing</h2>
+              <p className="text-muted-foreground">Billing information coming soon...</p>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
