@@ -3,10 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { StartBuildingModal } from "@/components/StartBuildingModal";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { Search } from "lucide-react";
 
 interface BusinessIdea {
@@ -24,12 +21,6 @@ const BusinessIdeas = () => {
   const [filteredIdeas, setFilteredIdeas] = useState<BusinessIdea[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [showModal, setShowModal] = useState(false);
-  const [businessData, setBusinessData] = useState<{
-    businessIdea: string;
-    aiAnalysis: string;
-    selectedIdeaRow?: any;
-  } | null>(null);
 
   useEffect(() => {
     fetch("/data/business_ideas_500.csv")
@@ -78,44 +69,6 @@ const BusinessIdeas = () => {
   }, [searchTerm, selectedCategory, ideas]);
 
   const categories = ["all", ...Array.from(new Set(ideas.map((idea) => idea.category)))];
-
-  const handleFormComplete = async (data: {
-    businessIdea: string;
-    aiAnalysis: string;
-    selectedIdeaRow?: any;
-  }) => {
-    setBusinessData(data);
-    setShowModal(false);
-
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (!session?.user) {
-      navigate("/");
-      return;
-    }
-
-    const { error } = await supabase.from("user_businesses").insert({
-      user_id: session.user.id,
-      business_name: "New Business",
-      business_idea: data.businessIdea,
-      ai_analysis: data.aiAnalysis,
-      selected_blocks: [],
-      status: "building",
-    });
-
-    if (error) {
-      console.error("Error saving business data:", error);
-      toast.error("We couldn't save your business information. Please try again.");
-      return;
-    }
-
-    toast.success("Welcome! 🎉", {
-      description: "Your business is being created.",
-    });
-    navigate("/dashboard");
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -180,7 +133,7 @@ const BusinessIdeas = () => {
           <div className="text-center">
             <Button
               size="lg"
-              onClick={() => setShowModal(true)}
+              onClick={() => navigate("/start")}
               className="rounded-full px-8"
             >
               Start Building
@@ -190,12 +143,6 @@ const BusinessIdeas = () => {
       </main>
 
       <Footer />
-
-      <StartBuildingModal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        onComplete={handleFormComplete}
-      />
     </div>
   );
 };

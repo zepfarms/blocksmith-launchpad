@@ -4,30 +4,53 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { OnboardingProvider } from "./contexts/OnboardingContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
 import NotFound from "./pages/NotFound";
+import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
+import { IdeaStep } from "./pages/onboarding/IdeaStep";
+import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
+import { BrowseIdeas } from "./pages/onboarding/BrowseIdeas";
+import { ConfirmIdea } from "./pages/onboarding/ConfirmIdea";
+import { BusinessName } from "./pages/onboarding/BusinessName";
+import { BlockSelection } from "./pages/onboarding/BlockSelection";
+import { Signup } from "./pages/onboarding/Signup";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/business-ideas" element={<BusinessIdeas />} />
-            <Route path="/features" element={<Features />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <OnboardingProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/business-ideas" element={<BusinessIdeas />} />
+              <Route path="/features" element={<Features />} />
+              
+              {/* Onboarding flow */}
+              <Route path="/start" element={<OnboardingLayout />}>
+                <Route index element={<IdeaStep />} />
+                <Route path="describe" element={<DescribeIdea />} />
+                <Route path="browse" element={<BrowseIdeas />} />
+                <Route path="confirm" element={<ConfirmIdea />} />
+                <Route path="name" element={<BusinessName />} />
+                <Route path="blocks" element={<BlockSelection />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </OnboardingProvider>
     </QueryClientProvider>
   );
 }

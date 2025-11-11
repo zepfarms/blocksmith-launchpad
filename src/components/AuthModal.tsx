@@ -44,10 +44,6 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
       return;
     }
 
-    toast({
-      title: "Welcome back!",
-      description: "You've successfully logged in.",
-    });
     
     onSuccess?.();
     onClose();
@@ -95,10 +91,6 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
       return;
     }
 
-    toast({
-      title: "Account created!",
-      description: "Welcome to SpaceBlocks.ai",
-    });
     
     onSuccess?.();
     onClose();
