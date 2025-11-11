@@ -48,8 +48,8 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
 
       <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12">
         {/* Main headline */}
-        <div className="space-y-6 pt-20">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
+        <div className="space-y-6 pt-20 px-4">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
             <span className="block text-white">
               Turn Ideas Into
             </span>
@@ -59,23 +59,23 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4">
+          <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4 px-2">
             The AI business partner that never sleeps.
           </p>
         </div>
 
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-8 px-4 w-full">
           <button
             onClick={onCTAClick}
-            className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center gap-2"
+            className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-white text-black rounded-full font-medium text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
           >
             Start Building
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
           <button
             onClick={handleSignInClick}
-            className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center gap-2"
+            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
           >
             {user ? "Dashboard" : "Sign In"}
             <span>→</span>
