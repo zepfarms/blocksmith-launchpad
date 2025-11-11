@@ -124,6 +124,7 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
               onChange={(e) => setEmail(e.target.value)}
               required
               className="bg-background/50"
+              autoComplete="off"
             />
           </div>
 

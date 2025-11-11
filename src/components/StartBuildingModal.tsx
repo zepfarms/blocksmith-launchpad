@@ -27,10 +27,11 @@ export const StartBuildingModal = ({ open, onClose, onComplete }: StartBuildingM
   } | null>(null);
   const [businessName, setBusinessName] = useState("");
 
-  // Reset form when modal opens after being closed
+  // Reset form when modal closes - but preserve blocks step
   useEffect(() => {
-    if (!open) {
-      // Small delay to allow animation to complete before reset
+    if (!open && step !== "blocks") {
+      // Only reset if we're NOT on the blocks selection step
+      // This allows users to close and reopen to continue selecting blocks
       const timer = setTimeout(() => {
         setStep("idea");
         setIdeaData(null);
@@ -38,7 +39,7 @@ export const StartBuildingModal = ({ open, onClose, onComplete }: StartBuildingM
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [open]);
+  }, [open, step]);
 
   const handleIdeaComplete = (data: { businessIdea: string; aiAnalysis: string; selectedIdeaRow?: any; }) => {
     setIdeaData(data);
