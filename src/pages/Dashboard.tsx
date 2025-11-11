@@ -20,72 +20,8 @@ interface DashboardItem {
 const Dashboard = () => {
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState<any>(null);
-  const [items, setItems] = useState<DashboardItem[]>([
-    {
-      id: "logo",
-      title: "Logo designs",
-      status: "ready",
-      description: "3 professional logo variations",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "business-cards",
-      title: "Business card templates",
-      status: "ready",
-      description: "Print-ready business card designs",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "domain",
-      title: "Domain recommendations",
-      status: "ready",
-      description: "Available domain options for your business",
-      locked: false,
-      approved: false,
-    },
-    {
-      id: "website",
-      title: "Website preview",
-      status: "in-progress",
-      description: "Your business website is being built",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "legal",
-      title: "Legal paperwork queue",
-      status: "not-started",
-      description: "LLC/EIN filing documents",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "email",
-      title: "Email domain",
-      status: "ready",
-      description: "Professional email setup drafted",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "social",
-      title: "Social kit",
-      status: "in-progress",
-      description: "Social media templates uploading",
-      locked: true,
-      approved: false,
-    },
-    {
-      id: "marketing",
-      title: "Marketing plan",
-      status: "ready",
-      description: "Customer acquisition strategy",
-      locked: false,
-      approved: false,
-    },
-  ]);
+  const [items, setItems] = useState<DashboardItem[]>([]);
+  const [logoSessionCount, setLogoSessionCount] = useState(0);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -110,6 +46,60 @@ const Dashboard = () => {
 
       if (data) {
         setBusinessData(data);
+        
+        // Check logo generation sessions
+        const { data: sessions } = await (supabase as any)
+          .from('logo_generation_sessions')
+          .select('id')
+          .eq('user_id', session.user.id);
+        
+        setLogoSessionCount(sessions?.length || 0);
+        
+        // Build items from selected blocks
+        const selectedBlocks = data.selected_blocks || [];
+        const dashboardItems: DashboardItem[] = [];
+        
+        // Logo block
+        if (selectedBlocks.includes('Name & Logo') || selectedBlocks.includes('Logos')) {
+          const { data: logoAssets } = await (supabase as any)
+            .from('user_assets')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('asset_type', 'logo');
+          
+          const hasGenerated = sessions && sessions.length > 0;
+          const hasSaved = logoAssets && logoAssets.length > 0;
+          const hasApproved = logoAssets?.some((a: any) => a.status === 'approved');
+          
+          dashboardItems.push({
+            id: "logo",
+            title: "Logo designs",
+            status: hasGenerated ? "ready" : "not-started",
+            description: hasSaved 
+              ? `${logoAssets.length} logo${logoAssets.length !== 1 ? 's' : ''} saved`
+              : hasGenerated 
+                ? "Ready to preview and save"
+                : "Create your professional logo",
+            locked: !hasSaved,
+            approved: hasApproved || false,
+          });
+        }
+        
+        // Other blocks - default to in-progress for now
+        selectedBlocks.forEach((block: string) => {
+          if (block !== 'Name & Logo' && block !== 'Logos') {
+            dashboardItems.push({
+              id: block.toLowerCase().replace(/\s+/g, '-'),
+              title: block,
+              status: "in-progress",
+              description: "Being prepared for you",
+              locked: true,
+              approved: false,
+            });
+          }
+        });
+        
+        setItems(dashboardItems);
       }
     };
 
@@ -260,6 +250,11 @@ const Dashboard = () => {
                       <button
                         className="flex-1 gap-2 px-4 py-2 rounded-full border border-white/20 text-white text-sm hover:bg-white/5 transition-all disabled:opacity-50 inline-flex items-center justify-center"
                         disabled={item.locked}
+                        onClick={() => {
+                          if (!item.locked && item.id === 'logo') {
+                            navigate('/dashboard/logos');
+                          }
+                        }}
                       >
                         <FileText className="w-4 h-4" />
                         {item.locked ? "Preview (locked)" : "Review"}
@@ -286,9 +281,16 @@ const Dashboard = () => {
                     </div>
                   )}
                   {item.status === "not-started" && (
-                    <div className="flex-1 text-center py-2">
-                      <p className="text-sm text-muted-foreground">In queue</p>
-                    </div>
+                    <button
+                      className="flex-1 gap-2 px-4 py-2 rounded-full bg-white text-black hover:bg-gray-100 text-sm transition-all inline-flex items-center justify-center"
+                      onClick={() => {
+                        if (item.id === 'logo') {
+                          navigate('/dashboard/logos');
+                        }
+                      }}
+                    >
+                      Create Logos
+                    </button>
                   )}
                 </div>
               </div>
