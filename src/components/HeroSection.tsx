@@ -17,8 +17,8 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
 
       <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12">
         {/* Main headline */}
-        <div className="space-y-6">
-          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-none">
+        <div className="space-y-6 pt-20">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
             <span className="block text-white">
               Turn Ideas Into
             </span>
