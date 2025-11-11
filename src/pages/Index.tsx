@@ -2,6 +2,7 @@ import { useState } from "react";
 import { HeroSection } from "@/components/HeroSection";
 import { ExampleIdeasSection } from "@/components/ExampleIdeasSection";
 import { BetaSection } from "@/components/BetaSection";
+import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { AuthModal } from "@/components/AuthModal";
@@ -29,6 +30,8 @@ const Index = () => {
       <div id="business-ideas">
         <BetaSection />
       </div>
+      
+      <CTASection />
       
       <Footer />
 
