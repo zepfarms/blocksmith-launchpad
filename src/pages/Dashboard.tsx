@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
 
 interface DashboardItem {
   id: string;
@@ -14,6 +17,8 @@ interface DashboardItem {
 }
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [businessData, setBusinessData] = useState<any>(null);
   const [items, setItems] = useState<DashboardItem[]>([
     {
       id: "logo",
@@ -81,6 +86,43 @@ const Dashboard = () => {
     },
   ]);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        navigate("/");
+        return;
+      }
+
+      // Load user's business data
+      const { data, error } = await supabase
+        .from('user_businesses')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error loading business data:', error);
+        return;
+      }
+
+      setBusinessData(data);
+    };
+
+    checkAuth();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        navigate("/");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const handleApprove = (id: string) => {
     setItems((prev) =>
       prev.map((item) =>
@@ -120,6 +162,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen px-6 py-12">
+      <Header />
       {/* Background ambient effects */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />

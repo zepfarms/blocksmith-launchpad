@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, ArrowLeft, Sparkles, Rocket, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { AuthModal } from "@/components/AuthModal";
+import { useNavigate } from "react-router-dom";
+import { User } from "@supabase/supabase-js";
 
 interface JourneyFlowProps {
   onComplete: (data: { name: string; vision: string; industry: string }) => void;
@@ -35,6 +38,27 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [email, setEmail] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        // If user is already logged in, redirect to dashboard
+        navigate("/dashboard");
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   const handleNext = async () => {
     if (step === 1 && !data.name.trim()) {
@@ -88,10 +112,45 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
       return;
     }
 
+    if (step === 5) {
+      // Show auth modal to create account
+      setShowAuthModal(true);
+      return;
+    }
+
     if (step < 5) {
       setStep(step + 1);
-    } else {
-      onComplete(data);
+    }
+  };
+
+  const handleAuthSuccess = async () => {
+    // Save business data after successful signup
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.user) {
+      const { error } = await supabase
+        .from('user_businesses')
+        .insert({
+          user_id: session.user.id,
+          business_name: data.name,
+          business_idea: data.vision,
+          ai_analysis: aiAnalysis,
+          selected_blocks: selectedBlocks,
+          status: 'building'
+        });
+
+      if (error) {
+        console.error('Error saving business data:', error);
+        toast.error("We couldn't save your business information. Please try again.");
+        return;
+      }
+
+      toast.success("Welcome! 🎉", {
+        description: "Your business is being created.",
+      });
+
+      // Navigate to dashboard
+      navigate("/dashboard");
     }
   };
 
@@ -363,8 +422,8 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
                 </>
               ) : step === 5 ? (
                 <>
-                  Launch
-                  <Rocket className="w-5 h-5" />
+                  Continue
+                  <ArrowRight className="w-5 h-5" />
                 </>
               ) : (
                 <>
@@ -383,6 +442,13 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
           </p>
         </div>
       </div>
+
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultView="signup"
+        onSuccess={handleAuthSuccess}
+      />
     </div>
   );
 };

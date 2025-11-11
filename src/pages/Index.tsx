@@ -5,6 +5,7 @@ import { WhySection } from "@/components/WhySection";
 import { BetaSection } from "@/components/BetaSection";
 import { Footer } from "@/components/Footer";
 import { JourneyFlow } from "@/components/JourneyFlow";
+import { Header } from "@/components/Header";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -26,10 +27,6 @@ const Index = () => {
     toast.success(`Welcome, ${data.name}!`, {
       description: "Your business is being built. Check your dashboard.",
     });
-    // Navigate to dashboard
-    setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 1500);
   };
 
   const handleJourneyBack = () => {
@@ -49,6 +46,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <Header />
       <HeroSection onCTAClick={handleHeroCTA} />
       
       <WhySection />
