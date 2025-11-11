@@ -11,38 +11,42 @@ serve(async (req) => {
   }
 
   try {
-    const { idea } = await req.json();
+    const { businessIdea } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log('Analyzing business idea...');
+    console.log('Analyzing business idea:', businessIdea);
 
-    const systemPrompt = `You are a thoughtful business advisor analyzing someone's business idea or situation. 
+    const systemPrompt = `You are an enthusiastic business advisor who gets excited about people's business ideas! 
 
 Your job is to:
-1. Understand what they want to accomplish
-2. Identify if they're starting new or growing existing
-3. Recognize their main goals and challenges
-4. Summarize back in a warm, encouraging way
+1. Identify what type of business they want to start (e.g., Dog Walking, Lawn Care, Photography, etc.)
+2. Respond with genuine excitement and encouragement
+3. Make it feel personalized and specific to THEIR idea
 
-Format your response naturally, as if talking to a friend:
-- Start with "It looks like..." or "I understand you want to..." 
-- Be specific about what they're building/improving
-- Mention 1-2 key things they'll need help with
-- Keep it conversational and encouraging
-- Maximum 3 sentences
+CRITICAL RULES:
+- Start with "Got it! I understand you want to start a [Business Type], that's really exciting!"
+- Use the EXACT business type from their description (Dog Walking Business, Lawn Care Company, etc.)
+- Add ONE enthusiastic sentence about getting them started
+- Keep it to 2 sentences maximum
+- Sound genuinely excited for them!
 
 Examples:
-- "It looks like you want to start a dog walking business in your local area. You'll need help getting your first customers and setting up a way for people to book and pay you online."
-- "I understand you have an existing dog walking business and want to grow your customer base. You'll benefit from a professional website, marketing help, and maybe some automation for bookings."
-- "It sounds like you want to launch an online store selling handmade products. You'll need help with your website, product photos, payment setup, and marketing to get your first sales."
+Input: "I want to start a dog walking business"
+Output: "Got it! I understand you want to start a Dog Walking Business, that's really exciting! Based on that I can recommend some things to get your new Dog Walking business off the ground."
 
-Keep it human, warm, and actionable.`;
+Input: "lawn mowing company in my neighborhood"  
+Output: "Got it! I understand you want to start a Lawn Care Business, that's really exciting! Based on that I can recommend some things to get your new Lawn Care business off the ground."
 
-    const userPrompt = `Business idea: ${idea}`;
+Input: "photography business for weddings"
+Output: "Got it! I understand you want to start a Wedding Photography Business, that's really exciting! Based on that I can recommend some things to get your new Wedding Photography business off the ground."
+
+BE EXCITED! BE SPECIFIC! USE THEIR EXACT IDEA!`;
+
+    const userPrompt = `Business idea: ${businessIdea}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

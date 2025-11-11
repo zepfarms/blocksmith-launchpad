@@ -50,23 +50,38 @@ export const StartBuildingModal = ({ open, onClose, onComplete }: StartBuildingM
         )}
 
         {step === "name" && (
-          <section className="py-10 px-4 sm:px-6">
-            <div className="max-w-3xl mx-auto space-y-6">
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
-                Do you have a name for your business?
-              </h2>
-              <p className="text-muted-foreground">
-                You can enter it now or skip and add it later. We'll use this to personalize your plan.
-              </p>
+          <section className="py-16 px-4 sm:px-6">
+            <div className="max-w-3xl mx-auto space-y-8">
+              <div className="text-center space-y-4">
+                <h2 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">
+                  Do you have a name for your business?
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  You can enter it now or skip and add it later
+                </p>
+              </div>
+              
               <Input
                 placeholder="Enter your business name (optional)"
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
+                className="text-lg py-6"
               />
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Button variant="outline" onClick={() => setStep("blocks")}>Skip</Button>
-                <Button variant="default" onClick={() => setStep("blocks")}>Continue</Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <button
+                  onClick={() => setStep("blocks")}
+                  className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  Skip for now
+                </button>
+                <button
+                  onClick={() => setStep("blocks")}
+                  className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
+                >
+                  Yes, I have a name
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </button>
               </div>
             </div>
           </section>
