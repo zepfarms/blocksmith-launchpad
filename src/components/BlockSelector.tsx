@@ -1,22 +1,59 @@
 import { useState } from "react";
 import { BlockCard } from "./BlockCard";
 import { Button } from "@/components/ui/button";
-import {
-  Lightbulb,
-  Target,
-  Palette,
-  Globe,
-  FileText,
-  Image,
-  ShoppingBag,
-  Building2,
-  CreditCard,
-  Mail,
-  Share2,
-  Users,
-  Rocket,
-  Headphones,
-} from "lucide-react";
+
+// Custom minimal futuristic icons using SVG paths
+const IconCircuit = () => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-neon-cyan">
+    <circle cx="16" cy="16" r="3" stroke="currentColor" strokeWidth="2" />
+    <path d="M16 3V13M16 19V29M3 16H13M19 16H29" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="16" cy="3" r="2" fill="currentColor" />
+    <circle cx="16" cy="29" r="2" fill="currentColor" />
+    <circle cx="3" cy="16" r="2" fill="currentColor" />
+    <circle cx="29" cy="16" r="2" fill="currentColor" />
+  </svg>
+);
+
+const IconModule = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <rect x="6" y="6" width="20" height="20" stroke={color} strokeWidth="2" rx="2" />
+    <path d="M6 16H26M16 6V26" stroke={color} strokeWidth="2" />
+    <circle cx="16" cy="16" r="2" fill={color} />
+  </svg>
+);
+
+const IconCube = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke={color} strokeWidth="2" fill="none" />
+    <path d="M16 4V16M16 16L28 10M16 16L4 10" stroke={color} strokeWidth="2" />
+    <circle cx="16" cy="16" r="2" fill={color} />
+  </svg>
+);
+
+const IconHex = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <path d="M16 3L28 9.5V22.5L16 29L4 22.5V9.5L16 3Z" stroke={color} strokeWidth="2" />
+    <circle cx="16" cy="16" r="4" stroke={color} strokeWidth="2" />
+  </svg>
+);
+
+const IconGrid = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <rect x="5" y="5" width="8" height="8" stroke={color} strokeWidth="2" rx="1" />
+    <rect x="19" y="5" width="8" height="8" stroke={color} strokeWidth="2" rx="1" />
+    <rect x="5" y="19" width="8" height="8" stroke={color} strokeWidth="2" rx="1" />
+    <rect x="19" y="19" width="8" height="8" stroke={color} strokeWidth="2" rx="1" />
+  </svg>
+);
+
+const IconNetwork = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="6" r="3" stroke={color} strokeWidth="2" />
+    <circle cx="8" cy="26" r="3" stroke={color} strokeWidth="2" />
+    <circle cx="24" cy="26" r="3" stroke={color} strokeWidth="2" />
+    <path d="M15 9L9 23M17 9L23 23" stroke={color} strokeWidth="2" />
+  </svg>
+);
 
 interface Block {
   id: string;
@@ -26,20 +63,20 @@ interface Block {
 }
 
 const blocks: Block[] = [
-  { id: "idea", title: "Idea Generator", category: "Start", icon: <Lightbulb className="w-6 h-6 text-ion-blue" /> },
-  { id: "strategy", title: "Business Strategy", category: "Start", icon: <Target className="w-6 h-6 text-ion-blue" /> },
-  { id: "brand", title: "Brand Story", category: "Brand", icon: <Palette className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "logo", title: "Logo & Design Kit", category: "Brand", icon: <Image className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "website", title: "Website Builder", category: "Site", icon: <Globe className="w-6 h-6 text-ion-blue" /> },
-  { id: "domain", title: "Domain Setup", category: "Site", icon: <FileText className="w-6 h-6 text-ion-blue" /> },
-  { id: "products", title: "Product Designer", category: "Commerce", icon: <ShoppingBag className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "llc", title: "LLC + EIN Setup", category: "Legal", icon: <Building2 className="w-6 h-6 text-deep-jet" /> },
-  { id: "payments", title: "Payment Setup", category: "Commerce", icon: <CreditCard className="w-6 h-6 text-ion-blue" /> },
-  { id: "email", title: "Email Funnels", category: "Marketing", icon: <Mail className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "social", title: "Social Launch Kit", category: "Marketing", icon: <Share2 className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "crm", title: "CRM System", category: "Sales", icon: <Users className="w-6 h-6 text-ion-blue" /> },
-  { id: "launch", title: "Launch Plan", category: "Growth", icon: <Rocket className="w-6 h-6 text-cosmic-purple" /> },
-  { id: "support", title: "Support System", category: "Support", icon: <Headphones className="w-6 h-6 text-ion-blue" /> },
+  { id: "idea", title: "Idea Engine", category: "Foundation", icon: <IconCircuit /> },
+  { id: "strategy", title: "Strategy Core", category: "Foundation", icon: <IconModule color="#22D3EE" /> },
+  { id: "brand", title: "Brand Matrix", category: "Identity", icon: <IconCube color="#A78BFA" /> },
+  { id: "logo", title: "Visual System", category: "Identity", icon: <IconHex color="#A78BFA" /> },
+  { id: "website", title: "Web Platform", category: "Digital", icon: <IconGrid color="#22D3EE" /> },
+  { id: "domain", title: "Domain Core", category: "Digital", icon: <IconModule color="#22D3EE" /> },
+  { id: "products", title: "Product Engine", category: "Commerce", icon: <IconCube color="#A78BFA" /> },
+  { id: "llc", title: "Legal Framework", category: "Structure", icon: <IconHex color="#60A5FA" /> },
+  { id: "payments", title: "Payment Gateway", category: "Commerce", icon: <IconNetwork color="#22D3EE" /> },
+  { id: "email", title: "Communication Hub", category: "Growth", icon: <IconCircuit /> },
+  { id: "social", title: "Launch Protocol", category: "Growth", icon: <IconModule color="#A78BFA" /> },
+  { id: "crm", title: "Customer Matrix", category: "Operations", icon: <IconGrid color="#22D3EE" /> },
+  { id: "launch", title: "Ignition System", category: "Launch", icon: <IconNetwork color="#A78BFA" /> },
+  { id: "support", title: "Support Network", category: "Operations", icon: <IconHex color="#22D3EE" /> },
 ];
 
 export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: string[]) => void }) => {
@@ -52,49 +89,90 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
   };
 
   return (
-    <section className="min-h-screen py-20 px-4">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section className="relative min-h-screen py-32 px-6">
+      {/* Background ambient glow */}
+      <div className="absolute top-1/3 left-1/2 w-[800px] h-[800px] bg-neon-cyan/10 rounded-full blur-[150px] -translate-x-1/2" />
+      
+      <div className="relative z-10 max-w-7xl mx-auto space-y-20">
         {/* Header */}
-        <div className="text-center space-y-4 animate-slide-up">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            Choose Your <span className="gradient-text">Business Blocks</span>
+        <div className="text-center space-y-8 animate-slide-up-fade">
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border border-neon-cyan/20">
+            <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
+            <span className="text-sm font-semibold uppercase tracking-wider">
+              Module Selection
+            </span>
+          </div>
+
+          <h2 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter">
+            <span className="block text-foreground">Choose Your</span>
+            <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
+              Power Modules
+            </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Select the building blocks you need. We'll assemble everything into a complete business system.
+
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+            Select the systems you need. Watch your empire assemble.
           </p>
+
           {selectedBlocks.length > 0 && (
-            <p className="text-sm font-medium text-primary">
-              {selectedBlocks.length} block{selectedBlocks.length !== 1 ? "s" : ""} selected
-            </p>
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-neon-cyan/10 border border-neon-cyan/30">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-electric-indigo flex items-center justify-center text-background font-bold text-sm">
+                {selectedBlocks.length}
+              </div>
+              <span className="text-sm font-semibold">
+                {selectedBlocks.length === 1 ? "Module" : "Modules"} Selected
+              </span>
+            </div>
           )}
         </div>
 
-        {/* Block Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-scale-in">
-          {blocks.map((block) => (
-            <BlockCard
+        {/* Block Grid - Modular spacecraft assembly aesthetic */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {blocks.map((block, index) => (
+            <div
               key={block.id}
-              title={block.title}
-              category={block.category}
-              icon={block.icon}
-              isSelected={selectedBlocks.includes(block.id)}
-              onToggle={() => toggleBlock(block.id)}
-            />
+              className="animate-module-snap"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
+              <BlockCard
+                title={block.title}
+                category={block.category}
+                icon={block.icon}
+                isSelected={selectedBlocks.includes(block.id)}
+                onToggle={() => toggleBlock(block.id)}
+                index={index}
+              />
+            </div>
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Assembly CTA */}
         {selectedBlocks.length > 0 && (
-          <div className="text-center pt-8 animate-slide-up">
+          <div className="text-center pt-12 animate-slide-up-fade space-y-6">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
+              <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
+                Ready for Assembly
+              </span>
+              <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
+            </div>
+
             <Button 
-              variant="hero" 
-              size="xl"
+              variant="empire"
               onClick={() => onComplete(selectedBlocks)}
               className="group"
             >
-              Continue with {selectedBlocks.length} Block{selectedBlocks.length !== 1 ? "s" : ""}
-              <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span className="flex items-center gap-3">
+                Initiate Build Sequence
+                <div className="w-6 h-6 rounded-lg border-2 border-current flex items-center justify-center group-hover:rotate-90 transition-transform duration-500">
+                  <div className="w-2 h-2 bg-current rounded-sm" />
+                </div>
+              </span>
             </Button>
+
+            <p className="text-sm text-muted-foreground font-light">
+              {selectedBlocks.length} system{selectedBlocks.length !== 1 ? "s" : ""} will be assembled into your empire
+            </p>
           </div>
         )}
       </div>

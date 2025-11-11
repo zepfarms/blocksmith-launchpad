@@ -1,54 +1,120 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Background gradient orbs */}
-      <div className="absolute top-20 left-10 w-96 h-96 bg-ion-blue/20 rounded-full blur-[120px] animate-float" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cosmic-purple/20 rounded-full blur-[120px] animate-float" style={{ animationDelay: "1s" }} />
+    <section className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden">
+      {/* Ambient background orbs with parallax */}
+      <div 
+        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/20 blur-[120px] animate-float parallax-float"
+        style={{
+          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+          transition: "transform 0.5s ease-out"
+        }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/20 blur-[120px] animate-float"
+        style={{
+          transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px)`,
+          transition: "transform 0.5s ease-out",
+          animationDelay: "2s"
+        }}
+      />
+      <div 
+        className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-neon-purple/15 blur-[100px] animate-float"
+        style={{
+          transform: `translate(-50%, -50%) translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+          transition: "transform 0.5s ease-out",
+          animationDelay: "4s"
+        }}
+      />
 
-      <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 animate-slide-up">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium">
-          <Sparkles className="w-4 h-4 text-cosmic-purple" />
-          <span>First 100 Founders Program</span>
+      {/* Grid pattern overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: "100px 100px"
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto text-center space-y-12 animate-slide-up-fade">
+        {/* Empire badge */}
+        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border border-neon-cyan/20">
+          <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
+          <span className="text-sm font-semibold text-foreground/90 tracking-wide">
+            FIRST 100 FOUNDERS PROGRAM
+          </span>
+          <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
         </div>
 
-        {/* Main heading */}
-        <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-          Don't just build a website.
-          <br />
-          <span className="gradient-text">Launch a real business.</span>
-        </h1>
+        {/* Cinematic hero typography */}
+        <div className="space-y-8">
+          <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]">
+            <span className="block text-foreground">Start Your</span>
+            <span className="block bg-gradient-to-r from-neon-cyan via-neon-blue to-electric-indigo bg-clip-text text-transparent">
+              Empire
+            </span>
+          </h1>
 
-        {/* Subheading */}
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Pick your blocks. We assemble everything.
-          <br />
-          Get your first customer in <span className="text-foreground font-semibold">days, not months</span>.
-        </p>
+          {/* Subheading with luxury spacing */}
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <p className="text-2xl md:text-3xl lg:text-4xl font-light text-foreground/80 leading-relaxed tracking-tight">
+              The future builds with you
+            </p>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+              Don't just build a website. Launch a real business.
+              <br />
+              Pick your modules. We assemble your empire.
+            </p>
+          </div>
+        </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+        {/* CTA with empire aesthetic */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
           <Button 
-            variant="hero" 
-            size="xl"
+            variant="empire" 
             onClick={onCTAClick}
-            className="group"
+            className="group relative overflow-hidden"
           >
-            Start Choosing Blocks
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <span className="relative z-10 flex items-center gap-3">
+              Begin Assembly
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+            </span>
           </Button>
-          <Button variant="pill-outline" size="xl">
-            Watch Demo
+          <Button variant="glass" size="xl" className="text-foreground">
+            Watch System Demo
           </Button>
         </div>
 
-        {/* Trust indicators */}
-        <div className="pt-12 flex flex-col items-center gap-3">
-          <p className="text-sm text-muted-foreground">Idea → Plan → Brand → Store → Legal → Customers</p>
-          <p className="text-xs text-muted-foreground font-medium">Every step? Just a block away.</p>
+        {/* Trust line with modular aesthetic */}
+        <div className="pt-16 space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon-cyan/50" />
+            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
+              Complete System
+            </p>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-neon-cyan/50" />
+          </div>
+          <p className="text-xs text-muted-foreground/60 font-medium tracking-wider">
+            IDEA → STRATEGY → BRAND → BUILD → LEGAL → LAUNCH → CUSTOMERS
+          </p>
         </div>
       </div>
     </section>

@@ -8,53 +8,59 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* SpaceBlocks Premium Design System */
-    --background: 0 0% 100%;
-    --background-mist: 210 33% 98%;
-    --foreground: 0 0% 4%;
+    /* SpaceBlocks Premium Design System - Futuristic Luxury */
+    --background: 0 0% 2%;
+    --background-elevated: 0 0% 4%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 4%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Space-themed accent colors */
-    --ion-blue: 218 100% 65%;
-    --cosmic-purple: 251 100% 69%;
-    --deep-jet: 0 0% 9%;
-    --silver-mist: 211 30% 88%;
+    /* Neon accent colors - futuristic space tech */
+    --neon-cyan: 187 100% 65%;
+    --neon-purple: 271 91% 65%;
+    --neon-blue: 214 100% 70%;
+    --electric-indigo: 243 100% 72%;
+    
+    /* Surface colors */
+    --glass-border: 0 0% 100% / 0.1;
+    --glass-bg: 0 0% 100% / 0.03;
+    
+    --primary: 187 100% 65%;
+    --primary-foreground: 0 0% 2%;
 
-    --primary: 218 100% 65%;
-    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --secondary: 211 30% 88%;
-    --secondary-foreground: 0 0% 4%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --muted: 210 33% 98%;
-    --muted-foreground: 0 0% 45%;
-
-    --accent: 251 100% 69%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 271 91% 65%;
+    --accent-foreground: 0 0% 2%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 211 30% 88%;
-    --input: 211 30% 88%;
-    --ring: 218 100% 65%;
+    --border: 0 0% 100% / 0.1;
+    --input: 0 0% 100% / 0.1;
+    --ring: 187 100% 65%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Gradients for premium glow effects */
-    --gradient-primary: linear-gradient(135deg, hsl(218 100% 65%) 0%, hsl(251 100% 69%) 100%);
-    --gradient-glow: linear-gradient(135deg, hsl(218 100% 65% / 0.1) 0%, hsl(251 100% 69% / 0.1) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.7) 0%, hsl(0 0% 100% / 0.3) 100%);
+    /* Premium gradients and effects */
+    --gradient-primary: linear-gradient(135deg, hsl(187 100% 65%) 0%, hsl(271 91% 65%) 100%);
+    --gradient-ambient: radial-gradient(circle at 50% 50%, hsl(187 100% 65% / 0.15) 0%, transparent 50%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.05) 0%, hsl(0 0% 100% / 0.02) 100%);
+    --gradient-neon-glow: radial-gradient(circle at 50% 50%, hsl(187 100% 65% / 0.3) 0%, transparent 70%);
     
-    /* Shadows for depth */
-    --shadow-soft: 0 4px 24px -2px hsl(218 100% 65% / 0.08);
-    --shadow-glow: 0 0 40px -10px hsl(218 100% 65% / 0.4);
-    --shadow-glass: 0 8px 32px 0 hsl(0 0% 0% / 0.04);
+    /* Luxury shadows */
+    --shadow-premium: 0 20px 60px -15px hsl(0 0% 0% / 0.8), 0 0 0 1px hsl(0 0% 100% / 0.05);
+    --shadow-neon: 0 0 30px hsl(187 100% 65% / 0.5), 0 0 60px hsl(271 91% 65% / 0.3);
+    --shadow-float: 0 30px 80px -20px hsl(0 0% 0% / 0.9), 0 0 1px hsl(187 100% 65% / 0.2);
+    --shadow-inner-glow: inset 0 1px 0 0 hsl(0 0% 100% / 0.1);
   }
 
   .dark {
@@ -97,24 +103,61 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tighter;
+    font-weight: 800;
   }
 }
 
 @layer utilities {
   .glass-card {
     background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
-    box-shadow: var(--shadow-glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--shadow-premium), var(--shadow-inner-glow);
   }
 
-  .glow-effect {
-    box-shadow: var(--shadow-glow);
+  .glass-card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-float), var(--shadow-neon);
+    border-color: hsl(var(--neon-cyan) / 0.3);
+  }
+
+  .neon-border {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--card), var(--card)) padding-box,
+                var(--gradient-primary) border-box;
+  }
+
+  .neon-glow {
+    position: relative;
+  }
+
+  .neon-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-primary);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .neon-glow:hover::before {
+    opacity: 1;
   }
 
   .gradient-text {
@@ -122,5 +165,35 @@ All colors MUST be HSL.
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .ambient-glow {
+    position: relative;
+  }
+
+  .ambient-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-neon-glow);
+    filter: blur(60px);
+    opacity: 0.5;
+    z-index: -1;
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+  }
+
+  .parallax-float {
+    animation: float-parallax 6s ease-in-out infinite;
+  }
+
+  @keyframes float-parallax {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    33% { transform: translateY(-20px) translateX(10px); }
+    66% { transform: translateY(-10px) translateX(-10px); }
   }
 }
