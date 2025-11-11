@@ -9,8 +9,6 @@ interface HeroSectionProps {
   onSignInClick?: () => void;
 }
 
-const HERO_HEADLINE_SCALE = 0.75; // 75% of original size
-
 export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
@@ -51,12 +49,7 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
       <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12">
         {/* Main headline */}
         <div className="space-y-6 pt-20">
-          <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none"
-            style={{
-              fontSize: `calc(${HERO_HEADLINE_SCALE} * 1em)`,
-            }}
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
             <span className="block text-white">
               Turn Ideas Into
             </span>
