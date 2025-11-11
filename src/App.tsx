@@ -13,6 +13,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
+import LogoGeneration from "./pages/dashboard/LogoGeneration";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
@@ -34,6 +35,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/logos" element={<LogoGeneration />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
