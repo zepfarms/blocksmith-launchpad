@@ -106,14 +106,14 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md glass-card border-white/10">
+      <DialogContent className="sm:max-w-md glass-card border-white/10" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             {view === "login" ? "Welcome back" : "Create your account"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={view === "login" ? handleLogin : handleSignup} className="space-y-4">
+        <form onSubmit={view === "login" ? handleLogin : handleSignup} className="space-y-4" autoComplete="off" noValidate>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -125,6 +125,11 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
               required
               className="bg-background/50"
               autoComplete="off"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              inputMode="email"
+              name="sb-email"
             />
           </div>
 
