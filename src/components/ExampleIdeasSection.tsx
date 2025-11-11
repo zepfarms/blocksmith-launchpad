@@ -71,10 +71,10 @@ export const ExampleIdeasSection = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-all"
+                  className="bg-white/5 border border-white/10 rounded-3xl p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:border-neon-cyan/30 hover:scale-[1.02] cursor-pointer group"
                 >
-                  <div className="bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
-                    <Icon className="w-8 h-8 text-white" />
+                  <div className="bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] group-hover:border-neon-cyan transition-all duration-300">
+                    <Icon className="w-8 h-8 text-white group-hover:text-neon-cyan transition-colors duration-300" />
                   </div>
                   
                   <h3 className="text-xl font-semibold mb-6">

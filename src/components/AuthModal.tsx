@@ -147,7 +147,8 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
               autoCorrect="off"
               spellCheck={false}
               inputMode="email"
-              name="sb-email"
+              name="sb-email-unique"
+              data-form-type="other"
             />
           </div>
 
@@ -163,7 +164,9 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="bg-background/50 pr-10"
-                  autoComplete="new-password"
+                  autoComplete="off"
+                  name="sb-password-unique"
+                  data-form-type="other"
                 />
                 <button
                   type="button"
@@ -188,16 +191,18 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
           {view === "signup" && (
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="bg-background/50"
-                autoComplete="new-password"
-              />
+                <Input
+                  id="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="bg-background/50"
+                  autoComplete="off"
+                  name="sb-confirm-password-unique"
+                  data-form-type="other"
+                />
             </div>
           )}
 
