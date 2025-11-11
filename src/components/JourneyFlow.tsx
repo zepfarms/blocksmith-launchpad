@@ -265,6 +265,13 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
                 Start simple — you can add more blocks anytime.
               </p>
 
+              {/* Reassurance text */}
+              <div className="p-4 rounded-2xl glass-card border border-neon-cyan/10">
+                <p className="text-sm text-muted-foreground/80 text-center font-light">
+                  Select what you want. We build it. You only pay when you launch.
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {blocks.map((block) => (
                   <button

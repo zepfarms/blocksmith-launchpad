@@ -103,6 +103,23 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
           </Button>
         </div>
 
+        {/* Pay when you launch badge */}
+        <div className="pt-8">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-neon-cyan/10">
+            <span className="text-xl">💡</span>
+            <span className="text-sm font-semibold text-foreground/90">
+              Pay only when you're ready to launch
+            </span>
+          </div>
+        </div>
+
+        {/* Supporting text */}
+        <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto font-light leading-relaxed">
+          Build your business first. Review everything. Launch when you're ready.
+          <br />
+          <span className="text-foreground/60">No credit card required to start.</span>
+        </p>
+
         {/* Trust line with modular aesthetic */}
         <div className="pt-16 space-y-4">
           <div className="flex items-center justify-center gap-3">

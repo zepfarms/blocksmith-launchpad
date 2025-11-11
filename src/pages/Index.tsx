@@ -24,12 +24,12 @@ const Index = () => {
     setJourneyData(data);
     setShowJourney(false);
     toast.success(`Welcome, ${data.name}!`, {
-      description: "Let's build your empire together.",
+      description: "Your business is being built. Check your dashboard.",
     });
-    // Scroll to block selector after journey completion
+    // Navigate to dashboard
     setTimeout(() => {
-      blockSelectorRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 500);
+      window.location.href = "/dashboard";
+    }, 1500);
   };
 
   const handleJourneyBack = () => {
