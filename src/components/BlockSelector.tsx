@@ -65,17 +65,26 @@ interface Block {
 const blocks: Block[] = [
   { id: "idea", title: "Business Idea", category: "Start", icon: <IconCircuit /> },
   { id: "brand", title: "Name & Logo", category: "Brand", icon: <IconCube color="#A78BFA" /> },
-  { id: "products", title: "Products", category: "Commerce", icon: <IconHex color="#A78BFA" /> },
+  { id: "logos", title: "Logos", category: "Brand", icon: <IconHex color="#A78BFA" /> },
+  { id: "cards", title: "Business Cards", category: "Brand", icon: <IconModule color="#A78BFA" /> },
+  { id: "products", title: "Products", category: "Commerce", icon: <IconHex color="#22D3EE" /> },
   { id: "store", title: "Store Setup", category: "Commerce", icon: <IconGrid color="#22D3EE" /> },
   { id: "website", title: "Website", category: "Site", icon: <IconModule color="#22D3EE" /> },
   { id: "payments", title: "Payments", category: "Commerce", icon: <IconNetwork color="#22D3EE" /> },
   { id: "legal", title: "Legal Setup", category: "Legal", icon: <IconHex color="#60A5FA" /> },
+  { id: "sba", title: "SBA Help", category: "Legal", icon: <IconCube color="#60A5FA" /> },
+  { id: "loans", title: "Loans", category: "Finance", icon: <IconModule color="#60A5FA" /> },
+  { id: "grants", title: "Grants", category: "Finance", icon: <IconGrid color="#60A5FA" /> },
+  { id: "insurance", title: "Insurance", category: "Legal", icon: <IconNetwork color="#60A5FA" /> },
+  { id: "plans", title: "Business Plans", category: "Start", icon: <IconHex color="#A78BFA" /> },
+  { id: "pitch", title: "Pitch Decks", category: "Start", icon: <IconCube color="#A78BFA" /> },
   { id: "social", title: "Social Media Kit", category: "Marketing", icon: <IconModule color="#A78BFA" /> },
   { id: "email", title: "Email Setup", category: "Marketing", icon: <IconCircuit /> },
-  { id: "marketing", title: "Marketing Plan", category: "Marketing", icon: <IconCube color="#A78BFA" /> },
+  { id: "marketing", title: "Marketing", category: "Marketing", icon: <IconCube color="#A78BFA" /> },
+  { id: "ads", title: "Ads Starter", category: "Growth", icon: <IconModule color="#22D3EE" /> },
+  { id: "hiring", title: "Hiring", category: "Operations", icon: <IconNetwork color="#60A5FA" /> },
   { id: "support", title: "Customer Support", category: "Support", icon: <IconHex color="#22D3EE" /> },
   { id: "booking", title: "Booking System", category: "Sales", icon: <IconGrid color="#22D3EE" /> },
-  { id: "ads", title: "Ads Starter", category: "Growth", icon: <IconModule color="#A78BFA" /> },
   { id: "automation", title: "Automations", category: "Automation", icon: <IconNetwork color="#60A5FA" /> },
 ];
 
@@ -106,7 +115,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
             Pick the parts of your business you want help with.
             <br />
-            We build them for you so you can launch fast.
+            Let AI handle these tasks so you can focus on what you do best.
           </p>
 
           <p className="text-sm text-muted-foreground/60 font-light">
@@ -125,8 +134,8 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
           )}
         </div>
 
-        {/* Block Grid - Modular spacecraft assembly aesthetic */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* Block Grid - Compact grid for more blocks */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
           {blocks.map((block, index) => (
             <div
               key={block.id}
