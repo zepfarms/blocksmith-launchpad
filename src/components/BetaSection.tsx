@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
 const benefits = [
-  "Priority system access",
-  "Founder badge & recognition",
-  "Lifetime empire pricing",
-  "Human strategist access",
-  "Custom module packages",
-  "Beta command center",
+  "Priority access",
+  "Early adopter badge",
+  "Special pricing",
+  "Real human help",
+  "Custom support",
+  "First to launch",
 ];
 
 export const BetaSection = () => {
@@ -18,8 +18,8 @@ export const BetaSection = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      toast.success("Welcome to the Empire", {
-        description: "You're in the First 100. Check your command center.",
+      toast.success("Welcome aboard!", {
+        description: "You're in the First 100. Check your email.",
       });
       setEmail("");
     }
@@ -46,7 +46,7 @@ export const BetaSection = () => {
               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-neon-cyan/10 to-neon-purple/10 border border-neon-cyan/30">
                 <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
                 <span className="text-sm font-semibold uppercase tracking-wider">
-                  Elite Founder Program
+                  Early Access
                 </span>
                 <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
               </div>
@@ -54,12 +54,12 @@ export const BetaSection = () => {
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter">
                 <span className="block text-foreground mb-2">Join the First</span>
                 <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
-                  100 Empire Builders
+                  100 Entrepreneurs
                 </span>
               </h2>
 
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-                Limited access to the command center. Reserved for visionaries ready to build.
+                Be among the first to launch your business with us
               </p>
             </div>
 
@@ -85,7 +85,7 @@ export const BetaSection = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                   type="email"
-                  placeholder="Enter your command email"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -97,12 +97,12 @@ export const BetaSection = () => {
                   size="lg" 
                   className="whitespace-nowrap h-14 px-8"
                 >
-                  Claim Your Position
+                  Get Early Access
                 </Button>
               </div>
               
               <p className="text-xs text-muted-foreground/60 text-center">
-                By joining, you're granted early access to the empire builder OS
+                Join the first 100 entrepreneurs to launch with us
               </p>
             </form>
           </div>

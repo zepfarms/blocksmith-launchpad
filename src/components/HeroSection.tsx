@@ -67,21 +67,21 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
         {/* Cinematic hero typography */}
         <div className="space-y-8">
           <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]">
-            <span className="block text-foreground">Start Your</span>
+            <span className="block text-foreground">Meet your new</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-neon-blue to-electric-indigo bg-clip-text text-transparent">
-              Empire
+              business partner
             </span>
           </h1>
 
           {/* Subheading with luxury spacing */}
           <div className="space-y-6 max-w-4xl mx-auto">
-            <p className="text-2xl md:text-3xl lg:text-4xl font-light text-foreground/80 leading-relaxed tracking-tight">
-              The future builds with you
+            <p className="text-xl md:text-2xl lg:text-3xl font-light text-foreground/80 leading-relaxed">
+              We help you turn your idea into a real business —
+              <br />
+              brand, products, website, marketing, customers.
             </p>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
-              Don't just build a website. Launch a real business.
-              <br />
-              Pick your modules. We assemble your empire.
+              Just choose the blocks you need, and we build it with you.
             </p>
           </div>
         </div>
@@ -94,12 +94,12 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
             className="group relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-3">
-              Begin Assembly
+              Start Picking Blocks
               <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </span>
           </Button>
           <Button variant="glass" size="xl" className="text-foreground">
-            Watch System Demo
+            See how it works →
           </Button>
         </div>
 
@@ -108,12 +108,12 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
           <div className="flex items-center justify-center gap-3">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon-cyan/50" />
             <p className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-              Complete System
+              Powered by AI & real humans
             </p>
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-neon-cyan/50" />
           </div>
-          <p className="text-xs text-muted-foreground/60 font-medium tracking-wider">
-            IDEA → STRATEGY → BRAND → BUILD → LEGAL → LAUNCH → CUSTOMERS
+          <p className="text-sm text-muted-foreground/70 font-light">
+            Built for everyday entrepreneurs
           </p>
         </div>
       </div>

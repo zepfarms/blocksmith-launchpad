@@ -1,32 +1,32 @@
 const features = [
   {
-    title: "AI Command Center",
-    description: "Neural networks orchestrate your empire's foundation",
+    title: "You're not doing this alone",
+    description: "Your AI co-founder + our team builds your business with you",
     gradient: "from-neon-cyan to-neon-blue",
   },
   {
-    title: "Autonomous Design",
-    description: "Self-assembling brand systems with zero manual input",
+    title: "No tech skills needed",
+    description: "No coding. No design tools. No stress.",
     gradient: "from-neon-blue to-electric-indigo",
   },
   {
-    title: "Live Infrastructure",
-    description: "Real-time deployment of commerce-ready platforms",
+    title: "Real business. Real customers.",
+    description: "We help you get your first sale faster",
     gradient: "from-electric-indigo to-neon-purple",
   },
   {
-    title: "Quantum Workflows",
-    description: "Parallel processing of business operations",
+    title: "Built-with-you, not DIY",
+    description: "We build each piece step-by-step with you",
     gradient: "from-neon-purple to-neon-cyan",
   },
   {
-    title: "Launch Protocol",
-    description: "Zero-friction customer acquisition systems",
+    title: "Perfect for first-time entrepreneurs",
+    description: "Turn your idea into something real",
     gradient: "from-neon-cyan to-electric-indigo",
   },
   {
-    title: "Human Override",
-    description: "Expert founders on-demand for strategic guidance",
+    title: "You own everything we create",
+    description: "Your brand, your business, your assets",
     gradient: "from-electric-indigo to-neon-cyan",
   },
 ];
@@ -41,22 +41,15 @@ export const WhySection = () => {
       <div className="relative z-10 max-w-7xl mx-auto space-y-20">
         {/* Header */}
         <div className="text-center space-y-8">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border border-neon-cyan/20">
-            <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
-            <span className="text-sm font-semibold uppercase tracking-wider">
-              The System
-            </span>
-          </div>
-
           <h2 className="text-6xl md:text-7xl font-black tracking-tighter">
-            <span className="block text-foreground mb-4">Not a Website Builder</span>
+            <span className="block text-foreground mb-4">Start your</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
-              An Empire OS
+              business
             </span>
           </h2>
 
           <p className="text-2xl text-muted-foreground max-w-3xl mx-auto font-light">
-            You bring the vision. We deploy the infrastructure.
+            Turn your idea into something real. Get your first sale faster.
           </p>
         </div>
 
@@ -96,16 +89,16 @@ export const WhySection = () => {
           <div className="flex items-center justify-center gap-3">
             <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
             <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-              Mission Statement
+              Our Promise
             </span>
             <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
           </div>
           
           <p className="text-3xl md:text-4xl font-light text-foreground/90">
-            Don't wait for someday.
+            We help you build each piece step-by-step
           </p>
           <p className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
-            Launch your empire.
+            So you can launch fast
           </p>
         </div>
       </div>

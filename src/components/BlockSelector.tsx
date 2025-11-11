@@ -63,20 +63,20 @@ interface Block {
 }
 
 const blocks: Block[] = [
-  { id: "idea", title: "Idea Engine", category: "Foundation", icon: <IconCircuit /> },
-  { id: "strategy", title: "Strategy Core", category: "Foundation", icon: <IconModule color="#22D3EE" /> },
-  { id: "brand", title: "Brand Matrix", category: "Identity", icon: <IconCube color="#A78BFA" /> },
-  { id: "logo", title: "Visual System", category: "Identity", icon: <IconHex color="#A78BFA" /> },
-  { id: "website", title: "Web Platform", category: "Digital", icon: <IconGrid color="#22D3EE" /> },
-  { id: "domain", title: "Domain Core", category: "Digital", icon: <IconModule color="#22D3EE" /> },
-  { id: "products", title: "Product Engine", category: "Commerce", icon: <IconCube color="#A78BFA" /> },
-  { id: "llc", title: "Legal Framework", category: "Structure", icon: <IconHex color="#60A5FA" /> },
-  { id: "payments", title: "Payment Gateway", category: "Commerce", icon: <IconNetwork color="#22D3EE" /> },
-  { id: "email", title: "Communication Hub", category: "Growth", icon: <IconCircuit /> },
-  { id: "social", title: "Launch Protocol", category: "Growth", icon: <IconModule color="#A78BFA" /> },
-  { id: "crm", title: "Customer Matrix", category: "Operations", icon: <IconGrid color="#22D3EE" /> },
-  { id: "launch", title: "Ignition System", category: "Launch", icon: <IconNetwork color="#A78BFA" /> },
-  { id: "support", title: "Support Network", category: "Operations", icon: <IconHex color="#22D3EE" /> },
+  { id: "idea", title: "Business Idea", category: "Start", icon: <IconCircuit /> },
+  { id: "brand", title: "Name & Logo", category: "Brand", icon: <IconCube color="#A78BFA" /> },
+  { id: "products", title: "Products", category: "Commerce", icon: <IconHex color="#A78BFA" /> },
+  { id: "store", title: "Store Setup", category: "Commerce", icon: <IconGrid color="#22D3EE" /> },
+  { id: "website", title: "Website", category: "Site", icon: <IconModule color="#22D3EE" /> },
+  { id: "payments", title: "Payments", category: "Commerce", icon: <IconNetwork color="#22D3EE" /> },
+  { id: "legal", title: "Legal Setup", category: "Legal", icon: <IconHex color="#60A5FA" /> },
+  { id: "social", title: "Social Media Kit", category: "Marketing", icon: <IconModule color="#A78BFA" /> },
+  { id: "email", title: "Email Setup", category: "Marketing", icon: <IconCircuit /> },
+  { id: "marketing", title: "Marketing Plan", category: "Marketing", icon: <IconCube color="#A78BFA" /> },
+  { id: "support", title: "Customer Support", category: "Support", icon: <IconHex color="#22D3EE" /> },
+  { id: "booking", title: "Booking System", category: "Sales", icon: <IconGrid color="#22D3EE" /> },
+  { id: "ads", title: "Ads Starter", category: "Growth", icon: <IconModule color="#A78BFA" /> },
+  { id: "automation", title: "Automations", category: "Automation", icon: <IconNetwork color="#60A5FA" /> },
 ];
 
 export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: string[]) => void }) => {
@@ -96,22 +96,21 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
       <div className="relative z-10 max-w-7xl mx-auto space-y-20">
         {/* Header */}
         <div className="text-center space-y-8 animate-slide-up-fade">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-card border border-neon-cyan/20">
-            <div className="w-2 h-2 rounded-full bg-neon-cyan animate-glow-pulse" />
-            <span className="text-sm font-semibold uppercase tracking-wider">
-              Module Selection
-            </span>
-          </div>
-
           <h2 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter">
-            <span className="block text-foreground">Choose Your</span>
+            <span className="block text-foreground">Choose your</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
-              Power Modules
+              blocks
             </span>
           </h2>
 
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
-            Select the systems you need. Watch your empire assemble.
+            Pick the parts of your business you want help with.
+            <br />
+            We build them for you so you can launch fast.
+          </p>
+
+          <p className="text-sm text-muted-foreground/60 font-light">
+            Start simple — you can add more blocks anytime.
           </p>
 
           {selectedBlocks.length > 0 && (
@@ -120,7 +119,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
                 {selectedBlocks.length}
               </div>
               <span className="text-sm font-semibold">
-                {selectedBlocks.length === 1 ? "Module" : "Modules"} Selected
+                {selectedBlocks.length === 1 ? "Block" : "Blocks"} Selected
               </span>
             </div>
           )}
@@ -152,7 +151,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
             <div className="flex items-center justify-center gap-3 mb-8">
               <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
               <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-                Ready for Assembly
+                Ready to Build
               </span>
               <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
             </div>
@@ -163,7 +162,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
               className="group"
             >
               <span className="flex items-center gap-3">
-                Initiate Build Sequence
+                Continue
                 <div className="w-6 h-6 rounded-lg border-2 border-current flex items-center justify-center group-hover:rotate-90 transition-transform duration-500">
                   <div className="w-2 h-2 bg-current rounded-sm" />
                 </div>
@@ -171,7 +170,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
             </Button>
 
             <p className="text-sm text-muted-foreground font-light">
-              {selectedBlocks.length} system{selectedBlocks.length !== 1 ? "s" : ""} will be assembled into your empire
+              {selectedBlocks.length} block{selectedBlocks.length !== 1 ? "s" : ""} selected
             </p>
           </div>
         )}
