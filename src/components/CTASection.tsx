@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles, Zap, TrendingUp } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, TrendingUp, Shield } from "lucide-react";
 
 export const CTASection = () => {
   const navigate = useNavigate();
@@ -64,9 +64,10 @@ export const CTASection = () => {
                 </button>
               </div>
 
-              <p className="text-sm text-gray-400 mt-6">
-                💡 No credit card required • Build first, pay when ready to launch
-              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-gray-400 mt-6">
+                <Shield className="w-4 h-4 text-primary" />
+                <span>No credit card required • Build first, pay when ready to launch</span>
+              </div>
             </div>
           </div>
 
