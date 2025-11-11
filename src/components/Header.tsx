@@ -40,8 +40,13 @@ export const Header = () => {
     <>
       <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
-            SpaceBlocks.ai
+          <div className="flex flex-col gap-0.5">
+            <div className="text-xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+              SpaceBlocks.ai
+            </div>
+            <div className="text-xs text-muted-foreground/70 font-light tracking-wide">
+              AI built for your business
+            </div>
           </div>
 
           {user ? (
