@@ -25,7 +25,6 @@ const Index = () => {
     selectedIdeaRow?: any;
   } | null>(null);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
-
   const handleHeroCTA = () => {
     ideaInputRef.current?.scrollIntoView({
       behavior: 'smooth',
@@ -33,7 +32,6 @@ const Index = () => {
     });
     setTimeout(() => setShowForm(true), 300);
   };
-
   const handleFormComplete = (data: {
     businessIdea: string;
     aiAnalysis: string;
@@ -42,17 +40,18 @@ const Index = () => {
     setBusinessData(data);
     setShowForm(false);
     setShowBlockSelector(true);
-    
+
     // Scroll to block selector
     setTimeout(() => {
       const blockSelector = document.getElementById('block-selector');
       if (blockSelector) {
-        blockSelector.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        blockSelector.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
       }
     }, 100);
   };
-
-
   const handleBlocksComplete = (blocks: string[]) => {
     setSelectedBlocks(blocks);
     setShowBlockSelector(false);
@@ -64,7 +63,6 @@ const Index = () => {
       });
     }, 100);
   };
-
   const handleEmailSubmit = () => {
     if (!email.trim()) {
       toast.error("Please enter your email");
@@ -72,22 +70,23 @@ const Index = () => {
     }
     setShowAuthModal(true);
   };
-
   const handleAuthSuccess = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    
+    const {
+      data: {
+        session
+      }
+    } = await supabase.auth.getSession();
     if (session?.user && businessData) {
-      const { error } = await supabase
-        .from('user_businesses')
-        .insert({
-          user_id: session.user.id,
-          business_name: "New Business",
-          business_idea: businessData.businessIdea,
-          ai_analysis: businessData.aiAnalysis,
-          selected_blocks: selectedBlocks,
-          status: 'building'
-        });
-
+      const {
+        error
+      } = await supabase.from('user_businesses').insert({
+        user_id: session.user.id,
+        business_name: "New Business",
+        business_idea: businessData.businessIdea,
+        ai_analysis: businessData.aiAnalysis,
+        selected_blocks: selectedBlocks,
+        status: 'building'
+      });
       if (error) {
         console.error('Error saving business data:', error);
         toast.error("We couldn't save your business information. Please try again.");
@@ -121,16 +120,13 @@ const Index = () => {
       } catch (emailError) {
         console.error('Error sending admin notification:', emailError);
       }
-
       toast.success("Welcome! 🎉", {
-        description: "Your business is being created.",
+        description: "Your business is being created."
       });
-
       navigate("/dashboard");
     }
   };
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Header />
       <HeroSection onCTAClick={handleHeroCTA} />
       
@@ -139,8 +135,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background-elevated" />
         
         <div className="relative z-10">
-          {!showForm && !showBlockSelector && !businessData && (
-            <div className="text-center space-y-6 mb-12 px-4 animate-slide-up-fade">
+          {!showForm && !showBlockSelector && !businessData && <div className="text-center space-y-6 mb-12 px-4 animate-slide-up-fade">
               <div className="flex items-center justify-center gap-3">
                 <div className="h-px w-12 sm:w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
                 <span className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
@@ -155,24 +150,16 @@ const Index = () => {
               <p className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
                 We'll guide you
               </p>
-            </div>
-          )}
+            </div>}
           
-          {showForm && <ConversationalForm onComplete={handleFormComplete} />}
+          {showForm}
           
-          {showBlockSelector && businessData && (
-            <div id="block-selector">
-              <SmartBlockSelector
-                starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""}
-                growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""}
-                onComplete={handleBlocksComplete}
-              />
-            </div>
-          )}
+          {showBlockSelector && businessData && <div id="block-selector">
+              <SmartBlockSelector starterBlocks={businessData.selectedIdeaRow?.starter_blocks || ""} growthBlocks={businessData.selectedIdeaRow?.growth_blocks || ""} onComplete={handleBlocksComplete} />
+            </div>}
           
           {/* Email Section - Shows after blocks selected */}
-          {!showBlockSelector && businessData && !showAuthModal && (
-            <div id="email-section" className="max-w-4xl mx-auto animate-slide-up-fade">
+          {!showBlockSelector && businessData && !showAuthModal && <div id="email-section" className="max-w-4xl mx-auto animate-slide-up-fade">
               <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-8">
                 <div className="space-y-3 text-center">
                   <h3 className="text-3xl md:text-4xl font-bold text-foreground">
@@ -184,21 +171,9 @@ const Index = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <Input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-16 text-lg glass-card border-white/10 bg-white/[0.02]"
-                    autoFocus
-                  />
+                  <Input type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="h-16 text-lg glass-card border-white/10 bg-white/[0.02]" autoFocus />
 
-                  <Button
-                    variant="empire"
-                    size="xl"
-                    onClick={handleEmailSubmit}
-                    className="w-full"
-                  >
+                  <Button variant="empire" size="xl" onClick={handleEmailSubmit} className="w-full">
                     Continue
                   </Button>
                 </div>
@@ -207,8 +182,7 @@ const Index = () => {
                   You only pay when you're ready to launch
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
       </section>
       
@@ -220,14 +194,7 @@ const Index = () => {
       </div>
       <Footer />
 
-      <AuthModal
-        open={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        defaultView="signup"
-        onSuccess={handleAuthSuccess}
-        prefillEmail={email}
-      />
-    </div>
-  );
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} defaultView="signup" onSuccess={handleAuthSuccess} prefillEmail={email} />
+    </div>;
 };
 export default Index;
