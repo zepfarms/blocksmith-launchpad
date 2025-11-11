@@ -148,9 +148,6 @@ const Index = () => {
         </div>
       </section>
       
-      <div id="features">
-        <WhySection />
-      </div>
       <div id="business-ideas">
         <BetaSection />
       </div>
