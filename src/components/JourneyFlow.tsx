@@ -150,6 +150,36 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
         return;
       }
 
+      // Send welcome email
+      try {
+        await supabase.functions.invoke('send-welcome-email', {
+          body: {
+            email: session.user.email,
+            businessName: data.name,
+            userName: data.name
+          }
+        });
+      } catch (emailError) {
+        console.error('Error sending welcome email:', emailError);
+        // Don't block signup if email fails
+      }
+
+      // Send admin notification
+      try {
+        await supabase.functions.invoke('send-admin-notification', {
+          body: {
+            userEmail: session.user.email,
+            businessName: data.name,
+            businessIdea: data.vision,
+            selectedBlocks: selectedBlocks,
+            aiAnalysis: aiAnalysis
+          }
+        });
+      } catch (emailError) {
+        console.error('Error sending admin notification:', emailError);
+        // Don't block signup if notification fails
+      }
+
       toast.success("Welcome! 🎉", {
         description: "Your business is being created.",
       });
