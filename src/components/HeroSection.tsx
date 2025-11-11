@@ -67,21 +67,20 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
         {/* Cinematic hero typography */}
         <div className="space-y-8">
           <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]">
-            <span className="block text-foreground">Meet your new</span>
+            <span className="block text-foreground">Don't Just build useless</span>
+            <span className="block text-foreground">Websites, Build a</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-neon-blue to-electric-indigo bg-clip-text text-transparent">
-              business partner
+              Business
             </span>
           </h1>
 
           {/* Subheading with luxury spacing */}
           <div className="space-y-6 max-w-4xl mx-auto">
             <p className="text-xl md:text-2xl lg:text-3xl font-light text-foreground/80 leading-relaxed">
-              We help you turn your idea into a real business —
-              <br />
-              brand, products, website, marketing, customers.
+              Turn your idea into something real, not useless crap.
             </p>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
-              Just choose the blocks you need, and we build it with you.
+              Start with your own idea, or choose from one already created.
             </p>
           </div>
         </div>
@@ -94,12 +93,12 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
             className="group relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-3">
-              Start Picking Blocks
+              Start your business today
               <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </span>
           </Button>
           <Button variant="glass" size="xl" className="text-foreground">
-            See how it works →
+            Need Business Ideas? →
           </Button>
         </div>
 
