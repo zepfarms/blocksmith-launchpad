@@ -17,6 +17,8 @@ const Index = () => {
     businessIdea: string;
     aiAnalysis: string;
     selectedIdeaRow?: any;
+    businessName?: string;
+    selectedBlocks?: string[];
   } | null>(null);
 
   const handleHeroCTA = () => {
@@ -27,13 +29,15 @@ const Index = () => {
     businessIdea: string;
     aiAnalysis: string;
     selectedIdeaRow?: any;
+    businessName?: string;
+    selectedBlocks?: string[];
   }, user: any) => {
     const { error } = await supabase.from('user_businesses').insert({
       user_id: user.id,
-      business_name: "New Business",
+      business_name: data.businessName || "New Business",
       business_idea: data.businessIdea,
       ai_analysis: data.aiAnalysis,
-      selected_blocks: [],
+      selected_blocks: data.selectedBlocks || [],
       status: 'building'
     });
 
@@ -81,6 +85,8 @@ const Index = () => {
     businessIdea: string;
     aiAnalysis: string;
     selectedIdeaRow?: any;
+    businessName?: string;
+    selectedBlocks?: string[];
   }) => {
     setShowModal(false);
     
