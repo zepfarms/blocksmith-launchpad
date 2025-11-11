@@ -2,3 +2,9 @@ project_id = "zkkndhebaefxyuuvpobn"
 
 [functions.analyze-business-idea]
 verify_jwt = false
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.send-admin-notification]
+verify_jwt = false

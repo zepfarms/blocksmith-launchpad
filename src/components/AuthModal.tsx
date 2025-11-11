@@ -16,7 +16,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, prefillEmail = "" }: AuthModalProps) => {
-  const [view, setView] = useState<"login" | "signup" | "confirm">(defaultView);
+  const [view, setView] = useState<"login" | "signup" | "forgot-password">(defaultView);
   const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -96,16 +96,42 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
     onClose();
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/dashboard`,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Password reset failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Check your email",
+      description: "We sent you a password reset link.",
+    });
+    setView("login");
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md glass-card border-white/10" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            {view === "login" ? "Welcome back" : "Create your account"}
+            {view === "login" ? "Welcome back" : view === "signup" ? "Create your account" : "Reset password"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={view === "login" ? handleLogin : handleSignup} className="space-y-4" autoComplete="off" noValidate>
+        <form onSubmit={view === "login" ? handleLogin : view === "signup" ? handleSignup : handleForgotPassword} className="space-y-4" autoComplete="off" noValidate>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -125,28 +151,39 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="bg-background/50 pr-10"
-                autoComplete="new-password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+          {view !== "forgot-password" && (
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="bg-background/50 pr-10"
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {view === "login" && (
+                <button
+                  type="button"
+                  onClick={() => setView("forgot-password")}
+                  className="text-xs text-neon-cyan hover:underline"
+                >
+                  Forgot password?
+                </button>
+              )}
             </div>
-          </div>
+          )}
 
           {view === "signup" && (
             <div className="space-y-2">
@@ -169,34 +206,48 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
             className="w-full"
             disabled={loading}
           >
-            {loading ? "Please wait..." : view === "login" ? "Log in" : "Create account"}
+            {loading ? "Please wait..." : view === "login" ? "Log in" : view === "signup" ? "Create account" : "Send reset link"}
           </Button>
 
-          <div className="text-center text-sm">
-            {view === "login" ? (
-              <p className="text-muted-foreground">
-                Don't have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setView("signup")}
-                  className="text-neon-cyan hover:underline"
-                >
-                  Sign up
-                </button>
-              </p>
-            ) : (
-              <p className="text-muted-foreground">
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setView("login")}
-                  className="text-neon-cyan hover:underline"
-                >
-                  Log in
-                </button>
-              </p>
-            )}
-          </div>
+          {view !== "forgot-password" && (
+            <div className="text-center text-sm">
+              {view === "login" ? (
+                <p className="text-muted-foreground">
+                  Don't have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setView("signup")}
+                    className="text-neon-cyan hover:underline"
+                  >
+                    Sign up
+                  </button>
+                </p>
+              ) : (
+                <p className="text-muted-foreground">
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setView("login")}
+                    className="text-neon-cyan hover:underline"
+                  >
+                    Log in
+                  </button>
+                </p>
+              )}
+            </div>
+          )}
+
+          {view === "forgot-password" && (
+            <div className="text-center text-sm">
+              <button
+                type="button"
+                onClick={() => setView("login")}
+                className="text-neon-cyan hover:underline"
+              >
+                Back to login
+              </button>
+            </div>
+          )}
         </form>
       </DialogContent>
     </Dialog>

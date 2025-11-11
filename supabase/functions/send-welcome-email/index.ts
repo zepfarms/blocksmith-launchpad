@@ -26,7 +26,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Sending welcome email to:', email);
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks.ai <hello@spaceblocks.ai>",
+      from: "SpaceBlocks <support@spaceblocks.ai>",
       to: [email],
       subject: "Welcome to SpaceBlocks.ai! 🚀",
       html: `

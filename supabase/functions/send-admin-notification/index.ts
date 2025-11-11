@@ -33,11 +33,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Sending admin notification for new business:', businessName);
 
-    // You can configure this email address via environment variable or hardcode it
-    const adminEmail = Deno.env.get("ADMIN_EMAIL") || "admin@spaceblocks.ai";
+    // Send to support@spaceblocks.ai
+    const adminEmail = "support@spaceblocks.ai";
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks.ai <notifications@spaceblocks.ai>",
+      from: "SpaceBlocks Notifications <no-reply@spaceblocks.ai>",
       to: [adminEmail],
       subject: `🚀 New Business: ${businessName}`,
       html: `
