@@ -42,7 +42,7 @@ export const WhySection = () => {
         {/* Header */}
         <div className="text-center space-y-8">
           <h2 className="text-6xl md:text-7xl font-black tracking-tighter">
-            <span className="block text-foreground mb-4">Start your</span>
+            <span className="block text-foreground mb-4">Start or Grow</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
               business
             </span>
