@@ -62,7 +62,7 @@ export const ExampleIdeasSection = () => {
             Example Ideas We Can Launch
           </h2>
           <p className="text-xl text-gray-400 mb-16 text-center">
-            From concept to customer-ready in hours
+            Over 500 Business tasks and growing
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -73,7 +73,7 @@ export const ExampleIdeasSection = () => {
                   key={index}
                   className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-all"
                 >
-                  <div className="bg-primary rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
+                  <div className="bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl w-16 h-16 flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   
