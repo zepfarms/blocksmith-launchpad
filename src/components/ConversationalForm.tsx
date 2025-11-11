@@ -201,32 +201,30 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
               />
 
               <div className="flex gap-3">
-                <Button
-                  variant="empire"
-                  size="lg"
+                <button
                   onClick={handleSubmitIdea}
                   disabled={!businessIdea.trim() || isAnalyzing}
-                  className="flex-1"
+                  className="group flex-1 px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isAnalyzing ? (
                     <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      <Loader2 className="w-5 h-5 animate-spin" />
                       Analyzing...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-5 h-5 mr-2" />
+                      <Sparkles className="w-5 h-5" />
                       Continue
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
                     </>
                   )}
-                </Button>
-                <Button
-                  variant="glass"
-                  size="lg"
+                </button>
+                <button
                   onClick={() => setStep(1)}
+                  className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   Back
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -254,14 +252,14 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
                     className="pl-10"
                   />
                 </div>
-                <Button
-                  variant="empire"
+                <button
                   onClick={handleSurpriseMe}
-                  className="whitespace-nowrap"
+                  className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
                 >
-                  <Sparkles className="w-4 h-4 mr-2" />
+                  <Sparkles className="w-4 h-4" />
                   Surprise me
-                </Button>
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </button>
               </div>
 
               <div className="flex gap-2 flex-wrap">
@@ -310,14 +308,12 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
                 ))}
               </div>
 
-              <Button
-                variant="glass"
-                size="lg"
+              <button
                 onClick={() => setStep(1)}
-                className="w-full"
+                className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 Back
-              </Button>
+              </button>
             </div>
           </div>
         )}
@@ -337,23 +333,20 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                variant="empire"
-                size="xl"
+              <button
                 onClick={handleConfirmUnderstanding}
-                className="flex-1 sm:flex-initial"
+                className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
               >
-                <CheckCircle2 className="w-5 h-5 mr-2" />
+                <CheckCircle2 className="w-5 h-5" />
                 Yes, that's right!
-              </Button>
-              <Button
-                variant="glass"
-                size="xl"
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+              <button
                 onClick={handleEditIdea}
-                className="flex-1 sm:flex-initial"
+                className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 Let me edit
-              </Button>
+              </button>
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
