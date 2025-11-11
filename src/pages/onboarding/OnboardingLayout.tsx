@@ -61,15 +61,13 @@ export const OnboardingLayout = () => {
       {/* Back Button */}
       {backPath && (
         <div className="fixed top-8 left-4 sm:left-8 z-40">
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={() => navigate(backPath)}
-            className="gap-2 text-muted-foreground hover:text-foreground"
+            className="gap-2 px-6 py-3 border-2 border-white/20 text-white rounded-full font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
-          </Button>
+          </button>
         </div>
       )}
 

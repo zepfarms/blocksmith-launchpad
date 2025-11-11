@@ -95,14 +95,17 @@ const BusinessIdeas = () => {
 
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <Button
+                <button
                   key={cat}
-                  variant={selectedCategory === cat ? "default" : "outline"}
                   onClick={() => setSelectedCategory(cat)}
-                  className="rounded-full"
+                  className={`px-6 py-2 rounded-full font-medium transition-all ${
+                    selectedCategory === cat
+                      ? "bg-white text-black"
+                      : "border-2 border-white/20 text-white hover:bg-white/5"
+                  }`}
                 >
                   {cat === "all" ? "All Categories" : cat}
-                </Button>
+                </button>
               ))}
             </div>
           </div>
@@ -131,13 +134,13 @@ const BusinessIdeas = () => {
           )}
 
           <div className="text-center">
-            <Button
-              size="lg"
+            <button
               onClick={() => navigate("/start")}
-              className="rounded-full px-8"
+              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
             >
               Start Building
-            </Button>
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </button>
           </div>
         </div>
       </main>

@@ -229,30 +229,27 @@ const Dashboard = () => {
                 <div className="flex gap-2 pt-2">
                   {item.status === "ready" && (
                     <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="flex-1 gap-2"
+                      <button
+                        className="flex-1 gap-2 px-4 py-2 rounded-full border border-white/20 text-white text-sm hover:bg-white/5 transition-all disabled:opacity-50 inline-flex items-center justify-center"
                         disabled={item.locked}
                       >
                         <FileText className="w-4 h-4" />
                         {item.locked ? "Preview (locked)" : "Review"}
-                      </Button>
-                      <Button
-                        variant={item.approved ? "default" : "outline"}
-                        size="sm"
-                        className={cn(
-                          "flex-1 gap-2",
-                          item.approved && "bg-neon-cyan text-background"
-                        )}
+                      </button>
+                      <button
+                        className={`flex-1 gap-2 px-4 py-2 rounded-full text-sm transition-all inline-flex items-center justify-center ${
+                          item.approved 
+                            ? "bg-white text-black hover:bg-gray-100" 
+                            : "border border-white/20 text-white hover:bg-white/5"
+                        }`}
                         onClick={() => handleApprove(item.id)}
                       >
                         <CheckCircle2 className="w-4 h-4" />
                         {item.approved ? "Approved" : "Approve"}
-                      </Button>
-                      <Button variant="ghost" size="sm" className="gap-2">
+                      </button>
+                      <button className="gap-2 px-4 py-2 rounded-full border border-white/20 text-white text-sm hover:bg-white/5 transition-all inline-flex items-center justify-center">
                         <Edit3 className="w-4 h-4" />
-                      </Button>
+                      </button>
                     </>
                   )}
                   {item.status === "in-progress" && (
@@ -285,15 +282,13 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <Button
-            variant="empire"
-            size="xl"
-            className="group gap-3"
+          <button
+            className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={approvedCount === 0}
           >
             <Rocket className="w-5 h-5 group-hover:translate-y-[-4px] transition-transform duration-300" />
             Launch My Business
-          </Button>
+          </button>
 
           <div className="pt-4 space-y-2">
             <p className="text-sm text-muted-foreground/80">

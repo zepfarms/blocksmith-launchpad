@@ -124,22 +124,28 @@ export const BrowseIdeas = () => {
           </div>
 
           <div className="flex gap-2 flex-wrap">
-            <Button
-              variant={selectedFilter === "all" ? "default" : "outline"}
-              size="sm"
+            <button
               onClick={() => setSelectedFilter("all")}
+              className={`px-6 py-2 rounded-full font-medium transition-all ${
+                selectedFilter === "all"
+                  ? "bg-white text-black"
+                  : "border-2 border-white/20 text-white hover:bg-white/5"
+              }`}
             >
               All
-            </Button>
+            </button>
             {categories.map(cat => (
-              <Button
+              <button
                 key={cat}
-                variant={selectedFilter === cat ? "default" : "outline"}
-                size="sm"
                 onClick={() => setSelectedFilter(cat)}
+                className={`px-6 py-2 rounded-full font-medium transition-all ${
+                  selectedFilter === cat
+                    ? "bg-white text-black"
+                    : "border-2 border-white/20 text-white hover:bg-white/5"
+                }`}
               >
                 {cat}
-              </Button>
+              </button>
             ))}
           </div>
 
