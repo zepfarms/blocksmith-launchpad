@@ -52,7 +52,7 @@ const Index = () => {
       <HeroSection onCTAClick={handleHeroCTA} />
       
       {/* Idea Input Section - Positioned right after hero */}
-      <section ref={ideaInputRef} className="relative py-16 px-6">
+      <section ref={ideaInputRef} className="relative pt-16 pb-8 px-6">
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background-elevated my-0" />
         
         <div className="relative z-10 max-w-4xl mx-auto">
