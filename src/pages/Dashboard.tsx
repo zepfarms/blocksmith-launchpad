@@ -15,6 +15,7 @@ interface DashboardItem {
   description: string;
   locked: boolean;
   approved: boolean;
+  isFree?: boolean;
 }
 
 const Dashboard = () => {
@@ -59,8 +60,12 @@ const Dashboard = () => {
         const selectedBlocks = data.selected_blocks || [];
         const dashboardItems: DashboardItem[] = [];
         
-        // Logo block
-        if (selectedBlocks.includes('Name & Logo') || selectedBlocks.includes('Logos')) {
+        // Logo block - check for various naming patterns
+        const hasLogoBlock = selectedBlocks.some((block: string) => 
+          block.toLowerCase().includes('logo') || block.toLowerCase().includes('name')
+        );
+        
+        if (hasLogoBlock) {
           const { data: logoAssets } = await (supabase as any)
             .from('user_assets')
             .select('*')
@@ -82,12 +87,14 @@ const Dashboard = () => {
                 : "Create your professional logo",
             locked: !hasSaved,
             approved: hasApproved || false,
+            isFree: true,
           });
         }
         
         // Other blocks - default to in-progress for now
         selectedBlocks.forEach((block: string) => {
-          if (block !== 'Name & Logo' && block !== 'Logos') {
+          const isLogoBlock = block.toLowerCase().includes('logo') || block.toLowerCase().includes('name');
+          if (!isLogoBlock) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
@@ -95,6 +102,7 @@ const Dashboard = () => {
               description: "Being prepared for you",
               locked: true,
               approved: false,
+              isFree: false,
             });
           }
         });
@@ -236,7 +244,12 @@ const Dashboard = () => {
                   <div className="flex items-center gap-3">
                     {getStatusIcon(item.status)}
                     <div>
-                      <h3 className="font-semibold text-foreground">{item.title}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-foreground">{item.title}</h3>
+                        {item.isFree && (
+                          <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 text-xs">FREE</Badge>
+                        )}
+                      </div>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
                   </div>
