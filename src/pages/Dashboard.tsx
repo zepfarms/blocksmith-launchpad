@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard } from "lucide-react";
+import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [businessData, setBusinessData] = useState<any>(null);
   const [items, setItems] = useState<DashboardItem[]>([]);
   const [logoSessionCount, setLogoSessionCount] = useState(0);
+  const [savedAssets, setSavedAssets] = useState<any[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -109,6 +110,9 @@ const Dashboard = () => {
         
         setItems(dashboardItems);
       }
+      
+      // Load saved assets
+      loadSavedAssets(session.user.id);
     };
 
     checkAuth();
@@ -124,12 +128,49 @@ const Dashboard = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const loadSavedAssets = async (userId: string) => {
+    const { data, error } = await (supabase as any)
+      .from('user_assets')
+      .select('*')
+      .eq('user_id', userId)
+      .in('status', ['saved', 'approved'])
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      setSavedAssets(data);
+    }
+  };
+
   const handleApprove = (id: string) => {
     setItems((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, approved: !item.approved } : item
       )
     );
+  };
+
+  const handleApproveAsset = async (assetId: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    await (supabase as any)
+      .from('user_assets')
+      .update({ status: 'approved' })
+      .eq('id', assetId);
+
+    loadSavedAssets(user.id);
+  };
+
+  const handleDeleteAsset = async (assetId: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    await (supabase as any)
+      .from('user_assets')
+      .delete()
+      .eq('id', assetId);
+
+    loadSavedAssets(user.id);
   };
 
   const getStatusIcon = (status: string) => {
@@ -174,24 +215,31 @@ const Dashboard = () => {
           <TabsList className="w-full bg-background/5 backdrop-blur-sm border border-white/10 p-2 h-auto rounded-2xl">
             <TabsTrigger 
               value="dashboard" 
-              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-4 py-3 text-sm md:text-base font-medium transition-all"
             >
-              <LayoutDashboard className="w-5 h-5" />
+              <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />
               Dashboard
             </TabsTrigger>
             <TabsTrigger 
               value="account" 
-              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-4 py-3 text-sm md:text-base font-medium transition-all"
             >
-              <User className="w-5 h-5" />
+              <User className="w-4 h-4 md:w-5 md:h-5" />
               Account
             </TabsTrigger>
             <TabsTrigger 
               value="billing" 
-              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-6 py-3 text-base font-medium transition-all"
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-4 py-3 text-sm md:text-base font-medium transition-all"
             >
-              <CreditCard className="w-5 h-5" />
+              <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
               Billing
+            </TabsTrigger>
+            <TabsTrigger 
+              value="briefcase" 
+              className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-4 py-3 text-sm md:text-base font-medium transition-all"
+            >
+              <Briefcase className="w-4 h-4 md:w-5 md:h-5" />
+              Briefcase
             </TabsTrigger>
           </TabsList>
 
@@ -394,6 +442,141 @@ const Dashboard = () => {
             <div className="glass-card p-8 rounded-3xl border border-white/10">
               <h2 className="text-2xl font-bold text-foreground mb-4">Billing</h2>
               <p className="text-muted-foreground">Billing information coming soon...</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="briefcase" className="mt-8 space-y-6">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-foreground">Your Assets</h2>
+              <p className="text-muted-foreground">All your generated and saved business assets in one place</p>
+            </div>
+
+            {/* Logos Section */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-foreground">Logos</h3>
+                <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20">
+                  {savedAssets.filter(a => a.asset_type === 'logo').length} saved
+                </Badge>
+              </div>
+
+              {savedAssets.filter(a => a.asset_type === 'logo').length === 0 ? (
+                <div className="glass-card p-12 rounded-3xl border border-white/10 text-center">
+                  <p className="text-muted-foreground">No logos saved yet. Generate and save logos from the Dashboard.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {savedAssets.filter(a => a.asset_type === 'logo').map((asset) => (
+                    <div
+                      key={asset.id}
+                      className={cn(
+                        "glass-card rounded-2xl border overflow-hidden transition-all",
+                        asset.status === 'approved'
+                          ? "border-neon-cyan/50 bg-neon-cyan/5"
+                          : "border-white/10"
+                      )}
+                    >
+                      <div className="relative aspect-square bg-gradient-to-br from-white/5 to-white/10 p-8">
+                        <div
+                          className="absolute inset-0 opacity-10"
+                          style={{
+                            backgroundImage: `
+                              linear-gradient(45deg, #ccc 25%, transparent 25%),
+                              linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                              linear-gradient(45deg, transparent 75%, #ccc 75%),
+                              linear-gradient(-45deg, transparent 75%, #ccc 75%)
+                            `,
+                            backgroundSize: '20px 20px',
+                            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+                          }}
+                        />
+                        
+                        <img
+                          src={asset.file_url}
+                          alt={`Logo ${asset.metadata?.logo_number || ''}`}
+                          className="relative w-full h-full object-contain"
+                        />
+                      </div>
+                      
+                      <div className="p-4 border-t border-white/10 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm text-muted-foreground">
+                            Logo {asset.metadata?.logo_number || ''}
+                          </p>
+                          {asset.status === 'approved' && (
+                            <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 text-xs">
+                              Approved ✓
+                            </Badge>
+                          )}
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 rounded-full"
+                            onClick={() => window.open(asset.file_url, '_blank')}
+                          >
+                            <Eye className="w-3 h-3 mr-1" />
+                            Preview
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 rounded-full"
+                            onClick={() => {
+                              const link = document.createElement('a');
+                              link.href = asset.file_url;
+                              link.download = `logo-${asset.metadata?.logo_number || 'download'}.png`;
+                              link.click();
+                            }}
+                          >
+                            <Download className="w-3 h-3 mr-1" />
+                            Download
+                          </Button>
+                        </div>
+
+                        <div className="flex gap-2">
+                          {asset.status !== 'approved' && (
+                            <Button
+                              size="sm"
+                              className="flex-1 rounded-full bg-white text-black hover:bg-gray-100"
+                              onClick={() => handleApproveAsset(asset.id)}
+                            >
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Approve
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 rounded-full border-red-500/20 text-red-400 hover:bg-red-500/10"
+                            onClick={() => handleDeleteAsset(asset.id)}
+                          >
+                            <Trash2 className="w-3 h-3 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Other Asset Types - Coming Soon */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-foreground">Business Cards</h3>
+              <div className="glass-card p-8 rounded-3xl border border-white/10 text-center">
+                <p className="text-muted-foreground">Coming soon...</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-foreground">Social Media Kit</h3>
+              <div className="glass-card p-8 rounded-3xl border border-white/10 text-center">
+                <p className="text-muted-foreground">Coming soon...</p>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
