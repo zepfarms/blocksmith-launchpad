@@ -92,43 +92,101 @@ const Support = () => {
             </div>
           </div>
 
-          {/* FAQs */}
+          {/* Help Center */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-4">
+            <h2 className="text-3xl font-bold mb-6">Help Center</h2>
+            <div className="space-y-6">
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h4 className="font-semibold mb-2">How does the pricing work?</h4>
-                <p className="text-gray-400">
-                  You can build your entire business for free. You only pay when you're ready to launch. This allows you to review all your assets, make sure everything is perfect, and then launch when you're confident.
-                </p>
+                <h3 className="text-xl font-semibold mb-4">Getting Started</h3>
+                <div className="space-y-3 text-gray-400">
+                  <p><strong className="text-white">1. Tell us your idea:</strong> Start by describing your business idea in plain language. No business plan needed—just tell us what you want to do.</p>
+                  <p><strong className="text-white">2. Pick your blocks:</strong> Choose from 200+ business services like Website, Logo Design, Legal Setup, Marketing, Payments, and more. Our AI recommends the essentials based on your business type.</p>
+                  <p><strong className="text-white">3. Answer questions:</strong> We'll ask a few quick questions to personalize your business assets. Takes just a few minutes.</p>
+                  <p><strong className="text-white">4. Review everything:</strong> Watch as AI builds your business assets. Preview everything in your dashboard before paying a dime.</p>
+                  <p><strong className="text-white">5. Launch when ready:</strong> Once you're happy with everything, click launch to go live and unlock all your assets.</p>
+                </div>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h4 className="font-semibold mb-2">Do I own the assets you create?</h4>
-                <p className="text-gray-400">
-                  Yes! Once you pay and launch, 100% of the assets we create are yours. This includes your logo, website, marketing materials, business cards, and everything else. You can download, modify, and use them however you like.
-                </p>
+                <h3 className="text-xl font-semibold mb-4">How SpaceBlocks Works</h3>
+                <div className="space-y-3 text-gray-400">
+                  <p><strong className="text-white">AI + Human Collaboration:</strong> Our AI handles the heavy lifting—building your website, designing your logo, writing marketing copy, setting up payments, and more. When you need help, real humans are available via email and Discord.</p>
+                  <p><strong className="text-white">Business Blocks:</strong> Instead of hiring 10 different freelancers, you pick "blocks" for what you need. Each block is a service (like "Website Builder" or "Email Marketing Setup") that gets automatically built for your business.</p>
+                  <p><strong className="text-white">Build First, Pay Later:</strong> Unlike other services, you can build your entire business, review all the work, and only pay when you're ready to launch. No surprises, no commitment until you're confident.</p>
+                  <p><strong className="text-white">You Own Everything:</strong> All assets created for your business—logos, websites, marketing materials, domain names, business plans—are 100% yours after launch.</p>
+                </div>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h4 className="font-semibold mb-2">How long does it take to launch?</h4>
-                <p className="text-gray-400">
-                  Most businesses are ready to launch within 48 hours. The exact timeline depends on the complexity of your business and which blocks you select. Our AI works 24/7 to build your assets quickly.
-                </p>
+                <h3 className="text-xl font-semibold mb-4">Available Services (200+ Blocks)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-400">
+                  <div>
+                    <strong className="text-white">Essentials:</strong> Business Name, Logo Design, Website Builder, Domain Setup, Email Setup, Business Cards
+                  </div>
+                  <div>
+                    <strong className="text-white">Legal & Compliance:</strong> LLC Formation, EIN Registration, Business Licenses, Privacy Policy, Terms of Service
+                  </div>
+                  <div>
+                    <strong className="text-white">Marketing:</strong> Social Media Kit, Content Calendar, SEO Setup, Google Ads, Facebook Ads, Email Marketing
+                  </div>
+                  <div>
+                    <strong className="text-white">Sales & Payments:</strong> Payment Processing, Online Store, Product Listings, Checkout Pages, Invoice Templates
+                  </div>
+                  <div>
+                    <strong className="text-white">Operations:</strong> Customer Support Setup, Booking System, Automations, CRM Integration, Analytics Dashboard
+                  </div>
+                  <div>
+                    <strong className="text-white">Growth:</strong> Pitch Deck, Business Plan, Investor Matching, Grant Research, Loan Applications
+                  </div>
+                </div>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h4 className="font-semibold mb-2">Can I get a refund?</h4>
-                <p className="text-gray-400">
-                  We evaluate refund requests on a case-by-case basis. Since you can review everything before paying, we deliver exactly what you see. However, if there's an issue, please contact us at support@spaceblocks.ai and we'll work it out.
-                </p>
+                <h3 className="text-xl font-semibold mb-4">Pricing & Payment</h3>
+                <div className="space-y-3 text-gray-400">
+                  <p><strong className="text-white">No upfront costs:</strong> Start building completely free. No credit card required.</p>
+                  <p><strong className="text-white">Pay when ready to launch:</strong> Only pay when you're ready to go live with your business. Review everything first.</p>
+                  <p><strong className="text-white">Transparent pricing:</strong> Each block shows its price. Free blocks are clearly marked. Total cost shown before checkout.</p>
+                  <p><strong className="text-white">Launch bundle:</strong> When you click "Launch My Business," you pay once for all selected blocks and they unlock immediately.</p>
+                  <p><strong className="text-white">Refund policy:</strong> Evaluated case-by-case. Since you preview everything before paying, we deliver exactly what you see.</p>
+                </div>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h4 className="font-semibold mb-2">Is there real human support?</h4>
-                <p className="text-gray-400">
-                  Absolutely! While our AI handles the building, real humans are available to help you succeed. You can email us, join our Discord community, or request personalized assistance anytime.
-                </p>
+                <h3 className="text-xl font-semibold mb-4">Dashboard Features</h3>
+                <div className="space-y-3 text-gray-400">
+                  <p><strong className="text-white">Work-in-Progress View:</strong> See all your blocks being built in real-time with status indicators (Draft, Ready to Review, Approved).</p>
+                  <p><strong className="text-white">Review & Approve:</strong> Preview each asset before launch. Logos, websites, marketing materials—all available for review.</p>
+                  <p><strong className="text-white">Request Edits:</strong> Not happy with something? Request changes and our team will revise it.</p>
+                  <p><strong className="text-white">Watermarked Previews:</strong> All assets show in preview mode until launch (logos have watermarks, websites are staging-only, etc.).</p>
+                  <p><strong className="text-white">One-Click Launch:</strong> When everything looks perfect, click "Launch My Business" to unlock everything and go live.</p>
+                </div>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-semibold mb-4">Common Questions</h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-semibold text-white mb-1">Do I need tech skills?</p>
+                    <p className="text-gray-400">No. SpaceBlocks handles everything technical. No coding, no design tools, no complicated setup.</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">How long does it take?</p>
+                    <p className="text-gray-400">Most businesses are ready to launch within 48 hours. Some blocks are instant, others take 1-2 days depending on complexity.</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">Can I change my mind about blocks?</p>
+                    <p className="text-gray-400">Yes! Add or remove blocks anytime before launch. You only pay for what you actually launch with.</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">What if I need help?</p>
+                    <p className="text-gray-400">Email us at support@spaceblocks.ai or join our Discord community for real-time help from our team and other entrepreneurs.</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white mb-1">Can I use this for an existing business?</p>
+                    <p className="text-gray-400">Absolutely! Many users add blocks to grow their existing business—whether it's adding a website, setting up online payments, or launching marketing campaigns.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
