@@ -18,7 +18,7 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 pb-16 pt-32 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pb-16 pt-24 sm:pt-32 overflow-hidden">
       {/* Ambient background orbs with parallax */}
       <div 
         className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/20 blur-[120px] animate-float parallax-float"
@@ -66,7 +66,7 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
 
         {/* Cinematic hero typography */}
         <div className="space-y-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9]">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.9]">
             <span className="block text-foreground">Don't Build Websites,</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-neon-blue to-electric-indigo bg-clip-text text-transparent">
               Build a Business
@@ -74,35 +74,36 @@ export const HeroSection = ({ onCTAClick }: { onCTAClick: () => void }) => {
           </h1>
 
           {/* Subheading with luxury spacing */}
-          <div className="space-y-6 max-w-4xl mx-auto">
-            <p className="text-xl md:text-2xl lg:text-3xl font-light text-foreground/80 leading-relaxed">
+          <div className="space-y-6 max-w-4xl mx-auto px-4">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-foreground/80 leading-relaxed">
               Turn your idea into something real, not useless crap.
             </p>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
               Start with your own idea, or choose from one already created.
             </p>
           </div>
         </div>
 
         {/* CTA with empire aesthetic */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
+        <div className="flex flex-col gap-4 justify-center items-center pt-8 px-4">
           <Button 
             variant="empire" 
+            size="xl"
             onClick={onCTAClick}
-            className="group relative overflow-hidden"
+            className="group relative overflow-hidden w-full sm:w-auto"
           >
             <span className="relative z-10 flex items-center gap-3">
               Start your business today
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </span>
           </Button>
-          <Button variant="glass" size="xl" className="text-foreground">
+          <Button variant="glass" size="xl" className="text-foreground w-full sm:w-auto">
             Need Business Ideas? →
           </Button>
         </div>
 
         {/* Supporting text */}
-        <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto font-light leading-relaxed">
+        <p className="text-xs sm:text-sm text-muted-foreground/80 max-w-2xl mx-auto font-light leading-relaxed px-4">
           Build your business first. Review everything. Launch when you're ready.
           <br />
           <span className="text-foreground/60">No credit card required to start.</span>

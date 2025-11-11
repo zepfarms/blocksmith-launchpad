@@ -52,28 +52,28 @@ const Index = () => {
       <HeroSection onCTAClick={handleHeroCTA} />
       
       {/* Idea Input Section - Positioned right after hero */}
-      <section ref={ideaInputRef} className="relative pt-16 pb-8 px-6">
+      <section ref={ideaInputRef} className="relative pt-16 pb-8 px-4 sm:px-6">
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background-elevated my-0" />
         
         <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="text-center space-y-6 mb-12">
+          <div className="text-center space-y-6 mb-12 px-4">
             <div className="flex items-center justify-center gap-3">
-              <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
-              <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
+              <div className="h-px w-12 sm:w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
+              <span className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
                 Not Sure?
               </span>
-              <div className="h-px w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
+              <div className="h-px w-12 sm:w-24 bg-gradient-to-l from-transparent to-neon-cyan/50" />
             </div>
             
-            <p className="text-3xl md:text-4xl font-light text-foreground/90">
+            <p className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground/90">
               Tell us your idea
             </p>
-            <p className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+            <p className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
               We'll guide you
             </p>
           </div>
 
-          <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-6">
+          <div className="glass-card rounded-3xl border border-white/10 p-6 sm:p-8 md:p-12 space-y-6">
             <Button variant="empire" size="xl" onClick={() => setShowJourney(true)} className="w-full group">
               <span className="relative z-10 flex items-center justify-center gap-3">
                 Tell us your business idea

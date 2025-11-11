@@ -127,28 +127,28 @@ const businessTypes = [
 
 export const WhySection = () => {
   return (
-    <section className="relative pt-16 pb-32 px-6">
+    <section className="relative pt-16 pb-32 px-4 sm:px-6">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background-elevated to-background" />
       <div className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] bg-neon-purple/5 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2" />
 
       <div className="relative z-10 max-w-7xl mx-auto space-y-20">
         {/* Header */}
-        <div className="text-center space-y-8">
-          <h2 className="text-6xl md:text-7xl font-black tracking-tighter">
+        <div className="text-center space-y-8 px-4">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter">
             <span className="block text-foreground mb-4">Start or Grow</span>
             <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
               your Business
             </span>
           </h2>
 
-          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto font-light">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light">
             No matter where you are, we help you build the pieces you need to grow.
           </p>
         </div>
 
         {/* Business Type Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {businessTypes.map((type, index) => (
             <div
               key={index}
