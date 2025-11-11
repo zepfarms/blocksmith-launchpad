@@ -44,7 +44,12 @@ const Support = () => {
               </a>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all">
+            <a
+              href="https://discord.com/invite/spaceblocks"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all block"
+            >
               <div className="bg-primary/20 rounded-xl w-12 h-12 flex items-center justify-center mb-4">
                 <MessageCircle className="w-6 h-6 text-primary" />
               </div>
@@ -52,16 +57,11 @@ const Support = () => {
               <p className="text-gray-400 mb-4">
                 Join our community to connect with other entrepreneurs and get real-time help.
               </p>
-              <a
-                href="https://discord.com/invite/spaceblocks"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-2"
-              >
+              <span className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-2">
                 Join Discord Server
                 <ArrowLeft className="w-4 h-4 rotate-180" />
-              </a>
-            </div>
+              </span>
+            </a>
           </div>
 
           {/* Quick Links */}
