@@ -1,111 +1,189 @@
 name,category,description,is_free,typical_price,dependencies,tags
-Name & Logo,Brand,Professional naming options + logo concepts & files,True,Free → $49+,,"['branding', 'identity']"
-Brand Kit,Brand,"Colors, fonts, styles, usage guide",False,$49–$149,Name & Logo,['branding']
-Domain & Business Email,Foundation,"Domain suggestions, DNS + Google/Microsoft email setup guidance",True,Free → $29 setup,Website Starter,"['domain', 'email']"
-Legal (LLC/EIN),Legal,State filing guidance + EIN registration flow,False,$99–$199 + fees,,['legal']
-Licenses & Permits Checklist,Legal,Local/state licenses & permits checklist,True,Free,Legal (LLC/EIN),"['legal', 'compliance']"
-Business Bank & Accounting Setup,Finance,Bank account checklist + accounting tool setup,True,Free,,['finance']
-Insurance Guide,Finance,Coverage recommendations + broker referral,True,Free,,['insurance']
-Business Phone & VoIP,Foundation,Dedicated number setup (Twilio/Zoom/Grasshopper),False,$15–$49/mo via partner,,['phone']
-Virtual Address/Mailbox,Foundation,Setup through partner for mail handling,False,$10–$30/mo via partner,,['address']
-Website Starter,Web,Responsive site with 3–5 pages + CMS,False,$149–$399,,['website']
-Landing Pages & Funnels,Web,Lead gen pages with forms & tracking,False,$49–$149,Website Starter,['funnels']
-Online Store Setup,Commerce,"Catalog, taxes, shipping, policies",False,$99–$249,Payments Setup,['store']
-Digital Downloads,Commerce,"Sell templates, ebooks, music",False,$49–$149,Payments Setup,['digital']
-Membership/Course Platform,Commerce,"Subscriptions, lessons, community",False,$99–$299,Payments Setup,"['membership', 'course']"
-Donations/Tithes,Commerce,Nonprofit/giving setup with receipts,False,$49–$149,Payments Setup,['donations']
-Payments Setup,Commerce,Stripe/PayPal/Square with products,True,Free,,['payments']
-POS Integration,Commerce,In-person POS connection,False,$49–$149,Payments Setup,['pos']
-Online Booking,Scheduling,"Calendars, services, buffers, reminders",True,Free,,['booking']
-CRM & Pipeline,CRM,"Contacts, deals, stages, tasks",True,Free,,['crm']
-Invoicing & Estimates,Finance,"Quotes, invoices, deposits",True,Free,,['invoicing']
-Google Business Profile,Growth,"Setup/optimize profile, categories, photos",True,Free,,['local seo']
-Local SEO Pack,Growth,"Citations, keywords, location pages",False,$79–$199,Website Starter,['seo']
-SEO Starter,Growth,"On-page titles, metas, speed checklist",True,Free,Website Starter,['seo']
-Email Welcome Series,Email,3–5 automated emails + setup,False,$49–$149,Email Platform Setup,['email']
-Email Platform Setup,Email,"Connect ESP, lists, forms",True,Free,,['email']
-Abandoned Cart Emails,Email,Recover lost sales flow,False,$49–$99,"Online Store Setup, Email Platform Setup","['email', 'ecom']"
-Social Setup,Social,Create/optimize profiles + link-in-bio,True,Free,,['social']
-30‑Post Launch Kit,Social,Caption-ready posts + canva files,False,$49–$149,Social Setup,['content']
-Ads Starter (Meta/TikTok),Ads,"Audience, creatives, budget plan",False,$79–$199,,['ads']
-Influencer Outreach Pack,Social,DM/email templates + list-building,False,$39–$99,,['influencer']
-Reviews & Referrals,Growth,Request flows + referral links,True,Free,,"['reviews', 'referrals']"
-Automation (Zapier/Make),Automation,Lead → CRM → Email automations,False,$49–$199,"CRM & Pipeline, Email Platform Setup",['automation']
-AI Chatbot,Support,Lead capture & FAQs chatbot,False,$49–$149,Website Starter,['chatbot']
-Helpdesk/Inbox,Support,Shared inbox with SLA templates,True,Free,,['support']
-Knowledge Base,Support,Self-serve docs & tutorials,True,Free,,['docs']
-Service Agreement Templates,Docs,Editable contracts & intake forms,True,Free,Legal (LLC/EIN),['contracts']
-Proposal & Quote Templates,Docs,Branded proposal docs,True,Free,,['proposals']
-SOP Starter Pack,Docs,Standard operating procedures templates,True,Free,,['sop']
-Dog Walking Pack,Industry,"Rates, routes, intake, pet care SOP",False,$49–$149,"Online Booking, CRM & Pipeline",['pets']
-Lawn Care Pack,Industry,"Routes, pricing calc, seasonal promos",False,$49–$149,Google Business Profile,['lawn']
-Cleaning Service Pack,Industry,"Checklist, supplies, client rotation",False,$49–$149,Online Booking,['cleaning']
-Handyman Pack,Industry,"Scopes, estimates, materials tracking",False,$49–$149,Invoicing & Estimates,['handyman']
-Mobile Detailing Pack,Industry,"Packages, before/after media SOP",False,$49–$149,Online Booking,['auto']
-Church/Ministry Pack,Industry,"Donations, sermons, volunteers",False,$49–$149,Donations/Tithes,['faith']
-Nonprofit Pack,Industry,"Mission, donors, grants basics",False,$49–$149,Donations/Tithes,['nonprofit']
-Real Estate Agent Kit,Industry,"Lead capture, CMA templates",False,$79–$199,CRM & Pipeline,['real estate']
-Photography Business Kit,Industry,"Packages, galleries, contracts",False,$49–$149,Website Starter,['photo']
-Coaching Starter Kit,Industry,"Calendars, packages, intake",False,$49–$149,Scheduling & Meetings,['coach']
-SBA Loan Prep,Finance,"Docs checklist, lender intro scripts",False,$79–$199,Business Bank & Accounting Setup,['loans']
-Grants Finder,Finance,Curated grant list + alerts setup,False,$49–$149,,['grants']
-Pricing Calculator,Finance,"COGS, margin, breakeven tools",True,Free,,['pricing']
-Pitch Deck Starter,Finance,Editable deck + narrative,True,Free,,['deck']
-Business Cards (Design + Print),Print,Design + bulk print via partner,False,$15–$49,Brand Kit,['print']
-Flyer/Door Hanger Pack,Print,Neighborhood-ready designs,False,$15–$49,Brand Kit,['print']
-Merch POD Setup,Print,Print-on-demand supplier setup,False,$0 setup + margin,Online Store Setup,['pod']
-Newsletter Setup,Email,"Opt-ins, template, first issue",True,Free,Email Platform Setup,['newsletter']
-Blog Starter,Content,Blog structure + first 3 posts,False,$49–$149,SEO Starter,['content']
-Background Checks Guide,Safety,Vendors & workflows (kids/elder),True,Free,,['safety']
-Food Cottage Compliance,Legal,"Labels, permits, kitchen guide",False,$49–$149,,['food']
-Course Launch Funnel,Commerce,Lead → webinar → offer path,False,$79–$199,Membership/Course Platform,['funnel']
-Referral Program,Growth,Track and reward referrals,True,Free,CRM & Pipeline,['growth']
-Affiliate Setup,Growth,Affiliate links & payouts,False,$49–$149,Online Store Setup,['affiliate']
-Gift Cards,Commerce,Sell/store credit,True,Free,Payments Setup,['gift']
-Subscriptions,Commerce,Recurring plans & dunning,True,Free,Payments Setup,['subs']
-SMS Marketing Starter,Marketing,Capture & basics via partner,False,$20–$59/mo via partner,CRM & Pipeline,['sms']
-WhatsApp Business,Marketing,Click-to-chat + templates,True,Free,CRM & Pipeline,['whatsapp']
-Press Kit,PR,"Brand story, photos, facts",True,Free,Brand Kit,['pr']
-Media Outreach,PR,Local press list + scripts,False,$49–$149,Press Kit,['pr']
-UGC Creator Sourcing,Social,Find creators for your niche,False,$49–$149,Social Setup,['ugc']
-Inventory & SKU Setup,Ops,"SKU system, categories",True,Free,Online Store Setup,['ops']
-Shipping & Returns Policy,Ops,Branded policy templates,True,Free,Online Store Setup,['ops']
-Coupon & Bundle Strategy,Marketing,Promos w/ margin guardrails,True,Free,Online Store Setup,['promo']
-Photo/Video Shoot Plan,Content,Shotlist & style guide,True,Free,Brand Kit,['content']
-Canva Brand Workspace,Brand,Templates library setup,True,Free,Brand Kit,['canva']
-Help Center + FAQ,Support,Top questions + answers,True,Free,Knowledge Base,['support']
-Hiring Starter Pack,HR,"Job posts, interviews, onboarding",True,Free,SOP Starter Pack,['hr']
-Contractor/Vendor Network,Ops,Curated vendors + SOPs,True,Free,SOP Starter Pack,['ops']
-Fleet & Route Planner,Ops,Routing for mobile services,False,$49–$149,Scheduling & Meetings,['routing']
-Scheduling & Meetings,Scheduling,Calendly/Cal.com + buffers,True,Free,,['scheduling']
-Service Pricing Calculator,Finance,"Rate cards, margins",True,Free,,['pricing']
-Event Ticketing/RSVP,Events,"Tickets, RSVPs, check-in",False,$49–$149,Website Starter,['events']
-Sponsorship Deck,Events,Pitch brands for support,True,Free,Press Kit,['events']
-Community/Discord Setup,Community,"Channels, rules, roles",True,Free,Brand Kit,['community']
-Volunteer Onboarding,Nonprofit,"Forms, training, shifts",True,Free,Nonprofit Pack,['nonprofit']
-Donor CRM,Nonprofit,Track donors & gifts,False,$49–$149,Donations/Tithes,['nonprofit']
-Grant Calendar,Finance,Deadlines & alerts,True,Free,Grants Finder,['grants']
-Kiosk/QR Ordering,Commerce,On-site QR menus,False,$49–$149,Payments Setup,['qr']
-Menu Engineering,Food,Profit-focused menu design,False,$49–$99,Pricing Calculator,['food']
-Food Safety SOP,Food,Storage/cook/clean SOPs,True,Free,Food Cottage Compliance,['food']
-Catering Kit,Food,"Contracts, quote calc",True,Free,Invoicing & Estimates,['food']
-Wholesale Outreach,B2B,Email scripts & tracker,True,Free,CRM & Pipeline,['b2b']
-B2B Lead Magnet,B2B,"Case study, checklist",True,Free,Landing Pages & Funnels,['b2b']
-Open House Kit,Real Estate,"Signs, sheets, follow-up",True,Free,Real Estate Agent Kit,['real estate']
-IDX/Listing Embed,Real Estate,Lead forms + listings,False,$79–$199,Website Starter,['real estate']
-Tenant Onboarding,Property Mgmt,"Apps, leases, portals",False,$49–$149,CRM & Pipeline,['property']
-Safety & Waivers,Kids/Events,Digital waivers,False,$19–$49,Website Starter,['safety']
-Photo Gallery & Proofing,Creative,Client galleries & sales,False,$49–$149,Website Starter,['photo']
-Podcast Distribution,Creative,"RSS, platforms, cover art",False,$49–$99,Brand Kit,['podcast']
-Music Release Kit,Creative,DSP distribution guide,True,Free,Brand Kit,['music']
-YouTube Starter,Creator,Channel setup + thumbnails,True,Free,Brand Kit,['youtube']
-Barber/Salon Kit,Industry,"Menu, booking, POS, memberships",False,$49–$149,Online Booking,['beauty']
-Fitness Coach Kit,Industry,"Programs, progress tracker, app",False,$49–$149,Scheduling & Meetings,['fitness']
-Tutor Kit,Industry,"Curriculum, scheduling, parent updates",False,$49–$149,Scheduling & Meetings,['education']
-Mobile Massage Kit,Industry,"Intake, route, compliance tips",False,$49–$149,Online Booking,['wellness']
-Contractor Estimator,Industry,Templates & calculators,True,Free,Invoicing & Estimates,['trades']
-Event Planner Kit,Industry,"Timelines, vendor lists, proposals",False,$49–$149,Proposal & Quote Templates,['events']
-Wedding Vendor Kit,Industry,"Packages, contracts, shotlists",False,$49–$149,Service Agreement Templates,['events']
-Mobile Notary Kit,Industry,"Appointment scripts, logs",True,Free,Scheduling & Meetings,['legal']
-Mobile Food Vendor Kit,Industry,"Permits, commissary, POS",False,$49–$149,Food Cottage Compliance,['food']
-Car Detailing Media Pack,Industry,Before/after system + offers,False,$49–$149,Marketing Kit,['auto']
+Name & Logo,Foundation,Business name brainstorming and professional logo design,TRUE,Free,,"branding,identity,design"
+Legal Setup,Foundation,Business structure LLC Sole Prop and EIN registration,FALSE,$99-$249,,"legal,compliance,foundation"
+Website Starter,Foundation,Professional single-page website with hosting,FALSE,$49-$149,,"web,online presence"
+Booking System,Foundation,Online appointment scheduling and calendar,FALSE,$29-$79,,"scheduling,appointments"
+Payments Setup,Foundation,Accept credit cards and online payments,FALSE,$0-$49,,"payments,transactions"
+Store Setup,Commerce,E-commerce store with product listings,FALSE,$79-$199,,"ecommerce,online store"
+Product Listings,Commerce,Professional product descriptions and pricing,FALSE,$29-$99,Store Setup,"products,catalog"
+Donation Setup,Nonprofit,Accept one-time and recurring donations,FALSE,$29-$79,Payments Setup,"nonprofit,fundraising"
+Email Platform,Email,Professional email marketing platform setup,FALSE,$29-$79,,"email,marketing"
+Email Welcome Series,Email,Automated welcome email sequence 5 emails,FALSE,$49-$149,Email Platform,"automation,onboarding"
+CRM & Pipeline,Growth,Customer relationship management system,FALSE,$49-$149,,"sales,customers"
+Review Manager,Growth,Collect and display customer reviews,FALSE,$29-$79,,"reputation,social proof"
+Local SEO Starter,Growth,Google Business Profile optimization,FALSE,$49-$149,,"seo,local,visibility"
+Facebook Ads Starter,Growth,First Facebook ad campaign setup,FALSE,$79-$199,,"ads,facebook,marketing"
+Instagram Growth,Growth,Instagram profile optimization and strategy,FALSE,$49-$149,,"instagram,social media"
+Social Media Kit,Brand,Branded templates for all social platforms,FALSE,$49-$149,Name & Logo,"social media,branding"
+Portfolio Site,Web,Showcase your work with gallery and case studies,FALSE,$99-$249,Website Starter,"portfolio,showcase"
+Course Platform,Web,Sell and deliver online courses,FALSE,$99-$249,Website Starter,"education,courses"
+Event Calendar,Web,Display and manage events on your site,FALSE,$29-$79,Website Starter,"events,calendar"
+Recurring Billing,Commerce,Subscription and membership billing,FALSE,$49-$149,Payments Setup,"subscriptions,recurring"
+Fleet Tracker,Operations,Track vehicles and optimize routes,FALSE,$49-$149,,"logistics,tracking"
+Before/After Gallery,Marketing,Showcase transformation photos,FALSE,$29-$79,,"visual,portfolio"
+Quote Calculator,Operations,Automated quote and estimate tool,FALSE,$49-$149,,"pricing,estimates"
+Service Menu,Operations,Display services and pricing,TRUE,Free,,"services,pricing"
+Emergency Hotline,Operations,24/7 emergency contact system,FALSE,$29-$79,,"support,emergency"
+Pet Profile System,Specialized,Manage pet records and preferences,FALSE,$29-$79,,"pets,records"
+Class Scheduler,Education,Schedule and manage classes,FALSE,$49-$149,Booking System,"education,scheduling"
+Enrollment System,Education,Student registration and onboarding,FALSE,$79-$199,,"education,registration"
+Parent Portal,Education,Parent communication and updates,FALSE,$49-$149,,"education,parents"
+Medical Compliance,Healthcare,HIPAA and medical regulations compliance,FALSE,$99-$249,Legal Setup,"healthcare,compliance"
+Telehealth Setup,Healthcare,Virtual appointment platform,FALSE,$79-$199,Booking System,"telehealth,virtual"
+Treatment Packages,Healthcare,Package pricing for treatments,FALSE,$29-$79,Payments Setup,"healthcare,pricing"
+Insurance Billing,Healthcare,Medical insurance claim processing,FALSE,$99-$249,,"healthcare,insurance"
+Inventory System,Operations,Track stock and manage inventory,FALSE,$49-$149,,"inventory,stock"
+Member Portal,Membership,Private member login and content,FALSE,$79-$199,Website Starter,"membership,access"
+Discussion Forum,Community,Community discussion board,FALSE,$49-$149,Website Starter,"community,forum"
+Certificate Generator,Education,Automated certificate creation,FALSE,$29-$79,Course Platform,"certificates,credentials"
+Student Portal,Education,Student dashboard and resources,FALSE,$79-$199,,"education,students"
+Resource Library,Content,Organized document and file library,FALSE,$29-$79,Website Starter,"resources,content"
+Video Library,Content,Host and organize video content,FALSE,$49-$149,Website Starter,"video,content"
+TikTok Ads Management,Marketing,TikTok advertising campaigns,FALSE,$99-$249,,"marketing,ads,tiktok"
+Google Ads Starter,Marketing,Google search and local ads,FALSE,$79-$199,,"marketing,ads,google"
+YouTube Ads Setup,Marketing,YouTube video advertising,FALSE,$79-$199,,"marketing,ads,youtube"
+LinkedIn Ads for B2B,Marketing,B2B LinkedIn campaigns,FALSE,$99-$249,,"marketing,ads,b2b"
+Pinterest Ads Setup,Marketing,Pinterest visual ads,FALSE,$79-$149,,"marketing,ads,pinterest"
+Snapchat Ads,Marketing,Snapchat advertising,FALSE,$79-$149,,"marketing,ads,snapchat"
+Podcast Advertising,Marketing,Podcast sponsorship outreach,FALSE,$49-$149,,"marketing,ads,podcast"
+Radio Spot Creation,Marketing,Local radio advertising,FALSE,$99-$249,,"marketing,ads,radio"
+Billboard Design,Marketing,Outdoor advertising creative,FALSE,$49-$149,,"marketing,outdoor"
+Vehicle Wrap Design,Marketing,Mobile advertising design,FALSE,$99-$249,,"marketing,vehicle"
+Guerrilla Marketing Kit,Marketing,Creative low-cost tactics,TRUE,Free,,"marketing,guerrilla"
+Viral Content Strategy,Marketing,Trending content playbook,FALSE,$49-$149,,"marketing,viral"
+Brand Ambassador Program,Marketing,Ambassador recruitment,FALSE,$79-$199,,"marketing,brand"
+Loyalty Program Setup,Marketing,Points and rewards system,FALSE,$49-$149,,"marketing,loyalty"
+Customer Retention Strategy,Marketing,Win-back campaigns,FALSE,$49-$149,,"marketing,retention"
+Multi-Location Management,Operations,Centralized multi-site control,FALSE,$99-$249,,"operations,multi-location"
+Franchise Operations Manual,Operations,Franchise SOPs and training,FALSE,$149-$349,Legal Setup,"operations,franchise"
+Quality Assurance System,Operations,Quality control checklists,FALSE,$49-$149,,"operations,quality"
+Supplier Management,Operations,Vendor database and orders,FALSE,$49-$149,,"operations,suppliers"
+Purchase Order System,Operations,Procurement workflow,TRUE,Free,,"operations,procurement"
+Warehouse Management,Operations,Inventory and shipping system,FALSE,$79-$199,Inventory System,"operations,warehouse"
+Delivery Route Optimization,Operations,Multi-stop routing,FALSE,$49-$149,,"operations,routing"
+Time Tracking System,Operations,Employee hours and payroll,FALSE,$49-$149,,"operations,time"
+Project Management Setup,Operations,Tasks timelines and teams,FALSE,$49-$149,,"operations,projects"
+Asset Management,Operations,Equipment tracking,FALSE,$49-$149,,"operations,assets"
+Compliance Tracker,Legal,Regulations and deadlines,FALSE,$49-$149,Legal Setup,"legal,compliance"
+Risk Management Plan,Legal,Risk mitigation strategy,FALSE,$49-$149,,"legal,risk"
+Business Continuity Plan,Operations,Disaster recovery plan,FALSE,$49-$149,,"operations,continuity"
+Exit Strategy Planning,Finance,Succession and sale prep,FALSE,$99-$249,,"finance,exit"
+Franchise Development Kit,Growth,Expansion playbook,FALSE,$149-$349,,"growth,franchise"
+Fractional CFO Matching,Finance,Financial strategy partner,FALSE,$199-$499,,"finance,cfo"
+Financial Dashboard,Finance,Live metrics and KPIs,FALSE,$49-$149,,"finance,analytics"
+Cash Flow Forecasting,Finance,13-week cash flow,FALSE,$49-$149,,"finance,forecasting"
+Break-Even Analysis,Finance,Unit economics calculator,TRUE,Free,,"finance,analysis"
+Revenue Model Calculator,Finance,Scenario projections,TRUE,Free,,"finance,revenue"
+Investor Pitch Deck,Finance,Fundraising deck design,FALSE,$99-$249,,"finance,fundraising"
+Crowdfunding Campaign,Finance,Kickstarter Indiegogo setup,FALSE,$79-$199,,"finance,crowdfunding"
+Angel Investor Network,Finance,Investor intro scripts,FALSE,$49-$149,,"finance,investors"
+VC Pitch Prep,Finance,Venture capital materials,FALSE,$99-$249,,"finance,vc"
+Merchant Cash Advance,Finance,Alternative funding guide,FALSE,$49-$149,,"finance,funding"
+Mobile App Development,Technology,iOS Android app build,FALSE,$999-$4999,,"technology,app"
+Custom Dashboard,Technology,Admin panel and analytics,FALSE,$299-$999,,"technology,dashboard"
+API Integration,Technology,System integration,FALSE,$149-$499,,"technology,api"
+Database Design,Technology,Data structure design,FALSE,$99-$299,,"technology,database"
+Cloud Infrastructure,Technology,AWS Azure setup,FALSE,$149-$399,,"technology,cloud"
+Backup & Recovery,Technology,Data protection system,FALSE,$49-$149,,"technology,backup"
+Security Audit,Technology,Penetration testing,FALSE,$199-$499,,"technology,security"
+GDPR Compliance,Legal,Privacy setup,FALSE,$99-$249,Legal Setup,"legal,privacy"
+Accessibility WCAG,Technology,ADA compliance,FALSE,$149-$399,,"technology,accessibility"
+Multi-Language Site,Technology,Translation and localization,FALSE,$149-$399,Website Starter,"technology,international"
+Video Production,Content,Professional video shoots,FALSE,$299-$999,,"content,video"
+Animation Services,Content,Explainer videos,FALSE,$199-$599,,"content,animation"
+3D Rendering,Content,Product visualization,FALSE,$149-$499,,"content,3d"
+Stock Photo Library,Content,Custom brand photos,FALSE,$99-$249,,"content,photography"
+Icon Set Design,Content,Custom iconography,FALSE,$49-$149,,"content,design"
+Infographic Design,Content,Data visualization,FALSE,$49-$149,,"content,infographic"
+Presentation Design,Content,Professional slide decks,FALSE,$49-$149,,"content,presentation"
+Ebook Design,Content,Layout and formatting,FALSE,$79-$199,,"content,ebook"
+Whitepaper Writing,Content,Authority content,FALSE,$149-$399,,"content,writing"
+Case Study Creation,Content,Customer success stories,FALSE,$79-$199,,"content,case study"
+Testimonial Collection,Marketing,Automated review requests,TRUE,Free,,"marketing,testimonials"
+Brand Story Development,Brand,Narrative and messaging,FALSE,$99-$249,Name & Logo,"branding,story"
+Tagline & Slogan,Brand,Memorable phrases,FALSE,$49-$149,Name & Logo,"branding,tagline"
+Voice & Tone Guide,Brand,Communication standards,FALSE,$49-$149,Name & Logo,"branding,voice"
+Product Photography,Commerce,Lifestyle and white background,FALSE,$99-$299,,"commerce,photography"
+Product Videos,Commerce,Demo videos,FALSE,$149-$399,,"commerce,video"
+Amazon FBA Setup,Commerce,Fulfillment by Amazon,FALSE,$79-$199,Store Setup,"commerce,amazon"
+Amazon Listing Optimization,Commerce,SEO images A+ content,FALSE,$79-$199,Store Setup,"commerce,amazon"
+Walmart Marketplace,Commerce,Walmart setup and optimization,FALSE,$79-$199,Store Setup,"commerce,walmart"
+Etsy Shop Optimization,Commerce,SEO photos and policies,FALSE,$49-$149,Store Setup,"commerce,etsy"
+eBay Store Setup,Commerce,Listings and automation,FALSE,$49-$149,Store Setup,"commerce,ebay"
+International Shipping,Operations,Customs and carriers,FALSE,$49-$149,,"operations,shipping"
+Product Bundling Strategy,Commerce,Increase average order value,FALSE,$49-$149,,"commerce,bundling"
+Upsell & Cross-sell Flows,Commerce,Increase revenue flows,FALSE,$49-$149,,"commerce,upsell"
+Growth Hacking Playbook,Growth,Rapid experimentation,FALSE,$79-$199,,"growth,hacking"
+Conversion Rate Optimization,Growth,A/B testing and heatmaps,FALSE,$79-$199,,"growth,conversion"
+Customer Journey Mapping,Growth,Touchpoint analysis,FALSE,$49-$149,,"growth,journey"
+Competitive Analysis,Growth,Market positioning,FALSE,$49-$149,,"growth,competitive"
+Market Research,Growth,Customer surveys and insights,FALSE,$79-$199,,"growth,research"
+Partnership Development,Growth,Strategic alliances,FALSE,$49-$149,,"growth,partnerships"
+Licensing Strategy,Growth,IP monetization,FALSE,$99-$249,,"growth,licensing"
+White Label Program,Growth,Reseller setup,FALSE,$79-$199,,"growth,white-label"
+Certification Program,Growth,Training and badges,FALSE,$99-$249,,"growth,certification"
+Mastermind Community,Growth,Peer group setup,FALSE,$79-$199,,"growth,community"
+Local Ads Starter,Marketing,Local advertising campaigns,FALSE,$79-$199,,"marketing,local,ads"
+Seasonal Campaigns,Marketing,Seasonal marketing campaigns,FALSE,$49-$149,,"marketing,seasonal"
+Affiliate Program,Marketing,Affiliate marketing setup,FALSE,$79-$199,,"marketing,affiliate"
+Influencer Kit,Marketing,Influencer collaboration materials,FALSE,$49-$149,Social Media Kit,"marketing,influencer"
+Storm Response,Operations,Emergency response system,FALSE,$29-$79,,"operations,emergency"
+Material Calculator,Utility,Material quantity calculator,TRUE,Free,,"utility,calculator"
+Route Optimizer,Operations,Optimize service routes,FALSE,$49-$149,,"operations,routing"
+Waiver System,Legal,Digital waiver collection,FALSE,$29-$79,,"legal,waivers"
+Access Control,Operations,Member access management,FALSE,$49-$149,Member Portal,"operations,security"
+Recipe Library,Content,Organize and display recipes,FALSE,$29-$79,Website Starter,"recipes,food"
+Workout Library,Fitness,Exercise videos and programs,FALSE,$49-$149,,"fitness,exercise"
+Progress Tracker,Tracking,Track client progress and metrics,FALSE,$29-$79,,"tracking,metrics"
+Meal Planner,Health,Custom meal planning tool,FALSE,$49-$149,,"nutrition,meals"
+Nutrition Calculator,Health,Calculate macros and calories,TRUE,Free,,"nutrition,calculator"
+Budget Calculator,Finance,Personal budget planning tool,TRUE,Free,,"finance,budgeting"
+Debt Payoff Planner,Finance,Debt elimination strategy tool,FALSE,$29-$79,,"finance,debt"
+Assessment Tools,Professional,Client assessment and surveys,FALSE,$29-$79,,"assessment,surveys"
+360 Assessment,Professional,Multi-rater feedback system,FALSE,$79-$199,,"feedback,assessment"
+Group Coaching Setup,Coaching,Manage group coaching programs,FALSE,$49-$149,Booking System,"coaching,groups"
+Audit Template,Consulting,Professional audit frameworks,FALSE,$49-$149,,"consulting,audits"
+Case Studies,Marketing,Customer success story templates,FALSE,$29-$79,,"marketing,stories"
+Reporting Dashboard,Analytics,Custom analytics and reports,FALSE,$79-$199,,"analytics,reporting"
+Policy Templates,HR,Employee handbook and policies,FALSE,$49-$149,,"hr,policies"
+Compliance Checklist,Legal,Industry compliance tracking,FALSE,$29-$79,Legal Setup,"compliance,legal"
+Proposal Templates,Sales,Professional proposal documents,FALSE,$29-$79,,"sales,proposals"
+Tech Stack Audit,Technology,Technology assessment service,FALSE,$99-$249,,"technology,audit"
+SOP Templates,Operations,Standard operating procedures,FALSE,$49-$149,,"operations,procedures"
+Efficiency Audit,Operations,Process improvement analysis,FALSE,$99-$249,,"operations,efficiency"
+Deal Calculator,Finance,Investment analysis calculator,FALSE,$29-$79,,"finance,calculator"
+Market Reports,Research,Industry and market data,FALSE,$49-$149,,"research,data"
+Carbon Calculator,Sustainability,Environmental impact calculator,TRUE,Free,,"sustainability,environment"
+Certification Guide,Education,Industry certification roadmap,FALSE,$29-$79,,"education,certification"
+Document Checklist,Operations,Required document tracking,TRUE,Free,,"documents,organization"
+Case Tracker,Operations,Case and project management,FALSE,$49-$149,,"projects,tracking"
+Grant Finder,Nonprofit,Grant opportunity database,FALSE,$49-$149,,"nonprofit,grants"
+Volunteer Management,Nonprofit,Volunteer scheduling and tracking,FALSE,$49-$149,,"nonprofit,volunteers"
+Impact Reports,Nonprofit,Outcome measurement reporting,FALSE,$49-$149,,"nonprofit,reporting"
+Adoption Application,Nonprofit,Pet adoption form system,FALSE,$29-$79,,"nonprofit,pets"
+Foster Network,Nonprofit,Foster coordination system,FALSE,$29-$79,,"nonprofit,network"
+Intake Forms,Nonprofit,Client intake and assessment,FALSE,$29-$79,,"forms,intake"
+Petition System,Advocacy,Online petition and signature collection,FALSE,$29-$79,,"advocacy,petitions"
+Action Alerts,Advocacy,Automated advocacy campaigns,FALSE,$49-$149,Email Platform,"advocacy,campaigns"
+Artist Directory,Arts,Showcase artist profiles,FALSE,$29-$79,Website Starter,"arts,directory"
+Gallery Portal,Arts,Online art gallery system,FALSE,$49-$149,Website Starter,"arts,gallery"
+Content Calendar,Marketing,Plan and schedule content,FALSE,$29-$79,,"marketing,planning"
+Design Packages,Design,Tiered service packages,FALSE,$29-$79,,"design,packages"
+Sample Library,Portfolio,Work samples and examples,FALSE,$29-$79,,"portfolio,samples"
+Turnaround Calculator,Operations,Delivery time estimator,TRUE,Free,,"operations,estimates"
+Time Tracking,Operations,Track billable hours,FALSE,$29-$79,,"operations,time"
+Template Library,Resources,Reusable document templates,FALSE,$29-$79,,"resources,templates"
+LinkedIn Service,Career,LinkedIn profile enhancement,FALSE,$49-$149,,"career,linkedin"
+Bulk Pricing,Commerce,Volume discount calculator,FALSE,$29-$79,,"pricing,discounts"
+Platform Integration,Technology,Connect to third-party platforms,FALSE,$79-$199,,"technology,integration"
+Valuation Tool,Finance,Asset valuation calculator,FALSE,$49-$149,,"finance,valuation"
+Marketplace Integration,Commerce,Multi-channel selling setup,FALSE,$79-$199,Store Setup,"ecommerce,marketplace"
+Sales Tracker,Analytics,Track sales and revenue,FALSE,$29-$79,,"analytics,sales"
+Rate Card,Pricing,Service pricing sheet,TRUE,Free,,"pricing,services"
+Questionnaire Template,Research,Custom survey templates,FALSE,$29-$79,,"research,surveys"
+Review Examples,Portfolio,Sample work and testimonials,TRUE,Free,,"portfolio,reviews"
+Etsy Optimization,Commerce,Optimize Etsy shop listings,FALSE,$49-$149,Store Setup,"ecommerce,etsy"
+Shipping Guide,Operations,Shipping strategy and setup,FALSE,$29-$79,,"operations,shipping"
+Listing Templates,Commerce,Product listing templates,FALSE,$29-$79,Store Setup,"ecommerce,listings"
+Shipping Calculator,Operations,Shipping cost calculator,FALSE,$29-$79,,"operations,shipping"
+FBA Integration,Commerce,Amazon FBA setup,FALSE,$79-$199,Store Setup,"ecommerce,amazon"
