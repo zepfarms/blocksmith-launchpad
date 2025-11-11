@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { HeroSection } from "@/components/HeroSection";
+import { ExampleIdeasSection } from "@/components/ExampleIdeasSection";
 import { BetaSection } from "@/components/BetaSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -22,6 +23,8 @@ const Index = () => {
         onCTAClick={handleHeroCTA} 
         onSignInClick={() => setShowAuthModal(true)}
       />
+      
+      <ExampleIdeasSection />
       
       <div id="business-ideas">
         <BetaSection />
