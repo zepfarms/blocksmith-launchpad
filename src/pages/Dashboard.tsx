@@ -100,14 +100,16 @@ const Dashboard = () => {
         .from('user_businesses')
         .select('*')
         .eq('user_id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error loading business data:', error);
         return;
       }
 
-      setBusinessData(data);
+      if (data) {
+        setBusinessData(data);
+      }
     };
 
     checkAuth();

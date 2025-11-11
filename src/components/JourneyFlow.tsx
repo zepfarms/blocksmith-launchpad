@@ -43,18 +43,23 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
       if (session?.user) {
-        // If user is already logged in, redirect to dashboard
         navigate("/dashboard");
       }
-    });
+    };
+
+    checkSession();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        navigate("/dashboard");
+      }
     });
 
     return () => subscription.unsubscribe();
