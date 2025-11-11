@@ -56,11 +56,11 @@ export default function LogoGeneration() {
       setBusinessName(response.data.business_name || '');
       setBusinessIdea(response.data.business_idea || '');
       setBusinessStatus(response.data.status || '');
-      checkGenerationCount(user.id);
+      checkGenerationCount(user.id, { name: response.data.business_name, idea: response.data.business_idea });
     }
   };
 
-  const checkGenerationCount = async (userId: string) => {
+  const checkGenerationCount = async (userId: string, opts?: { name?: string; idea?: string }) => {
     const { data: sessions, error } = await supabase
       .from('logo_generation_sessions' as any)
       .select('*')
@@ -70,11 +70,19 @@ export default function LogoGeneration() {
     setGenerationCount(count);
 
     if (count === 0) {
-      generateLogos();
+      await generateLogos(undefined, { name: opts?.name, idea: opts?.idea });
     }
   };
 
-  const generateLogos = async (userFeedback?: string) => {
+  const generateLogos = async (userFeedback?: string, opts?: { name?: string; idea?: string }) => {
+    const name = (opts?.name ?? businessName)?.trim();
+    const idea = (opts?.idea ?? businessIdea)?.trim();
+
+    if (!name || !idea) {
+      console.warn('Missing business name or idea when generating logos');
+      return;
+    }
+
     if (generationCount >= 2 && businessStatus !== 'launched') {
       setShowLimitDialog(true);
       return;
@@ -86,8 +94,8 @@ export default function LogoGeneration() {
     try {
       const { data, error }: any = await supabase.functions.invoke('generate-logos', {
         body: {
-          business_name: businessName,
-          business_idea: businessIdea,
+          business_name: name,
+          business_idea: idea,
           user_feedback: userFeedback
         }
       });
@@ -111,7 +119,7 @@ export default function LogoGeneration() {
         ]);
       } else {
         setChatMessages([
-          { role: 'assistant', content: `I generated 6 logo variations for ${businessName}. What do you think?` }
+          { role: 'assistant', content: `I generated 6 logo variations for ${name}. What do you think?` }
         ]);
       }
     } catch (error) {

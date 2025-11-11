@@ -107,7 +107,10 @@ serve(async (req) => {
               content: prompt
             }
           ],
-          modalities: ["image", "text"]
+          modalities: ["image", "text"],
+          output_format: "png",
+          background: "transparent",
+          size: "1024x1024"
         })
       });
 
