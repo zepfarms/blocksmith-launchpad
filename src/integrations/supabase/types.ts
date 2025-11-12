@@ -14,6 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      email_verifications: {
+        Row: {
+          attempts: number
+          code: string
+          created_at: string
+          created_ip: string | null
+          email: string
+          expires_at: string
+          id: string
+          used: boolean
+        }
+        Insert: {
+          attempts?: number
+          code: string
+          created_at?: string
+          created_ip?: string | null
+          email: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+        }
+        Update: {
+          attempts?: number
+          code?: string
+          created_at?: string
+          created_ip?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+        }
+        Relationships: []
+      }
+      logo_generation_sessions: {
+        Row: {
+          ai_prompt: string | null
+          business_id: string
+          created_at: string | null
+          generation_number: number | null
+          id: string
+          logo_urls: string[] | null
+          user_feedback: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_prompt?: string | null
+          business_id: string
+          created_at?: string | null
+          generation_number?: number | null
+          id?: string
+          logo_urls?: string[] | null
+          user_feedback?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_prompt?: string | null
+          business_id?: string
+          created_at?: string | null
+          generation_number?: number | null
+          id?: string
+          logo_urls?: string[] | null
+          user_feedback?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logo_generation_sessions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -34,6 +108,53 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      user_assets: {
+        Row: {
+          asset_type: string
+          business_id: string
+          created_at: string | null
+          file_url: string
+          id: string
+          metadata: Json | null
+          status: string
+          thumbnail_url: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          asset_type: string
+          business_id: string
+          created_at?: string | null
+          file_url: string
+          id?: string
+          metadata?: Json | null
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          asset_type?: string
+          business_id?: string
+          created_at?: string | null
+          file_url?: string
+          id?: string
+          metadata?: Json | null
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_assets_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_businesses: {
         Row: {
