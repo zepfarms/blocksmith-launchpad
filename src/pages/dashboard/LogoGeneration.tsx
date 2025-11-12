@@ -28,6 +28,7 @@ export default function LogoGeneration() {
   const [selectedLogos, setSelectedLogos] = useState<number[]>([]);
   const [generationCount, setGenerationCount] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [businessIdea, setBusinessIdea] = useState("");
   const [businessStatus, setBusinessStatus] = useState("");
@@ -68,10 +69,7 @@ export default function LogoGeneration() {
 
     const count = sessions?.length || 0;
     setGenerationCount(count);
-
-    if (count === 0) {
-      await generateLogos(undefined, { name: opts?.name, idea: opts?.idea });
-    }
+    // Don't auto-generate - user must click button
   };
 
   const generateLogos = async (userFeedback?: string, opts?: { name?: string; idea?: string }) => {
@@ -89,6 +87,7 @@ export default function LogoGeneration() {
     }
 
     setIsGenerating(true);
+    setHasGenerated(true);
     setSelectedLogos([]);
 
     try {
@@ -197,7 +196,28 @@ export default function LogoGeneration() {
           </p>
         </div>
 
-        {isGenerating ? (
+        {!hasGenerated && !isGenerating ? (
+          <div className="glass-card p-12 rounded-3xl border border-white/10 text-center space-y-6">
+            <h2 className="text-3xl font-bold">Generate Your Logo Variations</h2>
+            <p className="text-lg text-muted-foreground">
+              We'll create 6 unique logo designs for <strong>{businessName}</strong>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Business: {businessIdea}
+            </p>
+            <Button
+              onClick={() => generateLogos()}
+              size="xl"
+              variant="empire"
+              className="gap-2"
+            >
+              Generate Logos
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Generation {generationCount + 1} of 2 free
+            </p>
+          </div>
+        ) : isGenerating ? (
           <div className="glass-card p-12 rounded-3xl border border-white/10 flex flex-col items-center justify-center min-h-[400px]">
             <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
             <p className="text-lg text-foreground">Generating 6 logo variations...</p>

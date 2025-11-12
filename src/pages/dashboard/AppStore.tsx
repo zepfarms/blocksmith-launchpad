@@ -6,63 +6,164 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Search, ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
+import { BlockCard } from "@/components/BlockCard";
+import { BlockInfoModal } from "@/components/BlockInfoModal";
+
+// Icon components
+const IconCircuit = () => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-neon-cyan">
+    <circle cx="16" cy="16" r="3" stroke="currentColor" strokeWidth="2" />
+    <path d="M16 3V13M16 19V29M3 16H13M19 16H29" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="16" cy="3" r="2" fill="currentColor" />
+    <circle cx="16" cy="29" r="2" fill="currentColor" />
+    <circle cx="3" cy="16" r="2" fill="currentColor" />
+    <circle cx="29" cy="16" r="2" fill="currentColor" />
+  </svg>
+);
+
+const IconModule = ({ color = "currentColor" }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <rect x="6" y="6" width="20" height="20" stroke={color} strokeWidth="2" rx="2" />
+    <path d="M6 16H26M16 6V26" stroke={color} strokeWidth="2" />
+    <circle cx="16" cy="16" r="2" fill={color} />
+  </svg>
+);
+
+const iconMap: Record<string, React.ReactNode> = {
+  "Brand": <IconModule color="#A78BFA" />,
+  "Foundation": <IconModule color="#22D3EE" />,
+  "Legal": <IconCircuit />,
+  "Finance": <IconModule color="#60A5FA" />,
+  "Web": <IconModule color="#22D3EE" />,
+  "Commerce": <IconCircuit />,
+  "Scheduling": <IconModule color="#22D3EE" />,
+  "CRM": <IconCircuit />,
+  "Growth": <IconModule color="#A78BFA" />,
+  "Email": <IconModule color="#A78BFA" />,
+  "Social": <IconCircuit />,
+  "Media": <IconModule color="#A78BFA" />,
+  "Automation": <IconCircuit />,
+  "Support": <IconCircuit />,
+};
+
+interface Block {
+  id: string;
+  title: string;
+  category: string;
+  icon: React.ReactNode;
+  isFree: boolean;
+  price: number;
+  description: string;
+}
 
 interface BlockPricing {
   block_name: string;
   price_cents: number;
   is_free: boolean;
+  description: string | null;
 }
 
 export default function AppStore() {
   const navigate = useNavigate();
-  const [blocks, setBlocks] = useState<BlockPricing[]>([]);
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [infoModalBlock, setInfoModalBlock] = useState<Block | null>(null);
+  const [pricingData, setPricingData] = useState<Map<string, BlockPricing>>(new Map());
 
+  // Load pricing data
   useEffect(() => {
-    loadBlocks();
+    const loadPricing = async () => {
+      const { data, error } = await supabase
+        .from('blocks_pricing')
+        .select('*');
+      
+      if (!error && data) {
+        const pricingMap = new Map<string, BlockPricing>();
+        data.forEach((item: any) => {
+          pricingMap.set(item.block_name, {
+            block_name: item.block_name,
+            price_cents: item.price_cents,
+            is_free: item.is_free,
+            description: item.description || null
+          });
+        });
+        setPricingData(pricingMap);
+      }
+    };
+    
+    loadPricing();
   }, []);
 
-  const loadBlocks = async () => {
-    const { data, error } = await supabase
-      .from("blocks_pricing")
-      .select("*")
-      .order("block_name");
+  // Load blocks from CSV and merge with pricing
+  useEffect(() => {
+    if (pricingData.size === 0) return;
 
-    if (error) {
-      console.error("Error loading blocks:", error);
-      return;
-    }
-
-    setBlocks(data || []);
-    setLoading(false);
-  };
+    fetch('/data/blocks_catalog.csv')
+      .then(res => res.text())
+      .then(text => {
+        const lines = text.split('\n').slice(1);
+        const blocksData: Block[] = lines
+          .filter(line => line.trim())
+          .map((line) => {
+            const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
+            if (!matches || matches.length < 7) return null;
+            
+            const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
+            const name = clean(matches[0]);
+            const category = clean(matches[1]);
+            const csvDescription = clean(matches[2]);
+            
+            const pricing = pricingData.get(name);
+            const is_free = pricing?.is_free ?? false;
+            const price_cents = pricing?.price_cents ?? 0;
+            const dbDescription = pricing?.description;
+            
+            return {
+              id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+              title: name,
+              category,
+              description: dbDescription || csvDescription,
+              isFree: is_free,
+              price: price_cents,
+              icon: iconMap[category] || <IconCircuit />
+            } as Block;
+          })
+          .filter((block): block is Block => block !== null);
+        
+        setBlocks(blocksData);
+        setLoading(false);
+      });
+  }, [pricingData]);
 
   const filteredBlocks = blocks.filter(block =>
-    block.block_name.toLowerCase().includes(searchQuery.toLowerCase())
+    block.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleCart = (blockName: string) => {
+  const toggleCart = (blockId: string) => {
     setCart(prev =>
-      prev.includes(blockName)
-        ? prev.filter(b => b !== blockName)
-        : [...prev, blockName]
+      prev.includes(blockId)
+        ? prev.filter(b => b !== blockId)
+        : [...prev, blockId]
     );
   };
 
   const handleCheckout = async () => {
     if (cart.length === 0) {
-      toast.error("Please select at least one block");
       return;
     }
+
+    const blockNames = cart.map(id => {
+      const block = blocks.find(b => b.id === id);
+      return block?.title || '';
+    }).filter(Boolean);
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
       const response = await supabase.functions.invoke('create-checkout-session', {
-        body: { blockNames: cart },
+        body: { blockNames },
         headers: {
           Authorization: `Bearer ${session?.access_token}`
         }
@@ -74,13 +175,12 @@ export default function AppStore() {
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      toast.error("Failed to create checkout session");
     }
   };
 
-  const totalCost = cart.reduce((sum, blockName) => {
-    const block = blocks.find(b => b.block_name === blockName);
-    return sum + (block?.price_cents || 0);
+  const totalCost = cart.reduce((sum, blockId) => {
+    const block = blocks.find(b => b.id === blockId);
+    return sum + (block?.price || 0);
   }, 0);
 
   if (loading) {
@@ -124,37 +224,22 @@ export default function AppStore() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {filteredBlocks.map((block) => {
-            const inCart = cart.includes(block.block_name);
-            return (
-              <div
-                key={block.block_name}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold">{block.block_name}</h3>
-                  {block.is_free ? (
-                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                      FREE
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline">
-                      ${(block.price_cents / 100).toFixed(2)}
-                    </Badge>
-                  )}
-                </div>
-                
-                <Button
-                  onClick={() => toggleCart(block.block_name)}
-                  variant={inCart ? "default" : "outline"}
-                  className="w-full rounded-full"
-                >
-                  {inCart ? "Remove from Cart" : "Add to Cart"}
-                </Button>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+          {filteredBlocks.map((block, index) => (
+            <BlockCard
+              key={block.id}
+              title={block.title}
+              category={block.category}
+              icon={block.icon}
+              description={block.description}
+              isFree={block.isFree}
+              price={block.price}
+              isSelected={cart.includes(block.id)}
+              onToggle={() => toggleCart(block.id)}
+              onInfoClick={() => setInfoModalBlock(block)}
+              index={index}
+            />
+          ))}
         </div>
 
         {cart.length > 0 && (
@@ -180,6 +265,21 @@ export default function AppStore() {
           </div>
         )}
       </div>
+
+      {infoModalBlock && (
+        <BlockInfoModal
+          isOpen={true}
+          onClose={() => setInfoModalBlock(null)}
+          title={infoModalBlock.title}
+          description={infoModalBlock.description}
+          category={infoModalBlock.category}
+          isFree={infoModalBlock.isFree}
+          price={infoModalBlock.price}
+          icon={infoModalBlock.icon}
+          onAdd={() => toggleCart(infoModalBlock.id)}
+          isSelected={cart.includes(infoModalBlock.id)}
+        />
+      )}
     </div>
   );
 }

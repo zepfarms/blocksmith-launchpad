@@ -146,8 +146,12 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
                 title={block.title}
                 category={block.category}
                 icon={block.icon}
+                description=""
+                isFree={true}
+                price={0}
                 isSelected={selectedBlocks.includes(block.id)}
                 onToggle={() => toggleBlock(block.id)}
+                onInfoClick={() => {}}
                 index={index}
               />
             </div>

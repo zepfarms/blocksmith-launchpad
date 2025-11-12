@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import {
   Table,
@@ -23,6 +24,7 @@ interface BlockPricing {
   price_cents: number;
   is_free: boolean;
   stripe_price_id: string | null;
+  description: string | null;
 }
 
 export default function AdminPricing() {
@@ -33,6 +35,7 @@ export default function AdminPricing() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editPrice, setEditPrice] = useState("");
   const [editIsFree, setEditIsFree] = useState(false);
+  const [editDescription, setEditDescription] = useState("");
 
   useEffect(() => {
     checkAdminAccess();
@@ -85,13 +88,24 @@ export default function AdminPricing() {
       return;
     }
 
-    setPricingData(data || []);
+    // Map data to include description field
+    const mappedData: BlockPricing[] = (data || []).map(item => ({
+      id: item.id,
+      block_name: item.block_name,
+      price_cents: item.price_cents,
+      is_free: item.is_free,
+      stripe_price_id: item.stripe_price_id,
+      description: (item as any).description || null
+    }));
+
+    setPricingData(mappedData);
   };
 
   const handleEdit = (block: BlockPricing) => {
     setEditingId(block.id);
     setEditPrice((block.price_cents / 100).toFixed(2));
     setEditIsFree(block.is_free);
+    setEditDescription(block.description || "");
   };
 
   const handleSave = async (id: string) => {
@@ -101,7 +115,8 @@ export default function AdminPricing() {
       .from("blocks_pricing")
       .update({
         price_cents: priceCents,
-        is_free: editIsFree
+        is_free: editIsFree,
+        description: editDescription || null
       })
       .eq("id", id);
 
@@ -118,6 +133,7 @@ export default function AdminPricing() {
     setEditingId(null);
     setEditPrice("");
     setEditIsFree(false);
+    setEditDescription("");
   };
 
   if (loading) {
@@ -153,6 +169,7 @@ export default function AdminPricing() {
                   <TableHead>Block Name</TableHead>
                   <TableHead>Price (USD)</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead className="w-[300px]">Description</TableHead>
                   <TableHead>Stripe Price ID</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -188,6 +205,21 @@ export default function AdminPricing() {
                         <Badge variant={block.is_free ? "secondary" : "default"}>
                           {block.is_free ? "FREE" : "PAID"}
                         </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="max-w-[300px]">
+                      {editingId === block.id ? (
+                        <Textarea
+                          value={editDescription}
+                          onChange={(e) => setEditDescription(e.target.value)}
+                          rows={3}
+                          className="min-h-[80px]"
+                          placeholder="Add description..."
+                        />
+                      ) : (
+                        <div className="line-clamp-2 text-sm text-muted-foreground">
+                          {block.description || "No description"}
+                        </div>
                       )}
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">
