@@ -58,9 +58,12 @@ export const OnboardingLayout = () => {
         />
       </div>
 
+      {/* Fixed Header Background */}
+      <div className="fixed top-0 left-0 right-0 h-20 bg-background z-40 border-b border-border/10" />
+
       {/* Back Button */}
       {backPath && (
-        <div className="fixed top-8 left-4 sm:left-8 z-40">
+        <div className="fixed top-8 left-4 sm:left-8 z-50">
           <button
             onClick={() => navigate(backPath)}
             className="gap-2 px-6 py-3 border-2 border-white/20 text-white rounded-full font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
@@ -73,7 +76,7 @@ export const OnboardingLayout = () => {
 
       {/* Breadcrumb Navigation - Hidden on signup page */}
       {location.pathname !== "/start/signup" && (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -91,7 +94,9 @@ export const OnboardingLayout = () => {
       )}
 
       {/* Main Content */}
-      <Outlet />
+      <div className="pt-20">
+        <Outlet />
+      </div>
     </div>
   );
 };
