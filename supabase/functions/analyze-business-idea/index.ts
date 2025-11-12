@@ -1,9 +1,14 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const requestSchema = z.object({
+  businessIdea: z.string().trim().min(5).max(500)
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -11,14 +16,15 @@ serve(async (req) => {
   }
 
   try {
-    const { businessIdea } = await req.json();
+    const body = await req.json();
+    const { businessIdea } = requestSchema.parse(body);
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log('Analyzing business idea:', businessIdea);
+    
 
     const systemPrompt = `You are an enthusiastic business advisor who gets excited about people's business ideas! 
 
@@ -90,8 +96,6 @@ BE EXCITED! BE SPECIFIC! USE THEIR EXACT IDEA!`;
 
     const data = await response.json();
     const analysis = data.choices[0].message.content;
-
-    console.log('Analysis complete:', analysis);
 
     return new Response(
       JSON.stringify({ analysis }),

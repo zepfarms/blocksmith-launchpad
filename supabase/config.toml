@@ -1,13 +1,13 @@
 project_id = "zkkndhebaefxyuuvpobn"
 
 [functions.analyze-business-idea]
-verify_jwt = false
+verify_jwt = true
 
 [functions.send-welcome-email]
-verify_jwt = false
+verify_jwt = true
 
 [functions.send-admin-notification]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-logos]
 verify_jwt = true

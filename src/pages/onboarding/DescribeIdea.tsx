@@ -56,8 +56,13 @@ export const DescribeIdea = () => {
     
     setIsAnalyzing(true);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
       const { data: analysisData, error } = await supabase.functions.invoke('analyze-business-idea', {
-        body: { businessIdea }
+        body: { businessIdea },
+        headers: session?.access_token ? {
+          Authorization: `Bearer ${session.access_token}`
+        } : undefined
       });
 
       if (error) throw error;
@@ -79,8 +84,7 @@ export const DescribeIdea = () => {
       });
 
       navigate("/start/confirm");
-    } catch (error) {
-      console.error('Error analyzing idea:', error);
+    } catch (error: any) {
       toast.error("We couldn't analyze your idea. Please try again.");
     } finally {
       setIsAnalyzing(false);

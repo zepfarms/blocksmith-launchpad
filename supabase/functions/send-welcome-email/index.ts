@@ -1,32 +1,32 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@2.0.0";
+import { Resend } from "npm:resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-interface WelcomeEmailRequest {
-  email: string;
-  businessName: string;
-  userName?: string;
-}
+const requestSchema = z.object({
+  email: z.string().email().max(255),
+  businessName: z.string().trim().min(1).max(100),
+  userName: z.string().trim().max(100).optional()
+});
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { email, businessName, userName }: WelcomeEmailRequest = await req.json();
-
-    console.log('Sending welcome email to:', email);
+    const body = await req.json();
+    const { email, businessName, userName } = requestSchema.parse(body);
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks <support@spaceblocks.ai>",
+      from: "SpaceBlocks.ai <support@spaceblocks.ai>",
       to: [email],
       subject: "Welcome to SpaceBlocks.ai! 🚀",
       html: `
@@ -37,75 +37,53 @@ const handler = async (req: Request): Promise<Response> => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Welcome to SpaceBlocks.ai</title>
           </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; background-color: #0A0A0A; color: #FAFAFA;">
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f9fafb;">
             <table role="presentation" style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td style="padding: 40px 20px;">
-                  <table role="presentation" style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden;">
-                    
-                    <!-- Header with gradient -->
+                <td align="center" style="padding: 40px 0;">
+                  <table role="presentation" style="width: 600px; max-width: 90%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <tr>
-                      <td style="background: linear-gradient(135deg, #22D3EE 0%, #7B61FF 100%); padding: 40px 30px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: #0A0A0A; letter-spacing: -0.02em;">
-                          SpaceBlocks.ai
+                      <td style="padding: 40px 40px 20px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 28px; font-weight: bold; color: #0A0A0A;">
+                          Welcome to SpaceBlocks.ai! 🚀
                         </h1>
                       </td>
                     </tr>
-                    
-                    <!-- Main content -->
                     <tr>
-                      <td style="padding: 40px 30px;">
-                        <h2 style="margin: 0 0 16px 0; font-size: 32px; font-weight: 800; color: #FAFAFA; letter-spacing: -0.02em;">
-                          Welcome aboard! 🎉
-                        </h2>
-                        
-                        <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.6; color: rgba(250, 250, 250, 0.8);">
-                          ${userName ? `Hi ${userName}!` : 'Hey there!'} We're excited to help you build <strong style="color: #22D3EE;">${businessName}</strong> and get your first customer.
+                      <td style="padding: 0 40px 40px;">
+                        <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #4B5563;">
+                          Hi ${userName || 'there'},
                         </p>
-                        
-                        <div style="background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 16px; padding: 24px; margin: 24px 0;">
-                          <h3 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: #22D3EE;">
-                            What's happening now?
-                          </h3>
-                          <ul style="margin: 0; padding-left: 20px; color: rgba(250, 250, 250, 0.8);">
-                            <li style="margin-bottom: 8px;">Your business dashboard is ready</li>
-                            <li style="margin-bottom: 8px;">We're building your assets (logo, website, etc.)</li>
-                            <li style="margin-bottom: 8px;">You can review everything before launch</li>
-                            <li>You only pay when you're ready to go live</li>
-                          </ul>
-                        </div>
-                        
-                        <p style="margin: 24px 0; font-size: 16px; line-height: 1.6; color: rgba(250, 250, 250, 0.8);">
-                          <strong style="color: #FAFAFA;">You're not doing this alone.</strong> Your AI co-founder plus our team is building your business with you.
+                        <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #4B5563;">
+                          Thanks for starting your journey with <strong>${businessName}</strong>! We're excited to help you turn your idea into a real business.
                         </p>
-                        
-                        <!-- CTA Button -->
-                        <table role="presentation" style="margin: 32px 0;">
+                        <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #4B5563;">
+                          Your business plan is being built, and you can access your dashboard anytime to see your progress. Remember, you only pay when you're ready to launch — no pressure, just progress!
+                        </p>
+                        <table role="presentation" style="margin: 30px 0; width: 100%;">
                           <tr>
-                            <td style="text-align: center;">
-                              <a href="https://spaceblocks.ai/dashboard" style="display: inline-block; background: linear-gradient(135deg, #22D3EE 0%, #5D50FE 100%); color: #0A0A0A; text-decoration: none; padding: 16px 48px; border-radius: 999px; font-weight: 700; font-size: 16px; box-shadow: 0 0 40px rgba(34, 211, 238, 0.4);">
-                                View My Dashboard
+                            <td align="center">
+                              <a href="${Deno.env.get("SUPABASE_URL")?.replace('.supabase.co', '') || 'https://spaceblocks.ai'}" 
+                                 style="display: inline-block; padding: 14px 32px; background-color: #0A0A0A; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 16px;">
+                                View Your Dashboard
                               </a>
                             </td>
                           </tr>
                         </table>
-                        
-                        <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 24px; margin-top: 32px;">
-                          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: rgba(250, 250, 250, 0.6);">
-                            Need help? Just reply to this email — we're here for you.
-                          </p>
-                        </div>
+                        <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.6; color: #4B5563;">
+                          Need help? Just reply to this email or reach out at <a href="mailto:support@spaceblocks.ai" style="color: #4E8BFF;">support@spaceblocks.ai</a>.
+                        </p>
+                        <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.6; color: #4B5563;">
+                          Best,<br>
+                          <strong>The SpaceBlocks.ai Team</strong>
+                        </p>
                       </td>
                     </tr>
-                    
-                    <!-- Footer -->
                     <tr>
-                      <td style="padding: 30px; text-align: center; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.05);">
-                        <p style="margin: 0 0 8px 0; font-size: 12px; color: rgba(250, 250, 250, 0.4);">
-                          © ${new Date().getFullYear()} SpaceBlocks.ai
-                        </p>
-                        <p style="margin: 0; font-size: 12px; color: rgba(250, 250, 250, 0.3);">
-                          Meet your new business partner
+                      <td style="padding: 20px 40px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; border-radius: 0 0 8px 8px;">
+                        <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9CA3AF; text-align: center;">
+                          P.O. Box 1234, Shawnee, OK 74802<br>
+                          © ${new Date().getFullYear()} SpaceBlocks.ai. All rights reserved.
                         </p>
                       </td>
                     </tr>
@@ -118,9 +96,7 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Welcome email sent successfully:", emailResponse);
-
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify(emailResponse), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -128,7 +104,6 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Error in send-welcome-email function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {

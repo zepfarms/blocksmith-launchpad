@@ -1,10 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const requestSchema = z.object({
+  business_name: z.string().trim().min(1).max(100),
+  business_idea: z.string().trim().min(5).max(500),
+  user_feedback: z.string().trim().max(500).optional()
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -13,86 +20,80 @@ serve(async (req) => {
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
 
     if (!lovableApiKey) {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    // Get auth token from request
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
+    const authorization = req.headers.get('Authorization');
+    if (!authorization) {
       return new Response(JSON.stringify({ error: 'No authorization header' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get authenticated user
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    const { data: authData, error: authError } = await supabase.auth.getUser(
+      authorization.replace('Bearer ', '')
+    );
+
+    if (authError || !authData.user) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const { business_name, business_idea, user_feedback } = await req.json();
+    const userId = authData.user.id;
+    const body = await req.json();
+    const { business_name, business_idea, user_feedback } = requestSchema.parse(body);
 
-    // Get user's business
-    const { data: business, error: businessError } = await supabase
+    const { data: businessData, error: businessError } = await supabase
       .from('user_businesses')
       .select('*')
-      .eq('user_id', user.id)
-      .single();
+      .eq('user_id', userId);
 
-    if (businessError || !business) {
-      return new Response(JSON.stringify({ error: 'Business not found' }), {
-        status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    if (businessError || !businessData || businessData.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Business not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Check generation limit
-    const { count } = await supabase
+    const { data: sessionData } = await supabase
       .from('logo_generation_sessions')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id);
+      .select('id')
+      .eq('user_id', userId);
 
-    if (count !== null && count >= 2 && business.status !== 'launched') {
+    const sessionCount = sessionData?.length || 0;
+
+    if (businessData[0].status !== 'launched' && sessionCount >= 2) {
       return new Response(
         JSON.stringify({
           error: 'generation_limit',
-          message: 'Launch your business to unlock unlimited logo generations',
-          generations_used: count,
+          message: 'Free generation limit reached',
+          generations_used: sessionCount,
           generations_allowed: 2,
         }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const generationNumber = (count || 0) + 1;
+    const generationNumber = sessionCount + 1;
 
-    // Construct AI prompt
-    let prompt = '';
+    let prompt = `Create a modern, professional logo for "${business_name}" - ${business_idea}. 
+Style: Clean, minimal, memorable. PNG with transparent background. No text in the logo.`;
+
     if (user_feedback) {
-      prompt = `Create a professional logo for "${business_name}", a ${business_idea} business. User requested: ${user_feedback}. Output as PNG with transparent background. The logo should be clean, modern, and memorable.`;
-    } else {
-      prompt = `Create a professional logo for "${business_name}", a ${business_idea} business. Style should be clean, modern, and memorable. Output as PNG with transparent background.`;
+      prompt = `${prompt}\n\nUser feedback for refinement: ${user_feedback}`;
     }
 
-    console.log('Generating logo with prompt:', prompt);
-
-    // Generate 6 logos
     const logos = [];
     for (let i = 0; i < 6; i++) {
-      console.log(`Generating logo ${i + 1}/6...`);
-      
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -107,61 +108,56 @@ serve(async (req) => {
               content: prompt
             }
           ],
-          modalities: ["image", "text"],
-          output_format: "png",
-          background: "transparent",
-          size: "1024x1024"
-        })
+        }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`AI gateway error for logo ${i + 1}:`, response.status, errorText);
-        
         if (response.status === 429) {
-          return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
-            status: 429,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
+          return new Response(
+            JSON.stringify({ error: "Rate limits exceeded, please try again later." }),
+            {
+              status: 429,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            }
+          );
         }
         if (response.status === 402) {
-          return new Response(JSON.stringify({ error: 'AI credits exhausted. Please contact support.' }), {
-            status: 402,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
+          return new Response(
+            JSON.stringify({ error: "Payment required, please add funds to your workspace." }),
+            {
+              status: 402,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            }
+          );
         }
-        throw new Error(`AI gateway error: ${errorText}`);
+        throw new Error(`AI gateway error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
       const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
       if (!imageUrl) {
-        console.error('No image URL in response:', data);
         throw new Error('No image generated');
       }
 
-      // Extract base64 data
       const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+      const imageData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 
-      // Upload to storage
       const sessionId = crypto.randomUUID();
-      const fileName = `${user.id}/logos/${sessionId}/${i + 1}.png`;
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const fileName = `${userId}/logos/${sessionId}/${i + 1}.png`;
+
+      const { error: uploadError } = await supabase.storage
         .from('business-assets')
-        .upload(fileName, buffer, {
+        .upload(fileName, imageData, {
           contentType: 'image/png',
-          upsert: false
+          upsert: false,
         });
 
       if (uploadError) {
-        console.error('Storage upload error:', uploadError);
         throw uploadError;
       }
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('business-assets')
         .getPublicUrl(fileName);
@@ -171,42 +167,35 @@ serve(async (req) => {
         thumbnail_url: publicUrl,
         logo_number: i + 1
       });
-
-      console.log(`Logo ${i + 1}/6 generated successfully`);
     }
 
-    // Create session record
     const { data: session, error: sessionError } = await supabase
       .from('logo_generation_sessions')
       .insert({
-        user_id: user.id,
-        business_id: business.id,
-        generation_number: generationNumber,
+        user_id: userId,
+        business_id: businessData[0].id,
+        prompt,
         user_feedback: user_feedback || null,
-        ai_prompt: prompt,
-        logo_urls: logos.map(l => l.file_url)
       })
       .select()
       .single();
 
     if (sessionError) {
-      console.error('Session creation error:', sessionError);
       throw sessionError;
     }
 
-    // Insert asset records
     const assetInserts = logos.map(logo => ({
-      user_id: user.id,
-      business_id: business.id,
+      user_id: userId,
+      business_id: businessData[0].id,
       asset_type: 'logo',
       file_url: logo.file_url,
       thumbnail_url: logo.thumbnail_url,
       status: 'generated',
       metadata: {
+        logo_number: logo.logo_number,
         session_id: session.id,
         generation_number: generationNumber,
-        logo_number: logo.logo_number
-      }
+      },
     }));
 
     const { error: assetsError } = await supabase
@@ -214,26 +203,26 @@ serve(async (req) => {
       .insert(assetInserts);
 
     if (assetsError) {
-      console.error('Assets creation error:', assetsError);
       throw assetsError;
     }
-
-    console.log('All logos generated and saved successfully');
 
     return new Response(
       JSON.stringify({
         session_id: session.id,
         logos,
-        generation_number: generationNumber
+        generation_number: generationNumber,
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
     );
-
   } catch (error) {
-    console.error('Error in generate-logos function:', error);
     return new Response(
       JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
     );
   }
 });

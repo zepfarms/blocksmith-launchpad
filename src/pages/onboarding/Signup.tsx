@@ -33,10 +33,14 @@ export const Signup = () => {
     });
 
     if (error) {
-      console.error('Error saving business data:', error);
       toast.error("We couldn't save your business information. Please try again.");
       return;
     }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    const authHeader = session?.access_token ? {
+      Authorization: `Bearer ${session.access_token}`
+    } : undefined;
 
     // Send welcome email
     try {
@@ -45,10 +49,11 @@ export const Signup = () => {
           email: user.email,
           businessName: data.businessName || "Your Business",
           userName: user.email?.split('@')[0]
-        }
+        },
+        headers: authHeader
       });
     } catch (emailError) {
-      console.error('Error sending welcome email:', emailError);
+      // Silently fail - email is not critical
     }
 
     // Send admin notification
@@ -60,10 +65,11 @@ export const Signup = () => {
           businessIdea: data.businessIdea,
           selectedBlocks: data.selectedBlocks,
           aiAnalysis: data.aiAnalysis
-        }
+        },
+        headers: authHeader
       });
     } catch (emailError) {
-      console.error('Error sending admin notification:', emailError);
+      // Silently fail - notification is not critical
     }
 
     resetData();
@@ -101,7 +107,6 @@ export const Signup = () => {
         await saveBusinessData(authData.user);
       }
     } catch (error: any) {
-      console.error('Signup error:', error);
       toast.error(error.message || "Failed to create account");
     } finally {
       setLoading(false);
