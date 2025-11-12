@@ -208,8 +208,8 @@ const Dashboard = () => {
     <div className="relative min-h-screen px-6 pt-32 pb-12 overflow-hidden overflow-x-hidden">
       <Header />
       {/* Background ambient effects */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/4 left-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
 
       <div className="relative z-10 max-w-6xl mx-auto space-y-8">
         {/* Dashboard Navigation Tabs */}

@@ -128,7 +128,7 @@ export const WhySection = () => {
     <section className="relative pt-16 pb-32 px-4 sm:px-6 overflow-hidden max-w-full">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background-elevated to-background" />
-      <div className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] bg-neon-purple/5 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[90vw] max-w-[1000px] h-[90vw] max-h-[1000px] bg-neon-purple/5 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2" />
 
       <div className="relative z-10 max-w-7xl mx-auto space-y-20">
         {/* Header */}

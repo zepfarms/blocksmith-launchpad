@@ -171,8 +171,8 @@ export default function LogoGeneration() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/4 left-1/4 w-[80vw] max-w-[500px] h-[80vw] max-h-[500px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div className="flex items-center justify-between">
