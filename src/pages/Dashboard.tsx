@@ -9,6 +9,17 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface DashboardItem {
   id: string;
@@ -26,6 +37,10 @@ const Dashboard = () => {
   const [items, setItems] = useState<DashboardItem[]>([]);
   const [logoSessionCount, setLogoSessionCount] = useState(0);
   const [savedAssets, setSavedAssets] = useState<any[]>([]);
+  const [showLaunchDialog, setShowLaunchDialog] = useState(false);
+  const [launchingBusiness, setLaunchingBusiness] = useState(false);
+  const [totalCost, setTotalCost] = useState(0);
+  const [paidBlockCount, setPaidBlockCount] = useState(0);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -111,6 +126,9 @@ const Dashboard = () => {
         });
         
         setItems(dashboardItems);
+        
+        // Calculate pricing for selected blocks
+        await calculatePricing(data.selected_blocks || []);
       }
       
       // Load saved assets
@@ -173,6 +191,76 @@ const Dashboard = () => {
       .eq('id', assetId);
 
     loadSavedAssets(user.id);
+  };
+
+  const calculatePricing = async (selectedBlocks: string[]) => {
+    if (!selectedBlocks || selectedBlocks.length === 0) {
+      setTotalCost(0);
+      setPaidBlockCount(0);
+      return;
+    }
+
+    const { data: pricing, error } = await supabase
+      .from('blocks_pricing')
+      .select('*')
+      .in('block_name', selectedBlocks);
+
+    if (!error && pricing) {
+      const paidBlocks = pricing.filter(p => !p.is_free && p.price_cents > 0);
+      const total = paidBlocks.reduce((sum, block) => sum + block.price_cents, 0);
+      setTotalCost(total);
+      setPaidBlockCount(paidBlocks.length);
+    }
+  };
+
+  const handleLaunchBusiness = async () => {
+    if (!businessData) return;
+
+    // If only free blocks, skip Stripe and just activate
+    if (paidBlockCount === 0) {
+      setLaunchingBusiness(true);
+      
+      await supabase
+        .from('user_businesses')
+        .update({ status: 'launched', payment_status: 'completed' })
+        .eq('id', businessData.id);
+
+      toast("Your business is live! 🚀");
+      setLaunchingBusiness(false);
+      window.location.reload();
+      return;
+    }
+
+    setShowLaunchDialog(true);
+  };
+
+  const proceedToCheckout = async () => {
+    if (!businessData) return;
+
+    setLaunchingBusiness(true);
+    setShowLaunchDialog(false);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast("Please log in to continue");
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: { blockNames: businessData.selected_blocks }
+      });
+
+      if (error) throw error;
+
+      if (data?.sessionUrl) {
+        window.location.href = data.sessionUrl;
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      toast("Payment error. Please try again.");
+      setLaunchingBusiness(false);
+    }
   };
 
   const getStatusIcon = (status: string) => {
@@ -384,11 +472,12 @@ const Dashboard = () => {
           </div>
 
           <button
+            onClick={handleLaunchBusiness}
             className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={approvedCount === 0}
+            disabled={approvedCount === 0 || launchingBusiness}
           >
             <Rocket className="w-5 h-5 group-hover:translate-y-[-4px] transition-transform duration-300" />
-            Launch My Business
+            {launchingBusiness ? "Launching..." : paidBlockCount === 0 ? "Activate My Business" : "Launch My Business"}
           </button>
 
           <div className="pt-4 space-y-2">
@@ -631,6 +720,38 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Launch Confirmation Dialog */}
+      <AlertDialog open={showLaunchDialog} onOpenChange={setShowLaunchDialog}>
+        <AlertDialogContent className="bg-background border border-white/10">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-bold">Ready to Launch? 🚀</AlertDialogTitle>
+            <AlertDialogDescription className="text-base space-y-4 pt-4">
+              <div>
+                You're about to launch with <span className="font-bold text-foreground">{paidBlockCount} paid block{paidBlockCount !== 1 ? 's' : ''}</span>.
+              </div>
+              <div className="text-2xl font-bold text-neon-cyan">
+                Total: ${(totalCost / 100).toFixed(2)}
+              </div>
+              <div className="text-sm text-muted-foreground pt-2">
+                You'll be redirected to Stripe to complete your payment. After successful payment, all your assets will unlock and your business will go live.
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full" disabled={launchingBusiness}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={proceedToCheckout}
+              className="rounded-full bg-white text-black hover:bg-gray-100"
+              disabled={launchingBusiness}
+            >
+              {launchingBusiness ? "Processing..." : "Continue to Payment"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

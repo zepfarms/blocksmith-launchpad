@@ -63,18 +63,14 @@ interface Block {
   category: string;
   icon: React.ReactNode;
   isFree: boolean;
-  price: string;
+  price: number; // price in cents
   description: string;
 }
 
-interface CatalogBlock {
-  name: string;
-  category: string;
-  description: string;
-  is_free: string;
-  typical_price: string;
-  dependencies: string;
-  tags: string;
+interface BlockPricing {
+  block_name: string;
+  price_cents: number;
+  is_free: boolean;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -104,8 +100,33 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
   const [allBlocks, setAllBlocks] = useState<Block[]>([]);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [showAllBlocks, setShowAllBlocks] = useState(false);
+  const [pricingData, setPricingData] = useState<Map<string, BlockPricing>>(new Map());
 
-  // Load blocks from CSV
+  // Load pricing data from database
+  useEffect(() => {
+    const loadPricing = async () => {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data, error } = await supabase
+        .from('blocks_pricing')
+        .select('*');
+      
+      if (!error && data) {
+        const pricingMap = new Map<string, BlockPricing>();
+        data.forEach(item => {
+          pricingMap.set(item.block_name, {
+            block_name: item.block_name,
+            price_cents: item.price_cents,
+            is_free: item.is_free
+          });
+        });
+        setPricingData(pricingMap);
+      }
+    };
+    
+    loadPricing();
+  }, []);
+
+  // Load blocks from CSV and merge with pricing
   useEffect(() => {
     fetch('/data/blocks_catalog.csv')
       .then(res => res.text())
@@ -121,8 +142,11 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             const name = clean(matches[0]);
             const category = clean(matches[1]);
             const description = clean(matches[2]);
-            const is_free = clean(matches[3]).toLowerCase() === 'true';
-            const typical_price = clean(matches[4]);
+            
+            // Get pricing from database
+            const pricing = pricingData.get(name);
+            const is_free = pricing?.is_free ?? false;
+            const price_cents = pricing?.price_cents ?? 0;
             
             return {
               id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -130,16 +154,15 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               category,
               description,
               isFree: is_free,
-              price: typical_price,
+              price: price_cents,
               icon: iconMap[category] || <IconCircuit />
             } as Block;
           })
           .filter((block): block is Block => block !== null);
         
         setAllBlocks(blocks);
-        // Don't auto-select - let user choose
       });
-  }, [starterBlocks]);
+  }, [pricingData]);
 
   // Enhanced starter recommendations: always show these essential blocks for any business
   const essentialStarterTitles = [
@@ -206,9 +229,13 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                     onToggle={() => toggleBlock(block.id)}
                     index={index}
                   />
-                  {block.isFree && (
+                  {block.isFree ? (
                     <Badge className="absolute -top-2 -right-2 bg-green-500 text-white border-0 text-xs">
                       FREE
+                    </Badge>
+                  ) : (
+                    <Badge className="absolute -top-2 -right-2 bg-primary/10 text-primary border-primary/30 border-0 text-xs">
+                      ${(block.price / 100).toFixed(2)}
                     </Badge>
                   )}
                 </div>
@@ -235,9 +262,13 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                     onToggle={() => toggleBlock(block.id)}
                     index={index}
                   />
-                  {block.isFree && (
+                  {block.isFree ? (
                     <Badge className="absolute -top-2 -right-2 bg-green-500 text-white border-0 text-xs">
                       FREE
+                    </Badge>
+                  ) : (
+                    <Badge className="absolute -top-2 -right-2 bg-primary/10 text-primary border-primary/30 border-0 text-xs">
+                      ${(block.price / 100).toFixed(2)}
                     </Badge>
                   )}
                 </div>
@@ -318,8 +349,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                         onToggle={() => toggleBlock(block.id)}
                         index={index}
                       />
-                      <Badge className="absolute -top-2 -right-2 bg-primary/10 text-primary border-0 text-xs">
-                        Add-on
+                      <Badge className="absolute -top-2 -right-2 bg-primary/10 text-primary border-primary/30 border-0 text-xs">
+                        ${(block.price / 100).toFixed(2)}
                       </Badge>
                     </div>
                   ))}
