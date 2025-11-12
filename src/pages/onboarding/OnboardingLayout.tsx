@@ -58,8 +58,8 @@ export const OnboardingLayout = () => {
         />
       </div>
 
-      {/* Fixed Header Background */}
-      <div className="fixed top-0 left-0 right-0 h-20 bg-background z-40 border-b border-border/10" />
+      {/* Fixed Header Background - Solid black to prevent content showing through */}
+      <div className="fixed top-0 left-0 right-0 h-24 bg-black z-40" />
 
       {/* Back Button */}
       {backPath && (
