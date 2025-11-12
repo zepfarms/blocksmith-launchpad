@@ -11,3 +11,6 @@ verify_jwt = true
 
 [functions.generate-logos]
 verify_jwt = true
+
+[functions.send-signup-code]
+verify_jwt = false
