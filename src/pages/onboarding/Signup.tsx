@@ -58,7 +58,7 @@ export const Signup = () => {
 
     // Send admin notification
     try {
-      await supabase.functions.invoke('send-admin-notification', {
+      const { error: notificationError } = await supabase.functions.invoke('send-admin-notification', {
         body: {
           userEmail: user.email,
           businessName: data.businessName || "New Business",
@@ -68,8 +68,12 @@ export const Signup = () => {
         },
         headers: authHeader
       });
+      
+      if (notificationError) {
+        console.error('Admin notification failed:', notificationError);
+      }
     } catch (emailError) {
-      // Silently fail - notification is not critical
+      console.error('Admin notification exception:', emailError);
     }
 
     resetData();
