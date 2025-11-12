@@ -15,12 +15,41 @@ export const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saveTriggered, setSaveTriggered] = useState(false);
 
   useEffect(() => {
     if (data.selectedBlocks.length === 0) {
       navigate("/start");
     }
   }, [data.selectedBlocks, navigate]);
+
+  // When a real session exists (after verification/login), persist pending business data
+  useEffect(() => {
+    const processPending = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+      const pendingRaw = localStorage.getItem("pendingBusinessData");
+      if (session?.user && pendingRaw && !saveTriggered) {
+        setSaveTriggered(true);
+        try {
+          const pending = JSON.parse(pendingRaw);
+          await supabase.from('user_businesses').select('id').limit(1); // touch to ensure auth ready
+          await saveBusinessData(session.user);
+          localStorage.removeItem("pendingBusinessData");
+        } catch (e) {
+          console.error('Deferred save failed:', e);
+          setSaveTriggered(false);
+        }
+      }
+    };
+
+    // Subscribe to auth changes and also check immediately
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      processPending();
+    });
+    processPending();
+    return () => subscription.unsubscribe();
+  }, [saveTriggered]);
 
   const saveBusinessData = async (user: any) => {
     console.log('Attempting to save business data:', {
@@ -30,12 +59,22 @@ export const Signup = () => {
       selected_blocks: data.selectedBlocks
     });
 
+    // Fallback to pending data stored before signup if context is empty
+    let source = { ...data } as typeof data;
+    try {
+      const pendingRaw = localStorage.getItem('pendingBusinessData');
+      if (pendingRaw) {
+        const pending = JSON.parse(pendingRaw);
+        source = { ...source, ...pending };
+      }
+    } catch {}
+
     const { error } = await supabase.from('user_businesses').insert({
       user_id: user.id,
-      business_name: data.businessName || "New Business",
-      business_idea: data.businessIdea || "New business idea",
-      ai_analysis: data.aiAnalysis,
-      selected_blocks: data.selectedBlocks,
+      business_name: source.businessName || "New Business",
+      business_idea: source.businessIdea || "New business idea",
+      ai_analysis: source.aiAnalysis,
+      selected_blocks: source.selectedBlocks,
       status: 'building'
     });
 
@@ -115,8 +154,19 @@ export const Signup = () => {
 
       if (error) throw error;
 
-      if (authData.user) {
-        await saveBusinessData(authData.user);
+      if (authData) {
+        // Persist onboarding info for deferred save after verification/login
+        try {
+          localStorage.setItem('pendingBusinessData', JSON.stringify({
+            businessName: data.businessName || "New Business",
+            businessIdea: data.businessIdea || "",
+            aiAnalysis: data.aiAnalysis || "",
+            selectedBlocks: data.selectedBlocks
+          }));
+        } catch {}
+        if (authData.session?.user) {
+          await saveBusinessData(authData.session.user);
+        }
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to create account");
