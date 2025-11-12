@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
@@ -16,6 +17,11 @@ export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveTriggered, setSaveTriggered] = useState(false);
+  const [step, setStep] = useState<"form" | "verify">("form");
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [resendSeconds, setResendSeconds] = useState(60);
+  const [resending, setResending] = useState(false);
 
   useEffect(() => {
     if (data.selectedBlocks.length === 0) {
@@ -23,6 +29,12 @@ export const Signup = () => {
     }
   }, [data.selectedBlocks, navigate]);
 
+  useEffect(() => {
+    if (step === "verify" && resendSeconds > 0) {
+      const t = setTimeout(() => setResendSeconds((s) => s - 1), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [step, resendSeconds]);
   // When a real session exists (after verification/login), persist pending business data
   useEffect(() => {
     const processPending = async () => {
@@ -136,7 +148,7 @@ export const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
       return;
@@ -149,36 +161,74 @@ export const Signup = () => {
 
     setLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
-      const { data: authData, error } = await supabase.auth.signUp({
+      // Persist onboarding info for deferred save after verification/login
+      try {
+        localStorage.setItem('pendingBusinessData', JSON.stringify({
+          businessName: data.businessName || "New Business",
+          businessIdea: data.businessIdea || "",
+          aiAnalysis: data.aiAnalysis || "",
+          selectedBlocks: data.selectedBlocks
+        }));
+      } catch {}
+
+      const { error } = await supabase.auth.signInWithOtp({
         email,
-        password,
         options: {
-          emailRedirectTo: redirectUrl
-        }
+          shouldCreateUser: true,
+        },
       });
 
       if (error) throw error;
 
-      if (authData) {
-        // Persist onboarding info for deferred save after verification/login
-        try {
-          localStorage.setItem('pendingBusinessData', JSON.stringify({
-            businessName: data.businessName || "New Business",
-            businessIdea: data.businessIdea || "",
-            aiAnalysis: data.aiAnalysis || "",
-            selectedBlocks: data.selectedBlocks
-          }));
-        } catch {}
-        // Do not attempt DB insert here; wait until real session is active
-        // The deferred save will run after verification/sign-in
-
-      }
+      setVerificationEmail(email);
+      setStep("verify");
+      setResendSeconds(60);
     } catch (error: any) {
-      toast.error(error.message || "Failed to create account");
+      toast.error(error.message || "Failed to send verification code");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (code.length !== 6) {
+      toast.error("Enter the 6-digit code");
+      return;
+    }
+    setLoading(true);
+    try {
+      const targetEmail = verificationEmail || email;
+      const { data: verifyData, error } = await supabase.auth.verifyOtp({
+        email: targetEmail,
+        token: code,
+        type: 'signup',
+      });
+      if (error) throw error;
+
+      // After verification, set the password
+      const { error: pwError } = await supabase.auth.updateUser({ password });
+      if (pwError) throw pwError;
+      // Auth listener above will pick up the new session and save pending business data
+    } catch (error: any) {
+      toast.error(error.message || "Invalid or expired code");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (resendSeconds > 0) return;
+    setResending(true);
+    try {
+      const targetEmail = verificationEmail || email;
+      const { error } = await supabase.auth.resend({ type: 'signup', email: targetEmail });
+      if (error) throw error;
+      setResendSeconds(60);
+    } catch (error: any) {
+      toast.error(error.message || "Could not resend code");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -187,93 +237,147 @@ export const Signup = () => {
       <div className="max-w-md mx-auto space-y-8 animate-fade-in w-full">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            Create your account
+            {step === "verify" ? "Verify your email" : "Create your account"}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Almost there! Create an account to save your business plan
+            {step === "verify"
+              ? `Enter the 6-digit code we emailed to ${verificationEmail || email}`
+              : "Almost there! Create an account to save your business plan"}
           </p>
         </div>
 
-        <form onSubmit={handleSignup} className="space-y-4" autoComplete="off" noValidate>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              className="bg-background/50"
-              autoComplete="off"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              inputMode="email"
-              name="sb-email"
-            />
-          </div>
+          {step === "verify" ? (
+            <form onSubmit={handleVerify} className="space-y-6" autoComplete="off" noValidate>
+              <div className="flex justify-center">
+                <InputOTP maxLength={6} value={code} onChange={setCode}>
+                  <InputOTPGroup>
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                      <InputOTPSlot key={i} index={i} className="h-12 w-12 text-xl" />
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="bg-background/50 pr-10"
-                autoComplete="new-password"
-              />
+              <button
+                type="submit"
+                disabled={loading || code.length !== 6}
+                className="w-full px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Verify & Continue"
+                )}
+              </button>
+
+              <div className="flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep("form")}
+                  className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resendSeconds > 0 || resending}
+                  className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {resending ? "Sending..." : resendSeconds > 0 ? `Resend in ${resendSeconds}s` : "Resend code"}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleSignup} className="space-y-4" autoComplete="off" noValidate>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  className="bg-background/50"
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  inputMode="email"
+                  name="sb-email"
+                  data-form-type="other"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="bg-background/50 pr-10"
+                    autoComplete="new-password"
+                    name="sb-pass"
+                    data-form-type="other"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="bg-background/50"
+                  autoComplete="new-password"
+                  name="sb-pass-confirm"
+                  data-form-type="other"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending code...
+                  </>
+                ) : (
+                  "Create account"
+                )}
+              </button>
+
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                onClick={() => navigate("/start/blocks")}
+                className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                Back
               </button>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              type={showPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              className="bg-background/50"
-              autoComplete="new-password"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Creating account...
-              </>
-            ) : (
-              "Create account & save"
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => navigate("/start/blocks")}
-            className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
-          >
-            Back
-          </button>
-        </form>
+            </form>
+          )}
 
         <p className="text-center text-sm text-muted-foreground">
           You only pay when you're ready to launch
