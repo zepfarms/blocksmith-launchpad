@@ -49,7 +49,7 @@ export const OnboardingLayout = () => {
   const backPath = backPathMap[location.pathname];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-border z-50">
         <div

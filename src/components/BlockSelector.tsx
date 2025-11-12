@@ -98,7 +98,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
   };
 
   return (
-    <section className="relative min-h-screen py-32 px-6">
+    <section className="relative min-h-screen py-32 px-6 overflow-hidden max-w-full">
       {/* Background ambient glow */}
       <div className="absolute top-1/3 left-1/2 w-[800px] h-[800px] bg-neon-cyan/10 rounded-full blur-[150px] -translate-x-1/2" />
       

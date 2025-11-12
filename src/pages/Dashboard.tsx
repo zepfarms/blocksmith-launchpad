@@ -205,7 +205,7 @@ const Dashboard = () => {
   const readyCount = items.filter((item) => item.status === "ready").length;
 
   return (
-    <div className="min-h-screen px-6 pt-32 pb-12">
+    <div className="relative min-h-screen px-6 pt-32 pb-12 overflow-hidden overflow-x-hidden">
       <Header />
       {/* Background ambient effects */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />

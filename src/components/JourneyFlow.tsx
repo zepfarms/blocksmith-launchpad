@@ -211,7 +211,7 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
   const totalSteps = 5;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-20">
+    <div className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
       {/* Background ambient effects */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-neon-cyan/20 blur-[120px] animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-electric-indigo/20 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
