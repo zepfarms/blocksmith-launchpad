@@ -14,6 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
+      blocks_pricing: {
+        Row: {
+          block_name: string
+          created_at: string
+          id: string
+          is_free: boolean
+          price_cents: number
+          stripe_price_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          block_name: string
+          created_at?: string
+          id?: string
+          is_free?: boolean
+          price_cents?: number
+          stripe_price_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          block_name?: string
+          created_at?: string
+          id?: string
+          is_free?: boolean
+          price_cents?: number
+          stripe_price_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_verifications: {
+        Row: {
+          attempts: number
+          code: string
+          created_at: string
+          created_ip: string | null
+          email: string
+          expires_at: string
+          id: string
+          used: boolean
+        }
+        Insert: {
+          attempts?: number
+          code: string
+          created_at?: string
+          created_ip?: string | null
+          email: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+        }
+        Update: {
+          attempts?: number
+          code?: string
+          created_at?: string
+          created_ip?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+        }
+        Relationships: []
+      }
+      logo_generation_sessions: {
+        Row: {
+          ai_prompt: string | null
+          business_id: string
+          created_at: string | null
+          generation_number: number | null
+          id: string
+          logo_urls: string[] | null
+          user_feedback: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_prompt?: string | null
+          business_id: string
+          created_at?: string | null
+          generation_number?: number | null
+          id?: string
+          logo_urls?: string[] | null
+          user_feedback?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_prompt?: string | null
+          business_id?: string
+          created_at?: string | null
+          generation_number?: number | null
+          id?: string
+          logo_urls?: string[] | null
+          user_feedback?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logo_generation_sessions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -35,6 +139,80 @@ export type Database = {
         }
         Relationships: []
       }
+      user_assets: {
+        Row: {
+          asset_type: string
+          business_id: string
+          created_at: string | null
+          file_url: string
+          id: string
+          metadata: Json | null
+          status: string
+          thumbnail_url: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          asset_type: string
+          business_id: string
+          created_at?: string | null
+          file_url: string
+          id?: string
+          metadata?: Json | null
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          asset_type?: string
+          business_id?: string
+          created_at?: string | null
+          file_url?: string
+          id?: string
+          metadata?: Json | null
+          status?: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_assets_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_block_purchases: {
+        Row: {
+          block_name: string
+          id: string
+          price_paid_cents: number
+          purchased_at: string
+          stripe_payment_intent_id: string | null
+          user_id: string
+        }
+        Insert: {
+          block_name: string
+          id?: string
+          price_paid_cents: number
+          purchased_at?: string
+          stripe_payment_intent_id?: string | null
+          user_id: string
+        }
+        Update: {
+          block_name?: string
+          id?: string
+          price_paid_cents?: number
+          purchased_at?: string
+          stripe_payment_intent_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_businesses: {
         Row: {
           ai_analysis: string | null
@@ -42,8 +220,11 @@ export type Database = {
           business_name: string
           created_at: string
           id: string
+          payment_status: string | null
           selected_blocks: string[] | null
           status: string | null
+          stripe_session_id: string | null
+          total_cost_cents: number | null
           updated_at: string
           user_id: string
         }
@@ -53,8 +234,11 @@ export type Database = {
           business_name: string
           created_at?: string
           id?: string
+          payment_status?: string | null
           selected_blocks?: string[] | null
           status?: string | null
+          stripe_session_id?: string | null
+          total_cost_cents?: number | null
           updated_at?: string
           user_id: string
         }
@@ -64,8 +248,11 @@ export type Database = {
           business_name?: string
           created_at?: string
           id?: string
+          payment_status?: string | null
           selected_blocks?: string[] | null
           status?: string | null
+          stripe_session_id?: string | null
+          total_cost_cents?: number | null
           updated_at?: string
           user_id?: string
         }

@@ -1,4 +1,4 @@
-import { Users, BarChart3, Brain, Settings } from "lucide-react";
+import { Users, DollarSign } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -14,10 +14,8 @@ import {
 } from "@/components/ui/sidebar";
 
 const adminItems = [
-  { title: "Users", url: "/admin", icon: Users, end: true },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-  { title: "AI Usage", url: "/admin/ai-usage", icon: Brain },
-  { title: "Settings", url: "/admin/settings", icon: Settings },
+  { title: "Dashboard", url: "/admin", icon: Users, end: true },
+  { title: "Pricing", url: "/admin/pricing", icon: DollarSign },
 ];
 
 export function AdminSidebar() {

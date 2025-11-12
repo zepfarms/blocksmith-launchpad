@@ -8,6 +8,8 @@ import { OnboardingProvider } from "./contexts/OnboardingContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import AdminPricing from "./pages/admin/Pricing";
+import AppStore from "./pages/dashboard/AppStore";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
 import Privacy from "./pages/Privacy";
@@ -37,7 +39,9 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/logos" element={<LogoGeneration />} />
+              <Route path="/dashboard/app-store" element={<AppStore />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
