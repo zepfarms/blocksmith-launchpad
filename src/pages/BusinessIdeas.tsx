@@ -74,7 +74,7 @@ const BusinessIdeas = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 py-20">
+      <main className="container mx-auto px-4 pt-24 pb-20">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-bold mb-4 text-center">Business Ideas</h1>
           <p className="text-xl text-muted-foreground mb-12 text-center max-w-2xl mx-auto">
