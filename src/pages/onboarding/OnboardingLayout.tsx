@@ -58,21 +58,24 @@ export const OnboardingLayout = () => {
         />
       </div>
 
+      {/* Fixed Header with Solid Background */}
+      <div className="fixed top-0 left-0 right-0 h-20 bg-black z-40 pt-1" />
+
       {/* Back Button */}
       {backPath && (
-        <div className="fixed top-8 left-4 sm:left-8 z-40">
+        <div className="fixed top-6 left-4 z-40">
           <button
             onClick={() => navigate(backPath)}
-            className="gap-2 px-6 py-3 border-2 border-white/20 text-white rounded-full font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
+            className="gap-1.5 px-4 py-2 border-2 border-white/20 text-white rounded-full text-sm font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             Back
           </button>
         </div>
       )}
 
       {/* Breadcrumb Navigation */}
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-40">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
