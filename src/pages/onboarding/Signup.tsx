@@ -68,6 +68,13 @@ export const Signup = () => {
         source = { ...source, ...pending };
       }
     } catch {}
+    // Ensure we have a valid, matching session before inserting (prevents RLS violation)
+    const { data: sessionData } = await supabase.auth.getSession();
+    const activeUserId = sessionData.session?.user?.id;
+    if (!activeUserId || activeUserId !== user.id) {
+      console.warn('Skipped insert: no active session or mismatched user.');
+      return;
+    }
 
     const { error } = await supabase.from('user_businesses').insert({
       user_id: user.id,
@@ -164,9 +171,9 @@ export const Signup = () => {
             selectedBlocks: data.selectedBlocks
           }));
         } catch {}
-        if (authData.session?.user) {
-          await saveBusinessData(authData.session.user);
-        }
+        // Do not attempt DB insert here; wait until real session is active
+        // The deferred save will run after verification/sign-in
+
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to create account");
