@@ -35,10 +35,10 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
     }
   };
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden bg-black">
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden bg-black max-w-full">
       {/* Grid pattern overlay */}
       <div 
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-10 max-w-full"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
@@ -46,10 +46,10 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
         }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12">
+      <div className="relative z-10 max-w-6xl mx-auto text-center space-y-12 w-full">
         {/* Main headline */}
-        <div className="space-y-6 pt-20 px-4">
-          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+        <div className="space-y-6 pt-20 px-4 max-w-full">
+          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight max-w-full break-words px-2">
             <span className="block text-white">
               Turn Ideas Into
             </span>
@@ -59,13 +59,13 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4 px-2">
+          <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4 px-2 break-words">
             The AI business partner that never sleeps.
           </p>
         </div>
 
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-8 px-4 w-full">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-8 px-4 w-full max-w-full">
           <button
             onClick={onCTAClick}
             className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-white text-black rounded-full font-medium text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"

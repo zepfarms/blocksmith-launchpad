@@ -18,9 +18,9 @@ const Index = () => {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden max-w-full w-full">
       <Header />
-      <HeroSection 
+      <HeroSection
         onCTAClick={handleHeroCTA} 
         onSignInClick={() => setShowAuthModal(true)}
       />

@@ -55,37 +55,37 @@ export const ExampleIdeasSection = () => {
   ];
 
   return (
-    <section className="bg-black text-white py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold mb-4 text-center">
+    <section className="bg-black text-white py-20 overflow-hidden max-w-full">
+      <div className="container mx-auto px-4 max-w-full">
+        <div className="max-w-6xl mx-auto w-full">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-center px-2 break-words">
             Example Ideas We Can Launch
           </h2>
-          <p className="text-xl text-gray-400 mb-16 text-center">
+          <p className="text-lg sm:text-xl text-gray-400 mb-16 text-center px-2 break-words">
             Over 500 Business tasks and growing
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 px-2">
             {examples.map((example, index) => {
               const Icon = example.icon;
               return (
                 <div
                   key={index}
-                  className="bg-white/5 border border-white/10 rounded-3xl p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:border-neon-cyan/30 hover:scale-[1.02] cursor-pointer group"
+                  className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:border-neon-cyan/30 md:hover:scale-[1.02] cursor-pointer group max-w-full"
                 >
-                  <div className="bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] group-hover:border-neon-cyan transition-all duration-300">
+                  <div className="bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] group-hover:border-neon-cyan transition-all duration-300 flex-shrink-0">
                     <Icon className="w-8 h-8 text-white group-hover:text-neon-cyan transition-colors duration-300" />
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-6 break-words">
                     "{example.title}"
                   </h3>
 
-                  <ul className="space-y-3">
+                  <ul className="space-y-3 min-w-0">
                     {example.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-3 text-gray-400">
+                      <li key={itemIndex} className="flex items-start gap-3 text-gray-400 min-w-0">
                         <ArrowRight className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
+                        <span className="break-words min-w-0 flex-1">{item}</span>
                       </li>
                     ))}
                   </ul>

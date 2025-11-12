@@ -2,19 +2,19 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12 mb-8 sm:mb-12">
-          <div className="space-y-3 sm:space-y-4 text-center md:text-left w-full md:w-auto">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+    <footer className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 border-t border-white/5 overflow-hidden max-w-full">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12 mb-8 sm:mb-12 max-w-full">
+          <div className="space-y-3 sm:space-y-4 text-center md:text-left w-full md:w-auto max-w-full">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
               SpaceBlocks
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground font-light tracking-wide">
+            <p className="text-xs sm:text-sm text-muted-foreground font-light tracking-wide break-words">
               Build your business with AI + real humans
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 w-full md:w-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 w-full md:w-auto max-w-full">
             <div>
               <h4 className="font-semibold mb-2 sm:mb-3 text-white text-sm sm:text-base">Product</h4>
               <ul className="space-y-1.5 sm:space-y-2">
@@ -85,31 +85,31 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="text-center md:text-left space-y-2 sm:space-y-3 mb-8 sm:mb-0 md:hidden">
-          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+        <div className="text-center md:text-left space-y-2 sm:space-y-3 mb-8 sm:mb-0 md:hidden max-w-full px-2">
+          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
             Real business.
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent break-words">
             Real customers.
           </p>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+          <p className="text-lg sm:text-xl md:text-2xl font-bold text-foreground break-words">
             Real results.
           </p>
         </div>
 
-        <div className="hidden md:block text-center md:text-right space-y-3 mb-8">
-          <p className="text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent">
+        <div className="hidden md:block text-center md:text-right space-y-3 mb-8 max-w-full">
+          <p className="text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
             Real business.
           </p>
-          <p className="text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+          <p className="text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent break-words">
             Real customers.
           </p>
-          <p className="text-2xl font-bold text-foreground">
+          <p className="text-2xl font-bold text-foreground break-words">
             Real results.
           </p>
         </div>
 
-        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
+        <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 max-w-full">
           <p className="text-xs sm:text-sm text-muted-foreground/60 font-light text-center md:text-left">
             &copy; 2025 SpaceBlocks.ai — Launch fast, not someday.
           </p>
