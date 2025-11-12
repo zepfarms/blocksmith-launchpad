@@ -17,18 +17,22 @@ export function AnalyticsCards() {
 
   const loadStats = async () => {
     try {
-      const [profilesData, businessesData, logosData, launchedData] =
-        await Promise.all([
-          supabase.from("profiles").select("id", { count: "exact" }) as any,
-          supabase.from("user_businesses").select("id", { count: "exact" }) as any,
-          supabase
-            .from("logo_generation_sessions")
-            .select("id", { count: "exact" }) as any,
-          supabase
-            .from("user_businesses")
-            .select("id", { count: "exact" })
-            .eq("status", "launched") as any,
-        ]);
+      const profilesData = await supabase
+        .from("profiles")
+        .select("id", { count: "exact", head: true });
+      
+      const businessesData = await supabase
+        .from("user_businesses")
+        .select("id", { count: "exact", head: true });
+      
+      const logosData = await (supabase as any)
+        .from("logo_generation_sessions")
+        .select("id", { count: "exact", head: true });
+      
+      const launchedData = await supabase
+        .from("user_businesses")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "launched");
 
       setStats({
         totalUsers: profilesData.count || 0,

@@ -31,26 +31,27 @@ export function UsersTable() {
 
   const loadUsers = async () => {
     try {
-      const { data, error } = await supabase
+      const businessQuery = await supabase
         .from("user_businesses")
         .select("business_name, business_idea, selected_blocks, status, created_at, user_id, profiles!inner(email)")
-        .order("created_at", { ascending: false }) as any;
+        .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (businessQuery.error) throw businessQuery.error;
 
       // Get logo counts for each user
-      const userIds = data?.map((u: any) => u.user_id) || [];
-      const { data: logoData } = await supabase
+      const userIds = businessQuery.data?.map((u: any) => u.user_id) || [];
+      
+      const logoQuery = await (supabase as any)
         .from("logo_generation_sessions")
         .select("user_id")
-        .in("user_id", userIds) as any;
+        .in("user_id", userIds);
 
-      const logoCounts = logoData?.reduce((acc: any, session: any) => {
+      const logoCounts = logoQuery.data?.reduce((acc: any, session: any) => {
         acc[session.user_id] = (acc[session.user_id] || 0) + 1;
         return acc;
       }, {} as Record<string, number>) || {};
 
-      const formattedUsers = data?.map((user: any) => ({
+      const formattedUsers = businessQuery.data?.map((user: any) => ({
         email: user.profiles.email,
         business_name: user.business_name,
         business_idea: user.business_idea,
