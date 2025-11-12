@@ -580,143 +580,118 @@ const Dashboard = () => {
 
           <TabsContent value="briefcase" className="mt-8 space-y-6">
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-foreground">Your Assets</h2>
-              <p className="text-muted-foreground">All your generated and saved business assets in one place</p>
+              <h2 className="text-3xl font-bold text-foreground">My Apps</h2>
+              <p className="text-muted-foreground">All your saved business assets ({savedAssets.length})</p>
             </div>
 
-            {/* Logos Section */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-semibold text-foreground">Logos</h3>
-                <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20">
-                  {savedAssets.filter(a => a.asset_type === 'logo').length} saved
-                </Badge>
+            {savedAssets.length === 0 ? (
+              <div className="glass-card p-12 rounded-3xl border border-white/10 text-center">
+                <p className="text-muted-foreground">No assets saved yet. Generate and save assets from the Dashboard.</p>
               </div>
-
-              {savedAssets.filter(a => a.asset_type === 'logo').length === 0 ? (
-                <div className="glass-card p-12 rounded-3xl border border-white/10 text-center">
-                  <p className="text-muted-foreground">No logos saved yet. Generate and save logos from the Dashboard.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {savedAssets.filter(a => a.asset_type === 'logo').map((asset) => (
-                    <div
-                      key={asset.id}
-                      className={cn(
-                        "glass-card rounded-2xl border overflow-hidden transition-all",
-                        asset.status === 'approved'
-                          ? "border-neon-cyan/50 bg-neon-cyan/5"
-                          : "border-white/10"
-                      )}
-                    >
-                      <div className="relative aspect-square bg-gradient-to-br from-white/5 to-white/10 p-8">
-                        <div
-                          className="absolute inset-0 opacity-10"
-                          style={{
-                            backgroundImage: `
-                              linear-gradient(45deg, #ccc 25%, transparent 25%),
-                              linear-gradient(-45deg, #ccc 25%, transparent 25%),
-                              linear-gradient(45deg, transparent 75%, #ccc 75%),
-                              linear-gradient(-45deg, transparent 75%, #ccc 75%)
-                            `,
-                            backgroundSize: '20px 20px',
-                            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-                          }}
-                        />
-                        
-                        <img
-                          src={asset.file_url}
-                          alt={`Logo ${asset.metadata?.logo_number || ''}`}
-                          className="relative w-full h-full object-contain"
-                        />
-                      </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {savedAssets.map((asset) => (
+                  <div
+                    key={asset.id}
+                    className={cn(
+                      "glass-card rounded-2xl border overflow-hidden transition-all group",
+                      asset.status === 'approved'
+                        ? "border-neon-cyan/50 bg-neon-cyan/5"
+                        : "border-white/10"
+                    )}
+                  >
+                    {/* Asset Preview */}
+                    <div className="relative aspect-square bg-gradient-to-br from-white/5 to-white/10 p-4">
+                      <div
+                        className="absolute inset-0 opacity-10"
+                        style={{
+                          backgroundImage: `
+                            linear-gradient(45deg, #ccc 25%, transparent 25%),
+                            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                            linear-gradient(45deg, transparent 75%, #ccc 75%),
+                            linear-gradient(-45deg, transparent 75%, #ccc 75%)
+                          `,
+                          backgroundSize: '20px 20px',
+                          backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+                        }}
+                      />
                       
-                      <div className="p-4 border-t border-white/10 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm text-muted-foreground">
-                            Logo {asset.metadata?.logo_number || ''}
-                          </p>
-                          {asset.status === 'approved' && (
-                            <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 text-xs">
-                              Approved ✓
-                            </Badge>
-                          )}
-                        </div>
+                      <img
+                        src={asset.file_url}
+                        alt={`${asset.asset_type} ${asset.metadata?.logo_number || ''}`}
+                        className="relative w-full h-full object-contain"
+                      />
+                    </div>
+                    
+                    {/* Asset Info */}
+                    <div className="p-3 border-t border-white/10 space-y-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <Badge className="bg-primary/10 text-primary border-primary/30 text-[10px]">
+                          {asset.asset_type.toUpperCase()}
+                        </Badge>
+                        {asset.status === 'approved' && (
+                          <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 text-[10px]">
+                            ✓
+                          </Badge>
+                        )}
+                      </div>
 
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex-1 rounded-full"
-                            onClick={() => window.open(asset.file_url, '_blank')}
-                          >
-                            <Eye className="w-3 h-3 mr-1" />
-                            Preview
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex-1 rounded-full"
-                            onClick={async () => {
-                              const response = await fetch(asset.file_url);
-                              const blob = await response.blob();
-                              const url = window.URL.createObjectURL(blob);
-                              const link = document.createElement('a');
-                              link.href = url;
-                              link.download = `logo-${asset.metadata?.logo_number || 'download'}.png`;
-                              document.body.appendChild(link);
-                              link.click();
-                              window.URL.revokeObjectURL(url);
-                              document.body.removeChild(link);
-                            }}
-                          >
-                            <Download className="w-3 h-3 mr-1" />
-                            Download
-                          </Button>
-                        </div>
+                      {/* Actions */}
+                      <div className="flex gap-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 rounded-full text-xs h-7"
+                          onClick={() => window.open(asset.file_url, '_blank')}
+                        >
+                          <Eye className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 rounded-full text-xs h-7"
+                          onClick={async () => {
+                            const response = await fetch(asset.file_url);
+                            const blob = await response.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `${asset.asset_type}-${asset.metadata?.logo_number || 'download'}.png`;
+                            document.body.appendChild(link);
+                            link.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(link);
+                          }}
+                        >
+                          <Download className="w-3 h-3" />
+                        </Button>
+                      </div>
 
-                        <div className="flex gap-2">
-                          {asset.status !== 'approved' && (
-                            <Button
-                              size="sm"
-                              className="flex-1 rounded-full bg-white text-black hover:bg-gray-100"
-                              onClick={() => handleApproveAsset(asset.id)}
-                            >
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Approve
-                            </Button>
-                          )}
+                      <div className="flex gap-1">
+                        {asset.status !== 'approved' && (
                           <Button
                             size="sm"
-                            variant="outline"
-                            className="flex-1 rounded-full border-red-500/20 text-red-400 hover:bg-red-500/10"
-                            onClick={() => handleDeleteAsset(asset.id)}
+                            className="flex-1 rounded-full bg-white text-black hover:bg-gray-100 text-xs h-7"
+                            onClick={() => handleApproveAsset(asset.id)}
                           >
-                            <Trash2 className="w-3 h-3 mr-1" />
-                            Delete
+                            <CheckCircle2 className="w-3 h-3 mr-1" />
+                            Approve
                           </Button>
-                        </div>
+                        )}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 rounded-full border-red-500/20 text-red-400 hover:bg-red-500/10 text-xs h-7"
+                          onClick={() => handleDeleteAsset(asset.id)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Other Asset Types - Coming Soon */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">Business Cards</h3>
-              <div className="glass-card p-8 rounded-3xl border border-white/10 text-center">
-                <p className="text-muted-foreground">Coming soon...</p>
+                  </div>
+                ))}
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">Social Media Kit</h3>
-              <div className="glass-card p-8 rounded-3xl border border-white/10 text-center">
-                <p className="text-muted-foreground">Coming soon...</p>
-              </div>
-            </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>

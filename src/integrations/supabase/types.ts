@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           block_name: string
           created_at: string
+          description: string | null
           id: string
           is_free: boolean
           price_cents: number
@@ -27,6 +28,7 @@ export type Database = {
         Insert: {
           block_name: string
           created_at?: string
+          description?: string | null
           id?: string
           is_free?: boolean
           price_cents?: number
@@ -36,6 +38,7 @@ export type Database = {
         Update: {
           block_name?: string
           created_at?: string
+          description?: string | null
           id?: string
           is_free?: boolean
           price_cents?: number
