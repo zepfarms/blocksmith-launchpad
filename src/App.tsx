@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { OnboardingProvider } from "./contexts/OnboardingContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
 import Privacy from "./pages/Privacy";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/logos" element={<LogoGeneration />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
