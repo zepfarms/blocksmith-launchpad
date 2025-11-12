@@ -71,22 +71,24 @@ export const OnboardingLayout = () => {
         </div>
       )}
 
-      {/* Breadcrumb Navigation */}
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
-                Home
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      {/* Breadcrumb Navigation - Hidden on signup page */}
+      {location.pathname !== "/start/signup" && (
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      )}
 
       {/* Main Content */}
       <Outlet />

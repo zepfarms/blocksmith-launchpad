@@ -23,16 +23,24 @@ export const Signup = () => {
   }, [data.selectedBlocks, navigate]);
 
   const saveBusinessData = async (user: any) => {
-    const { error } = await supabase.from('user_businesses').insert({
+    console.log('Attempting to save business data:', {
       user_id: user.id,
       business_name: data.businessName || "New Business",
       business_idea: data.businessIdea,
+      selected_blocks: data.selectedBlocks
+    });
+
+    const { error } = await supabase.from('user_businesses').insert({
+      user_id: user.id,
+      business_name: data.businessName || "New Business",
+      business_idea: data.businessIdea || "New business idea",
       ai_analysis: data.aiAnalysis,
       selected_blocks: data.selectedBlocks,
       status: 'building'
     });
 
     if (error) {
+      console.error('Database insert error:', error);
       toast.error("We couldn't save your business information. Please try again.");
       return;
     }
