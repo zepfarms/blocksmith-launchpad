@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      block_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      block_category_assignments: {
+        Row: {
+          block_name: string
+          category_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          block_name: string
+          category_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          block_name?: string
+          category_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "block_category_assignments_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "block_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blocks_pricing: {
         Row: {
           block_name: string

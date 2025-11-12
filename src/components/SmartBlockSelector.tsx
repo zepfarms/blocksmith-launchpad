@@ -101,8 +101,43 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
   const [allBlocks, setAllBlocks] = useState<Block[]>([]);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [showAllBlocks, setShowAllBlocks] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
+  const [blockCategoryMap, setBlockCategoryMap] = useState<Map<string, string[]>>(new Map());
   const [pricingData, setPricingData] = useState<Map<string, BlockPricing>>(new Map());
   const [infoModalBlock, setInfoModalBlock] = useState<Block | null>(null);
+
+  // Load categories and assignments
+  useEffect(() => {
+    const loadCategories = async () => {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data: categoriesData } = await supabase
+        .from('block_categories')
+        .select('id, name')
+        .order('display_order', { ascending: true });
+
+      const { data: assignmentsData } = await supabase
+        .from('block_category_assignments')
+        .select('block_name, category_id');
+
+      if (categoriesData) {
+        setCategories(categoriesData);
+      }
+
+      if (assignmentsData) {
+        const categoryMap = new Map<string, string[]>();
+        assignmentsData.forEach((assignment) => {
+          if (!categoryMap.has(assignment.block_name)) {
+            categoryMap.set(assignment.block_name, []);
+          }
+          categoryMap.get(assignment.block_name)!.push(assignment.category_id);
+        });
+        setBlockCategoryMap(categoryMap);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   // Load pricing data from database
   useEffect(() => {
@@ -188,8 +223,14 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
     !combinedStarterNames.includes(b.title) && !growthBlockNames.includes(b.title)
   );
 
-  const freeBlocks = otherBlocks.filter(b => b.isFree);
-  const paidBlocks = otherBlocks.filter(b => !b.isFree);
+  // Filter other blocks by category
+  const filteredOtherBlocks = otherBlocks.filter(block => {
+    if (selectedCategory === "all") return true;
+    return (blockCategoryMap.get(block.title) || []).includes(selectedCategory);
+  });
+
+  const freeBlocks = filteredOtherBlocks.filter(b => b.isFree);
+  const paidBlocks = filteredOtherBlocks.filter(b => !b.isFree);
 
   const toggleBlock = (id: string) => {
     setSelectedBlocks(prev =>
@@ -292,6 +333,35 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
         {/* All Other Blocks (Free vs Paid split) */}
         {showAllBlocks && (
           <div className="space-y-8 animate-slide-up-fade">
+            {/* Category Filter Pills */}
+            {categories.length > 0 && (
+              <div className="flex flex-wrap gap-2 justify-center">
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className={`px-4 py-2 rounded-full border-2 transition-all ${
+                    selectedCategory === "all"
+                      ? "bg-white text-black border-white"
+                      : "bg-transparent text-white border-white/20 hover:border-white/40"
+                  }`}
+                >
+                  All
+                </button>
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-4 py-2 rounded-full border-2 transition-all ${
+                      selectedCategory === category.id
+                        ? "bg-white text-black border-white"
+                        : "bg-transparent text-white border-white/20 hover:border-white/40"
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {/* Free Blocks */}
             {freeBlocks.length > 0 && (
               <div className="space-y-4">

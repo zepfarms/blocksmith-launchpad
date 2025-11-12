@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import AdminPricing from "./pages/admin/Pricing";
+import AdminCategories from "./pages/admin/Categories";
 import AppStore from "./pages/dashboard/AppStore";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
@@ -42,6 +43,7 @@ function App() {
               <Route path="/dashboard/app-store" element={<AppStore />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
+              <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />

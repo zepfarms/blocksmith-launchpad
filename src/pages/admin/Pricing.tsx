@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Pencil, Save, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface BlockPricing {
   id: string;
@@ -25,6 +26,16 @@ interface BlockPricing {
   is_free: boolean;
   stripe_price_id: string | null;
   description: string | null;
+}
+
+interface BlockCategory {
+  id: string;
+  name: string;
+}
+
+interface CategoryAssignment {
+  category_id: string;
+  block_name: string;
 }
 
 export default function AdminPricing() {
@@ -36,6 +47,9 @@ export default function AdminPricing() {
   const [editPrice, setEditPrice] = useState("");
   const [editIsFree, setEditIsFree] = useState(false);
   const [editDescription, setEditDescription] = useState("");
+  const [categories, setCategories] = useState<BlockCategory[]>([]);
+  const [blockCategories, setBlockCategories] = useState<Record<string, string[]>>({});
+  const [editCategories, setEditCategories] = useState<string[]>([]);
 
   useEffect(() => {
     checkAdminAccess();
@@ -44,6 +58,7 @@ export default function AdminPricing() {
   useEffect(() => {
     if (isAdmin) {
       loadPricing();
+      loadCategories();
     }
   }, [isAdmin]);
 
@@ -101,17 +116,44 @@ export default function AdminPricing() {
     setPricingData(mappedData);
   };
 
+  const loadCategories = async () => {
+    const { data: categoriesData } = await supabase
+      .from("block_categories")
+      .select("id, name")
+      .order("display_order", { ascending: true });
+
+    const { data: assignmentsData } = await supabase
+      .from("block_category_assignments")
+      .select("block_name, category_id");
+
+    if (categoriesData) {
+      setCategories(categoriesData);
+    }
+
+    if (assignmentsData) {
+      const assignments: Record<string, string[]> = {};
+      assignmentsData.forEach((assignment) => {
+        if (!assignments[assignment.block_name]) {
+          assignments[assignment.block_name] = [];
+        }
+        assignments[assignment.block_name].push(assignment.category_id);
+      });
+      setBlockCategories(assignments);
+    }
+  };
+
   const handleEdit = (block: BlockPricing) => {
     setEditingId(block.id);
     setEditPrice((block.price_cents / 100).toFixed(2));
     setEditIsFree(block.is_free);
     setEditDescription(block.description || "");
+    setEditCategories(blockCategories[block.block_name] || []);
   };
 
-  const handleSave = async (id: string) => {
+  const handleSave = async (id: string, blockName: string) => {
     const priceCents = Math.round(parseFloat(editPrice) * 100);
     
-    const { error } = await supabase
+    const { error: pricingError } = await supabase
       .from("blocks_pricing")
       .update({
         price_cents: priceCents,
@@ -120,13 +162,38 @@ export default function AdminPricing() {
       })
       .eq("id", id);
 
-    if (error) {
+    if (pricingError) {
       toast.error("Failed to update pricing");
       return;
     }
 
+    // Update category assignments
+    // First delete existing assignments
+    await supabase
+      .from("block_category_assignments")
+      .delete()
+      .eq("block_name", blockName);
+
+    // Then insert new assignments
+    if (editCategories.length > 0) {
+      const assignments = editCategories.map(categoryId => ({
+        block_name: blockName,
+        category_id: categoryId
+      }));
+
+      const { error: assignmentError } = await supabase
+        .from("block_category_assignments")
+        .insert(assignments);
+
+      if (assignmentError) {
+        toast.error("Failed to update categories");
+        return;
+      }
+    }
+
     setEditingId(null);
     loadPricing();
+    loadCategories();
   };
 
   const handleCancel = () => {
@@ -134,6 +201,15 @@ export default function AdminPricing() {
     setEditPrice("");
     setEditIsFree(false);
     setEditDescription("");
+    setEditCategories([]);
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setEditCategories(prev => 
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
   };
 
   if (loading) {
@@ -169,7 +245,8 @@ export default function AdminPricing() {
                   <TableHead>Block Name</TableHead>
                   <TableHead>Price (USD)</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="w-[300px]">Description</TableHead>
+                  <TableHead className="w-[200px]">Description</TableHead>
+                  <TableHead>Categories</TableHead>
                   <TableHead>Stripe Price ID</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -207,18 +284,50 @@ export default function AdminPricing() {
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell className="max-w-[300px]">
+                    <TableCell className="max-w-[200px]">
                       {editingId === block.id ? (
                         <Textarea
                           value={editDescription}
                           onChange={(e) => setEditDescription(e.target.value)}
-                          rows={3}
-                          className="min-h-[80px]"
+                          rows={2}
+                          className="min-h-[60px]"
                           placeholder="Add description..."
                         />
                       ) : (
                         <div className="line-clamp-2 text-sm text-muted-foreground">
                           {block.description || "No description"}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === block.id ? (
+                        <div className="flex flex-wrap gap-2 max-w-[200px]">
+                          {categories.map(cat => (
+                            <label key={cat.id} className="flex items-center gap-1 text-sm">
+                              <Checkbox
+                                checked={editCategories.includes(cat.id)}
+                                onCheckedChange={() => toggleCategory(cat.id)}
+                              />
+                              <span>{cat.name}</span>
+                            </label>
+                          ))}
+                          {categories.length === 0 && (
+                            <span className="text-xs text-muted-foreground">No categories</span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap gap-1">
+                          {(blockCategories[block.block_name] || []).map(catId => {
+                            const cat = categories.find(c => c.id === catId);
+                            return cat ? (
+                              <Badge key={catId} variant="outline" className="text-xs">
+                                {cat.name}
+                              </Badge>
+                            ) : null;
+                          })}
+                          {(!blockCategories[block.block_name] || blockCategories[block.block_name].length === 0) && (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
                         </div>
                       )}
                     </TableCell>
@@ -230,7 +339,7 @@ export default function AdminPricing() {
                         <div className="flex justify-end gap-2">
                           <Button
                             size="sm"
-                            onClick={() => handleSave(block.id)}
+                            onClick={() => handleSave(block.id, block.block_name)}
                             className="rounded-full"
                           >
                             <Save className="h-4 w-4" />

@@ -67,10 +67,44 @@ export default function AppStore() {
   const navigate = useNavigate();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
+  const [blockCategoryMap, setBlockCategoryMap] = useState<Map<string, string[]>>(new Map());
   const [cart, setCart] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [infoModalBlock, setInfoModalBlock] = useState<Block | null>(null);
   const [pricingData, setPricingData] = useState<Map<string, BlockPricing>>(new Map());
+
+  // Load categories and assignments
+  useEffect(() => {
+    const loadCategories = async () => {
+      const { data: categoriesData } = await supabase
+        .from('block_categories')
+        .select('id, name')
+        .order('display_order', { ascending: true });
+
+      const { data: assignmentsData } = await supabase
+        .from('block_category_assignments')
+        .select('block_name, category_id');
+
+      if (categoriesData) {
+        setCategories(categoriesData);
+      }
+
+      if (assignmentsData) {
+        const categoryMap = new Map<string, string[]>();
+        assignmentsData.forEach((assignment) => {
+          if (!categoryMap.has(assignment.block_name)) {
+            categoryMap.set(assignment.block_name, []);
+          }
+          categoryMap.get(assignment.block_name)!.push(assignment.category_id);
+        });
+        setBlockCategoryMap(categoryMap);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   // Load pricing data
   useEffect(() => {
@@ -137,9 +171,15 @@ export default function AppStore() {
       });
   }, [pricingData]);
 
-  const filteredBlocks = blocks.filter(block =>
-    block.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredBlocks = blocks.filter(block => {
+    const matchesSearch = block.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      block.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = selectedCategory === "all" || 
+      (blockCategoryMap.get(block.title) || []).includes(selectedCategory);
+    
+    return matchesSearch && matchesCategory;
+  });
 
   const toggleCart = (blockId: string) => {
     setCart(prev =>
@@ -212,7 +252,7 @@ export default function AppStore() {
             Browse and add new blocks to your business
           </p>
 
-          <div className="relative max-w-md">
+          <div className="relative max-w-md mb-6">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
               type="text"
@@ -222,6 +262,34 @@ export default function AppStore() {
               className="pl-10 rounded-full bg-white/5 border-white/20"
             />
           </div>
+
+          {categories.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className={`px-4 py-2 rounded-full border-2 transition-all ${
+                  selectedCategory === "all"
+                    ? "bg-white text-black border-white"
+                    : "bg-transparent text-white border-white/20 hover:border-white/40"
+                }`}
+              >
+                All
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-full border-2 transition-all ${
+                    selectedCategory === category.id
+                      ? "bg-white text-black border-white"
+                      : "bg-transparent text-white border-white/20 hover:border-white/40"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
