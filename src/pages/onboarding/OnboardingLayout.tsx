@@ -58,12 +58,9 @@ export const OnboardingLayout = () => {
         />
       </div>
 
-      {/* Fixed Header Background - Solid black to prevent content showing through */}
-      <div className="fixed top-0 left-0 right-0 h-24 bg-black z-40" />
-
       {/* Back Button */}
       {backPath && (
-        <div className="fixed top-8 left-4 sm:left-8 z-50">
+        <div className="fixed top-8 left-4 sm:left-8 z-40">
           <button
             onClick={() => navigate(backPath)}
             className="gap-2 px-6 py-3 border-2 border-white/20 text-white rounded-full font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
@@ -74,29 +71,25 @@ export const OnboardingLayout = () => {
         </div>
       )}
 
-      {/* Breadcrumb Navigation - Hidden on signup page */}
-      {location.pathname !== "/start/signup" && (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
-                  Home
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      )}
+      {/* Breadcrumb Navigation */}
+      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-40">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
+                Home
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
 
       {/* Main Content */}
-      <div className="pt-20">
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 };

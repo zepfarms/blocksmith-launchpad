@@ -1,42 +1,45 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@4.0.0";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const requestSchema = z.object({
-  userEmail: z.string().email().max(255),
-  businessName: z.string().trim().min(1).max(100),
-  businessIdea: z.string().trim().min(5).max(500),
-  selectedBlocks: z.array(z.string().max(100)).max(50),
-  aiAnalysis: z.string().max(2000).optional()
-});
+interface AdminNotificationRequest {
+  userEmail: string;
+  businessName: string;
+  businessIdea: string;
+  selectedBlocks: string[];
+  aiAnalysis?: string;
+}
 
 const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const body = await req.json();
-    const {
-      userEmail,
-      businessName,
-      businessIdea,
+    const { 
+      userEmail, 
+      businessName, 
+      businessIdea, 
       selectedBlocks,
-      aiAnalysis,
-    } = requestSchema.parse(body);
+      aiAnalysis 
+    }: AdminNotificationRequest = await req.json();
+
+    console.log('Sending admin notification for new business:', businessName);
+
+    // Send to support@spaceblocks.ai
+    const adminEmail = "support@spaceblocks.ai";
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks.ai <no-reply@spaceblocks.ai>",
-      to: ["support@spaceblocks.ai"],
-      subject: `🎉 New Business Signup: ${businessName}`,
+      from: "SpaceBlocks Notifications <no-reply@spaceblocks.ai>",
+      to: [adminEmail],
+      subject: `🚀 New Business: ${businessName}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -45,75 +48,83 @@ const handler = async (req: Request): Promise<Response> => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>New Business Signup</title>
           </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f9fafb;">
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; background-color: #F7F9FB; color: #0A0A0A;">
             <table role="presentation" style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td align="center" style="padding: 40px 0;">
-                  <table role="presentation" style="width: 600px; max-width: 90%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <td style="padding: 40px 20px;">
+                  <table role="presentation" style="max-width: 600px; margin: 0 auto; background: #FFFFFF; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                    
+                    <!-- Header -->
                     <tr>
-                      <td style="padding: 40px 40px 20px;">
-                        <h1 style="margin: 0 0 10px; font-size: 24px; font-weight: bold; color: #0A0A0A;">
-                          New Business Signup
+                      <td style="background: linear-gradient(135deg, #22D3EE 0%, #7B61FF 100%); padding: 30px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #FFFFFF;">
+                          New Business Signup! 🎉
                         </h1>
-                        <p style="margin: 0; font-size: 14px; color: #6B7280;">
-                          ${new Date().toLocaleString()}
-                        </p>
                       </td>
                     </tr>
+                    
+                    <!-- Main content -->
                     <tr>
-                      <td style="padding: 0 40px 20px;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                          <tr>
-                            <td style="padding: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-bottom: none;">
-                              <strong style="color: #374151;">User Email:</strong>
-                            </td>
-                            <td style="padding: 12px; background-color: #ffffff; border: 1px solid #e5e7eb; border-bottom: none; border-left: none;">
-                              ${userEmail}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-bottom: none;">
-                              <strong style="color: #374151;">Business Name:</strong>
-                            </td>
-                            <td style="padding: 12px; background-color: #ffffff; border: 1px solid #e5e7eb; border-bottom: none; border-left: none;">
-                              ${businessName}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-bottom: none;">
-                              <strong style="color: #374151;">Business Idea:</strong>
-                            </td>
-                            <td style="padding: 12px; background-color: #ffffff; border: 1px solid #e5e7eb; border-bottom: none; border-left: none;">
-                              ${businessIdea}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; vertical-align: top;">
-                              <strong style="color: #374151;">Selected Blocks:</strong>
-                            </td>
-                            <td style="padding: 12px; background-color: #ffffff; border: 1px solid #e5e7eb; border-left: none;">
-                              <ul style="margin: 0; padding-left: 20px;">
-                                ${selectedBlocks.map(block => `<li>${block}</li>`).join('')}
-                              </ul>
-                            </td>
-                          </tr>
-                          ${aiAnalysis ? `
-                          <tr>
-                            <td style="padding: 12px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-top: none; vertical-align: top;">
-                              <strong style="color: #374151;">AI Analysis:</strong>
-                            </td>
-                            <td style="padding: 12px; background-color: #ffffff; border: 1px solid #e5e7eb; border-top: none; border-left: none;">
-                              ${aiAnalysis}
-                            </td>
-                          </tr>
-                          ` : ''}
-                        </table>
+                      <td style="padding: 40px 30px;">
+                        <h2 style="margin: 0 0 24px 0; font-size: 28px; font-weight: 700; color: #0A0A0A;">
+                          ${businessName}
+                        </h2>
+                        
+                        <div style="margin-bottom: 24px;">
+                          <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                            User Email
+                          </h3>
+                          <p style="margin: 0; font-size: 16px; color: #0A0A0A;">
+                            ${userEmail}
+                          </p>
+                        </div>
+                        
+                        <div style="margin-bottom: 24px;">
+                          <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Business Idea
+                          </h3>
+                          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #0A0A0A; background: #F7F9FB; padding: 16px; border-radius: 8px;">
+                            ${businessIdea}
+                          </p>
+                        </div>
+                        
+                        ${aiAnalysis ? `
+                        <div style="margin-bottom: 24px;">
+                          <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                            AI Analysis
+                          </h3>
+                          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #0A0A0A; background: #EFF6FF; padding: 16px; border-radius: 8px; border-left: 4px solid #22D3EE;">
+                            ${aiAnalysis}
+                          </p>
+                        </div>
+                        ` : ''}
+                        
+                        <div style="margin-bottom: 24px;">
+                          <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Selected Blocks (${selectedBlocks.length})
+                          </h3>
+                          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${selectedBlocks.map(block => `
+                              <span style="display: inline-block; background: linear-gradient(135deg, #22D3EE 0%, #7B61FF 100%); color: #FFFFFF; padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600;">
+                                ${block}
+                              </span>
+                            `).join('')}
+                          </div>
+                        </div>
+                        
+                        <div style="border-top: 2px solid #F7F9FB; padding-top: 24px; margin-top: 32px;">
+                          <p style="margin: 0; font-size: 14px; color: #666;">
+                            <strong>Next steps:</strong> Review the business details and start building their assets.
+                          </p>
+                        </div>
                       </td>
                     </tr>
+                    
+                    <!-- Footer -->
                     <tr>
-                      <td style="padding: 20px 40px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; border-radius: 0 0 8px 8px;">
-                        <p style="margin: 0; font-size: 12px; color: #9CA3AF; text-align: center;">
-                          This is an automated notification from SpaceBlocks.ai
+                      <td style="padding: 20px 30px; text-align: center; background: #F7F9FB; border-top: 1px solid #E5E7EB;">
+                        <p style="margin: 0; font-size: 12px; color: #999;">
+                          SpaceBlocks.ai Admin Notification System
                         </p>
                       </td>
                     </tr>
@@ -126,7 +137,9 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    return new Response(JSON.stringify(emailResponse), {
+    console.log("Admin notification sent successfully:", emailResponse);
+
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -134,6 +147,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
+    console.error("Error in send-admin-notification function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {

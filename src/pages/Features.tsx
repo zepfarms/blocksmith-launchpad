@@ -136,7 +136,7 @@ const Features = () => {
     <div className="min-h-screen bg-black text-white">
       <Header />
       
-      <main className="container mx-auto px-4 pt-24 pb-12">
+      <main className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}
           <button
