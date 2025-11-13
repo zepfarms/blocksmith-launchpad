@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12 mb-8 sm:mb-12 max-w-full">
           <div className="space-y-3 sm:space-y-4 text-center md:text-left w-full md:w-auto max-w-full">
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
-              SpaceBlocks
+              Acari
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground font-light tracking-wide break-words">
               Build your business with AI + real humans
@@ -111,7 +111,7 @@ export const Footer = () => {
 
         <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 max-w-full">
           <p className="text-xs sm:text-sm text-muted-foreground/60 font-light text-center md:text-left">
-            &copy; 2025 SpaceBlocks.ai — Launch fast, not someday.
+            &copy; 2025 Acari. All rights reserved.
           </p>
           
           <div className="flex items-center gap-2 sm:gap-3">

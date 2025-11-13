@@ -27,7 +27,7 @@ const Privacy = () => {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">1. Introduction</h2>
               <p>
-                SpaceBlocks.ai ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform and services.
+                Acari ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform and services.
               </p>
             </section>
 
@@ -116,7 +116,7 @@ const Privacy = () => {
               <h2 className="text-2xl font-semibold text-white mb-4">10. Contact Us</h2>
               <p className="mb-2">If you have questions about this Privacy Policy, please contact us:</p>
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <p className="mb-2"><strong>Email:</strong> support@spaceblocks.ai</p>
+                <p className="mb-2"><strong>Email:</strong> support@acari.ai</p>
                 <p><strong>Address:</strong> P.O. Box 1234, Shawnee, OK 74802</p>
               </div>
             </section>

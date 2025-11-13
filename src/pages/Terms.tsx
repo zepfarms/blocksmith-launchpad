@@ -27,14 +27,14 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">1. Agreement to Terms</h2>
               <p>
-                By accessing or using SpaceBlocks.ai ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.
+                By accessing or using Acari ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">2. Description of Service</h2>
               <p>
-                SpaceBlocks.ai provides an AI-powered platform for building and launching businesses. Our services include business planning, brand development, website creation, marketing support, and other business-building tools and resources.
+                Acari provides an AI-powered platform for building and launching businesses. Our services include business planning, brand development, website creation, marketing support, and other business-building tools and resources.
               </p>
             </section>
 
@@ -55,7 +55,7 @@ const Terms = () => {
               <h2 className="text-2xl font-semibold text-white mb-4">4. Pricing and Payment</h2>
               <h3 className="text-xl font-semibold text-white mb-2">4.1 Pricing Model</h3>
               <p className="mb-4">
-                SpaceBlocks.ai operates on a "build first, pay when ready to launch" model. You can build and review your business assets before payment is required. Payment is only required when you choose to launch your business.
+                Acari operates on a "build first, pay when ready to launch" model. You can build and review your business assets before payment is required. Payment is only required when you choose to launch your business.
               </p>
 
               <h3 className="text-xl font-semibold text-white mb-2">4.2 Payment Processing</h3>
@@ -65,7 +65,7 @@ const Terms = () => {
 
               <h3 className="text-xl font-semibold text-white mb-2">4.3 Refunds</h3>
               <p>
-                Refund requests are evaluated on a case-by-case basis. Once your business is launched and assets are delivered, refunds may not be available. Please contact support@spaceblocks.ai for refund inquiries.
+                Refund requests are evaluated on a case-by-case basis. Once your business is launched and assets are delivered, refunds may not be available. Please contact support@acari.ai for refund inquiries.
               </p>
             </section>
 
@@ -78,7 +78,7 @@ const Terms = () => {
 
               <h3 className="text-xl font-semibold text-white mb-2">5.2 Our Platform</h3>
               <p>
-                The Service, including its original content, features, and functionality, is owned by SpaceBlocks.ai and is protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+                The Service, including its original content, features, and functionality, is owned by Acari and is protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
               </p>
             </section>
 
@@ -106,7 +106,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">8. Limitation of Liability</h2>
               <p>
-                TO THE MAXIMUM EXTENT PERMITTED BY LAW, SPACEBLOCKS.AI SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES.
+                TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACARI SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES.
               </p>
             </section>
 
@@ -120,7 +120,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold text-white mb-4">10. Indemnification</h2>
               <p>
-                You agree to indemnify and hold harmless SpaceBlocks.ai and its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorneys' fees) arising out of your use of the Service or violation of these Terms.
+                You agree to indemnify and hold harmless Acari and its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including attorneys' fees) arising out of your use of the Service or violation of these Terms.
               </p>
             </section>
 
@@ -149,7 +149,7 @@ const Terms = () => {
               <h2 className="text-2xl font-semibold text-white mb-4">14. Contact Information</h2>
               <p className="mb-2">If you have questions about these Terms, please contact us:</p>
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <p className="mb-2"><strong>Email:</strong> support@spaceblocks.ai</p>
+                <p className="mb-2"><strong>Email:</strong> support@acari.ai</p>
                 <p><strong>Address:</strong> P.O. Box 1234, Shawnee, OK 74802</p>
               </div>
             </section>

@@ -36,10 +36,10 @@ const Support = () => {
                 Get help from our support team. We typically respond within 24 hours.
               </p>
               <a
-                href="mailto:support@spaceblocks.ai"
+                href="mailto:support@acari.ai"
                 className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-2"
               >
-                support@spaceblocks.ai
+                support@acari.ai
                 <ArrowLeft className="w-4 h-4 rotate-180" />
               </a>
             </div>
@@ -108,7 +108,7 @@ const Support = () => {
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">How SpaceBlocks Works</h3>
+                <h3 className="text-xl font-semibold mb-4">How Acari Works</h3>
                 <div className="space-y-3 text-gray-400">
                   <p><strong className="text-white">AI + Human Collaboration:</strong> Our AI handles the heavy lifting—building your website, designing your logo, writing marketing copy, setting up payments, and more. When you need help, real humans are available via email and Discord.</p>
                   <p><strong className="text-white">Business Blocks:</strong> Instead of hiring 10 different freelancers, you pick "blocks" for what you need. Each block is a service (like "Website Builder" or "Email Marketing Setup") that gets automatically built for your business.</p>
@@ -168,7 +168,7 @@ const Support = () => {
                 <div className="space-y-4">
                   <div>
                     <p className="font-semibold text-white mb-1">Do I need tech skills?</p>
-                    <p className="text-gray-400">No. SpaceBlocks handles everything technical. No coding, no design tools, no complicated setup.</p>
+                    <p className="text-gray-400">No. Acari handles everything technical. No coding, no design tools, no complicated setup.</p>
                   </div>
                   <div>
                     <p className="font-semibold text-white mb-1">How long does it take?</p>
@@ -180,7 +180,7 @@ const Support = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-white mb-1">What if I need help?</p>
-                    <p className="text-gray-400">Email us at support@spaceblocks.ai or join our Discord community for real-time help from our team and other entrepreneurs.</p>
+                    <p className="text-gray-400">Email us at support@acari.ai or join our Discord community for real-time help from our team and other entrepreneurs.</p>
                   </div>
                   <div>
                     <p className="font-semibold text-white mb-1">Can I use this for an existing business?</p>
@@ -198,7 +198,7 @@ const Support = () => {
               Our support team is ready to help you succeed. Reach out anytime.
             </p>
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 inline-block">
-              <p className="mb-2"><strong>Email:</strong> support@spaceblocks.ai</p>
+              <p className="mb-2"><strong>Email:</strong> support@acari.ai</p>
               <p><strong>Address:</strong> P.O. Box 1234, Shawnee, OK 74802</p>
             </div>
           </div>

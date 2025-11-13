@@ -26,16 +26,16 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Sending welcome email to:', email);
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks <support@spaceblocks.ai>",
+      from: "Acari <support@acari.ai>",
       to: [email],
-      subject: "Welcome to SpaceBlocks.ai! 🚀",
+      subject: "Welcome to Acari! 🚀",
       html: `
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Welcome to SpaceBlocks.ai</title>
+            <title>Welcome to Acari</title>
           </head>
           <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; background-color: #0A0A0A; color: #FAFAFA;">
             <table role="presentation" style="width: 100%; border-collapse: collapse;">
@@ -47,7 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
                     <tr>
                       <td style="background: linear-gradient(135deg, #22D3EE 0%, #7B61FF 100%); padding: 40px 30px; text-align: center;">
                         <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: #0A0A0A; letter-spacing: -0.02em;">
-                          SpaceBlocks.ai
+                          Acari
                         </h1>
                       </td>
                     </tr>
@@ -102,7 +102,7 @@ const handler = async (req: Request): Promise<Response> => {
                     <tr>
                       <td style="padding: 30px; text-align: center; background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.05);">
                         <p style="margin: 0 0 8px 0; font-size: 12px; color: rgba(250, 250, 250, 0.4);">
-                          © ${new Date().getFullYear()} SpaceBlocks.ai
+                          © ${new Date().getFullYear()} Acari
                         </p>
                         <p style="margin: 0; font-size: 12px; color: rgba(250, 250, 250, 0.3);">
                           Meet your new business partner

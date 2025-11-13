@@ -33,11 +33,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Sending admin notification for new business:', businessName);
 
-    // Send to support@spaceblocks.ai
-    const adminEmail = "support@spaceblocks.ai";
+    // Send to support@acari.ai
+    const adminEmail = "support@acari.ai";
 
     const emailResponse = await resend.emails.send({
-      from: "SpaceBlocks Notifications <no-reply@spaceblocks.ai>",
+      from: "Acari Notifications <no-reply@acari.ai>",
       to: [adminEmail],
       subject: `🚀 New Business: ${businessName}`,
       html: `
