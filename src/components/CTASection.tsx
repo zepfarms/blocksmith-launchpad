@@ -44,7 +44,7 @@ export const CTASection = () => {
                 Ready to Turn Your Idea Into Reality?
               </h2>
               <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto break-words px-2">
-                Join, and be one the first 100 entrepreneurs building real businesses with Acari.ai. Start for free, pay only when you're ready to launch.
+                Join, and be one the first <span className="text-acari-green font-semibold">100 entrepreneurs</span> building real businesses with Acari.ai. Start for free, pay only when you're ready to launch.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-2">
