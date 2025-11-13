@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
+import { VerificationBanner } from "@/components/VerificationBanner";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -41,6 +42,9 @@ const Dashboard = () => {
   const [launchingBusiness, setLaunchingBusiness] = useState(false);
   const [totalCost, setTotalCost] = useState(0);
   const [paidBlockCount, setPaidBlockCount] = useState(0);
+  const [userEmail, setUserEmail] = useState("");
+  const [emailVerified, setEmailVerified] = useState(true);
+  const [showVerificationBanner, setShowVerificationBanner] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -50,6 +54,19 @@ const Dashboard = () => {
         navigate("/");
         return;
       }
+
+      setUserEmail(session.user.email || "");
+
+      // Check email verification status
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('email_verified')
+        .eq('id', session.user.id)
+        .maybeSingle();
+      
+      const verified = profile?.email_verified ?? true;
+      setEmailVerified(verified);
+      setShowVerificationBanner(!verified);
 
       // Load user's business data
       const { data, error } = await supabase
@@ -293,11 +310,26 @@ const Dashboard = () => {
   const readyCount = items.filter((item) => item.status === "ready").length;
 
   return (
-    <div className="relative min-h-screen px-6 pt-32 pb-12 overflow-hidden overflow-x-hidden">
+    <div className="relative min-h-screen overflow-hidden overflow-x-hidden">
       <Header />
-      {/* Background ambient effects */}
-      <div className="absolute top-1/4 left-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
+      
+      {/* Email Verification Banner */}
+      {showVerificationBanner && (
+        <VerificationBanner
+          email={userEmail}
+          onDismiss={() => setShowVerificationBanner(false)}
+          onVerified={() => {
+            setEmailVerified(true);
+            setShowVerificationBanner(false);
+            toast.success("Email verified!");
+          }}
+        />
+      )}
+
+      <div className="px-6 pt-32 pb-12">
+        {/* Background ambient effects */}
+        <div className="absolute top-1/4 left-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-neon-cyan/10 blur-[120px] animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] rounded-full bg-electric-indigo/10 blur-[120px] animate-float" style={{ animationDelay: "2s" }} />
 
       <div className="relative z-10 max-w-6xl mx-auto space-y-8">
         {/* Dashboard Navigation Tabs */}
@@ -727,6 +759,7 @@ const Dashboard = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      </div>
     </div>
   );
 };
