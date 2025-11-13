@@ -115,7 +115,7 @@ export const BrowseIdeas = () => {
             </div>
             <button
               onClick={handleSurpriseMe}
-              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
+              className="group px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
             >
               <Sparkles className="w-4 h-4" />
               Surprise me
@@ -128,7 +128,7 @@ export const BrowseIdeas = () => {
               onClick={() => setSelectedFilter("all")}
               className={`px-6 py-2 rounded-full font-medium transition-all ${
                 selectedFilter === "all"
-                  ? "bg-white text-black"
+                  ? "bg-acari-green text-black"
                   : "border-2 border-white/20 text-white hover:bg-white/5"
               }`}
             >
@@ -140,7 +140,7 @@ export const BrowseIdeas = () => {
                 onClick={() => setSelectedFilter(cat)}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedFilter === cat
-                    ? "bg-white text-black"
+                    ? "bg-acari-green text-black"
                     : "border-2 border-white/20 text-white hover:bg-white/5"
                 }`}
               >
