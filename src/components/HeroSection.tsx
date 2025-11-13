@@ -60,7 +60,7 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
 
           {/* Subheadline */}
           <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4 px-2 break-words">
-            The AI business partner that never sleeps.
+            The AI Partner That Outworks Everyone
           </p>
         </div>
 
