@@ -48,7 +48,7 @@ export const CTASection = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-2">
-                <button onClick={() => navigate("/start")} className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-white text-black rounded-full font-medium text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-2 hover-scale">
+                <button onClick={() => navigate("/start")} className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-2 hover-scale">
                   Start Building Free
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </button>
