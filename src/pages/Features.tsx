@@ -151,7 +151,7 @@ const Features = () => {
           <div className="mb-12">
             <h1 className="text-5xl md:text-6xl font-bold mb-4">Knowledge Base</h1>
             <p className="text-xl text-gray-400">
-              Everything you need to know about building with SpaceBlocks
+              Everything you need to know about building with Acari
             </p>
           </div>
 
