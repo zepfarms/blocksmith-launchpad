@@ -24,6 +24,7 @@ export default {
         "neon-purple": "hsl(var(--neon-purple))",
         "neon-blue": "hsl(var(--neon-blue))",
         "electric-indigo": "hsl(var(--electric-indigo))",
+        "acari-green": "hsl(var(--acari-green))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
