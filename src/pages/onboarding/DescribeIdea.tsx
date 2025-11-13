@@ -95,7 +95,7 @@ export const DescribeIdea = () => {
             What business do you want to start?
           </h2>
           <p className="text-lg text-muted-foreground">
-            Describe your idea in 1–2 sentences
+            Describe your idea in 1-2 sentences, be as thorough as possible as this will help us get you the best results.
           </p>
         </div>
 
