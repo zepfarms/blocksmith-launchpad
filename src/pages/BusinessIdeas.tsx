@@ -74,7 +74,7 @@ const BusinessIdeas = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 py-20">
+      <main className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-bold mb-4 text-center">Business Ideas</h1>
           <p className="text-xl text-muted-foreground mb-12 text-center max-w-2xl mx-auto">
@@ -100,7 +100,7 @@ const BusinessIdeas = () => {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-6 py-2 rounded-full font-medium transition-all ${
                     selectedCategory === cat
-                      ? "bg-white text-black"
+                      ? "bg-acari-green text-black"
                       : "border-2 border-white/20 text-white hover:bg-white/5"
                   }`}
                 >
@@ -136,7 +136,7 @@ const BusinessIdeas = () => {
           <div className="text-center">
             <button
               onClick={() => navigate("/start")}
-              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+              className="group px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
             >
               Start Building
               <span className="transition-transform group-hover:translate-x-1">→</span>
