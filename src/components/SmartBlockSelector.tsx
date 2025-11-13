@@ -423,7 +423,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
         {/* Continue Button */}
         <div className="text-center space-y-6 pt-8">
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card border border-border">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-primary-foreground font-bold text-sm">
+            <div className="w-8 h-8 rounded-full bg-acari-green flex items-center justify-center text-black font-bold text-sm">
               {selectedBlocks.length}
             </div>
             <span className="text-sm font-semibold">
@@ -431,18 +431,14 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             </span>
           </div>
 
-          <Button
-            variant="empire"
-            size="xl"
+          <button
             onClick={() => onComplete(selectedBlocks)}
             disabled={selectedBlocks.length === 0}
-            className="group"
+            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span className="flex items-center gap-3">
-              Continue
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-            </span>
-          </Button>
+            Continue
+            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+          </button>
 
           <p className="text-sm text-muted-foreground font-light">
             Save your plan. You'll only pay when you click Launch later.
