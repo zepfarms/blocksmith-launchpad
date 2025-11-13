@@ -71,7 +71,7 @@ const BusinessIdeas = () => {
   const categories = ["all", ...Array.from(new Set(ideas.map((idea) => idea.category)))];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-32">
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-20">
