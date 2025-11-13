@@ -43,7 +43,7 @@ export const Header = () => {
           <img 
             src="/acari-logo.png" 
             alt="Acari" 
-            className="h-8 sm:h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity"
+            className="h-12 sm:h-14 md:h-16 w-auto cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate("/")}
           />
 
