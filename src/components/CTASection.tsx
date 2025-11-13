@@ -18,21 +18,6 @@ export const CTASection = () => {
   return <section className="bg-gradient-to-b from-black to-gray-900 py-20 overflow-hidden max-w-full">
       <div className="container mx-auto px-4 max-w-full">
         <div className="max-w-5xl mx-auto w-full">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-16 px-2">
-            {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-white/10 transition-all duration-300 hover-scale" style={{
-              animationDelay: `${index * 100}ms`
-            }}>
-                  <div className="bg-primary/20 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="text-sm text-gray-400 mb-1">{stat.label}</div>
-                  <div className="text-lg font-semibold text-white">{stat.value}</div>
-                </div>;
-          })}
-          </div>
 
           {/* Main CTA Card */}
           <div className="bg-white/5 border-2 border-white/20 rounded-3xl p-6 sm:p-10 md:p-12 text-center relative overflow-hidden max-w-full">
