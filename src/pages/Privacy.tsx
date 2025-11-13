@@ -7,7 +7,7 @@ const Privacy = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white pt-32">
       <Header />
       
       <main className="container mx-auto px-4 py-12">
