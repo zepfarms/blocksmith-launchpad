@@ -91,7 +91,7 @@ export const BrowseIdeas = () => {
   const categories = Array.from(new Set(businessIdeas.map(idea => idea.category)));
 
   return (
-    <section className="relative min-h-screen py-16 px-4 sm:px-6 bg-background">
+    <section className="relative min-h-screen pt-32 pb-16 px-4 sm:px-6 bg-background">
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
