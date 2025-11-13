@@ -221,7 +221,7 @@ const Features = () => {
           <div className="mt-12 text-center">
             <h3 className="text-2xl font-bold mb-4">Ready to Build Your Business?</h3>
             <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              Join thousands of entrepreneurs who are turning their ideas into real businesses with SpaceBlocks. Start building today.
+              Join thousands of entrepreneurs who are turning their ideas into real businesses with Acari. Start building today.
             </p>
             <button
               onClick={() => navigate("/start")}

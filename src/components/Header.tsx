@@ -40,12 +40,12 @@ export const Header = () => {
     <>
       <header className="absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 sm:py-6 bg-black/50 backdrop-blur-sm border-b border-white/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <button 
+          <img 
+            src="/acari-logo.png" 
+            alt="Acari" 
+            className="h-8 sm:h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate("/")}
-            className="text-base sm:text-lg md:text-xl font-bold text-white hover:text-white/80 transition-colors cursor-pointer"
-          >
-            SpaceBlocks.ai
-          </button>
+          />
 
           <div className="hidden sm:flex items-center gap-4 md:gap-8">
             <a href="/features" className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">

@@ -77,14 +77,14 @@ serve(async (req) => {
       // Send confirmation email
       if (profile?.email) {
         await resend.emails.send({
-          from: 'SpaceBlocks <support@spaceblocks.ai>',
+          from: 'Acari <support@acari.ai>',
           to: profile.email,
-          subject: '🚀 Your Business is Launched!',
+          subject: '🚀 Your Business is Live on Acari!',
           html: `
             <h1>Congratulations! Your business is now live!</h1>
             <p>Your payment has been processed and all your business assets are now unlocked.</p>
             <p>You can access everything in your dashboard.</p>
-            <p>Thank you for choosing SpaceBlocks!</p>
+            <p>Thank you for choosing Acari!</p>
             <p><a href="${supabaseUrl.replace('supabase.co', 'lovable.app')}/dashboard">Go to Dashboard</a></p>
           `
         });
