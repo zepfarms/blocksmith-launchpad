@@ -22,7 +22,7 @@ export const BetaSection = () => {
 
               <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter px-2 break-words max-w-full">
                 <span className="block text-foreground mb-2">Join the First</span>
-                <span className="block bg-gradient-to-r from-neon-cyan via-electric-indigo to-neon-purple bg-clip-text text-transparent">
+                <span className="block text-acari-green font-bold">
                   100 Entrepreneurs
                 </span>
               </h2>
