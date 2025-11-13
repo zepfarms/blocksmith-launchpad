@@ -25,6 +25,9 @@ All colors MUST be HSL.
     --neon-blue: 214 100% 70%;
     --electric-indigo: 243 100% 72%;
     
+    /* Brand colors */
+    --acari-green: 102 60% 53%; /* #6bcb44 - Acari logo green */
+    
     /* Surface colors */
     --glass-border: 0 0% 100% / 0.1;
     --glass-bg: 0 0% 100% / 0.03;
