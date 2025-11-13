@@ -64,7 +64,7 @@ const Dashboard = () => {
         .eq('id', session.user.id)
         .maybeSingle();
       
-      const verified = profile?.email_verified ?? true;
+      const verified = (profile as any)?.email_verified ?? true;
       setEmailVerified(verified);
       setShowVerificationBanner(!verified);
 
