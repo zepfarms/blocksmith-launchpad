@@ -38,12 +38,12 @@ export const Header = () => {
 
   return (
     <>
-      <header className="absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 bg-black/50 backdrop-blur-sm border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-1 bg-black/50 backdrop-blur-sm border-b border-white/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <img 
             src="/acari-logo.png" 
             alt="Acari" 
-            className="h-32 sm:h-40 md:h-48 w-auto cursor-pointer hover:opacity-80 transition-opacity"
+            className="h-16 sm:h-20 md:h-24 w-auto cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate("/")}
           />
 
