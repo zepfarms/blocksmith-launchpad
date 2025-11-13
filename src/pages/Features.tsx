@@ -136,7 +136,7 @@ const Features = () => {
     <div className="min-h-screen bg-black text-white">
       <Header />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12 pt-32">
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}
           <button
@@ -165,7 +165,7 @@ const Features = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
                     activeTab === tab.id
-                      ? "bg-white text-black"
+                      ? "bg-acari-green text-black hover:bg-acari-green/90"
                       : "text-gray-400 hover:text-white hover:bg-white/10"
                   }`}
                 >
@@ -225,7 +225,7 @@ const Features = () => {
             </p>
             <button
               onClick={() => navigate("/start")}
-              className="px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+              className="px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
             >
               Start Building Free
               <span className="transition-transform hover:translate-x-1">→</span>

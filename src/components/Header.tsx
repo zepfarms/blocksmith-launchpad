@@ -48,12 +48,12 @@ export const Header = () => {
           />
 
           <div className="hidden sm:flex items-center gap-4 md:gap-8">
-            <a href="/features" className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
+            <button onClick={() => navigate("/features")} className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
               Features
-            </a>
-            <a href="/start/browse" className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
+            </button>
+            <button onClick={() => navigate("/start/browse")} className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
               Business Ideas
-            </a>
+            </button>
           </div>
 
           {user ? (
