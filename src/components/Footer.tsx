@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto w-full">
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12 mb-8 sm:mb-12 max-w-full">
           <div className="space-y-3 sm:space-y-4 text-center md:text-left w-full md:w-auto max-w-full">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter text-acari-green break-words">
               Acari
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground font-light tracking-wide break-words">
@@ -86,11 +86,8 @@ export const Footer = () => {
         </div>
 
         <div className="text-center md:text-left space-y-2 sm:space-y-3 mb-8 sm:mb-0 md:hidden max-w-full px-2">
-          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
+          <p className="text-lg sm:text-xl md:text-2xl font-bold text-acari-green break-words">
             Real business.
-          </p>
-          <p className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent break-words">
-            Real customers.
           </p>
           <p className="text-lg sm:text-xl md:text-2xl font-bold text-foreground break-words">
             Real results.
@@ -98,11 +95,8 @@ export const Footer = () => {
         </div>
 
         <div className="hidden md:block text-center md:text-right space-y-3 mb-8 max-w-full">
-          <p className="text-2xl font-bold bg-gradient-to-r from-neon-cyan to-electric-indigo bg-clip-text text-transparent break-words">
+          <p className="text-2xl font-bold text-acari-green break-words">
             Real business.
-          </p>
-          <p className="text-2xl font-bold bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent break-words">
-            Real customers.
           </p>
           <p className="text-2xl font-bold text-foreground break-words">
             Real results.
