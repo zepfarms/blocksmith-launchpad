@@ -55,7 +55,7 @@ export const ExampleIdeasSection = () => {
   ];
 
   return (
-    <section className="bg-black text-white py-20 overflow-hidden max-w-full">
+    <section className="bg-black text-white py-12 md:py-20 overflow-hidden max-w-full">
       <div className="container mx-auto px-4 max-w-full">
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-center px-2 break-words">
