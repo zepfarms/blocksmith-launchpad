@@ -99,6 +99,17 @@ export const Signup = () => {
 
       if (authData.user) {
         await saveBusinessData(authData.user);
+        
+        // Send verification email (non-blocking)
+        try {
+          await supabase.functions.invoke('send-verification-email', {
+            body: { email: authData.user.email }
+          });
+          console.log('Verification email sent to:', authData.user.email);
+        } catch (emailError) {
+          console.error('Error sending verification email:', emailError);
+          // Don't block signup if verification email fails
+        }
       }
     } catch (error: any) {
       console.error('Signup error:', error);

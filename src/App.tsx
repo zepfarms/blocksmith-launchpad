@@ -26,6 +26,7 @@ import { ConfirmIdea } from "./pages/onboarding/ConfirmIdea";
 import { BusinessName } from "./pages/onboarding/BusinessName";
 import { BlockSelection } from "./pages/onboarding/BlockSelection";
 import { Signup } from "./pages/onboarding/Signup";
+import { VerifyEmail } from "./pages/VerifyEmail";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -49,6 +50,7 @@ function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/support" element={<Support />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               
               {/* Onboarding flow */}
               <Route path="/start" element={<OnboardingLayout />}>
