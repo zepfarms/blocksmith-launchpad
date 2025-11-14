@@ -165,7 +165,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
 
         {/* Assembly CTA */}
         {selectedBlocks.length > 0 && (
-          <div className="w-full flex flex-col items-center gap-6 pt-12 animate-slide-up-fade">
+          <div className="w-full flex flex-col items-center gap-6 pt-12 animate-slide-up-fade mx-auto">
             <div className="flex items-center justify-center gap-3 mb-2">
               <div className="h-px w-24 bg-gradient-to-r from-transparent to-neon-cyan/50" />
               <span className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em]">
@@ -177,7 +177,7 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
             <Button 
               variant="empire"
               onClick={() => onComplete(selectedBlocks)}
-              className="group inline-flex items-center justify-center"
+              className="group inline-flex items-center justify-center mx-auto"
             >
               <span className="flex items-center gap-3">
                 Continue
