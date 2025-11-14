@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye, Store, Calendar } from "lucide-react";
+import { CheckCircle2, Clock, AlertCircle, Rocket, FileText, Download, Edit3, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye, Store, Calendar, Receipt } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -360,9 +360,10 @@ const Dashboard = () => {
             <TabsTrigger 
               value="billing" 
               className="flex-1 gap-2 data-[state=active]:bg-background/80 data-[state=active]:text-foreground rounded-xl px-4 py-3 text-sm md:text-base font-medium transition-all"
+              onClick={() => navigate("/dashboard/purchase-history")}
             >
-              <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="hidden sm:inline">Billing</span>
+              <Receipt className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="hidden sm:inline">Purchases</span>
             </TabsTrigger>
             <TabsTrigger 
               value="briefcase" 
