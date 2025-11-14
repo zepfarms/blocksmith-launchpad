@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AlertCircle, Calendar, Mail, Loader2, ExternalLink } from "lucide-react";
+import { AlertCircle, Calendar, Mail, Loader2, ExternalLink, Send } from "lucide-react";
 import { toast } from "sonner";
 
 interface PaymentFailure {
@@ -50,6 +50,7 @@ export default function FailedPayments() {
   const navigate = useNavigate();
   const [failures, setFailures] = useState<PaymentFailure[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sendingReminder, setSendingReminder] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [dateFrom, setDateFrom] = useState<string>("");
   const [dateTo, setDateTo] = useState<string>("");
@@ -132,6 +133,25 @@ export default function FailedPayments() {
       toast.error("Failed to load payment failures");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSendReminder = async (failureId: string, userEmail: string) => {
+    setSendingReminder(failureId);
+    try {
+      const { error } = await supabase.functions.invoke('send-payment-reminder', {
+        body: { failureId }
+      });
+
+      if (error) throw error;
+
+      toast.success(`Reminder email sent to ${userEmail}`);
+      await loadFailures();
+    } catch (error) {
+      console.error('Error sending reminder:', error);
+      toast.error('Failed to send reminder email');
+    } finally {
+      setSendingReminder(null);
     }
   };
 
@@ -335,6 +355,21 @@ export default function FailedPayments() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
+                          {!failure.resolved && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleSendReminder(failure.id, failure.profiles.email)}
+                              disabled={sendingReminder === failure.id}
+                              title="Send payment reminder"
+                            >
+                              {sendingReminder === failure.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Send className="w-4 h-4" />
+                              )}
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="outline"
@@ -344,6 +379,7 @@ export default function FailedPayments() {
                                 "_blank"
                               )
                             }
+                            title="View in Stripe"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </Button>
