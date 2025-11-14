@@ -24,7 +24,11 @@ interface BlockPricing {
   block_name: string;
   price_cents: number;
   is_free: boolean;
+  pricing_type: 'free' | 'one_time' | 'monthly';
+  monthly_price_cents: number;
   stripe_price_id: string | null;
+  stripe_product_id: string | null;
+  stripe_monthly_price_id: string | null;
   description: string | null;
 }
 
@@ -45,7 +49,8 @@ export default function AdminPricing() {
   const [pricingData, setPricingData] = useState<BlockPricing[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editPrice, setEditPrice] = useState("");
-  const [editIsFree, setEditIsFree] = useState(false);
+  const [editMonthlyPrice, setEditMonthlyPrice] = useState("");
+  const [editPricingType, setEditPricingType] = useState<'free' | 'one_time' | 'monthly'>('free');
   const [editDescription, setEditDescription] = useState("");
   const [categories, setCategories] = useState<BlockCategory[]>([]);
   const [blockCategories, setBlockCategories] = useState<Record<string, string[]>>({});
@@ -103,13 +108,17 @@ export default function AdminPricing() {
       return;
     }
 
-    // Map data to include description field
+    // Map data to include new pricing fields
     const mappedData: BlockPricing[] = (data || []).map(item => ({
       id: item.id,
       block_name: item.block_name,
       price_cents: item.price_cents,
       is_free: item.is_free,
+      pricing_type: (item as any).pricing_type || 'free',
+      monthly_price_cents: (item as any).monthly_price_cents || 0,
       stripe_price_id: item.stripe_price_id,
+      stripe_product_id: (item as any).stripe_product_id || null,
+      stripe_monthly_price_id: (item as any).stripe_monthly_price_id || null,
       description: (item as any).description || null
     }));
 
@@ -145,19 +154,23 @@ export default function AdminPricing() {
   const handleEdit = (block: BlockPricing) => {
     setEditingId(block.id);
     setEditPrice((block.price_cents / 100).toFixed(2));
-    setEditIsFree(block.is_free);
+    setEditMonthlyPrice((block.monthly_price_cents / 100).toFixed(2));
+    setEditPricingType(block.pricing_type);
     setEditDescription(block.description || "");
     setEditCategories(blockCategories[block.block_name] || []);
   };
 
   const handleSave = async (id: string, blockName: string) => {
-    const priceCents = Math.round(parseFloat(editPrice) * 100);
+    const priceCents = editPricingType === 'one_time' ? Math.round(parseFloat(editPrice || "0") * 100) : 0;
+    const monthlyPriceCents = editPricingType === 'monthly' ? Math.round(parseFloat(editMonthlyPrice || "0") * 100) : 0;
     
     const { error: pricingError } = await supabase
       .from("blocks_pricing")
       .update({
+        pricing_type: editPricingType,
         price_cents: priceCents,
-        is_free: editIsFree,
+        monthly_price_cents: monthlyPriceCents,
+        is_free: editPricingType === 'free',
         description: editDescription || null
       })
       .eq("id", id);
@@ -199,7 +212,8 @@ export default function AdminPricing() {
   const handleCancel = () => {
     setEditingId(null);
     setEditPrice("");
-    setEditIsFree(false);
+    setEditMonthlyPrice("");
+    setEditPricingType('free');
     setEditDescription("");
     setEditCategories([]);
   };
@@ -236,18 +250,18 @@ export default function AdminPricing() {
           <div className="p-6">
             <div className="mb-4 flex justify-between items-center">
               <p className="text-muted-foreground">
-                Set individual pricing for each block. Free blocks can be used without payment.
+                Configure pricing for each block: <strong>Free</strong> (always accessible), <strong>One-Time</strong> (single payment), or <strong>Monthly</strong> (recurring subscription).
               </p>
             </div>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Block Name</TableHead>
-                  <TableHead>Price (USD)</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Pricing Type</TableHead>
+                  <TableHead>One-Time Price</TableHead>
+                  <TableHead>Monthly Price</TableHead>
                   <TableHead className="w-[200px]">Description</TableHead>
                   <TableHead>Categories</TableHead>
-                  <TableHead>Stripe Price ID</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -257,31 +271,67 @@ export default function AdminPricing() {
                     <TableCell className="font-medium">{block.block_name}</TableCell>
                     <TableCell>
                       {editingId === block.id ? (
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={editPrice}
-                          onChange={(e) => setEditPrice(e.target.value)}
-                          className="w-24"
-                        />
+                        <select
+                          value={editPricingType}
+                          onChange={(e) => setEditPricingType(e.target.value as 'free' | 'one_time' | 'monthly')}
+                          className="px-3 py-2 rounded-md border bg-background"
+                        >
+                          <option value="free">Free</option>
+                          <option value="one_time">One-Time</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
                       ) : (
-                        `$${(block.price_cents / 100).toFixed(2)}`
+                        <Badge 
+                          variant={
+                            block.pricing_type === 'free' ? 'secondary' : 
+                            block.pricing_type === 'monthly' ? 'default' : 
+                            'outline'
+                          }
+                        >
+                          {block.pricing_type === 'free' ? 'FREE' : 
+                           block.pricing_type === 'monthly' ? 'MONTHLY' : 
+                           'ONE-TIME'}
+                        </Badge>
                       )}
                     </TableCell>
                     <TableCell>
                       {editingId === block.id ? (
-                        <select
-                          value={editIsFree ? "free" : "paid"}
-                          onChange={(e) => setEditIsFree(e.target.value === "free")}
-                          className="px-2 py-1 rounded-md border"
-                        >
-                          <option value="free">Free</option>
-                          <option value="paid">Paid</option>
-                        </select>
+                        editPricingType === 'one_time' ? (
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={editPrice}
+                            onChange={(e) => setEditPrice(e.target.value)}
+                            className="w-24"
+                            placeholder="0.00"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )
                       ) : (
-                        <Badge variant={block.is_free ? "secondary" : "default"}>
-                          {block.is_free ? "FREE" : "PAID"}
-                        </Badge>
+                        block.pricing_type === 'one_time' ? 
+                          `$${(block.price_cents / 100).toFixed(2)}` : 
+                          <span className="text-muted-foreground">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === block.id ? (
+                        editPricingType === 'monthly' ? (
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={editMonthlyPrice}
+                            onChange={(e) => setEditMonthlyPrice(e.target.value)}
+                            className="w-24"
+                            placeholder="0.00"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )
+                      ) : (
+                        block.pricing_type === 'monthly' ? 
+                          `$${(block.monthly_price_cents / 100).toFixed(2)}/mo` : 
+                          <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
                     <TableCell className="max-w-[200px]">
@@ -330,9 +380,6 @@ export default function AdminPricing() {
                           )}
                         </div>
                       )}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {block.stripe_price_id || "N/A"}
                     </TableCell>
                     <TableCell className="text-right">
                       {editingId === block.id ? (
