@@ -16,24 +16,55 @@ interface BlockCardProps {
   onToggle: () => void;
   onInfoClick: () => void;
   index: number;
+  isUnlocked?: boolean;
+  isPurchased?: boolean;
+  hasActiveSubscription?: boolean;
 }
 
-export const BlockCard = ({ title, icon, category, description, isFree, price, monthlyPrice, pricingType, isSelected, onToggle, onInfoClick, index }: BlockCardProps) => {
+export const BlockCard = ({ 
+  title, 
+  icon, 
+  category, 
+  description, 
+  isFree, 
+  price, 
+  monthlyPrice, 
+  pricingType, 
+  isSelected, 
+  onToggle, 
+  onInfoClick, 
+  index,
+  isUnlocked = false,
+  isPurchased = false,
+  hasActiveSubscription = false
+}: BlockCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  
+  // Determine if block is already owned
+  const isOwned = isUnlocked || isPurchased || hasActiveSubscription;
+  const ownershipLabel = hasActiveSubscription 
+    ? 'SUBSCRIBED' 
+    : isPurchased 
+    ? 'PURCHASED' 
+    : isUnlocked 
+    ? 'UNLOCKED' 
+    : null;
 
   return (
     <button
-      onClick={onToggle}
+      onClick={isOwned ? undefined : onToggle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      disabled={isOwned}
       className={cn(
         "group relative p-5 md:p-7 rounded-2xl transition-all duration-500",
         "glass-card-hover",
         "border border-white/5",
         "h-full flex flex-col items-center text-center",
         "shadow-[0_0_20px_rgba(34,211,238,0.15)]",
-        isSelected && "neon-border shadow-[0_0_30px_rgba(34,211,238,0.3)]",
-        isHovered && !isSelected && "border-neon-cyan/20"
+        isOwned && "opacity-75 cursor-not-allowed",
+        !isOwned && isSelected && "neon-border shadow-[0_0_30px_rgba(34,211,238,0.3)]",
+        !isOwned && isHovered && !isSelected && "border-neon-cyan/20"
       )}
       style={{
         animationDelay: `${index * 50}ms`,
@@ -53,23 +84,29 @@ export const BlockCard = ({ title, icon, category, description, isFree, price, m
         <Info className="h-3.5 w-3.5 text-white" />
       </button>
 
-      {/* Add/Check icon - top right */}
-      <div
-        className={cn(
-          "absolute -top-2 -right-2 w-7 h-7 rounded-full transition-all duration-300 z-10",
-          "flex items-center justify-center",
-          "border-2",
-          isSelected 
-            ? "bg-neon-cyan border-neon-cyan" 
-            : "bg-white/10 border-white/20 backdrop-blur-sm"
-        )}
-      >
-        {isSelected ? (
-          <Check className="h-4 w-4 text-black" />
-        ) : (
-          <Plus className="h-4 w-4 text-white" />
-        )}
-      </div>
+      {/* Ownership/Selection indicator - top right */}
+      {isOwned ? (
+        <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full transition-all duration-300 z-10 flex items-center justify-center border-2 bg-green-500 border-green-500">
+          <Check className="h-4 w-4 text-white" />
+        </div>
+      ) : (
+        <div
+          className={cn(
+            "absolute -top-2 -right-2 w-7 h-7 rounded-full transition-all duration-300 z-10",
+            "flex items-center justify-center",
+            "border-2",
+            isSelected 
+              ? "bg-neon-cyan border-neon-cyan" 
+              : "bg-white/10 border-white/20 backdrop-blur-sm"
+          )}
+        >
+          {isSelected ? (
+            <Check className="h-4 w-4 text-black" />
+          ) : (
+            <Plus className="h-4 w-4 text-white" />
+          )}
+        </div>
+      )}
 
       {/* Icon container - larger */}
       <div
@@ -101,9 +138,13 @@ export const BlockCard = ({ title, icon, category, description, isFree, price, m
         </span>
       </div>
 
-      {/* Pricing badge - inside card */}
+      {/* Ownership or Pricing badge */}
       <div className="mb-2">
-        {pricingType === 'free' ? (
+        {isOwned ? (
+          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
+            {ownershipLabel}
+          </Badge>
+        ) : pricingType === 'free' ? (
           <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
             FREE
           </Badge>
