@@ -257,7 +257,8 @@ export default function AppStore() {
 
     const selectedBlocks = cart.map(id => blocks.find(b => b.id === id)).filter(Boolean) as Block[];
 
-    // Separate one-time and monthly blocks
+    // Separate blocks by type
+    const freeBlocks = selectedBlocks.filter(b => b.isFree || b.pricingType === 'free');
     const oneTimeBlocks = selectedBlocks.filter(b => b.pricingType === 'one_time' && !b.isFree);
     const monthlyBlocks = selectedBlocks.filter(b => b.pricingType === 'monthly' && !b.isFree);
 
@@ -270,31 +271,67 @@ export default function AppStore() {
         return;
       }
 
-      // If only monthly blocks, go to subscription checkout
+      // Get user's business
+      const { data: business } = await supabase
+        .from('user_businesses')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (!business) {
+        toast.error('Business not found');
+        return;
+      }
+
+      // Function to unlock free blocks
+      const unlockFreeBlocks = async () => {
+        if (freeBlocks.length === 0) return;
+
+        const unlockPromises = freeBlocks.map(block => 
+          supabase.from('user_block_unlocks').insert({
+            user_id: session.user.id,
+            business_id: business.id,
+            block_name: block.title,
+            unlock_type: 'free'
+          })
+        );
+
+        await Promise.all(unlockPromises);
+      };
+
+      // Case 1: ONLY free blocks
+      if (freeBlocks.length > 0 && oneTimeBlocks.length === 0 && monthlyBlocks.length === 0) {
+        await unlockFreeBlocks();
+        toast.success(`${freeBlocks.length} free block${freeBlocks.length > 1 ? 's' : ''} added to your dashboard!`);
+        setCart([]);
+        navigate('/dashboard');
+        return;
+      }
+
+      // Case 2: Only monthly blocks (unlock free ones first if any)
       if (monthlyBlocks.length > 0 && oneTimeBlocks.length === 0) {
+        await unlockFreeBlocks();
         const monthlyNames = monthlyBlocks.map(b => b.title).join(',');
         navigate(`/dashboard/subscription-checkout?blocks=${monthlyNames}`);
         return;
       }
 
-      // If only one-time blocks, go to regular checkout
+      // Case 3: Only one-time blocks (unlock free ones first if any)
       if (oneTimeBlocks.length > 0 && monthlyBlocks.length === 0) {
+        await unlockFreeBlocks();
         const oneTimeNames = oneTimeBlocks.map(b => b.title).join(',');
         navigate(`/start/checkout?blocks=${oneTimeNames}`);
         return;
       }
 
-      // If mixed, show message
+      // Case 4: Mixed one-time and monthly (not allowed)
       if (oneTimeBlocks.length > 0 && monthlyBlocks.length > 0) {
         toast.error('Please checkout one-time and monthly blocks separately');
         return;
       }
-
-      // All free blocks
-      toast.success('All selected blocks are free!');
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error('Failed to process checkout');
+      toast.error('Failed to add blocks');
     }
   };
 
@@ -302,6 +339,12 @@ export default function AppStore() {
     const block = blocks.find(b => b.id === blockId);
     return sum + (block?.price || 0);
   }, 0);
+
+  // Check if all selected blocks are free
+  const allFree = cart.length > 0 && cart.every(blockId => {
+    const block = blocks.find(b => b.id === blockId);
+    return block?.isFree || block?.pricingType === 'free';
+  });
 
   if (loading) {
     return (
@@ -412,7 +455,7 @@ export default function AppStore() {
                 size="lg"
                 className="rounded-full"
               >
-                Proceed to Checkout
+                {allFree ? 'Add to Dashboard' : 'Proceed to Checkout'}
               </Button>
             </div>
           </div>
