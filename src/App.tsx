@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { OnboardingProvider } from "./contexts/OnboardingContext";
+import { DashboardLayout } from "./layouts/DashboardLayout";
 import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
@@ -48,18 +49,25 @@ function App() {
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/logos" element={<LogoGeneration />} />
-              <Route path="/dashboard/app-store" element={<AppStore />} />
-              <Route path="/dashboard/subscriptions" element={<Subscriptions />} />
-              <Route path="/dashboard/subscription-checkout" element={<SubscriptionCheckout />} />
-              <Route path="/dashboard/purchase-history" element={<PurchaseHistory />} />
+              
+              {/* Dashboard routes with shared layout */}
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="logos" element={<LogoGeneration />} />
+                <Route path="app-store" element={<AppStore />} />
+                <Route path="subscriptions" element={<Subscriptions />} />
+                <Route path="subscription-checkout" element={<SubscriptionCheckout />} />
+                <Route path="purchase-history" element={<PurchaseHistory />} />
+              </Route>
+              
+              {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
-              <Route path="/business-ideas" element={<BusinessIdeas />} />
+              
+              {/* Other pages */}
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />

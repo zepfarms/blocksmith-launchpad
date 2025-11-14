@@ -125,7 +125,6 @@ export const PurchaseHistory = () => {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header */}
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
