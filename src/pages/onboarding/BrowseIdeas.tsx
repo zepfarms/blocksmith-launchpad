@@ -14,6 +14,16 @@ interface BusinessIdea {
   growth_blocks: string;
 }
 
+// Priority categories to show by default (most popular/important)
+const priorityCategories = [
+  "Local Service",
+  "Online Store",
+  "Creator Business",
+  "Consulting",
+  "Tech & Digital",
+  "Pet Services"
+];
+
 export const BrowseIdeas = () => {
   const navigate = useNavigate();
   const { updateData } = useOnboarding();
@@ -21,6 +31,7 @@ export const BrowseIdeas = () => {
   const [filteredIdeas, setFilteredIdeas] = useState<BusinessIdea[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [showAllCategories, setShowAllCategories] = useState(false);
 
   // Load business ideas from CSV
   useEffect(() => {
@@ -88,7 +99,29 @@ export const BrowseIdeas = () => {
     handleSelectIdea(randomIdea);
   };
 
+  const handleCategoryClick = (category: string) => {
+    setSelectedFilter(category);
+    // Auto-scroll to results on mobile
+    if (window.innerWidth < 768) {
+      setTimeout(() => {
+        document.getElementById('results-section')?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100);
+    }
+  };
+
   const categories = Array.from(new Set(businessIdeas.map(idea => idea.category)));
+  
+  const displayedCategories = showAllCategories 
+    ? categories 
+    : categories.filter(cat => priorityCategories.includes(cat));
+
+  const getResultCount = (category: string) => {
+    if (category === "all") return businessIdeas.length;
+    return businessIdeas.filter(idea => idea.category === category).length;
+  };
 
   return (
     <section className="relative min-h-screen pt-32 pb-16 px-4 sm:px-6 bg-background">
@@ -125,7 +158,7 @@ export const BrowseIdeas = () => {
 
           <div className="flex gap-2 flex-wrap">
             <button
-              onClick={() => setSelectedFilter("all")}
+              onClick={() => handleCategoryClick("all")}
               className={`px-6 py-2 rounded-full font-medium transition-all ${
                 selectedFilter === "all"
                   ? "bg-acari-green text-black"
@@ -133,11 +166,12 @@ export const BrowseIdeas = () => {
               }`}
             >
               All
+              <span className="ml-1 text-xs opacity-70">({getResultCount("all")})</span>
             </button>
-            {categories.map(cat => (
+            {displayedCategories.map(cat => (
               <button
                 key={cat}
-                onClick={() => setSelectedFilter(cat)}
+                onClick={() => handleCategoryClick(cat)}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedFilter === cat
                     ? "bg-acari-green text-black"
@@ -145,34 +179,59 @@ export const BrowseIdeas = () => {
                 }`}
               >
                 {cat}
+                <span className="ml-1 text-xs opacity-70">({getResultCount(cat)})</span>
               </button>
             ))}
+            {!showAllCategories && categories.length > displayedCategories.length && (
+              <button
+                onClick={() => setShowAllCategories(true)}
+                className="px-6 py-2 rounded-full border-2 border-dashed border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all"
+              >
+                + {categories.length - displayedCategories.length} More
+              </button>
+            )}
           </div>
 
-          <div className="grid gap-3 max-h-[500px] overflow-y-auto p-1">
-            {filteredIdeas.map((idea) => (
-              <button
-                key={idea.id}
-                onClick={() => handleSelectIdea(idea)}
-                className="group relative p-4 rounded-xl border border-border bg-card hover:bg-accent/50 hover:border-primary/50 transition-all text-left"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                      {idea.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {idea.description}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                        {idea.category}
-                      </span>
+          <div id="results-section" className="space-y-3">
+            {selectedFilter !== "all" && (
+              <div className="flex items-center justify-between animate-fade-in">
+                <p className="text-sm text-muted-foreground">
+                  Showing <span className="font-semibold text-foreground">{filteredIdeas.length}</span> ideas in <span className="font-semibold text-primary">{selectedFilter}</span>
+                </p>
+                <button
+                  onClick={() => handleCategoryClick("all")}
+                  className="text-xs text-primary hover:underline"
+                >
+                  View all →
+                </button>
+              </div>
+            )}
+            
+            <div className="grid gap-3 lg:max-h-[500px] overflow-y-auto p-1 transition-all duration-300">
+              {filteredIdeas.map((idea) => (
+                <button
+                  key={idea.id}
+                  onClick={() => handleSelectIdea(idea)}
+                  className="group relative p-4 rounded-xl border border-border bg-card hover:bg-accent/50 hover:border-primary/50 transition-all text-left"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-1">
+                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                        {idea.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {idea.description}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary font-medium">
+                          {idea.category}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
 
           <button
