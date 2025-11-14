@@ -281,6 +281,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                   description={block.description}
                   isFree={block.isFree}
                   price={block.price}
+                  pricingType={block.pricingType}
+                  monthlyPrice={block.monthlyPrice}
                   isSelected={selectedBlocks.includes(block.id)}
                   onToggle={() => toggleBlock(block.id)}
                   onInfoClick={() => setInfoModalBlock(block)}
@@ -308,6 +310,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                   description={block.description}
                   isFree={block.isFree}
                   price={block.price}
+                  pricingType={block.pricingType}
+                  monthlyPrice={block.monthlyPrice}
                   isSelected={selectedBlocks.includes(block.id)}
                   onToggle={() => toggleBlock(block.id)}
                   onInfoClick={() => setInfoModalBlock(block)}
