@@ -17,22 +17,38 @@ type SlideId = (typeof slides)[number];
 export function IdeaToLaunchFlow() {
   const [index, setIndex] = useState(0);
   const [pulse, setPulse] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const currentSlide = slides[index];
 
   useEffect(() => {
     setPulse(false);
+    setIsButtonClicked(false);
 
+    // Show subtle pulse/ready state
     const pulseTimer = setTimeout(() => {
       setPulse(true);
-    }, SLIDE_DURATION - PULSE_LEAD);
+    }, SLIDE_DURATION - 700);
 
+    // Button press animation (300ms before transition)
+    const clickStartTimer = setTimeout(() => {
+      setIsButtonClicked(true);
+    }, SLIDE_DURATION - 300);
+
+    // Button release (150ms before transition)
+    const clickEndTimer = setTimeout(() => {
+      setIsButtonClicked(false);
+    }, SLIDE_DURATION - 150);
+
+    // Slide transition
     const slideTimer = setTimeout(() => {
       setIndex((prev) => (prev + 1) % slides.length);
     }, SLIDE_DURATION);
 
     return () => {
       clearTimeout(pulseTimer);
+      clearTimeout(clickStartTimer);
+      clearTimeout(clickEndTimer);
       clearTimeout(slideTimer);
     };
   }, [index]);
@@ -56,19 +72,19 @@ export function IdeaToLaunchFlow() {
 
         {/* iPhone Mockup - Mobile/Tablet */}
         <div className="flex justify-center lg:hidden">
-          <IPhoneMockup currentSlide={currentSlide} pulse={pulse} />
+          <IPhoneMockup currentSlide={currentSlide} pulse={pulse} isButtonClicked={isButtonClicked} />
         </div>
 
         {/* Laptop Mockup - Desktop */}
         <div className="hidden lg:flex justify-center">
-          <LaptopMockup currentSlide={currentSlide} pulse={pulse} />
+          <LaptopMockup currentSlide={currentSlide} pulse={pulse} isButtonClicked={isButtonClicked} />
         </div>
       </div>
     </section>
   );
 }
 
-function IPhoneMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: boolean }) {
+function IPhoneMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: SlideId; pulse: boolean; isButtonClicked: boolean }) {
   return (
     <div className="w-full max-w-[280px] sm:max-w-[320px]">
       {/* iPhone shell */}
@@ -94,13 +110,13 @@ function IPhoneMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: b
           
           <div className="absolute inset-0 pt-10 pb-4 px-2.5 text-[0.7rem] sm:text-xs text-foreground">
             {/* Slide content */}
-            {currentSlide === "home" && <HomeSlide pulse={pulse} />}
-            {currentSlide === "step1" && <Step1Slide pulse={pulse} />}
-            {currentSlide === "step2" && <Step2Slide pulse={pulse} />}
+            {currentSlide === "home" && <HomeSlide pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step1" && <Step1Slide pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step2" && <Step2Slide pulse={pulse} isClicked={isButtonClicked} />}
             {currentSlide === "step3" && (
-              <Step3Slide pulse={pulse} items={generatingItems} />
+              <Step3Slide pulse={pulse} isClicked={isButtonClicked} items={generatingItems} />
             )}
-            {currentSlide === "step4" && <Step4Slide pulse={pulse} />}
+            {currentSlide === "step4" && <Step4Slide pulse={pulse} isClicked={isButtonClicked} />}
           </div>
         </div>
       </div>
@@ -108,7 +124,7 @@ function IPhoneMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: b
   );
 }
 
-function LaptopMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: boolean }) {
+function LaptopMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: SlideId; pulse: boolean; isButtonClicked: boolean }) {
   return (
     <div className="w-full max-w-4xl">
       {/* Lid */}
@@ -123,13 +139,13 @@ function LaptopMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: b
           <div className="relative h-[340px] lg:h-[380px] bg-gradient-to-b from-card/90 via-background to-background">
             <div className="absolute inset-0 p-4 sm:p-5 text-xs sm:text-sm text-foreground">
               {/* Slide content */}
-              {currentSlide === "home" && <HomeSlide pulse={pulse} />}
-              {currentSlide === "step1" && <Step1Slide pulse={pulse} />}
-              {currentSlide === "step2" && <Step2Slide pulse={pulse} />}
+              {currentSlide === "home" && <HomeSlide pulse={pulse} isClicked={isButtonClicked} />}
+              {currentSlide === "step1" && <Step1Slide pulse={pulse} isClicked={isButtonClicked} />}
+              {currentSlide === "step2" && <Step2Slide pulse={pulse} isClicked={isButtonClicked} />}
               {currentSlide === "step3" && (
-                <Step3Slide pulse={pulse} items={generatingItems} />
+                <Step3Slide pulse={pulse} isClicked={isButtonClicked} items={generatingItems} />
               )}
-              {currentSlide === "step4" && <Step4Slide pulse={pulse} />}
+              {currentSlide === "step4" && <Step4Slide pulse={pulse} isClicked={isButtonClicked} />}
             </div>
           </div>
         </div>
@@ -158,7 +174,7 @@ function UrlBar() {
   );
 }
 
-function HomeSlide({ pulse }: { pulse: boolean }) {
+function HomeSlide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="flex flex-col h-full justify-between">
       <div className="space-y-2 sm:space-y-3">
@@ -181,7 +197,7 @@ function HomeSlide({ pulse }: { pulse: boolean }) {
   );
 }
 
-function Step1Slide({ pulse }: { pulse: boolean }) {
+function Step1Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="flex flex-col h-full justify-between">
       <div className="space-y-2 sm:space-y-3">
@@ -210,7 +226,7 @@ function Step1Slide({ pulse }: { pulse: boolean }) {
   );
 }
 
-function Step2Slide({ pulse }: { pulse: boolean }) {
+function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="flex flex-col h-full justify-between">
       <div className="space-y-2 sm:space-y-3">
@@ -245,7 +261,7 @@ function Step2Slide({ pulse }: { pulse: boolean }) {
   );
 }
 
-function Step3Slide({ pulse, items }: { pulse: boolean; items: string[] }) {
+function Step3Slide({ pulse, isClicked, items }: { pulse: boolean; isClicked: boolean; items: string[] }) {
   return (
     <div className="flex flex-col h-full justify-between">
       <div className="space-y-2 sm:space-y-3">
@@ -278,7 +294,7 @@ function Step3Slide({ pulse, items }: { pulse: boolean; items: string[] }) {
   );
 }
 
-function Step4Slide({ pulse }: { pulse: boolean }) {
+function Step4Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="flex flex-col h-full justify-between">
       <div className="space-y-2 sm:space-y-3">
