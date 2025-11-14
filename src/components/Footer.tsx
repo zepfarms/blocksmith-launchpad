@@ -70,7 +70,7 @@ export const Footer = () => {
                 </a>
                 
                 <a
-                  href="https://x.com/spaceblocks.ai"
+                  href="https://x.com/AcariAI"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
