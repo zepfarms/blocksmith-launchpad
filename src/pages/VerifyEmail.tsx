@@ -15,6 +15,8 @@ export const VerifyEmail = () => {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [verified, setVerified] = useState(false);
+  const [resendCount, setResendCount] = useState(0);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   useEffect(() => {
     // Get user email from session
@@ -29,6 +31,16 @@ export const VerifyEmail = () => {
     };
     getUser();
   }, [navigate]);
+
+  // Cooldown timer effect
+  useEffect(() => {
+    if (cooldownSeconds > 0) {
+      const timer = setTimeout(() => {
+        setCooldownSeconds(cooldownSeconds - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldownSeconds]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,6 +127,13 @@ export const VerifyEmail = () => {
         return;
       }
 
+      setResendCount(resendCount + 1);
+      
+      // Start cooldown after first resend
+      if (resendCount >= 0) {
+        setCooldownSeconds(60);
+      }
+
       toast.success("Verification code sent! Check your email.");
     } catch (error: any) {
       console.error("Resend error:", error);
@@ -193,7 +212,7 @@ export const VerifyEmail = () => {
               type="button"
               variant="ghost"
               onClick={handleResend}
-              disabled={resendLoading}
+              disabled={resendLoading || cooldownSeconds > 0}
               className="text-acari-green hover:text-acari-green/80"
             >
               {resendLoading ? (
@@ -201,6 +220,8 @@ export const VerifyEmail = () => {
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Sending...
                 </>
+              ) : cooldownSeconds > 0 ? (
+                `Resend in ${cooldownSeconds}s`
               ) : (
                 "Resend Code"
               )}
