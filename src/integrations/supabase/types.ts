@@ -213,6 +213,60 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_payment_failures: {
+        Row: {
+          attempt_count: number
+          created_at: string
+          failure_reason: string | null
+          id: string
+          next_retry_date: string | null
+          resolved: boolean
+          resolved_at: string | null
+          stripe_invoice_id: string
+          subscription_id: string
+          user_id: string
+        }
+        Insert: {
+          attempt_count?: number
+          created_at?: string
+          failure_reason?: string | null
+          id?: string
+          next_retry_date?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          stripe_invoice_id: string
+          subscription_id: string
+          user_id: string
+        }
+        Update: {
+          attempt_count?: number
+          created_at?: string
+          failure_reason?: string | null
+          id?: string
+          next_retry_date?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          stripe_invoice_id?: string
+          subscription_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_payment_failures_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_payment_failures_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_assets: {
         Row: {
           asset_type: string
@@ -433,8 +487,11 @@ export type Database = {
           created_at: string
           current_period_end: string
           current_period_start: string
+          grace_period_end: string | null
           id: string
+          last_payment_status: string | null
           monthly_price_cents: number
+          payment_retry_count: number | null
           status: string
           stripe_subscription_id: string
           stripe_subscription_item_id: string
@@ -448,8 +505,11 @@ export type Database = {
           created_at?: string
           current_period_end: string
           current_period_start: string
+          grace_period_end?: string | null
           id?: string
+          last_payment_status?: string | null
           monthly_price_cents: number
+          payment_retry_count?: number | null
           status?: string
           stripe_subscription_id: string
           stripe_subscription_item_id: string
@@ -463,8 +523,11 @@ export type Database = {
           created_at?: string
           current_period_end?: string
           current_period_start?: string
+          grace_period_end?: string | null
           id?: string
+          last_payment_status?: string | null
           monthly_price_cents?: number
+          payment_retry_count?: number | null
           status?: string
           stripe_subscription_id?: string
           stripe_subscription_item_id?: string

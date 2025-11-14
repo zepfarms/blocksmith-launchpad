@@ -169,6 +169,158 @@ serve(async (req) => {
       console.log('Subscription processed for', monthlyBlocks.length, 'blocks');
     }
 
+    // Handle payment failure
+    if (event.type === 'invoice.payment_failed') {
+      const invoice = event.data.object;
+      const subscriptionId = invoice.subscription;
+
+      console.log('Payment failed for subscription:', subscriptionId);
+
+      // Get subscription details
+      const { data: subscription } = await supabase
+        .from('user_subscriptions')
+        .select('*')
+        .eq('stripe_subscription_id', subscriptionId)
+        .single();
+
+      if (subscription) {
+        // Calculate grace period (7 days from now)
+        const gracePeriodEnd = new Date();
+        gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 7);
+
+        // Update subscription status
+        await supabase
+          .from('user_subscriptions')
+          .update({
+            status: 'past_due',
+            last_payment_status: 'failed',
+            payment_retry_count: (subscription.payment_retry_count || 0) + 1,
+            grace_period_end: gracePeriodEnd.toISOString(),
+          })
+          .eq('stripe_subscription_id', subscriptionId);
+
+        // Log payment failure
+        await supabase
+          .from('subscription_payment_failures')
+          .insert({
+            user_id: subscription.user_id,
+            subscription_id: subscription.id,
+            stripe_invoice_id: invoice.id,
+            failure_reason: invoice.last_payment_error?.message || 'Payment failed',
+            attempt_count: invoice.attempt_count || 1,
+            next_retry_date: invoice.next_payment_attempt ? new Date(invoice.next_payment_attempt * 1000).toISOString() : null,
+          });
+
+        // Get user email
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('id', subscription.user_id)
+          .single();
+
+        // Send failure notification email
+        if (profile?.email) {
+          await resend.emails.send({
+            from: 'Acari <support@acari.ai>',
+            to: profile.email,
+            subject: '⚠️ Payment Failed for Your Acari Subscription',
+            html: `
+              <h1>Payment Failed</h1>
+              <p>We were unable to process your payment for the <strong>${subscription.block_name}</strong> subscription.</p>
+              
+              <p><strong>Reason:</strong> ${invoice.last_payment_error?.message || 'Payment declined'}</p>
+              
+              <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                <strong>Grace Period:</strong> You have 7 days to update your payment method. Your access will continue during this time.
+              </div>
+              
+              <p>Stripe will automatically retry your payment. To avoid service interruption, please update your payment method:</p>
+              
+              <p style="margin: 30px 0;">
+                <a href="${supabaseUrl.replace('supabase.co', 'lovable.app')}/dashboard/subscriptions" 
+                   style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                  Update Payment Method
+                </a>
+              </p>
+              
+              <p>If you need help, please contact our support team.</p>
+            `
+          });
+        }
+
+        console.log('Payment failure processed and email sent');
+      }
+    }
+
+    // Handle payment success (including recovery from failure)
+    if (event.type === 'invoice.payment_succeeded') {
+      const invoice = event.data.object;
+      const subscriptionId = invoice.subscription;
+
+      console.log('Payment succeeded for subscription:', subscriptionId);
+
+      // Get subscription details
+      const { data: subscription } = await supabase
+        .from('user_subscriptions')
+        .select('*')
+        .eq('stripe_subscription_id', subscriptionId)
+        .single();
+
+      if (subscription && subscription.last_payment_status === 'failed') {
+        // Update subscription to active
+        await supabase
+          .from('user_subscriptions')
+          .update({
+            status: 'active',
+            last_payment_status: 'succeeded',
+            payment_retry_count: 0,
+            grace_period_end: null,
+          })
+          .eq('stripe_subscription_id', subscriptionId);
+
+        // Mark failures as resolved
+        await supabase
+          .from('subscription_payment_failures')
+          .update({
+            resolved: true,
+            resolved_at: new Date().toISOString(),
+          })
+          .eq('subscription_id', subscription.id)
+          .eq('resolved', false);
+
+        // Get user email
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('id', subscription.user_id)
+          .single();
+
+        // Send recovery email
+        if (profile?.email) {
+          await resend.emails.send({
+            from: 'Acari <support@acari.ai>',
+            to: profile.email,
+            subject: '✅ Payment Successful - Subscription Restored',
+            html: `
+              <h1>Payment Successful!</h1>
+              <p>Great news! Your payment for the <strong>${subscription.block_name}</strong> subscription has been processed successfully.</p>
+              
+              <p>Your subscription is now active and your access has been fully restored.</p>
+              
+              <p><strong>Amount Paid:</strong> $${(subscription.monthly_price_cents / 100).toFixed(2)}</p>
+              <p><strong>Next Billing Date:</strong> ${new Date(subscription.current_period_end).toLocaleDateString()}</p>
+              
+              <p><a href="${supabaseUrl.replace('supabase.co', 'lovable.app')}/dashboard">Access Your Dashboard</a></p>
+              
+              <p>Thank you for your continued support!</p>
+            `
+          });
+        }
+
+        console.log('Payment recovery processed and email sent');
+      }
+    }
+
     // Handle subscription cancellation
     if (event.type === 'customer.subscription.deleted') {
       const subscription = event.data.object;

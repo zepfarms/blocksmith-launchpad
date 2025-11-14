@@ -23,3 +23,12 @@ verify_jwt = false
 
 [functions.verify-email]
 verify_jwt = false
+
+[functions.update-payment-method]
+verify_jwt = true
+
+[functions.cancel-subscription]
+verify_jwt = true
+
+[functions.create-subscription-checkout]
+verify_jwt = true
