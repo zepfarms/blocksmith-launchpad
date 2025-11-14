@@ -149,6 +149,8 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
                 description=""
                 isFree={true}
                 price={0}
+                monthlyPrice={0}
+                pricingType="free"
                 isSelected={selectedBlocks.includes(block.id)}
                 onToggle={() => toggleBlock(block.id)}
                 onInfoClick={() => {}}

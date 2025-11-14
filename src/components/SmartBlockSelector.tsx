@@ -64,13 +64,17 @@ interface Block {
   category: string;
   icon: React.ReactNode;
   isFree: boolean;
-  price: number; // price in cents
+  price: number; // price in cents for one-time
+  monthlyPrice: number; // price in cents for monthly
+  pricingType: 'free' | 'one_time' | 'monthly';
   description: string;
 }
 
 interface BlockPricing {
   block_name: string;
   price_cents: number;
+  monthly_price_cents: number;
+  pricing_type: string;
   is_free: boolean;
 }
 
@@ -153,6 +157,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           pricingMap.set(item.block_name, {
             block_name: item.block_name,
             price_cents: item.price_cents,
+            monthly_price_cents: item.monthly_price_cents || 0,
+            pricing_type: item.pricing_type || 'free',
             is_free: item.is_free
           });
         });
@@ -184,6 +190,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             const pricing = pricingData.get(name);
             const is_free = pricing?.is_free ?? false;
             const price_cents = pricing?.price_cents ?? 0;
+            const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
+            const pricing_type = pricing?.pricing_type ?? 'free';
             
             return {
               id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -192,6 +200,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               description,
               isFree: is_free,
               price: price_cents,
+              monthlyPrice: monthly_price_cents,
+              pricingType: pricing_type as 'free' | 'one_time' | 'monthly',
               icon: iconMap[category] || <IconCircuit />
             } as Block;
           })
@@ -262,21 +272,23 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               </Badge>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {starterBlockList.map((block, index) => (
-                <BlockCard
-                  key={block.id}
-                  title={block.title}
-                  category={block.category}
-                  icon={block.icon}
-                  description={block.description}
-                  isFree={block.isFree}
-                  price={block.price}
-                  isSelected={selectedBlocks.includes(block.id)}
-                  onToggle={() => toggleBlock(block.id)}
-                  onInfoClick={() => setInfoModalBlock(block)}
-                  index={index}
-                />
-              ))}
+            {starterBlockList.map((block, index) => (
+              <BlockCard
+                key={block.id}
+                title={block.title}
+                category={block.category}
+                icon={block.icon}
+                description={block.description}
+                isFree={block.isFree}
+                price={block.price}
+                monthlyPrice={block.monthlyPrice}
+                pricingType={block.pricingType}
+                isSelected={selectedBlocks.includes(block.id)}
+                onToggle={() => toggleBlock(block.id)}
+                onInfoClick={() => setInfoModalBlock(block)}
+                index={index}
+              />
+            ))}
             </div>
           </div>
         )}
@@ -289,21 +301,23 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               <Badge variant="outline">Growth blocks</Badge>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {growthBlockList.map((block, index) => (
-                <BlockCard
-                  key={block.id}
-                  title={block.title}
-                  category={block.category}
-                  icon={block.icon}
-                  description={block.description}
-                  isFree={block.isFree}
-                  price={block.price}
-                  isSelected={selectedBlocks.includes(block.id)}
-                  onToggle={() => toggleBlock(block.id)}
-                  onInfoClick={() => setInfoModalBlock(block)}
-                  index={index}
-                />
-              ))}
+            {growthBlockList.map((block, index) => (
+              <BlockCard
+                key={block.id}
+                title={block.title}
+                category={block.category}
+                icon={block.icon}
+                description={block.description}
+                isFree={block.isFree}
+                price={block.price}
+                monthlyPrice={block.monthlyPrice}
+                pricingType={block.pricingType}
+                isSelected={selectedBlocks.includes(block.id)}
+                onToggle={() => toggleBlock(block.id)}
+                onInfoClick={() => setInfoModalBlock(block)}
+                index={index}
+              />
+            ))}
             </div>
           </div>
         )}
@@ -372,21 +386,23 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                   </Badge>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {freeBlocks.map((block, index) => (
-                    <BlockCard
-                      key={block.id}
-                      title={block.title}
-                      category={block.category}
-                      icon={block.icon}
-                      description={block.description}
-                      isFree={block.isFree}
-                      price={block.price}
-                      isSelected={selectedBlocks.includes(block.id)}
-                      onToggle={() => toggleBlock(block.id)}
-                      onInfoClick={() => setInfoModalBlock(block)}
-                      index={index}
-                    />
-                  ))}
+                {freeBlocks.map((block, index) => (
+                  <BlockCard
+                    key={block.id}
+                    title={block.title}
+                    category={block.category}
+                    icon={block.icon}
+                    description={block.description}
+                    isFree={block.isFree}
+                    price={block.price}
+                    monthlyPrice={block.monthlyPrice}
+                    pricingType={block.pricingType}
+                    isSelected={selectedBlocks.includes(block.id)}
+                    onToggle={() => toggleBlock(block.id)}
+                    onInfoClick={() => setInfoModalBlock(block)}
+                    index={index}
+                  />
+                ))}
                 </div>
               </div>
             )}
@@ -399,21 +415,23 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                   <Badge variant="outline">Paid features</Badge>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {paidBlocks.map((block, index) => (
-                    <BlockCard
-                      key={block.id}
-                      title={block.title}
-                      category={block.category}
-                      icon={block.icon}
-                      description={block.description}
-                      isFree={block.isFree}
-                      price={block.price}
-                      isSelected={selectedBlocks.includes(block.id)}
-                      onToggle={() => toggleBlock(block.id)}
-                      onInfoClick={() => setInfoModalBlock(block)}
-                      index={index}
-                    />
-                  ))}
+                {paidBlocks.map((block, index) => (
+                  <BlockCard
+                    key={block.id}
+                    title={block.title}
+                    category={block.category}
+                    icon={block.icon}
+                    description={block.description}
+                    isFree={block.isFree}
+                    price={block.price}
+                    monthlyPrice={block.monthlyPrice}
+                    pricingType={block.pricingType}
+                    isSelected={selectedBlocks.includes(block.id)}
+                    onToggle={() => toggleBlock(block.id)}
+                    onInfoClick={() => setInfoModalBlock(block)}
+                    index={index}
+                  />
+                ))}
                 </div>
               </div>
             )}
