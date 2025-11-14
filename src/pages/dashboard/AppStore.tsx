@@ -123,7 +123,9 @@ export default function AppStore() {
           pricingMap.set(item.block_name, {
             block_name: item.block_name,
             price_cents: item.price_cents,
+            monthly_price_cents: item.monthly_price_cents || 0,
             is_free: item.is_free,
+            pricing_type: item.pricing_type || 'free',
             description: item.description || null
           });
         });
@@ -156,6 +158,8 @@ export default function AppStore() {
             const pricing = pricingData.get(name);
             const is_free = pricing?.is_free ?? false;
             const price_cents = pricing?.price_cents ?? 0;
+            const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
+            const pricing_type = pricing?.pricing_type ?? 'free';
             const dbDescription = pricing?.description;
             
             return {
@@ -165,6 +169,8 @@ export default function AppStore() {
               description: dbDescription || csvDescription,
               isFree: is_free,
               price: price_cents,
+              pricingType: pricing_type,
+              monthlyPrice: monthly_price_cents,
               icon: iconMap[category] || <IconCircuit />
             } as Block;
           })
@@ -306,6 +312,8 @@ export default function AppStore() {
               description={block.description}
               isFree={block.isFree}
               price={block.price}
+              pricingType={block.pricingType}
+              monthlyPrice={block.monthlyPrice}
               isSelected={cart.includes(block.id)}
               onToggle={() => toggleCart(block.id)}
               onInfoClick={() => setInfoModalBlock(block)}
