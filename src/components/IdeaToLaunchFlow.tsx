@@ -176,173 +176,262 @@ function UrlBar() {
 
 function HomeSlide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className="text-sm sm:text-base font-semibold text-foreground">
-          Welcome to Acari
-        </h3>
-        <p className="text-muted-foreground leading-snug text-[0.65rem] sm:text-xs">
-          Tell us your business idea and we'll build everything you need to
-          launch.
-        </p>
+    <div className="h-full flex flex-col bg-background">
+      {/* Mobile Header */}
+      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+        <img src="/acari-logo.png" alt="Acari" className="h-5" />
+        <button className="text-[0.6rem] text-foreground px-2 py-1 rounded-full border border-white/20">
+          Sign In
+        </button>
       </div>
-      <button
-        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
-          pulse ? "animate-pulse scale-105" : ""
-        }`}
-      >
-        Get Started
-      </button>
+
+      {/* Hero Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-4">
+        <div className="text-center space-y-2">
+          <h1 className="text-lg sm:text-xl font-black tracking-tight leading-tight">
+            Turn Ideas Into<br />Companies — With AI
+          </h1>
+          <p className="text-[0.6rem] sm:text-xs text-muted-foreground">
+            The AI Partner That Outworks Everyone
+          </p>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="px-4 pb-4 space-y-2">
+        <button
+          disabled
+          className={`relative w-full px-4 py-2.5 bg-acari-green text-background rounded-full font-semibold text-[0.7rem] sm:text-xs transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          Start Building →
+        </button>
+        <button className="w-full px-4 py-2.5 border border-white/20 text-foreground rounded-full font-medium text-[0.7rem] sm:text-xs">
+          Sign In →
+        </button>
+      </div>
     </div>
   );
 }
 
 function Step1Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className="text-sm sm:text-base font-semibold text-foreground">
-          What's your idea?
-        </h3>
-        <div className="grid grid-cols-1 gap-2">
-          <div className="p-2 rounded-lg border border-border bg-card hover:bg-card/80 cursor-pointer transition-colors">
-            <div className="text-[0.65rem] sm:text-xs font-medium">💡 I have an idea</div>
-          </div>
-          <div className="p-2 rounded-lg border border-acari-green bg-acari-green/10 hover:bg-acari-green/20 cursor-pointer transition-colors">
-            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green">
-              🤔 Explore ideas
-            </div>
-          </div>
+    <div className="h-full flex flex-col bg-background">
+      {/* Breadcrumb */}
+      <div className="px-4 pt-3 pb-1.5">
+        <p className="text-[0.5rem] sm:text-[0.55rem] text-muted-foreground">Home &gt; Get Started</p>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-4">
+        <div className="text-center space-y-2">
+          <h2 className="text-lg sm:text-xl font-black tracking-tight leading-tight">
+            Ready to start or build<br />your business?
+          </h2>
+          <p className="text-[0.65rem] sm:text-xs text-muted-foreground">
+            Tell us a little bit about your idea
+          </p>
         </div>
       </div>
-      <button
-        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
-          pulse ? "animate-pulse scale-105" : ""
-        }`}
-      >
-        Continue
-      </button>
+
+      {/* Buttons */}
+      <div className="px-4 pb-4 space-y-2">
+        <button
+          disabled
+          className={`relative w-full px-4 py-2.5 bg-acari-green text-background rounded-full font-semibold text-[0.7rem] sm:text-xs transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          Yes, I have an idea →
+        </button>
+        <button className="w-full px-4 py-2.5 border border-white/20 text-foreground rounded-full font-medium text-[0.7rem] sm:text-xs">
+          No, show me ideas →
+        </button>
+      </div>
     </div>
   );
 }
 
 function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className="text-sm sm:text-base font-semibold text-foreground">
-          Tell us about your idea
-        </h3>
-        <div className="space-y-2">
-          <input
-            type="text"
-            placeholder="Business name..."
-            className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-acari-green text-[0.65rem] sm:text-xs"
-            value="Green Thumb Lawn Care"
-            readOnly
-          />
-          <textarea
-            placeholder="Describe your vision..."
-            className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-acari-green resize-none text-[0.65rem] sm:text-xs"
-            rows={3}
-            value="I want to start a lawn care business"
-            readOnly
-          />
+    <div className="h-full flex flex-col bg-background">
+      {/* Header with Back and Breadcrumb */}
+      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+        <button className="text-[0.6rem] sm:text-xs text-foreground">← Back</button>
+        <p className="text-[0.5rem] sm:text-[0.55rem] text-muted-foreground">Home &gt; Describe Idea</p>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 px-4 pt-4 space-y-3 overflow-y-auto">
+        <div className="space-y-1.5">
+          <h2 className="text-base sm:text-lg font-black tracking-tight">
+            Tell us about your idea
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <label className="text-[0.6rem] sm:text-xs text-muted-foreground">Business Name</label>
+            <input 
+              type="text"
+              value="Green Thumb Lawn Care"
+              disabled
+              className="w-full px-2.5 py-2 bg-card border border-border rounded-lg text-[0.65rem] sm:text-xs text-foreground"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[0.6rem] sm:text-xs text-muted-foreground">Description</label>
+            <textarea 
+              value="I want to start a lawn care business that provides eco-friendly lawn maintenance services"
+              disabled
+              rows={3}
+              className="w-full px-2.5 py-2 bg-card border border-border rounded-lg text-[0.65rem] sm:text-xs text-foreground resize-none"
+            />
+          </div>
         </div>
       </div>
-      <button
-        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
-          pulse ? "animate-pulse scale-105" : ""
-        }`}
-      >
-        Continue
-      </button>
+
+      {/* Button */}
+      <div className="px-4 pb-4">
+        <button
+          disabled
+          className={`relative w-full px-4 py-2.5 bg-acari-green text-background rounded-full font-semibold text-[0.7rem] sm:text-xs transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          Continue →
+        </button>
+      </div>
     </div>
   );
 }
 
 function Step3Slide({ pulse, isClicked, items }: { pulse: boolean; isClicked: boolean; items: string[] }) {
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className="text-sm sm:text-base font-semibold text-foreground">
-          We're building your business
-        </h3>
-        <div className="space-y-0.5 sm:space-y-1">
-          {items.map((item, i) => (
-            <div
+    <div className="h-full flex flex-col bg-background">
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-6">
+        <div className="text-center space-y-1.5">
+          <h2 className="text-lg sm:text-xl font-black tracking-tight">
+            We're building your business
+          </h2>
+          <p className="text-[0.6rem] sm:text-xs text-muted-foreground">
+            This will just take a moment...
+          </p>
+        </div>
+
+        <div className="w-full space-y-1.5">
+          {[
+            "Creating brand identity",
+            "Generating business plan",
+            "Setting up website",
+            "Configuring tools"
+          ].map((item, i) => (
+            <div 
               key={i}
-              className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-card border border-border"
+              className="flex items-center space-x-2 p-2 bg-card/50 border border-border/50 rounded-lg"
+              style={{ animation: `scale-in 0.4s ease-out ${i * 0.15}s both` }}
             >
-              <div className="flex-shrink-0 h-3 w-3 rounded-full border-2 border-acari-green flex items-center justify-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-acari-green animate-pulse" />
-              </div>
-              <span className="text-muted-foreground text-[0.6rem] sm:text-[0.65rem]">{item}</span>
+              <div className="w-1.5 h-1.5 bg-acari-green rounded-full animate-pulse" />
+              <span className="text-[0.6rem] sm:text-xs text-foreground">{item}</span>
             </div>
           ))}
         </div>
       </div>
-      <button
-        className={`w-full py-2 rounded-lg bg-muted text-muted-foreground font-medium cursor-not-allowed text-xs sm:text-sm ${
-          pulse ? "animate-pulse scale-105" : ""
-        }`}
-        disabled
-      >
-        Building...
-      </button>
+      
+      {/* Button */}
+      <div className="px-4 pb-4">
+        <button
+          disabled
+          className="w-full px-4 py-2.5 bg-muted text-muted-foreground rounded-full font-medium cursor-not-allowed opacity-60 text-[0.7rem] sm:text-xs"
+        >
+          Building...
+        </button>
+      </div>
     </div>
   );
 }
 
 function Step4Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className="text-sm sm:text-base font-semibold text-foreground">
-          Your business is ready!
-        </h3>
-        <div className="grid grid-cols-1 gap-1.5">
-          <div className="p-2 rounded-lg bg-card border border-border">
-            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
-              ✓ Brand
+    <div className="h-full flex flex-col bg-background">
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-6">
+        <div className="text-center space-y-2">
+          <div className="text-3xl mb-1.5">🎉</div>
+          <h2 className="text-lg sm:text-xl font-black tracking-tight">
+            Your business is ready!
+          </h2>
+          <p className="text-[0.65rem] sm:text-xs text-muted-foreground">
+            Everything you need to start making sales
+          </p>
+        </div>
+
+        <div className="w-full space-y-2">
+          {[
+            { icon: "✓", label: "Brand", desc: "Logo & colors" },
+            { icon: "✓", label: "Website", desc: "Live & bookable" },
+            { icon: "✓", label: "Legal", desc: "LLC & contracts" },
+            { icon: "✓", label: "Payments", desc: "Ready to invoice" },
+          ].map((item, i) => (
+            <div 
+              key={i}
+              className="flex items-center space-x-3 p-2.5 bg-card border border-acari-green/20 rounded-xl"
+              style={{ animation: `scale-in 0.4s ease-out ${i * 0.1}s both` }}
+            >
+              <div className="flex-shrink-0 w-6 h-6 bg-acari-green/20 text-acari-green rounded-full flex items-center justify-center text-[0.65rem] sm:text-xs font-bold">
+                {item.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[0.65rem] sm:text-xs font-bold text-foreground">{item.label}</p>
+                <p className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">{item.desc}</p>
+              </div>
             </div>
-            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
-              Logo & colors
-            </div>
-          </div>
-          <div className="p-2 rounded-lg bg-card border border-border">
-            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
-              ✓ Website
-            </div>
-            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
-              Live & bookable
-            </div>
-          </div>
-          <div className="p-2 rounded-lg bg-card border border-border">
-            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
-              ✓ Legal
-            </div>
-            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
-              LLC & contracts
-            </div>
-          </div>
-          <div className="p-2 rounded-lg bg-card border border-border">
-            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
-              ✓ Payments
-            </div>
-            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
-              Ready to invoice
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-      <button
-        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
-          pulse ? "animate-pulse scale-105" : ""
-        }`}
-      >
-        View Dashboard
-      </button>
+      
+      {/* Button */}
+      <div className="px-4 pb-4">
+        <button
+          disabled
+          className={`relative w-full px-4 py-2.5 bg-acari-green text-background rounded-full font-semibold text-[0.7rem] sm:text-xs transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          View Dashboard →
+        </button>
+      </div>
     </div>
   );
 }
