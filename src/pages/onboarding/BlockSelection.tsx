@@ -13,9 +13,16 @@ export const BlockSelection = () => {
     }
   }, [data.aiAnalysis, navigate]);
 
-  const handleComplete = (selectedBlocks: string[]) => {
+  const handleComplete = (selectedBlocks: string[], paidBlocks?: string[]) => {
     updateData({ selectedBlocks });
-    navigate("/start/signup");
+    
+    // If there are paid one-time blocks, go to checkout
+    if (paidBlocks && paidBlocks.length > 0) {
+      navigate(`/start/checkout?blocks=${paidBlocks.join(',')}`);
+    } else {
+      // Otherwise, go directly to signup
+      navigate("/start/signup");
+    }
   };
 
   return (

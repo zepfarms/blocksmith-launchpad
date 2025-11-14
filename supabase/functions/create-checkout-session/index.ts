@@ -59,15 +59,21 @@ serve(async (req) => {
       });
     }
 
-    // Filter only paid blocks
-    const paidBlocks = pricing?.filter(p => !p.is_free && p.price_cents > 0) || [];
+    // Filter only paid one-time blocks
+    const paidBlocks = pricing?.filter(p => 
+      !p.is_free && 
+      p.pricing_type === 'one_time' && 
+      p.price_cents > 0
+    ) || [];
     
     if (paidBlocks.length === 0) {
-      return new Response(JSON.stringify({ error: 'No paid blocks selected' }), {
+      return new Response(JSON.stringify({ error: 'No paid one-time blocks selected' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    console.log('Processing one-time purchase for blocks:', paidBlocks.map(b => b.block_name));
 
     // Calculate total
     const totalCents = paidBlocks.reduce((sum, block) => sum + block.price_cents, 0);
@@ -81,12 +87,13 @@ serve(async (req) => {
       },
       body: new URLSearchParams({
         'mode': 'payment',
-        'success_url': `${req.headers.get('origin')}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-        'cancel_url': `${req.headers.get('origin')}/dashboard`,
+        'success_url': `${req.headers.get('origin')}/start/signup?payment_success=true&session_id={CHECKOUT_SESSION_ID}`,
+        'cancel_url': `${req.headers.get('origin')}/start/blocks?payment_cancelled=true`,
         'customer_email': user.email!,
         'metadata[user_id]': user.id,
         'metadata[business_id]': business.id,
         'metadata[block_names]': JSON.stringify(blockNames),
+        'metadata[payment_type]': 'one_time',
         ...paidBlocks.reduce((acc, block, idx) => {
           acc[`line_items[${idx}][price_data][currency]`] = 'usd';
           acc[`line_items[${idx}][price_data][unit_amount]`] = block.price_cents.toString();
