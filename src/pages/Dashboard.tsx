@@ -114,12 +114,12 @@ const Dashboard = () => {
           dashboardItems.push({
             id: "business-name-generator",
             title: "Business Name Generator",
-            status: data.business_name ? "ready" : "not-started",
+            status: "not-started",
             description: data.business_name 
               ? `Current name: ${data.business_name}`
               : "Choose your perfect business name",
             locked: false,
-            approved: !!data.business_name,
+            approved: false,
             isFree: true,
           });
         }
@@ -517,7 +517,10 @@ const Dashboard = () => {
                         }
                       }}
                     >
-                      Create Logos
+                      {item.id === 'business-name-generator' 
+                        ? (businessData?.business_name ? 'Update Business Name' : 'Lock in an Awesome Business Name')
+                        : 'Create Logos'
+                      }
                     </button>
                   )}
                 </div>
