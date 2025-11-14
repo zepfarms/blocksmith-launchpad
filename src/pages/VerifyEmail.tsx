@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Mail, CheckCircle2 } from "lucide-react";
+import confetti from "canvas-confetti";
 
 export const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -59,6 +60,33 @@ export const VerifyEmail = () => {
       }
 
       setVerified(true);
+      
+      // Trigger confetti celebration
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#00FF94', '#00D4FF', '#A78BFA']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#00FF94', '#00D4FF', '#A78BFA']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+
       toast.success("Email verified successfully!");
       
       setTimeout(() => {
