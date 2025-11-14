@@ -91,13 +91,42 @@ const Dashboard = () => {
         
         setLogoSessionCount(sessions?.length || 0);
         
-        // Build items from selected blocks
-        const selectedBlocks = data.selected_blocks || [];
+        // Load unlocked blocks from App Store
+        const { data: unlockedBlocks } = await supabase
+          .from('user_block_unlocks')
+          .select('block_name')
+          .eq('user_id', session.user.id);
+        
+        // Merge selected_blocks (from onboarding) with unlocked blocks (from App Store)
+        const legacyBlocks = data.selected_blocks || [];
+        const appStoreBlocks = unlockedBlocks?.map(u => u.block_name) || [];
+        const allBlocks = [...new Set([...legacyBlocks, ...appStoreBlocks])]; // Remove duplicates
+        
+        // Build items from all blocks
         const dashboardItems: DashboardItem[] = [];
         
+        // Special handling for "Business Name Generator"
+        const hasBusinessNameGenerator = allBlocks.some((block: string) => 
+          block === 'Business Name Generator'
+        );
+        
+        if (hasBusinessNameGenerator) {
+          dashboardItems.push({
+            id: "business-name-generator",
+            title: "Business Name Generator",
+            status: data.business_name ? "ready" : "not-started",
+            description: data.business_name 
+              ? `Current name: ${data.business_name}`
+              : "Choose your perfect business name",
+            locked: false,
+            approved: !!data.business_name,
+            isFree: true,
+          });
+        }
+        
         // Logo block - check for various naming patterns
-        const hasLogoBlock = selectedBlocks.some((block: string) => 
-          block.toLowerCase().includes('logo') || block.toLowerCase().includes('name')
+        const hasLogoBlock = allBlocks.some((block: string) => 
+          block.toLowerCase().includes('logo')
         );
         
         if (hasLogoBlock) {
@@ -126,10 +155,12 @@ const Dashboard = () => {
           });
         }
         
-        // Other blocks - default to in-progress for now
-        selectedBlocks.forEach((block: string) => {
-          const isLogoBlock = block.toLowerCase().includes('logo') || block.toLowerCase().includes('name');
-          if (!isLogoBlock) {
+        // Add other blocks from selection
+        allBlocks.forEach((block: string) => {
+          const isBusinessNameGen = block === 'Business Name Generator';
+          const isLogoBlock = block.toLowerCase().includes('logo');
+          
+          if (!isLogoBlock && !isBusinessNameGen) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
@@ -144,8 +175,8 @@ const Dashboard = () => {
         
         setItems(dashboardItems);
         
-        // Calculate pricing for selected blocks
-        await calculatePricing(data.selected_blocks || []);
+        // Calculate pricing for all blocks
+        await calculatePricing(allBlocks);
       }
       
       // Load saved assets
@@ -442,7 +473,11 @@ const Dashboard = () => {
                         className="flex-1 gap-2 px-4 py-2 rounded-full border border-white/20 text-white text-sm hover:bg-white/5 transition-all disabled:opacity-50 inline-flex items-center justify-center"
                         disabled={item.locked}
                         onClick={() => {
-                          if (!item.locked && item.id === 'logo') {
+                          if (item.locked) return;
+                          
+                          if (item.id === 'business-name-generator') {
+                            navigate('/dashboard/business-name-generator');
+                          } else if (item.id === 'logo') {
                             navigate('/dashboard/logos');
                           }
                         }}
@@ -475,7 +510,9 @@ const Dashboard = () => {
                     <button
                       className="flex-1 gap-2 px-4 py-2 rounded-full bg-white text-black hover:bg-gray-100 text-sm transition-all inline-flex items-center justify-center"
                       onClick={() => {
-                        if (item.id === 'logo') {
+                        if (item.id === 'business-name-generator') {
+                          navigate('/dashboard/business-name-generator');
+                        } else if (item.id === 'logo') {
                           navigate('/dashboard/logos');
                         }
                       }}
