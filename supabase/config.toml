@@ -32,3 +32,6 @@ verify_jwt = true
 
 [functions.create-subscription-checkout]
 verify_jwt = true
+
+[functions.send-payment-reminder]
+verify_jwt = true
