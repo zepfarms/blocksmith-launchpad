@@ -145,11 +145,11 @@ const Dashboard = () => {
             id: "domain-name-generator",
             title: "Domain Name Generator",
             status: isDomainComplete ? "ready" : "not-started",
-            description: domainData?.domain_name 
-              ? `Domain: ${domainData.domain_name}`
-              : domainData?.domain_status === 'skipped'
-                ? "Skipped for now"
-                : "Choose your perfect domain",
+          description: domainData?.domain_name 
+            ? `Domain: ${domainData.domain_name}`
+            : domainData?.domain_status === 'skipped'
+              ? "Skipped for now"
+              : "Enter your domain or generate new ideas for your business",
             locked: false,
             approved: isDomainComplete,
             isFree: true,

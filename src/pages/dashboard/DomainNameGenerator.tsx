@@ -205,13 +205,29 @@ export default function DomainNameGenerator() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
-          <h1 className="text-4xl font-bold text-white mb-2">Domain Name Generator</h1>
-          <p className="text-white/70">Choose the perfect domain for {businessName}</p>
+          {/* Step indicator */}
+          <div className="flex items-center gap-2 mb-4 text-sm">
+            <span className="text-acari-green font-medium">Step 2 of Foundation Blocks</span>
+            <span className="text-white/30">•</span>
+            <span className="text-white/50">Business Name ✓ → Domain → Logo</span>
+          </div>
+          
+          <h1 className="text-4xl font-bold text-white mb-2">Choose Your Domain</h1>
+          <p className="text-white/70 mb-1">For: <span className="text-acari-green font-semibold">{businessName}</span></p>
+          <p className="text-sm text-white/50">You can enter an existing domain or generate new ideas</p>
         </div>
 
         {/* Choose Mode */}
         {mode === 'choose' && (
-          <div className="space-y-4">
+          <>
+            {/* Helper text */}
+            <div className="glass-card p-4 rounded-xl border border-white/10 bg-white/5 mb-6">
+              <p className="text-sm text-white/70">
+                💡 <strong className="text-white">Why choose a domain?</strong> Your domain name will be used throughout your branding, logo designs, and other business blocks.
+              </p>
+            </div>
+
+            <div className="space-y-4">
             <div
               onClick={() => setMode('existing')}
               className="glass-card p-6 rounded-2xl border border-white/10 hover:border-acari-green/50 cursor-pointer transition-all group"
@@ -222,7 +238,7 @@ export default function DomainNameGenerator() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white mb-2">Already Have a Domain</h3>
-                  <p className="text-white/70">Enter your existing domain and website</p>
+                  <p className="text-white/70">I already own a domain - let me enter it</p>
                 </div>
               </div>
             </div>
@@ -237,7 +253,7 @@ export default function DomainNameGenerator() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white mb-2">Generate Domain Ideas</h3>
-                  <p className="text-white/70">AI-powered suggestions based on "{businessName}"</p>
+                  <p className="text-white/70">I need a new domain - show me available suggestions</p>
                 </div>
               </div>
             </div>
@@ -252,11 +268,12 @@ export default function DomainNameGenerator() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white mb-2">Skip for Now</h3>
-                  <p className="text-white/70">You can add this later</p>
+                  <p className="text-white/70">I'll decide later - skip this step for now</p>
                 </div>
               </div>
             </div>
           </div>
+          </>
         )}
 
         {/* Existing Domain Mode */}
