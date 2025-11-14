@@ -126,6 +126,14 @@ export const BrowseIdeas = () => {
   return (
     <section className="relative min-h-screen pt-32 pb-16 px-4 sm:px-6 bg-background">
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
+        >
+          <span>←</span>
+          <span>Back to Home</span>
+        </button>
+        
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
             Browse Business Ideas
@@ -233,13 +241,6 @@ export const BrowseIdeas = () => {
               ))}
             </div>
           </div>
-
-          <button
-            onClick={() => navigate("/start")}
-            className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
-          >
-            Back
-          </button>
         </div>
       </div>
     </section>
