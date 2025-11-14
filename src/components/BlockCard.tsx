@@ -10,13 +10,15 @@ interface BlockCardProps {
   description: string;
   isFree: boolean;
   price: number;
+  monthlyPrice: number;
+  pricingType: 'free' | 'one_time' | 'monthly';
   isSelected: boolean;
   onToggle: () => void;
   onInfoClick: () => void;
   index: number;
 }
 
-export const BlockCard = ({ title, icon, category, description, isFree, price, isSelected, onToggle, onInfoClick, index }: BlockCardProps) => {
+export const BlockCard = ({ title, icon, category, description, isFree, price, monthlyPrice, pricingType, isSelected, onToggle, onInfoClick, index }: BlockCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -101,13 +103,17 @@ export const BlockCard = ({ title, icon, category, description, isFree, price, i
 
       {/* Pricing badge - inside card */}
       <div className="mb-2">
-        {isFree ? (
+        {pricingType === 'free' ? (
           <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
             FREE
           </Badge>
+        ) : pricingType === 'monthly' ? (
+          <Badge variant="outline" className="text-neon-purple border-neon-purple/30 text-[10px] md:text-xs">
+            ${(monthlyPrice / 100).toFixed(2)}/month
+          </Badge>
         ) : (
-          <Badge variant="outline" className="text-[10px] md:text-xs">
-            ${(price / 100).toFixed(2)}
+          <Badge variant="outline" className="text-neon-cyan border-neon-cyan/30 text-[10px] md:text-xs">
+            ${(price / 100).toFixed(2)} one-time
           </Badge>
         )}
       </div>

@@ -53,12 +53,16 @@ interface Block {
   icon: React.ReactNode;
   isFree: boolean;
   price: number;
+  monthlyPrice: number;
+  pricingType: 'free' | 'one_time' | 'monthly';
   description: string;
 }
 
 interface BlockPricing {
   block_name: string;
   price_cents: number;
+  monthly_price_cents: number;
+  pricing_type: string;
   is_free: boolean;
   description: string | null;
 }
@@ -119,6 +123,8 @@ export default function AppStore() {
           pricingMap.set(item.block_name, {
             block_name: item.block_name,
             price_cents: item.price_cents,
+            monthly_price_cents: item.monthly_price_cents || 0,
+            pricing_type: item.pricing_type || 'free',
             is_free: item.is_free,
             description: item.description || null
           });
@@ -152,6 +158,8 @@ export default function AppStore() {
             const pricing = pricingData.get(name);
             const is_free = pricing?.is_free ?? false;
             const price_cents = pricing?.price_cents ?? 0;
+            const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
+            const pricing_type = pricing?.pricing_type ?? 'free';
             const dbDescription = pricing?.description;
             
             return {
@@ -161,6 +169,8 @@ export default function AppStore() {
               description: dbDescription || csvDescription,
               isFree: is_free,
               price: price_cents,
+              monthlyPrice: monthly_price_cents,
+              pricingType: pricing_type as 'free' | 'one_time' | 'monthly',
               icon: iconMap[category] || <IconCircuit />
             } as Block;
           })
@@ -302,6 +312,8 @@ export default function AppStore() {
               description={block.description}
               isFree={block.isFree}
               price={block.price}
+              monthlyPrice={block.monthlyPrice}
+              pricingType={block.pricingType}
               isSelected={cart.includes(block.id)}
               onToggle={() => toggleCart(block.id)}
               onInfoClick={() => setInfoModalBlock(block)}
