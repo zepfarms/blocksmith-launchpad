@@ -11,12 +11,12 @@ export default function GrantTerms() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 py-12 px-4">
+      <main className="flex-1 py-8 sm:py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
             onClick={() => navigate("/")}
-            className="mb-8"
+            className="mb-6 sm:mb-8 text-neon-cyan hover:text-neon-cyan/80 hover:bg-neon-cyan/10"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
