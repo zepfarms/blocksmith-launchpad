@@ -17,7 +17,7 @@ serve(async (req) => {
       throw new Error('Business description is required');
     }
 
-    const response = await fetch('https://api.lovable.app/ai/generate', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
