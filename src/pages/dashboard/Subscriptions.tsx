@@ -5,7 +5,8 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, CreditCard, Calendar, X } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, CreditCard, Calendar, X, AlertCircle, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -27,6 +28,9 @@ interface Subscription {
   current_period_start: string;
   current_period_end: string;
   cancel_at_period_end: boolean;
+  last_payment_status?: string;
+  payment_retry_count?: number;
+  grace_period_end?: string;
 }
 
 export default function Subscriptions() {
@@ -34,6 +38,7 @@ export default function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [updatingPayment, setUpdatingPayment] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
 
@@ -100,22 +105,53 @@ export default function Subscriptions() {
     }
   };
 
-  const getStatusBadge = (status: string, cancelAtPeriodEnd: boolean) => {
-    if (cancelAtPeriodEnd) {
+  const handleUpdatePaymentMethod = async () => {
+    setUpdatingPayment(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('update-payment-method');
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error opening payment portal:', error);
+      toast.error('Failed to open payment portal');
+      setUpdatingPayment(false);
+    }
+  };
+
+  const getStatusBadge = (subscription: Subscription) => {
+    if (subscription.cancel_at_period_end) {
       return <Badge variant="outline" className="border-orange-500/30 text-orange-400">Cancelling</Badge>;
     }
     
-    switch (status) {
+    if (subscription.last_payment_status === 'failed' || subscription.status === 'past_due') {
+      return <Badge variant="destructive" className="flex items-center gap-1">
+        <AlertCircle className="w-3 h-3" />
+        Payment Failed
+      </Badge>;
+    }
+    
+    switch (subscription.status) {
       case 'active':
         return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Active</Badge>;
-      case 'past_due':
-        return <Badge variant="destructive">Past Due</Badge>;
       case 'cancelled':
       case 'canceled':
         return <Badge variant="outline">Cancelled</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant="outline">{subscription.status}</Badge>;
     }
+  };
+
+  const getGracePeriodDays = (gracePeriodEnd?: string) => {
+    if (!gracePeriodEnd) return 0;
+    const now = new Date();
+    const end = new Date(gracePeriodEnd);
+    const diffTime = end.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return Math.max(0, diffDays);
   };
 
   const formatDate = (dateString: string) => {
@@ -193,7 +229,7 @@ export default function Subscriptions() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-xl font-semibold">{subscription.block_name}</h3>
-                      {getStatusBadge(subscription.status, subscription.cancel_at_period_end)}
+                      {getStatusBadge(subscription)}
                     </div>
                     
                     <div className="flex items-center gap-6 text-sm text-muted-foreground mt-3">
