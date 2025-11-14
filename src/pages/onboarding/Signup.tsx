@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
@@ -15,6 +16,7 @@ export const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   useEffect(() => {
     if (data.selectedBlocks.length === 0) {
@@ -72,6 +74,11 @@ export const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!agreedToTerms) {
+      toast.error("Please agree to the Terms and Conditions");
+      return;
+    }
     
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
@@ -186,6 +193,25 @@ export const Signup = () => {
               className="bg-background/50"
               autoComplete="new-password"
             />
+          </div>
+
+          <div className="flex items-start gap-3 py-2">
+            <Checkbox
+              id="terms"
+              checked={agreedToTerms}
+              onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+              className="mt-1"
+            />
+            <Label htmlFor="terms" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+              I agree to the{" "}
+              <Link 
+                to="/terms" 
+                target="_blank"
+                className="text-neon-cyan hover:underline"
+              >
+                Terms and Conditions
+              </Link>
+            </Label>
           </div>
 
           <button
