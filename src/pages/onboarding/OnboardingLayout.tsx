@@ -56,7 +56,7 @@ export const OnboardingLayout = () => {
       <Header />
       
       {/* Progress Bar */}
-      <div className="fixed top-[72px] sm:top-[80px] left-0 right-0 h-1 bg-border z-40">
+      <div className="fixed top-[72px] sm:top-[80px] left-0 right-0 h-1 bg-border z-[90]">
         <div
           className="h-full bg-primary transition-all duration-300 ease-out"
           style={{ width: `${progressPercentage}%` }}
@@ -64,7 +64,7 @@ export const OnboardingLayout = () => {
       </div>
 
       {/* Step Indicators */}
-      <div className="fixed top-[73px] sm:top-[81px] left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-40">
+      <div className="fixed top-[73px] sm:top-[81px] left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-[90]">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-2">
             {Array.from({ length: totalSteps }, (_, i) => {
