@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export default function GrantTerms() {
-  const navigate = useNavigate();
+  
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -13,14 +11,15 @@ export default function GrantTerms() {
       
       <main className="flex-1 py-8 sm:py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="mb-6 sm:mb-8 text-neon-cyan hover:text-neon-cyan/80 hover:bg-neon-cyan/10"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Button>
+          <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 text-sm text-muted-foreground">
+            <ol className="flex items-center gap-2">
+              <li>
+                <Link to="/" className="hover:text-neon-cyan transition-colors">Home</Link>
+              </li>
+              <li aria-hidden="true" className="text-muted-foreground/60">/</li>
+              <li className="text-foreground">Grant Terms</li>
+            </ol>
+          </nav>
 
           <div className="prose prose-invert max-w-none">
             <h1 className="text-4xl font-bold mb-8">Acari Startup Micro Grant — Terms & Conditions</h1>
