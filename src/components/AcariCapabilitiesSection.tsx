@@ -186,7 +186,7 @@ export default function AcariCapabilitiesSection() {
               label="Branded clothing & cards"
             />
             <FloatingTag
-              className="right-6 bottom-6"
+              className="right-0 bottom-4"
               delay={0.6}
               label="Business phone & voicemail"
             />
@@ -196,7 +196,7 @@ export default function AcariCapabilitiesSection() {
               label="Contracts & legal templates"
             />
             <FloatingTag
-              className="left-8 bottom-8"
+              className="left-2 bottom-10"
               delay={0.9}
               label="Automations & AI workflows"
             />
