@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export const GrantSection = () => {
   const navigate = useNavigate();
@@ -55,15 +53,14 @@ export const GrantSection = () => {
               </p>
             </div>
 
-            {/* CTA Button */}
+            {/* Winners Notice */}
             <div className="pt-4 sm:pt-6">
-              <Button
-                onClick={() => navigate("/start")}
-                className="bg-acari-green hover:bg-acari-green/90 text-background text-sm sm:text-base md:text-lg font-semibold px-6 sm:px-8 py-5 sm:py-6 rounded-full shadow-[0_0_30px_rgba(107,203,68,0.3)] hover:shadow-[0_0_50px_rgba(107,203,68,0.5)] hover:scale-105 transition-all duration-300 whitespace-normal text-center leading-tight"
-              >
-                <span className="block sm:inline">Apply Automatically When You Build Your Idea</span>
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 inline-block flex-shrink-0" />
-              </Button>
+              <div className="inline-flex items-center gap-3 px-6 py-4 rounded-full bg-gradient-to-r from-neon-cyan/5 to-neon-purple/5 border border-neon-cyan/20">
+                <div className="w-2 h-2 rounded-full bg-acari-green animate-glow-pulse" />
+                <p className="text-sm sm:text-base md:text-lg font-medium text-foreground">
+                  Winners will be posted on our site along with their business idea
+                </p>
+              </div>
             </div>
           </div>
         </div>
