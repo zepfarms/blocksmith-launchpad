@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
 import { BlockCard } from "./BlockCard";
 import { BlockInfoModal } from "./BlockInfoModal";
 import { Badge } from "@/components/ui/badge";
@@ -511,12 +511,11 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
         )}
 
         {/* Continue Button */}
-        <div className="text-center space-y-6 pt-8">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card border border-border">
-            <div className="w-8 h-8 rounded-full bg-acari-green flex items-center justify-center text-black font-bold text-sm">
-              {selectedBlocks.length}
-            </div>
-            <span className="text-sm font-semibold">
+        <div className="w-full flex flex-col items-center gap-6 pt-8">
+          <div className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-background/20 backdrop-blur-sm border border-neon-cyan/30">
+            <CheckCircle2 className="w-5 h-5 text-acari-green" />
+            <span className="text-lg font-medium text-foreground">
+              {selectedBlocks.length}{" "}
               {selectedBlocks.length === 1 ? "Block" : "Blocks"} Selected
             </span>
           </div>
@@ -524,13 +523,13 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           <button
             onClick={handleContinue}
             disabled={selectedBlocks.length === 0}
-            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Continue
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
           </button>
 
-          <p className="text-sm text-muted-foreground font-light">
+          <p className="text-sm text-muted-foreground font-light text-center">
             Save your plan. You'll only pay when you click Launch later.
           </p>
         </div>

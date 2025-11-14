@@ -311,7 +311,6 @@ const Dashboard = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden overflow-x-hidden">
-      <Header />
       
       {/* Email Verification Banner */}
       {showVerificationBanner && (
@@ -490,35 +489,40 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Launch section */}
+        {/* Launch/Checkout section */}
         <div className="glass-card p-8 rounded-3xl border border-neon-purple/20 text-center space-y-6 mt-12">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
-              Ready to go live?
+              {paidBlockCount > 0 ? "Ready to unlock your products?" : "Ready to get started?"}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
-              {approvedCount > 0 
-                ? `You've approved ${approvedCount} item${approvedCount !== 1 ? "s" : ""}. Launch to unlock your assets and go live.`
-                : "Approve the items above, then launch your business with one click."
+              {paidBlockCount > 0 
+                ? "Review your selections and complete checkout to unlock everything and start building your business."
+                : "Add monthly blocks from the App Store or activate your free blocks to get started."
               }
             </p>
           </div>
 
-          <button
-            onClick={handleLaunchBusiness}
-            className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={approvedCount === 0 || launchingBusiness}
-          >
-            <Rocket className="w-5 h-5 group-hover:translate-y-[-4px] transition-transform duration-300" />
-            {launchingBusiness ? "Launching..." : paidBlockCount === 0 ? "Activate My Business" : "Launch My Business"}
-          </button>
+          {paidBlockCount > 0 ? (
+            <button
+              onClick={() => navigate('/dashboard/subscription-checkout')}
+              className="group px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+            >
+              <Rocket className="w-5 h-5 group-hover:translate-y-[-4px] transition-transform duration-300" />
+              Checkout Now
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/dashboard/app-store')}
+              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+            >
+              Browse Monthly Blocks
+            </button>
+          )}
 
           <div className="pt-4 space-y-2">
             <p className="text-sm text-muted-foreground/80">
-              You haven't been charged yet.
-            </p>
-            <p className="text-xs text-muted-foreground/60 max-w-xl mx-auto">
-              Your assets will unlock and your business will go live after payment.
+              {paidBlockCount > 0 ? "You haven't been charged yet." : "Start with free blocks or explore our monthly subscriptions."}
             </p>
           </div>
 

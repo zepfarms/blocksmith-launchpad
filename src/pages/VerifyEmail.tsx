@@ -49,12 +49,21 @@ export const VerifyEmail = () => {
         return;
       }
 
+      // Update profile to mark as verified
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('profiles')
+          .update({ email_verified: true })
+          .eq('id', user.id);
+      }
+
       setVerified(true);
       toast.success("Email verified successfully!");
       
       setTimeout(() => {
         navigate("/dashboard");
-      }, 2000);
+      }, 1500);
     } catch (error: any) {
       console.error("Verification error:", error);
       toast.error("Failed to verify code. Please try again.");
@@ -163,15 +172,6 @@ export const VerifyEmail = () => {
           </div>
         </form>
 
-        <div className="text-center">
-          <Button
-            variant="link"
-            onClick={() => navigate("/dashboard")}
-            className="text-sm text-muted-foreground"
-          >
-            Skip for now
-          </Button>
-        </div>
       </div>
     </div>
   );
