@@ -64,6 +64,8 @@ All colors MUST be HSL.
     --shadow-neon: 0 0 30px hsl(187 100% 65% / 0.5), 0 0 60px hsl(271 91% 65% / 0.3);
     --shadow-float: 0 30px 80px -20px hsl(0 0% 0% / 0.9), 0 0 1px hsl(187 100% 65% / 0.2);
     --shadow-inner-glow: inset 0 1px 0 0 hsl(0 0% 100% / 0.1);
+    --shadow-acari-glow: 0 0 10px hsl(var(--acari-green));
+    --shadow-acari-glow-subtle: 0 0 16px hsl(var(--acari-green) / 0.45);
   }
 
   .dark {
@@ -213,5 +215,89 @@ All colors MUST be HSL.
     0%, 100% { transform: translateY(0px) translateX(0px); }
     33% { transform: translateY(-20px) translateX(10px); }
     66% { transform: translateY(-10px) translateX(-10px); }
+  }
+
+  /* Idea to Launch Flow Animations */
+  .cta-pulse {
+    animation: ctaPulse 0.45s ease-out;
+  }
+
+  @keyframes ctaPulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 18px hsl(var(--acari-green) / 0.7);
+    }
+    40% {
+      transform: scale(0.96);
+      box-shadow: 0 0 8px hsl(var(--acari-green) / 0.4);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 26px hsl(var(--acari-green) / 0.95);
+    }
+  }
+
+  .orbital {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--acari-green) / 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(
+      circle at center,
+      hsl(var(--acari-green) / 0.18),
+      transparent
+    );
+  }
+
+  .orbital-orbit {
+    position: absolute;
+    inset: 0;
+    animation: orbit 2.2s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  .orbital-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: hsl(var(--acari-green));
+    box-shadow: 0 0 10px hsl(var(--acari-green));
+    transform: translate(4px, -50%);
+  }
+
+  @keyframes orbit {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .typing-caret {
+    display: inline-block;
+    width: 6px;
+    height: 14px;
+    margin-left: 2px;
+    background: hsl(var(--acari-green));
+    animation: blink 1s steps(1, end) infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
   }
 }
