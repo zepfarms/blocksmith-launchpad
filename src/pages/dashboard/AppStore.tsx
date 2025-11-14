@@ -53,13 +53,17 @@ interface Block {
   icon: React.ReactNode;
   isFree: boolean;
   price: number;
+  pricingType: 'free' | 'one_time' | 'monthly';
+  monthlyPrice: number;
   description: string;
 }
 
 interface BlockPricing {
   block_name: string;
   price_cents: number;
+  monthly_price_cents: number;
   is_free: boolean;
+  pricing_type: 'free' | 'one_time' | 'monthly';
   description: string | null;
 }
 
