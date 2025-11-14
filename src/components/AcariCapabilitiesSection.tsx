@@ -176,31 +176,6 @@ export default function AcariCapabilitiesSection() {
                   ))}
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-2.5 text-[10px] text-slate-400 bg-black/80">
-                  <div className="flex items-center gap-2">
-                    <motion.span
-                      className="h-[7px] w-[7px] rounded-full"
-                      style={{
-                        background: acariGreen,
-                        boxShadow: `0 0 10px ${acariGreen}`,
-                      }}
-                      animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
-                      transition={{
-                        duration: 1.6,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                    <span>Next up: launch assets queued by Acari.</span>
-                  </div>
-                  <div
-                    className="rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.08em] text-slate-100"
-                    style={{ borderColor: `${acariGreen}66`, background: "rgba(0,0,0,0.85)" }}
-                  >
-                    BUILDING YOUR BUSINESS
-                  </div>
-                </div>
               </div>
             </motion.div>
 
@@ -225,10 +200,6 @@ export default function AcariCapabilitiesSection() {
               delay={0.9}
               label="Automations & AI workflows"
             />
-
-            <p className="pointer-events-none absolute -bottom-5 w-full max-w-xs text-center text-[11px] text-slate-500">
-              A live workspace where Acari quietly builds every asset your business needs.
-            </p>
           </div>
         </div>
       </div>
