@@ -259,6 +259,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
 
   // Enhanced starter recommendations: always show these essential blocks for any business
   const essentialStarterTitles = [
+    "Business Name Generator",
     "Website Builder",
     "Business Cards", 
     "Social Media Kit",

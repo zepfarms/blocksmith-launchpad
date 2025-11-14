@@ -26,6 +26,7 @@ import GrantTerms from "./pages/GrantTerms";
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import LogoGeneration from "./pages/dashboard/LogoGeneration";
+import BusinessNameGenerator from "./pages/dashboard/BusinessNameGenerator";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
@@ -54,6 +55,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardLayout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="logos" element={<LogoGeneration />} />
+                <Route path="business-name-generator" element={<BusinessNameGenerator />} />
                 <Route path="app-store" element={<AppStore />} />
                 <Route path="subscriptions" element={<Subscriptions />} />
                 <Route path="subscription-checkout" element={<SubscriptionCheckout />} />
