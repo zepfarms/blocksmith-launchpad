@@ -1,4 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
 
 const stepMap: Record<string, number> = {
   "/start": 1,
@@ -40,18 +41,21 @@ export const OnboardingLayout = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-1 bg-border z-50">
+      {/* Header */}
+      <Header />
+      
+      {/* Progress Bar - positioned below header */}
+      <div className="fixed top-[72px] sm:top-[80px] left-0 right-0 h-1 bg-border z-40">
         <div
           className="h-full bg-primary transition-all duration-300 ease-out"
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
 
-      {/* Main Content with Back Link */}
-      <div className="relative">
+      {/* Main Content with proper spacing */}
+      <div className="relative pt-[72px] sm:pt-[80px]">
         {backPath && (
-          <div className="absolute top-32 left-4 sm:left-6 z-10">
+          <div className="absolute top-[96px] sm:top-[104px] left-4 sm:left-6 z-10">
             <button
               onClick={() => navigate(backPath)}
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
