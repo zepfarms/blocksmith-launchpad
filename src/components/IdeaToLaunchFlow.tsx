@@ -177,13 +177,7 @@ function UrlBar() {
 function HomeSlide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* Mobile Header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
-        <img src="/acari-logo.png" alt="Acari" className="h-5" />
-        <button className="text-[0.6rem] text-foreground px-2 py-1 rounded-full border border-white/20">
-          Sign In
-        </button>
-      </div>
+      <MobileHeader />
 
       {/* Hero Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-4">
@@ -222,13 +216,21 @@ function HomeSlide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean })
   );
 }
 
+function MobileHeader() {
+  return (
+    <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
+      <img src="/acari-logo.png" alt="Acari" className="h-5" />
+      <button className="text-[0.6rem] text-foreground px-2 py-1 rounded-full border border-white/20">
+        Sign In
+      </button>
+    </div>
+  );
+}
+
 function Step1Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* Breadcrumb */}
-      <div className="px-4 pt-3 pb-1.5">
-        <p className="text-[0.5rem] sm:text-[0.55rem] text-muted-foreground">Home &gt; Get Started</p>
-      </div>
+      <MobileHeader />
 
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-4">
@@ -268,13 +270,53 @@ function Step1Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }
 }
 
 function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  const [businessName, setBusinessName] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    // Reset fields
+    setBusinessName("");
+    setDescription("");
+    
+    const businessNameText = "Happy dogs";
+    const descriptionText = "Start a dog walking business";
+    
+    let charIndex = 0;
+    
+    // Type business name (720ms total)
+    const businessNameInterval = setInterval(() => {
+      if (charIndex < businessNameText.length) {
+        setBusinessName(businessNameText.slice(0, charIndex + 1));
+        charIndex++;
+      } else {
+        clearInterval(businessNameInterval);
+      }
+    }, 72); // 72ms per character
+    
+    // Start description after 920ms
+    const descriptionTimeout = setTimeout(() => {
+      let descCharIndex = 0;
+      const descriptionInterval = setInterval(() => {
+        if (descCharIndex < descriptionText.length) {
+          setDescription(descriptionText.slice(0, descCharIndex + 1));
+          descCharIndex++;
+        } else {
+          clearInterval(descriptionInterval);
+        }
+      }, 40); // 40ms per character
+      
+      return () => clearInterval(descriptionInterval);
+    }, 920);
+    
+    return () => {
+      clearInterval(businessNameInterval);
+      clearTimeout(descriptionTimeout);
+    };
+  }, []);
+
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* Header with Back and Breadcrumb */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
-        <button className="text-[0.6rem] sm:text-xs text-foreground">← Back</button>
-        <p className="text-[0.5rem] sm:text-[0.55rem] text-muted-foreground">Home &gt; Describe Idea</p>
-      </div>
+      <MobileHeader />
 
       {/* Content */}
       <div className="flex-1 px-4 pt-4 space-y-3 overflow-y-auto">
@@ -289,7 +331,7 @@ function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }
             <label className="text-[0.6rem] sm:text-xs text-muted-foreground">Business Name</label>
             <input 
               type="text"
-              value="Green Thumb Lawn Care"
+              value={businessName}
               disabled
               className="w-full px-2.5 py-2 bg-card border border-border rounded-lg text-[0.65rem] sm:text-xs text-foreground"
             />
@@ -298,7 +340,7 @@ function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }
           <div className="space-y-1">
             <label className="text-[0.6rem] sm:text-xs text-muted-foreground">Description</label>
             <textarea 
-              value="I want to start a lawn care business that provides eco-friendly lawn maintenance services"
+              value={description}
               disabled
               rows={3}
               className="w-full px-2.5 py-2 bg-card border border-border rounded-lg text-[0.65rem] sm:text-xs text-foreground resize-none"
@@ -332,6 +374,8 @@ function Step2Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }
 function Step3Slide({ pulse, isClicked, items }: { pulse: boolean; isClicked: boolean; items: string[] }) {
   return (
     <div className="h-full flex flex-col bg-background">
+      <MobileHeader />
+      
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-6">
         <div className="text-center space-y-1.5">
@@ -378,6 +422,8 @@ function Step3Slide({ pulse, isClicked, items }: { pulse: boolean; isClicked: bo
 function Step4Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
   return (
     <div className="h-full flex flex-col bg-background">
+      <MobileHeader />
+      
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-6">
         <div className="text-center space-y-2">
