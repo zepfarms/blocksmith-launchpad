@@ -35,6 +35,8 @@ interface PaymentFailure {
   resolved: boolean;
   resolved_at: string | null;
   created_at: string;
+  last_reminder_sent_at: string | null;
+  reminder_count: number;
   profiles: {
     email: string;
   };
@@ -174,6 +176,31 @@ export default function FailedPayments() {
     });
   };
 
+  const canSendReminder = (failure: PaymentFailure) => {
+    if (failure.resolved) return false;
+    if (!failure.last_reminder_sent_at) return true;
+    
+    const lastReminderTime = new Date(failure.last_reminder_sent_at).getTime();
+    const now = Date.now();
+    const hoursSinceLastReminder = (now - lastReminderTime) / (1000 * 60 * 60);
+    
+    return hoursSinceLastReminder >= 24;
+  };
+
+  const getTimeSinceLastReminder = (lastReminderDate: string | null) => {
+    if (!lastReminderDate) return null;
+    
+    const lastTime = new Date(lastReminderDate).getTime();
+    const now = Date.now();
+    const hoursSince = Math.floor((now - lastTime) / (1000 * 60 * 60));
+    
+    if (hoursSince < 1) return 'Less than 1 hour ago';
+    if (hoursSince < 24) return `${hoursSince} hour${hoursSince !== 1 ? 's' : ''} ago`;
+    
+    const daysSince = Math.floor(hoursSince / 24);
+    return `${daysSince} day${daysSince !== 1 ? 's' : ''} ago`;
+  };
+
   const calculateStats = () => {
     const total = failures.length;
     const unresolved = failures.filter((f) => !f.resolved).length;
@@ -288,6 +315,7 @@ export default function FailedPayments() {
                 <TableHead>Amount</TableHead>
                 <TableHead>Reason</TableHead>
                 <TableHead>Attempts</TableHead>
+                <TableHead>Reminders</TableHead>
                 <TableHead>Grace Period</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Created</TableHead>
@@ -297,9 +325,9 @@ export default function FailedPayments() {
             <TableBody>
               {failures.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
-                    No payment failures found
-                  </TableCell>
+                <TableCell colSpan={10} className="text-center text-muted-foreground py-8">
+                  No payment failures found
+                </TableCell>
                 </TableRow>
               ) : (
                 failures.map((failure) => {
@@ -326,6 +354,18 @@ export default function FailedPayments() {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline">{failure.attempt_count}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Badge variant="outline" className="font-mono">
+                            {failure.reminder_count || 0}
+                          </Badge>
+                          {failure.last_reminder_sent_at && (
+                            <div className="text-xs text-muted-foreground">
+                              {getTimeSinceLastReminder(failure.last_reminder_sent_at)}
+                            </div>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell>
                         {graceDays > 0 ? (
@@ -360,8 +400,13 @@ export default function FailedPayments() {
                               size="sm"
                               variant="outline"
                               onClick={() => handleSendReminder(failure.id, failure.profiles.email)}
-                              disabled={sendingReminder === failure.id}
-                              title="Send payment reminder"
+                              disabled={sendingReminder === failure.id || !canSendReminder(failure)}
+                              title={
+                                !canSendReminder(failure) && failure.last_reminder_sent_at
+                                  ? `Wait 24 hours between reminders. Last sent: ${getTimeSinceLastReminder(failure.last_reminder_sent_at)}`
+                                  : "Send payment reminder"
+                              }
+                              className={!canSendReminder(failure) ? "opacity-50" : ""}
                             >
                               {sendingReminder === failure.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />

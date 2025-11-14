@@ -219,7 +219,9 @@ export type Database = {
           created_at: string
           failure_reason: string | null
           id: string
+          last_reminder_sent_at: string | null
           next_retry_date: string | null
+          reminder_count: number | null
           resolved: boolean
           resolved_at: string | null
           stripe_invoice_id: string
@@ -231,7 +233,9 @@ export type Database = {
           created_at?: string
           failure_reason?: string | null
           id?: string
+          last_reminder_sent_at?: string | null
           next_retry_date?: string | null
+          reminder_count?: number | null
           resolved?: boolean
           resolved_at?: string | null
           stripe_invoice_id: string
@@ -243,7 +247,9 @@ export type Database = {
           created_at?: string
           failure_reason?: string | null
           id?: string
+          last_reminder_sent_at?: string | null
           next_retry_date?: string | null
+          reminder_count?: number | null
           resolved?: boolean
           resolved_at?: string | null
           stripe_invoice_id?: string
