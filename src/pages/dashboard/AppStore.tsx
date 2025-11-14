@@ -234,7 +234,12 @@ export default function AppStore() {
     const matchesCategory = selectedCategory === "all" || 
       (blockCategoryMap.get(block.title) || []).includes(selectedCategory);
     
-    return matchesSearch && matchesCategory;
+    // Exclude blocks user already owns
+    const isOwned = unlockedBlocks.has(block.title) || 
+                    purchasedBlocks.has(block.title) || 
+                    subscribedBlocks.has(block.title);
+    
+    return matchesSearch && matchesCategory && !isOwned;
   });
 
   const toggleCart = (blockId: string) => {
