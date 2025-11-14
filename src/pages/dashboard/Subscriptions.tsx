@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, CreditCard, Calendar, X, AlertCircle, RefreshCcw } from "lucide-react";
+import { Loader2, CreditCard, Calendar, X, AlertCircle, RefreshCcw, ArrowUp, ArrowDown, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -36,15 +36,18 @@ interface Subscription {
 export default function Subscriptions() {
   const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [availableBlocks, setAvailableBlocks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [updatingPayment, setUpdatingPayment] = useState(false);
+  const [upgradingId, setUpgradingId] = useState<string | null>(null);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
 
   useEffect(() => {
     checkAuth();
     loadSubscriptions();
+    loadAvailableBlocks();
   }, []);
 
   const checkAuth = async () => {
@@ -73,6 +76,77 @@ export default function Subscriptions() {
       toast.error('Failed to load subscriptions');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadAvailableBlocks = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blocks_pricing')
+        .select('*')
+        .eq('pricing_type', 'monthly')
+        .order('block_name');
+
+      if (error) throw error;
+
+      setAvailableBlocks(data || []);
+    } catch (error) {
+      console.error('Error loading available blocks:', error);
+    }
+  };
+
+  const handleUpgradeDowngrade = async (
+    subscriptionId: string,
+    currentBlock: string,
+    newBlock: string,
+    action: 'upgrade' | 'downgrade'
+  ) => {
+    setUpgradingId(subscriptionId);
+    try {
+      const { data, error } = await supabase.functions.invoke('update-subscription', {
+        body: {
+          subscriptionId,
+          action,
+          newBlockName: newBlock,
+        }
+      });
+
+      if (error) throw error;
+
+      const prorationAmount = data.prorationAmount / 100;
+      const message = prorationAmount > 0
+        ? `Subscription ${action}d! You'll be charged $${prorationAmount.toFixed(2)} for the prorated difference.`
+        : `Subscription ${action}d! You'll receive a credit of $${Math.abs(prorationAmount).toFixed(2)} on your next invoice.`;
+
+      toast.success(message);
+      await loadSubscriptions();
+    } catch (error: any) {
+      console.error('Error updating subscription:', error);
+      toast.error(error.message || 'Failed to update subscription');
+    } finally {
+      setUpgradingId(null);
+    }
+  };
+
+  const handleSwitchToOneTime = async (subscriptionId: string, blockName: string) => {
+    setUpgradingId(subscriptionId);
+    try {
+      const { data, error } = await supabase.functions.invoke('update-subscription', {
+        body: {
+          subscriptionId,
+          action: 'switch-to-onetime',
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      }
+    } catch (error: any) {
+      console.error('Error switching to one-time:', error);
+      toast.error(error.message || 'Failed to switch to one-time payment');
+      setUpgradingId(null);
     }
   };
 
@@ -223,64 +297,147 @@ export default function Subscriptions() {
           </Card>
         ) : (
           <div className="space-y-4">
-            {subscriptions.map((subscription) => (
-              <Card key={subscription.id} className="p-6 border-white/10">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{subscription.block_name}</h3>
-                      {getStatusBadge(subscription)}
-                    </div>
-                    
-                    <div className="flex items-center gap-6 text-sm text-muted-foreground mt-3">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          Next billing: {formatDate(subscription.current_period_end)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-foreground">
-                          ${(subscription.monthly_price_cents / 100).toFixed(2)}
-                        </span>
-                        /month
-                      </div>
-                    </div>
+            {subscriptions.map((subscription) => {
+              const gracePeriodDays = getGracePeriodDays(subscription.grace_period_end);
+              const hasPaymentIssue = subscription.last_payment_status === 'failed' || subscription.status === 'past_due';
 
-                    {subscription.cancel_at_period_end && (
-                      <div className="mt-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                        <p className="text-sm text-orange-400">
-                          This subscription will end on {formatDate(subscription.current_period_end)}. 
-                          You'll have access until then.
-                        </p>
+              return (
+                <Card key={subscription.id} className="p-6 border-white/10">
+                  {hasPaymentIssue && gracePeriodDays > 0 && (
+                    <Alert variant="destructive" className="mb-4 border-red-500/50 bg-red-500/10">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        <strong>Payment Failed!</strong> You have {gracePeriodDays} day{gracePeriodDays !== 1 ? 's' : ''} remaining in your grace period.
+                        Please update your payment method to continue access.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-xl font-semibold">{subscription.block_name}</h3>
+                        {getStatusBadge(subscription)}
                       </div>
-                    )}
+
+                      <div className="flex items-center gap-6 text-sm text-muted-foreground mt-3">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <span>Next billing: {formatDate(subscription.current_period_end)}</span>
+                        </div>
+                        <div>
+                          <span className="font-semibold text-foreground">
+                            ${(subscription.monthly_price_cents / 100).toFixed(2)}
+                          </span>
+                          /month
+                        </div>
+                      </div>
+
+                      {subscription.cancel_at_period_end && (
+                        <div className="mt-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/30">
+                          <p className="text-sm text-orange-400">
+                            This subscription will end on {formatDate(subscription.current_period_end)}.
+                            You'll have access until then.
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {subscription.status === 'active' && !subscription.cancel_at_period_end && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleCancelClick(subscription)}
-                      disabled={cancellingId === subscription.id}
-                      className="gap-2"
-                    >
-                      {cancellingId === subscription.id ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Cancelling...
-                        </>
-                      ) : (
-                        <>
-                          <X className="h-4 w-4" />
-                          Cancel
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
-              </Card>
-            ))}
+                  <div className="flex gap-2 flex-wrap">
+                    {hasPaymentIssue && (
+                      <Button
+                        onClick={handleUpdatePaymentMethod}
+                        disabled={updatingPayment}
+                        className="flex-1 min-w-[200px]"
+                      >
+                        {updatingPayment ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Opening...
+                          </>
+                        ) : (
+                          <>
+                            <CreditCard className="w-4 h-4 mr-2" />
+                            Update Payment Method
+                          </>
+                        )}
+                      </Button>
+                    )}
+
+                    {subscription.status === 'active' && !subscription.cancel_at_period_end && !hasPaymentIssue && (
+                      <>
+                        {/* Upgrade/Switch Options */}
+                        {availableBlocks.filter(b => b.block_name !== subscription.block_name).slice(0, 2).map(block => {
+                          const isUpgrade = block.monthly_price_cents > subscription.monthly_price_cents;
+                          return (
+                            <Button
+                              key={block.block_name}
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleUpgradeDowngrade(
+                                subscription.stripe_subscription_id,
+                                subscription.block_name,
+                                block.block_name,
+                                isUpgrade ? 'upgrade' : 'downgrade'
+                              )}
+                              disabled={upgradingId === subscription.id}
+                              title={`${isUpgrade ? 'Upgrade' : 'Switch'} to ${block.block_name} - $${(block.monthly_price_cents / 100).toFixed(2)}/mo`}
+                            >
+                              {upgradingId === subscription.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <>
+                                  {isUpgrade ? <ArrowUp className="w-4 h-4 mr-1" /> : <ArrowDown className="w-4 h-4 mr-1" />}
+                                  {block.block_name.length > 10 ? block.block_name.substring(0, 10) + '...' : block.block_name}
+                                </>
+                              )}
+                            </Button>
+                          );
+                        })}
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleSwitchToOneTime(subscription.stripe_subscription_id, subscription.block_name)}
+                          disabled={upgradingId === subscription.id}
+                          title="Switch to one-time purchase (cancels subscription)"
+                        >
+                          {upgradingId === subscription.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <>
+                              <ShoppingCart className="w-4 h-4 mr-1" />
+                              One-Time
+                            </>
+                          )}
+                        </Button>
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleCancelClick(subscription)}
+                          disabled={cancellingId === subscription.id}
+                          className="border-red-500/30 text-red-400 hover:bg-red-500/10"
+                        >
+                          {cancellingId === subscription.id ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Cancelling...
+                            </>
+                          ) : (
+                            <>
+                              <X className="h-4 w-4 mr-2" />
+                              Cancel
+                            </>
+                          )}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         )}
 
