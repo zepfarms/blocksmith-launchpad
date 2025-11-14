@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import AdminPricing from "./pages/admin/Pricing";
 import AdminCategories from "./pages/admin/Categories";
+import FailedPayments from "./pages/admin/FailedPayments";
 import AppStore from "./pages/dashboard/AppStore";
 import Subscriptions from "./pages/dashboard/Subscriptions";
 import { PurchaseHistory } from "./pages/dashboard/PurchaseHistory";
@@ -55,6 +56,7 @@ function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
+              <Route path="/admin/failed-payments" element={<FailedPayments />} />
               <Route path="/business-ideas" element={<BusinessIdeas />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
