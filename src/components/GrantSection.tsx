@@ -35,10 +35,10 @@ export const GrantSection = () => {
             {/* Headline */}
             <div className="space-y-2 sm:space-y-4">
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] break-words">
-                Acari Startup Micro Grant
+                Acari Startup Grant
               </h2>
               <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] break-words">
-                <span className="text-acari-green">$1,000</span> Every Month to Launch Your Dream
+                Every Month we will give away <span className="text-acari-green">$1,000</span> to someone to Launch their business
               </h3>
             </div>
 
@@ -59,10 +59,10 @@ export const GrantSection = () => {
             <div className="pt-4 sm:pt-6">
               <Button
                 onClick={() => navigate("/start")}
-                className="bg-acari-green hover:bg-acari-green/90 text-background text-base sm:text-lg font-semibold px-8 py-6 rounded-full shadow-[0_0_30px_rgba(107,203,68,0.3)] hover:shadow-[0_0_50px_rgba(107,203,68,0.5)] hover:scale-105 transition-all duration-300"
+                className="bg-acari-green hover:bg-acari-green/90 text-background text-sm sm:text-base md:text-lg font-semibold px-6 sm:px-8 py-5 sm:py-6 rounded-full shadow-[0_0_30px_rgba(107,203,68,0.3)] hover:shadow-[0_0_50px_rgba(107,203,68,0.5)] hover:scale-105 transition-all duration-300 whitespace-normal text-center leading-tight"
               >
-                Apply Automatically When You Build Your Idea
-                <ArrowRight className="w-5 h-5" />
+                <span className="block sm:inline">Apply Automatically When You Build Your Idea</span>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 inline-block flex-shrink-0" />
               </Button>
             </div>
           </div>
