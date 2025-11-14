@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import AdminPricing from "./pages/admin/Pricing";
 import AdminCategories from "./pages/admin/Categories";
 import FailedPayments from "./pages/admin/FailedPayments";
+import Analytics from "./pages/admin/Analytics";
 import AppStore from "./pages/dashboard/AppStore";
 import Subscriptions from "./pages/dashboard/Subscriptions";
 import { PurchaseHistory } from "./pages/dashboard/PurchaseHistory";
@@ -54,6 +55,7 @@ function App() {
               <Route path="/dashboard/subscription-checkout" element={<SubscriptionCheckout />} />
               <Route path="/dashboard/purchase-history" element={<PurchaseHistory />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/analytics" element={<Analytics />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
