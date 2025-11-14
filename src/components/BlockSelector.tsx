@@ -155,6 +155,9 @@ export const BlockSelector = ({ onComplete }: { onComplete: (selectedBlocks: str
                 onToggle={() => toggleBlock(block.id)}
                 onInfoClick={() => {}}
                 index={index}
+                isUnlocked={false}
+                isPurchased={false}
+                hasActiveSubscription={false}
               />
             </div>
           ))}

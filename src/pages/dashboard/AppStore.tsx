@@ -79,6 +79,51 @@ export default function AppStore() {
   const [loading, setLoading] = useState(true);
   const [infoModalBlock, setInfoModalBlock] = useState<Block | null>(null);
   const [pricingData, setPricingData] = useState<Map<string, BlockPricing>>(new Map());
+  const [unlockedBlocks, setUnlockedBlocks] = useState<Set<string>>(new Set());
+  const [purchasedBlocks, setPurchasedBlocks] = useState<Set<string>>(new Set());
+  const [subscribedBlocks, setSubscribedBlocks] = useState<Set<string>>(new Set());
+
+  // Load user's unlocked/purchased blocks
+  useEffect(() => {
+    const loadUserBlocks = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) return;
+
+      // Load unlocks
+      const { data: unlocks } = await supabase
+        .from('user_block_unlocks')
+        .select('block_name')
+        .eq('user_id', user.id);
+      
+      if (unlocks) {
+        setUnlockedBlocks(new Set(unlocks.map(u => u.block_name)));
+      }
+
+      // Load one-time purchases
+      const { data: purchases } = await supabase
+        .from('user_block_purchases')
+        .select('block_name')
+        .eq('user_id', user.id);
+      
+      if (purchases) {
+        setPurchasedBlocks(new Set(purchases.map(p => p.block_name)));
+      }
+
+      // Load active subscriptions
+      const { data: subscriptions } = await supabase
+        .from('user_subscriptions')
+        .select('block_name')
+        .eq('user_id', user.id)
+        .eq('status', 'active');
+      
+      if (subscriptions) {
+        setSubscribedBlocks(new Set(subscriptions.map(s => s.block_name)));
+      }
+    };
+
+    loadUserBlocks();
+  }, []);
 
   // Load categories and assignments
   useEffect(() => {
@@ -338,6 +383,9 @@ export default function AppStore() {
               onToggle={() => toggleCart(block.id)}
               onInfoClick={() => setInfoModalBlock(block)}
               index={index}
+              isUnlocked={unlockedBlocks.has(block.title)}
+              isPurchased={purchasedBlocks.has(block.title)}
+              hasActiveSubscription={subscribedBlocks.has(block.title)}
             />
           ))}
         </div>
