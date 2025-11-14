@@ -108,6 +108,12 @@ export default {
         "shimmer": "shimmer 3s linear infinite",
         "module-snap": "module-snap 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
       },
+      boxShadow: {
+        premium: 'var(--shadow-premium)',
+        neon: 'var(--shadow-neon)',
+        'acari-glow': 'var(--shadow-acari-glow)',
+        'acari-glow-subtle': 'var(--shadow-acari-glow-subtle)',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
