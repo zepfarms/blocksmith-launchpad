@@ -511,7 +511,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
         )}
 
         {/* Continue Button */}
-        <div className="w-full flex flex-col items-center gap-6 pt-8">
+        <div className="w-full flex flex-col items-center gap-6 pt-8 mx-auto">
           <div className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-background/20 backdrop-blur-sm border border-neon-cyan/30">
             <CheckCircle2 className="w-5 h-5 text-acari-green" />
             <span className="text-lg font-medium text-foreground">
@@ -523,7 +523,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           <button
             onClick={handleContinue}
             disabled={selectedBlocks.length === 0}
-            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
           >
             Continue
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />

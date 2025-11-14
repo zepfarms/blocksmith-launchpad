@@ -104,9 +104,6 @@ serve(async (req) => {
   } catch (error: any) {
     console.error("Error in verify-email:", error);
     
-    // Increment attempt counter if code was found
-    // This is a best-effort update, don't fail the request if it errors
-    
     return new Response(
       JSON.stringify({ error: error.message || "Internal server error" }),
       {

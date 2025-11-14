@@ -59,19 +59,22 @@ serve(async (req) => {
     const code = generateVerificationCode();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    const { error: insertError } = await supabase
+    const { error: upsertError } = await supabase
       .from("email_verifications")
-      .insert({
+      .upsert({
         email,
         code,
         expires_at: expiresAt.toISOString(),
         created_ip: clientIp,
         used: false,
         attempts: 0,
+      }, {
+        onConflict: 'email',
+        ignoreDuplicates: false
       });
 
-    if (insertError) {
-      console.error("Error storing verification code:", insertError);
+    if (upsertError) {
+      console.error("Error storing verification code:", upsertError);
       throw new Error("Failed to create verification code");
     }
 

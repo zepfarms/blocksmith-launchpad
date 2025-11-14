@@ -77,7 +77,7 @@ export const Signup = () => {
     }
 
     resetData();
-    navigate("/dashboard");
+    // DO NOT navigate to dashboard here - user needs to verify email first
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -100,7 +100,7 @@ export const Signup = () => {
 
     setLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/verify-email`;
       
       const { data: authData, error } = await supabase.auth.signUp({
         email,
