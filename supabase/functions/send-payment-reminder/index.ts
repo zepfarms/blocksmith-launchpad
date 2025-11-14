@@ -69,6 +69,17 @@ serve(async (req) => {
       throw new Error('Payment already resolved');
     }
 
+    // Check if a reminder was sent recently (within last 24 hours)
+    if (failure.last_reminder_sent_at) {
+      const lastReminderTime = new Date(failure.last_reminder_sent_at).getTime();
+      const now = Date.now();
+      const hoursSinceLastReminder = (now - lastReminderTime) / (1000 * 60 * 60);
+      
+      if (hoursSinceLastReminder < 24) {
+        throw new Error(`A reminder was already sent ${Math.floor(hoursSinceLastReminder)} hours ago. Please wait 24 hours between reminders.`);
+      }
+    }
+
     // Calculate grace period days remaining
     const gracePeriodEnd = new Date(failure.user_subscriptions.grace_period_end);
     const now = new Date();
@@ -127,6 +138,15 @@ serve(async (req) => {
     if (emailError) {
       throw emailError;
     }
+
+    // Update the failure record with reminder timestamp
+    await supabase
+      .from('subscription_payment_failures')
+      .update({
+        last_reminder_sent_at: new Date().toISOString(),
+        reminder_count: (failure.reminder_count || 0) + 1,
+      })
+      .eq('id', failureId);
 
     console.log('Payment reminder sent successfully to:', failure.profiles.email);
 
