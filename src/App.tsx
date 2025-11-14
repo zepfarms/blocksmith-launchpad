@@ -28,6 +28,7 @@ import { ConfirmIdea } from "./pages/onboarding/ConfirmIdea";
 import { BusinessName } from "./pages/onboarding/BusinessName";
 import { BlockSelection } from "./pages/onboarding/BlockSelection";
 import { Signup } from "./pages/onboarding/Signup";
+import { Checkout } from "./pages/onboarding/Checkout";
 import { VerifyEmail } from "./pages/VerifyEmail";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
                 <Route path="confirm" element={<ConfirmIdea />} />
                 <Route path="name" element={<BusinessName />} />
                 <Route path="blocks" element={<BlockSelection />} />
+                <Route path="checkout" element={<Checkout />} />
                 <Route path="signup" element={<Signup />} />
               </Route>
               

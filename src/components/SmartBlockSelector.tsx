@@ -98,7 +98,7 @@ const iconMap: Record<string, React.ReactNode> = {
 interface SmartBlockSelectorProps {
   starterBlocks?: string;
   growthBlocks?: string;
-  onComplete: (selectedBlocks: string[]) => void;
+  onComplete: (selectedBlocks: string[], paidBlocks?: string[]) => void;
 }
 
 export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onComplete }: SmartBlockSelectorProps) => {
@@ -246,6 +246,20 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
     setSelectedBlocks(prev =>
       prev.includes(id) ? prev.filter(blockId => blockId !== id) : [...prev, id]
     );
+  };
+
+  const handleContinue = () => {
+    // Get block titles from selected IDs
+    const selectedTitles = allBlocks
+      .filter(b => selectedBlocks.includes(b.id))
+      .map(b => b.title);
+    
+    // Filter paid one-time blocks
+    const paidOneTimeBlocks = allBlocks
+      .filter(b => selectedBlocks.includes(b.id) && b.pricingType === 'one_time' && !b.isFree)
+      .map(b => b.title);
+    
+    onComplete(selectedTitles, paidOneTimeBlocks);
   };
 
   return (
@@ -450,7 +464,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           </div>
 
           <button
-            onClick={() => onComplete(selectedBlocks)}
+            onClick={handleContinue}
             disabled={selectedBlocks.length === 0}
             className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >

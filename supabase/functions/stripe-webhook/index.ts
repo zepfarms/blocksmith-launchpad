@@ -33,39 +33,59 @@ serve(async (req) => {
       const userId = session.metadata.user_id;
       const businessId = session.metadata.business_id;
       const blockNames = JSON.parse(session.metadata.block_names);
+      const paymentType = session.metadata.payment_type || 'one_time';
 
-      console.log('Processing payment for user:', userId);
+      console.log('Processing payment for user:', userId, 'Payment type:', paymentType);
 
-      // Update business status
-      await supabase
-        .from('user_businesses')
-        .update({
-          payment_status: 'completed',
-          status: 'launched'
-        })
-        .eq('id', businessId);
-
-      // Get pricing to record purchases
+      // Get pricing for the blocks
       const { data: pricing } = await supabase
         .from('blocks_pricing')
         .select('*')
         .in('block_name', blockNames);
 
-      // Insert purchase records
-      const purchases = pricing
-        ?.filter(p => !p.is_free && p.price_cents > 0)
-        .map(block => ({
-          user_id: userId,
-          block_name: block.block_name,
-          price_paid_cents: block.price_cents,
-          stripe_payment_intent_id: session.payment_intent
-        })) || [];
+      if (paymentType === 'one_time') {
+        // Handle one-time purchases
+        
+        // Insert purchase records
+        const purchases = pricing
+          ?.filter(p => !p.is_free && p.pricing_type === 'one_time' && p.price_cents > 0)
+          .map(block => ({
+            user_id: userId,
+            business_id: businessId,
+            block_name: block.block_name,
+            pricing_type: 'one_time',
+            price_paid_cents: block.price_cents,
+            stripe_payment_intent_id: session.payment_intent
+          })) || [];
 
-      if (purchases.length > 0) {
-        await supabase
-          .from('user_block_purchases')
-          .insert(purchases);
+        if (purchases.length > 0) {
+          await supabase
+            .from('user_block_purchases')
+            .insert(purchases);
+
+          // Create unlocks for purchased blocks
+          const unlocks = purchases.map(p => ({
+            user_id: userId,
+            business_id: businessId,
+            block_name: p.block_name,
+            unlock_type: 'purchase'
+          }));
+
+          await supabase
+            .from('user_block_unlocks')
+            .insert(unlocks);
+
+          console.log('Created', purchases.length, 'one-time purchases and unlocks');
+        }
       }
+
+      // Update business payment status
+      await supabase
+        .from('user_businesses')
+        .update({
+          payment_status: 'completed'
+        })
+        .eq('id', businessId);
 
       // Get user email
       const { data: profile } = await supabase
@@ -79,13 +99,13 @@ serve(async (req) => {
         await resend.emails.send({
           from: 'Acari <support@acari.ai>',
           to: profile.email,
-          subject: '🚀 Your Business is Live on Acari!',
+          subject: '✅ Payment Confirmed - Blocks Unlocked!',
           html: `
-            <h1>Congratulations! Your business is now live!</h1>
-            <p>Your payment has been processed and all your business assets are now unlocked.</p>
-            <p>You can access everything in your dashboard.</p>
+            <h1>Payment Confirmed!</h1>
+            <p>Thank you for your purchase. Your blocks have been unlocked and are now available in your account.</p>
+            <p>Purchased blocks: ${blockNames.join(', ')}</p>
+            <p><a href="${supabaseUrl.replace('supabase.co', 'lovable.app')}/dashboard">Access Your Dashboard</a></p>
             <p>Thank you for choosing Acari!</p>
-            <p><a href="${supabaseUrl.replace('supabase.co', 'lovable.app')}/dashboard">Go to Dashboard</a></p>
           `
         });
       }

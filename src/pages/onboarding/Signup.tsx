@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { data, resetData } = useOnboarding();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,12 +18,19 @@ export const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   useEffect(() => {
+    // Check if returning from successful payment
+    if (searchParams.get('payment_success') === 'true') {
+      setPaymentSuccess(true);
+      toast.success('Payment successful! Your blocks have been unlocked.');
+    }
+    
     if (data.selectedBlocks.length === 0) {
       navigate("/start");
     }
-  }, [data.selectedBlocks, navigate]);
+  }, [data.selectedBlocks, navigate, searchParams]);
 
   const saveBusinessData = async (user: any) => {
     const { error } = await supabase.from('user_businesses').insert({
@@ -129,6 +137,17 @@ export const Signup = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background">
       <div className="max-w-md mx-auto space-y-8 animate-fade-in w-full">
+        {/* Payment Success Banner */}
+        {paymentSuccess && (
+          <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center gap-3 mb-6">
+            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-green-400">Payment Successful!</p>
+              <p className="text-sm text-muted-foreground">Your blocks have been unlocked</p>
+            </div>
+          </div>
+        )}
+        
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
             Create your account
