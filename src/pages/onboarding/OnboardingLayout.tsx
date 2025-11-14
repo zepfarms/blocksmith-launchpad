@@ -1,14 +1,4 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
 const stepMap: Record<string, number> = {
   "/start": 1,
@@ -20,14 +10,13 @@ const stepMap: Record<string, number> = {
   "/start/signup": 6,
 };
 
-const breadcrumbLabels: Record<string, string> = {
-  "/start": "Get Started",
-  "/start/describe": "Describe Idea",
-  "/start/browse": "Browse Ideas",
-  "/start/confirm": "Confirm Idea",
-  "/start/name": "Business Name",
-  "/start/blocks": "Select Blocks",
-  "/start/signup": "Create Account",
+const backLabels: Record<string, string> = {
+  "/start/describe": "Back",
+  "/start/browse": "Back",
+  "/start/confirm": "Back",
+  "/start/name": "Back",
+  "/start/blocks": "Back",
+  "/start/signup": "Back",
 };
 
 const backPathMap: Record<string, string> = {
@@ -47,6 +36,7 @@ export const OnboardingLayout = () => {
   const currentStep = stepMap[location.pathname] || 1;
   const progressPercentage = (currentStep / totalSteps) * 100;
   const backPath = backPathMap[location.pathname];
+  const backLabel = backLabels[location.pathname];
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -58,41 +48,21 @@ export const OnboardingLayout = () => {
         />
       </div>
 
-      {/* Fixed Header with Solid Background */}
-      <div className="fixed top-0 left-0 right-0 h-20 bg-black z-40 pt-1" />
-
-      {/* Back Button */}
-      {backPath && (
-        <div className="fixed top-6 left-4 z-40">
-          <button
-            onClick={() => navigate(backPath)}
-            className="gap-1.5 px-4 py-2 border-2 border-white/20 text-white rounded-full text-sm font-medium hover:bg-white/5 transition-all duration-200 inline-flex items-center"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back
-          </button>
-        </div>
-      )}
-
-      {/* Breadcrumb Navigation */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-40">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => navigate("/")} className="cursor-pointer">
-                Home
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{breadcrumbLabels[location.pathname] || "Start Building"}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      {/* Main Content with Back Link */}
+      <div className="relative">
+        {backPath && (
+          <div className="absolute top-32 left-4 sm:left-6 z-10">
+            <button
+              onClick={() => navigate(backPath)}
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span>←</span>
+              <span>{backLabel}</span>
+            </button>
+          </div>
+        )}
+        <Outlet />
       </div>
-
-      {/* Main Content */}
-      <Outlet />
     </div>
   );
 };
