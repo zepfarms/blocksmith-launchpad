@@ -65,13 +65,17 @@ interface Block {
   icon: React.ReactNode;
   isFree: boolean;
   price: number; // price in cents
+  pricingType: 'free' | 'one_time' | 'monthly';
+  monthlyPrice: number; // monthly price in cents
   description: string;
 }
 
 interface BlockPricing {
   block_name: string;
   price_cents: number;
+  monthly_price_cents: number;
   is_free: boolean;
+  pricing_type: 'free' | 'one_time' | 'monthly';
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -153,7 +157,9 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           pricingMap.set(item.block_name, {
             block_name: item.block_name,
             price_cents: item.price_cents,
-            is_free: item.is_free
+            monthly_price_cents: (item as any).monthly_price_cents || 0,
+            is_free: item.is_free,
+            pricing_type: (item as any).pricing_type || 'free'
           });
         });
         setPricingData(pricingMap);
@@ -184,6 +190,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             const pricing = pricingData.get(name);
             const is_free = pricing?.is_free ?? false;
             const price_cents = pricing?.price_cents ?? 0;
+            const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
+            const pricing_type = pricing?.pricing_type ?? 'free';
             
             return {
               id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -192,6 +200,8 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               description,
               isFree: is_free,
               price: price_cents,
+              pricingType: pricing_type,
+              monthlyPrice: monthly_price_cents,
               icon: iconMap[category] || <IconCircuit />
             } as Block;
           })
