@@ -1,7 +1,8 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { ArrowLeft, Mail, MessageCircle, BookOpen, HelpCircle } from "lucide-react";
+import { ArrowLeft, Mail, MessageCircle, BookOpen, HelpCircle, ShieldCheck, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const Support = () => {
   const navigate = useNavigate();
@@ -92,6 +93,111 @@ const Support = () => {
             </div>
           </div>
 
+          {/* Email Verification & Troubleshooting */}
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-6">
+              <ShieldCheck className="w-8 h-8 text-acari-green" />
+              <h2 className="text-3xl font-bold">Email Verification & Account Access</h2>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 sm:p-8">
+              <Accordion type="single" collapsible className="w-full space-y-4">
+                <AccordionItem value="item-1" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>I didn't receive my verification code</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p><strong className="text-white">Check your spam/junk folder:</strong> Email providers sometimes filter verification codes. Look in your spam, junk, or promotions folders.</p>
+                    <p><strong className="text-white">Wait a few minutes:</strong> Delivery can take 1-5 minutes depending on your email provider.</p>
+                    <p><strong className="text-white">Use the resend button:</strong> On the verification page, click "Resend Code" to get a new code. You can resend once immediately, then wait 60 seconds before requesting another.</p>
+                    <p><strong className="text-white">Check your email address:</strong> Make sure you entered the correct email during signup.</p>
+                    <p><strong className="text-white">Still not working?</strong> Email us at <a href="mailto:support@acari.ai" className="text-acari-green hover:underline">support@acari.ai</a> and we'll help you verify manually.</p>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>My verification code expired</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p>Verification codes expire after 10 minutes for security reasons.</p>
+                    <p><strong className="text-white">Solution:</strong> Click the "Resend Code" button on the verification page to receive a fresh code. The new code will be valid for another 10 minutes.</p>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>The verification code isn't working</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p><strong className="text-white">Double-check the code:</strong> Verification codes are exactly 6 digits. Make sure you're entering all digits correctly.</p>
+                    <p><strong className="text-white">Don't add spaces:</strong> Enter only the numbers, no spaces or dashes.</p>
+                    <p><strong className="text-white">Use the latest code:</strong> If you requested multiple codes, only the most recent one will work.</p>
+                    <p><strong className="text-white">Case sensitivity:</strong> Codes are numbers only, so case doesn't matter.</p>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>Why do I need to verify my email?</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p>Email verification helps us:</p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li><strong className="text-white">Protect your account:</strong> Ensures only you can access your business assets</li>
+                      <li><strong className="text-white">Send important updates:</strong> Business launch notifications, payment confirmations, and support messages</li>
+                      <li><strong className="text-white">Prevent abuse:</strong> Keeps the platform secure for all users</li>
+                      <li><strong className="text-white">Enable password recovery:</strong> So you can reset your password if needed</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>I'm using Gmail/Outlook and not receiving emails</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p><strong className="text-white">Gmail users:</strong> Check your "Promotions" or "Social" tabs. Sometimes verification emails get filtered there instead of Primary.</p>
+                    <p><strong className="text-white">Outlook/Hotmail users:</strong> Check your "Other" or "Junk Email" folders. You may need to add no-reply@acari.ai to your safe senders list.</p>
+                    <p><strong className="text-white">Add to safe senders:</strong> Mark no-reply@acari.ai as a safe sender to ensure future emails arrive in your inbox.</p>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-6" className="border-white/10">
+                  <AccordionTrigger className="text-left hover:text-acari-green">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-acari-green flex-shrink-0 mt-1" />
+                      <span>Can I change my email address?</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-400 space-y-3 pt-4 pl-8">
+                    <p>If you need to change your email address after signing up, please contact our support team at <a href="mailto:support@acari.ai" className="text-acari-green hover:underline">support@acari.ai</a> with:</p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>Your current email address</li>
+                      <li>Your new email address</li>
+                      <li>Your business name (if you've created one)</li>
+                    </ul>
+                    <p className="mt-3">We'll verify your identity and update your account within 24 hours.</p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
+
           {/* Help Center */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-6">Help Center</h2>
@@ -142,69 +248,57 @@ const Support = () => {
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">Pricing & Payment</h3>
-                <div className="space-y-3 text-gray-400">
-                  <p><strong className="text-white">No upfront costs:</strong> Start building completely free. No credit card required.</p>
-                  <p><strong className="text-white">Pay when ready to launch:</strong> Only pay when you're ready to go live with your business. Review everything first.</p>
-                  <p><strong className="text-white">Transparent pricing:</strong> Each block shows its price. Free blocks are clearly marked. Total cost shown before checkout.</p>
-                  <p><strong className="text-white">Launch bundle:</strong> When you click "Launch My Business," you pay once for all selected blocks and they unlock immediately.</p>
-                  <p><strong className="text-white">Refund policy:</strong> Evaluated case-by-case. Since you preview everything before paying, we deliver exactly what you see.</p>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-4">Dashboard Features</h3>
-                <div className="space-y-3 text-gray-400">
-                  <p><strong className="text-white">Work-in-Progress View:</strong> See all your blocks being built in real-time with status indicators (Draft, Ready to Review, Approved).</p>
-                  <p><strong className="text-white">Review & Approve:</strong> Preview each asset before launch. Logos, websites, marketing materials—all available for review.</p>
-                  <p><strong className="text-white">Request Edits:</strong> Not happy with something? Request changes and our team will revise it.</p>
-                  <p><strong className="text-white">Watermarked Previews:</strong> All assets show in preview mode until launch (logos have watermarks, websites are staging-only, etc.).</p>
-                  <p><strong className="text-white">One-Click Launch:</strong> When everything looks perfect, click "Launch My Business" to unlock everything and go live.</p>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                 <h3 className="text-xl font-semibold mb-4">Common Questions</h3>
                 <div className="space-y-4">
                   <div>
-                    <p className="font-semibold text-white mb-1">Do I need tech skills?</p>
-                    <p className="text-gray-400">No. Acari handles everything technical. No coding, no design tools, no complicated setup.</p>
+                    <h4 className="text-white font-medium mb-2">What if I don't like the AI-generated assets?</h4>
+                    <p className="text-gray-400">You can request revisions through your dashboard. Our AI will regenerate assets based on your feedback, or you can connect with a human specialist for custom work.</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-white mb-1">How long does it take?</p>
-                    <p className="text-gray-400">Most businesses are ready to launch within 48 hours. Some blocks are instant, others take 1-2 days depending on complexity.</p>
+                    <h4 className="text-white font-medium mb-2">How long does it take to build my business?</h4>
+                    <p className="text-gray-400">Most businesses are ready to review within 24-48 hours. Simple setups (website + logo) can be done in hours, while complex builds (full legal setup + marketing campaign) may take 2-3 days.</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-white mb-1">Can I change my mind about blocks?</p>
-                    <p className="text-gray-400">Yes! Add or remove blocks anytime before launch. You only pay for what you actually launch with.</p>
+                    <h4 className="text-white font-medium mb-2">What happens after I launch?</h4>
+                    <p className="text-gray-400">After launch, all your assets are unlocked and delivered to you. You'll receive login credentials, file downloads, and access instructions. Monthly services (like hosting or marketing) continue automatically.</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-white mb-1">What if I need help?</p>
-                    <p className="text-gray-400">Email us at support@acari.ai or join our Discord community for real-time help from our team and other entrepreneurs.</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white mb-1">Can I use this for an existing business?</p>
-                    <p className="text-gray-400">Absolutely! Many users add blocks to grow their existing business—whether it's adding a website, setting up online payments, or launching marketing campaigns.</p>
+                    <h4 className="text-white font-medium mb-2">Can I add more services later?</h4>
+                    <p className="text-gray-400">Absolutely! You can add new blocks to your business anytime from your dashboard. Just pick what you need and the AI will integrate it with your existing setup.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Contact Card */}
-          <div className="bg-gradient-to-br from-primary/10 to-purple-500/10 border border-white/20 rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">Still have questions?</h3>
-            <p className="text-gray-300 mb-6">
-              Our support team is ready to help you succeed. Reach out anytime.
+          {/* Contact Support CTA */}
+          <div className="bg-gradient-to-br from-acari-green/10 via-primary/10 to-acari-green/5 border border-acari-green/20 rounded-2xl p-8 text-center">
+            <Mail className="w-12 h-12 text-acari-green mx-auto mb-4" />
+            <h3 className="text-2xl font-bold mb-3">Still Need Help?</h3>
+            <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+              Our support team is here to help. We typically respond within 24 hours and are committed to solving your issue.
             </p>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 inline-block">
-              <p className="mb-2"><strong>Email:</strong> support@acari.ai</p>
-              <p><strong>Address:</strong> P.O. Box 1234, Shawnee, OK 74802</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="mailto:support@acari.ai"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-acari-green text-black font-semibold rounded-lg hover:bg-acari-green/90 transition-all"
+              >
+                <Mail className="w-5 h-5" />
+                Email Support
+              </a>
+              <a
+                href="https://discord.com/invite/spaceblocks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-white font-semibold rounded-lg hover:bg-white/10 transition-all"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Join Discord
+              </a>
             </div>
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
