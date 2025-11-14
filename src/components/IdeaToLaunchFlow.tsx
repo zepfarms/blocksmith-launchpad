@@ -125,6 +125,396 @@ function IPhoneMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: 
   );
 }
 
+// Browser Chrome Component for Desktop Slides
+function BrowserChrome({ url }: { url: string }) {
+  return (
+    <div className="flex items-center justify-between px-3 py-2 border-b border-border/50 bg-card/30">
+      <div className="flex items-center gap-1.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+      </div>
+      <div className="flex-1 max-w-md mx-4">
+        <div className="rounded-lg border border-border bg-background/50 px-3 py-1 text-xs text-muted-foreground">
+          {url}
+        </div>
+      </div>
+      <div className="w-16" />
+    </div>
+  );
+}
+
+// Desktop Slide Components
+function HomeSlideDesktop({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  return (
+    <div className="h-full flex flex-col bg-background">
+      <BrowserChrome url="https://acari.ai" />
+      <div className="flex-1 flex flex-col items-center justify-center px-8 space-y-8">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl font-black tracking-tight">
+            Turn Ideas Into Companies — With AI
+          </h2>
+          <p className="text-base text-muted-foreground max-w-lg mx-auto">
+            The AI Partner That Outworks Everyone
+          </p>
+        </div>
+        <button
+          disabled
+          className={`px-8 py-3 bg-acari-green text-background rounded-full font-semibold text-sm transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          Start Building →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Step1SlideDesktop({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  return (
+    <div className="h-full flex flex-col bg-background">
+      <BrowserChrome url="https://acari.ai/get-started" />
+      <div className="flex-1 flex items-center justify-center px-8">
+        <div className="max-w-2xl w-full space-y-8">
+          <div className="text-center space-y-3">
+            <h2 className="text-2xl font-black tracking-tight">
+              Ready to start or build your business?
+            </h2>
+            <p className="text-base text-muted-foreground">
+              Tell us a little bit about your idea
+            </p>
+          </div>
+          <div className="flex gap-4 justify-center">
+            <button
+              disabled
+              className={`px-8 py-3 bg-acari-green text-background rounded-full font-semibold text-sm transition-transform duration-150 ${
+                isClicked 
+                  ? "scale-95 opacity-90" 
+                  : pulse 
+                    ? "scale-[1.02]" 
+                    : "scale-100"
+              }`}
+            >
+              {isClicked && (
+                <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+              )}
+              Yes, I have an idea →
+            </button>
+            <button
+              disabled
+              className="px-8 py-3 border-2 border-border text-foreground rounded-full font-semibold text-sm hover:bg-muted/50 transition-all"
+            >
+              No, show me ideas →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step2SlideDesktop({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  const [businessName, setBusinessName] = useState("");
+  const [description, setDescription] = useState("");
+  const [isTypingName, setIsTypingName] = useState(false);
+  const [isTypingDescription, setIsTypingDescription] = useState(false);
+
+  useEffect(() => {
+    const nameText = "GreenThumb Lawn Care";
+    const descText = "Local lawn care and landscaping services for residential properties in the Austin area";
+    
+    const nameTimer = setTimeout(() => {
+      setIsTypingName(true);
+      let i = 0;
+      const nameInterval = setInterval(() => {
+        if (i < nameText.length) {
+          setBusinessName(nameText.slice(0, i + 1));
+          i++;
+        } else {
+          clearInterval(nameInterval);
+          setIsTypingName(false);
+          setTimeout(() => {
+            setIsTypingDescription(true);
+            let j = 0;
+            const descInterval = setInterval(() => {
+              if (j < descText.length) {
+                setDescription(descText.slice(0, j + 1));
+                j++;
+              } else {
+                clearInterval(descInterval);
+                setIsTypingDescription(false);
+              }
+            }, 30);
+          }, 300);
+        }
+      }, 50);
+    }, 500);
+
+    return () => clearTimeout(nameTimer);
+  }, []);
+
+  return (
+    <div className="h-full flex flex-col bg-background">
+      <BrowserChrome url="https://acari.ai/describe-idea" />
+      <div className="flex-1 flex items-center justify-center px-8">
+        <div className="max-w-xl w-full space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-black tracking-tight">
+              Tell us about your idea
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              We'll help you build it
+            </p>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Business Name</label>
+              <input
+                type="text"
+                value={businessName}
+                readOnly
+                className="w-full h-12 px-4 bg-card border border-border rounded-lg text-sm text-foreground"
+                placeholder="Enter your business name..."
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Description</label>
+              <textarea
+                value={description}
+                readOnly
+                className="w-full h-24 px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground resize-none"
+                placeholder="Describe what your business does..."
+              />
+            </div>
+            <button
+              disabled
+              className={`w-full px-6 py-3 bg-acari-green text-background rounded-full font-semibold text-sm transition-transform duration-150 ${
+                isClicked 
+                  ? "scale-95 opacity-90" 
+                  : pulse 
+                    ? "scale-[1.02]" 
+                    : "scale-100"
+              }`}
+            >
+              Continue →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step3SlideDesktop() {
+  return (
+    <div className="h-full flex flex-col bg-background">
+      <BrowserChrome url="https://acari.ai/building" />
+      <div className="flex-1 flex items-center justify-center px-8">
+        <div className="max-w-2xl w-full space-y-8">
+          <div className="text-center space-y-3">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-border border-t-acari-green mb-4" />
+            <h2 className="text-2xl font-black tracking-tight">
+              We're building your business
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              This will just take a moment...
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-lg">
+              <div className="w-2 h-2 rounded-full bg-acari-green animate-pulse" />
+              <span className="text-sm text-foreground">Analyzing idea</span>
+            </div>
+            <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-lg opacity-50">
+              <div className="w-2 h-2 rounded-full bg-border" />
+              <span className="text-sm text-muted-foreground">Creating brand</span>
+            </div>
+            <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-lg opacity-50">
+              <div className="w-2 h-2 rounded-full bg-border" />
+              <span className="text-sm text-muted-foreground">Building website</span>
+            </div>
+            <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-lg opacity-50">
+              <div className="w-2 h-2 rounded-full bg-border" />
+              <span className="text-sm text-muted-foreground">Setting up tools</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step4SlideDesktop({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  return (
+    <div className="h-full flex flex-col bg-background">
+      <BrowserChrome url="https://acari.ai/ready" />
+      <div className="flex-1 flex items-center justify-center px-8">
+        <div className="max-w-2xl w-full space-y-8">
+          <div className="text-center space-y-3">
+            <div className="text-5xl mb-2">🎉</div>
+            <h2 className="text-2xl font-black tracking-tight">
+              Your business is ready!
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Everything is set up and ready to launch
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-card border border-acari-green/30 rounded-lg space-y-2">
+              <div className="text-2xl">✓</div>
+              <div className="space-y-1">
+                <div className="font-semibold text-sm text-foreground">Brand Created</div>
+                <div className="text-xs text-muted-foreground">Logo, colors, and identity</div>
+              </div>
+            </div>
+            <div className="p-4 bg-card border border-acari-green/30 rounded-lg space-y-2">
+              <div className="text-2xl">✓</div>
+              <div className="space-y-1">
+                <div className="font-semibold text-sm text-foreground">Website Live</div>
+                <div className="text-xs text-muted-foreground">Professional site deployed</div>
+              </div>
+            </div>
+            <div className="p-4 bg-card border border-acari-green/30 rounded-lg space-y-2">
+              <div className="text-2xl">✓</div>
+              <div className="space-y-1">
+                <div className="font-semibold text-sm text-foreground">Legal Setup</div>
+                <div className="text-xs text-muted-foreground">Terms and policies ready</div>
+              </div>
+            </div>
+            <div className="p-4 bg-card border border-acari-green/30 rounded-lg space-y-2">
+              <div className="text-2xl">✓</div>
+              <div className="space-y-1">
+                <div className="font-semibold text-sm text-foreground">Payments Ready</div>
+                <div className="text-xs text-muted-foreground">Accept payments instantly</div>
+              </div>
+            </div>
+          </div>
+          <button
+            disabled
+            className={`w-full px-6 py-3 bg-acari-green text-background rounded-full font-semibold text-sm transition-transform duration-150 ${
+              isClicked 
+                ? "scale-95 opacity-90" 
+                : pulse 
+                  ? "scale-[1.02]" 
+                  : "scale-100"
+            }`}
+          >
+            {isClicked && (
+              <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+            )}
+            View Dashboard →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step5SlideDesktop({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  return (
+    <div className="h-full flex flex-col bg-background relative overflow-hidden">
+      <BrowserChrome url="https://acari.ai/dashboard" />
+      
+      {/* Falling Confetti */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes fall1 {
+              0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(110vh) rotate(360deg); opacity: 0.5; }
+            }
+            @keyframes fall2 {
+              0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(110vh) rotate(-360deg); opacity: 0.5; }
+            }
+            @keyframes fall3 {
+              0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(110vh) rotate(180deg); opacity: 0.5; }
+            }
+          `
+        }} />
+        {[...Array(20)].map((_, i) => {
+          const colors = ['bg-acari-green', 'bg-yellow-400', 'bg-blue-400', 'bg-pink-400', 'bg-purple-400'];
+          const sizes = ['w-2 h-2', 'w-1 h-3', 'w-2 h-3'];
+          const left = `${Math.random() * 100}%`;
+          const delay = `${Math.random() * 1}s`;
+          const duration = `${2.5 + Math.random()}s`;
+          
+          return (
+            <div
+              key={i}
+              className={`absolute ${colors[i % colors.length]} ${sizes[i % sizes.length]} opacity-80`}
+              style={{
+                left,
+                animation: `fall${(i % 3) + 1} ${duration} linear infinite`,
+                animationDelay: delay,
+              }}
+            />
+          );
+        })}
+      </div>
+      
+      <div className="flex-1 flex items-center justify-center px-8 z-10">
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center space-y-3">
+            <div className="text-5xl mb-2 animate-bounce">💰</div>
+            <h2 className="text-2xl font-black tracking-tight">
+              Cha-Ching!
+            </h2>
+            <p className="text-base text-muted-foreground">
+              You just completed your first sale!
+            </p>
+          </div>
+
+          <div className="bg-card border border-acari-green/30 rounded-xl p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Customer</span>
+              <span className="text-base font-semibold text-foreground">Sarah M.</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Service</span>
+              <span className="text-base text-foreground">Standard Lawn Care</span>
+            </div>
+            <div className="border-t border-border pt-4 flex items-center justify-between">
+              <span className="text-base text-muted-foreground">Amount</span>
+              <span className="text-2xl font-bold text-acari-green">$125.00</span>
+            </div>
+            <div className="text-center text-xs text-muted-foreground">Just now</div>
+          </div>
+
+          <div className="text-center text-sm text-muted-foreground">
+            🎉 Your business is officially making money!
+          </div>
+
+          <button
+            disabled
+            className={`w-full px-6 py-3 bg-acari-green text-background rounded-full font-semibold text-sm transition-transform duration-150 ${
+              isClicked 
+                ? "scale-95 opacity-90" 
+                : pulse 
+                  ? "scale-[1.02]" 
+                  : "scale-100"
+            }`}
+          >
+            {isClicked && (
+              <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+            )}
+            View Details →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LaptopMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: SlideId; pulse: boolean; isButtonClicked: boolean }) {
   return (
     <div className="w-full max-w-4xl">
@@ -138,17 +528,13 @@ function LaptopMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: 
         {/* Screen frame */}
         <div className="mx-4 mb-4 rounded-xl border border-border bg-background overflow-hidden">
           <div className="relative h-[340px] lg:h-[380px] bg-gradient-to-b from-card/90 via-background to-background">
-            <div className="absolute inset-0 p-4 sm:p-5 text-xs sm:text-sm text-foreground">
-              {/* Slide content */}
-              {currentSlide === "home" && <HomeSlide pulse={pulse} isClicked={isButtonClicked} />}
-              {currentSlide === "step1" && <Step1Slide pulse={pulse} isClicked={isButtonClicked} />}
-              {currentSlide === "step2" && <Step2Slide pulse={pulse} isClicked={isButtonClicked} />}
-              {currentSlide === "step3" && (
-                <Step3Slide pulse={pulse} isClicked={isButtonClicked} items={generatingItems} />
-              )}
-              {currentSlide === "step4" && <Step4Slide pulse={pulse} isClicked={isButtonClicked} />}
-              {currentSlide === "step5" && <Step5Slide pulse={pulse} isClicked={isButtonClicked} />}
-            </div>
+            {/* Slide content */}
+            {currentSlide === "home" && <HomeSlideDesktop pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step1" && <Step1SlideDesktop pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step2" && <Step2SlideDesktop pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step3" && <Step3SlideDesktop />}
+            {currentSlide === "step4" && <Step4SlideDesktop pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step5" && <Step5SlideDesktop pulse={pulse} isClicked={isButtonClicked} />}
           </div>
         </div>
       </div>
