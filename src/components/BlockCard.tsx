@@ -10,13 +10,15 @@ interface BlockCardProps {
   description: string;
   isFree: boolean;
   price: number;
+  pricingType: 'free' | 'one_time' | 'monthly';
+  monthlyPrice: number;
   isSelected: boolean;
   onToggle: () => void;
   onInfoClick: () => void;
   index: number;
 }
 
-export const BlockCard = ({ title, icon, category, description, isFree, price, isSelected, onToggle, onInfoClick, index }: BlockCardProps) => {
+export const BlockCard = ({ title, icon, category, description, isFree, price, pricingType, monthlyPrice, isSelected, onToggle, onInfoClick, index }: BlockCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
