@@ -113,6 +113,83 @@ serve(async (req) => {
       console.log('Payment processed successfully for user:', userId);
     }
 
+    // Handle subscription creation
+    if (event.type === 'customer.subscription.created' || event.type === 'customer.subscription.updated') {
+      const subscription = event.data.object;
+      const userId = subscription.metadata.user_id;
+      const businessId = subscription.metadata.business_id;
+      const blockNames = JSON.parse(subscription.metadata.block_names || '[]');
+
+      console.log('Processing subscription for user:', userId, 'Status:', subscription.status);
+
+      // Get pricing for the blocks
+      const { data: pricing } = await supabase
+        .from('blocks_pricing')
+        .select('*')
+        .in('block_name', blockNames);
+
+      const monthlyBlocks = pricing?.filter(p => 
+        !p.is_free && p.pricing_type === 'monthly'
+      ) || [];
+
+      // Create or update subscription records
+      for (const block of monthlyBlocks) {
+        const subscriptionData = {
+          user_id: userId,
+          business_id: businessId,
+          block_name: block.block_name,
+          stripe_subscription_id: subscription.id,
+          stripe_subscription_item_id: subscription.items.data[0]?.id || '',
+          status: subscription.status,
+          monthly_price_cents: block.monthly_price_cents,
+          current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+          current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          cancel_at_period_end: subscription.cancel_at_period_end || false,
+        };
+
+        // Upsert subscription
+        await supabase
+          .from('user_subscriptions')
+          .upsert(subscriptionData, { onConflict: 'stripe_subscription_id,block_name' });
+
+        // Create unlock if subscription is active
+        if (subscription.status === 'active') {
+          await supabase
+            .from('user_block_unlocks')
+            .upsert({
+              user_id: userId,
+              business_id: businessId,
+              block_name: block.block_name,
+              unlock_type: 'subscription',
+              subscription_id: subscription.id,
+            }, { onConflict: 'user_id,block_name,business_id' });
+        }
+      }
+
+      console.log('Subscription processed for', monthlyBlocks.length, 'blocks');
+    }
+
+    // Handle subscription cancellation
+    if (event.type === 'customer.subscription.deleted') {
+      const subscription = event.data.object;
+
+      console.log('Subscription cancelled:', subscription.id);
+
+      // Update subscription status
+      await supabase
+        .from('user_subscriptions')
+        .update({ status: 'cancelled' })
+        .eq('stripe_subscription_id', subscription.id);
+
+      // Remove unlocks
+      await supabase
+        .from('user_block_unlocks')
+        .delete()
+        .eq('subscription_id', subscription.id);
+
+      console.log('Subscription unlocks removed');
+    }
+
     return new Response(JSON.stringify({ received: true }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
