@@ -2,7 +2,7 @@ import { useState } from "react";
 import { HeroSection } from "@/components/HeroSection";
 import AcariCapabilitiesSection from "@/components/AcariCapabilitiesSection";
 import { IdeaToLaunchFlow } from "@/components/IdeaToLaunchFlow";
-
+import { GrantSection } from "@/components/GrantSection";
 import { BetaSection } from "@/components/BetaSection";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
@@ -30,6 +30,8 @@ const Index = () => {
       <AcariCapabilitiesSection />
       
       <IdeaToLaunchFlow />
+      
+      <GrantSection />
       
       <div id="business-ideas">
         <BetaSection />
