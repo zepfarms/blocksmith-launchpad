@@ -77,8 +77,12 @@ export type Database = {
           description: string | null
           id: string
           is_free: boolean
+          monthly_price_cents: number
           price_cents: number
+          pricing_type: string
+          stripe_monthly_price_id: string | null
           stripe_price_id: string | null
+          stripe_product_id: string | null
           updated_at: string
         }
         Insert: {
@@ -87,8 +91,12 @@ export type Database = {
           description?: string | null
           id?: string
           is_free?: boolean
+          monthly_price_cents?: number
           price_cents?: number
+          pricing_type?: string
+          stripe_monthly_price_id?: string | null
           stripe_price_id?: string | null
+          stripe_product_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -97,8 +105,12 @@ export type Database = {
           description?: string | null
           id?: string
           is_free?: boolean
+          monthly_price_cents?: number
           price_cents?: number
+          pricing_type?: string
+          stripe_monthly_price_id?: string | null
           stripe_price_id?: string | null
+          stripe_product_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -181,18 +193,21 @@ export type Database = {
         Row: {
           created_at: string
           email: string
+          email_verified: boolean
           id: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           email: string
+          email_verified?: boolean
           id: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           email?: string
+          email_verified?: boolean
           id?: string
           updated_at?: string
         }
@@ -248,29 +263,101 @@ export type Database = {
       user_block_purchases: {
         Row: {
           block_name: string
+          business_id: string | null
           id: string
           price_paid_cents: number
+          pricing_type: string
           purchased_at: string
           stripe_payment_intent_id: string | null
           user_id: string
         }
         Insert: {
           block_name: string
+          business_id?: string | null
           id?: string
           price_paid_cents: number
+          pricing_type?: string
           purchased_at?: string
           stripe_payment_intent_id?: string | null
           user_id: string
         }
         Update: {
           block_name?: string
+          business_id?: string | null
           id?: string
           price_paid_cents?: number
+          pricing_type?: string
           purchased_at?: string
           stripe_payment_intent_id?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_block_purchases_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_block_unlocks: {
+        Row: {
+          block_name: string
+          business_id: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          subscription_id: string | null
+          unlock_type: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          block_name: string
+          business_id: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          subscription_id?: string | null
+          unlock_type: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          block_name?: string
+          business_id?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          subscription_id?: string | null
+          unlock_type?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_block_unlocks_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_block_unlocks_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_block_unlocks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_businesses: {
         Row: {
@@ -337,6 +424,69 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          block_name: string
+          business_id: string
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          monthly_price_cents: number
+          status: string
+          stripe_subscription_id: string
+          stripe_subscription_item_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          block_name: string
+          business_id: string
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end: string
+          current_period_start: string
+          id?: string
+          monthly_price_cents: number
+          status?: string
+          stripe_subscription_id: string
+          stripe_subscription_item_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          block_name?: string
+          business_id?: string
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          monthly_price_cents?: number
+          status?: string
+          stripe_subscription_id?: string
+          stripe_subscription_item_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
