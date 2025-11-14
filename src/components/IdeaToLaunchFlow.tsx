@@ -70,20 +70,29 @@ export function IdeaToLaunchFlow() {
 
 function IPhoneMockup({ currentSlide, pulse }: { currentSlide: SlideId; pulse: boolean }) {
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-full max-w-[280px] sm:max-w-[320px]">
       {/* iPhone shell */}
-      <div className="relative mx-auto rounded-[2.5rem] border-[8px] border-card bg-gradient-to-b from-card/60 via-background/40 to-card/60 shadow-premium">
-        {/* Notch */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10 h-6 w-32 rounded-b-2xl bg-card border-x-[8px] border-b-[8px] border-card" />
+      <div className="relative mx-auto rounded-[3rem] border-[6px] border-card bg-gradient-to-b from-card/60 via-background/40 to-card/60 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)] ring-1 ring-white/10">
+        {/* Dynamic Island */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10 h-[22px] w-[100px] rounded-full bg-black shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)]" />
         
-        {/* Side buttons (subtle) */}
-        <div className="absolute -left-[9px] top-16 h-8 w-1 rounded-l-sm bg-card/80" />
-        <div className="absolute -left-[9px] top-28 h-12 w-1 rounded-l-sm bg-card/80" />
-        <div className="absolute -right-[9px] top-20 h-16 w-1 rounded-r-sm bg-card/80" />
+        {/* Camera lens */}
+        <div className="absolute top-2.5 left-[45%] h-2 w-2 rounded-full bg-black/60 ring-1 ring-white/20 z-10" />
+        
+        {/* Left side buttons */}
+        <div className="absolute -left-[7px] top-[80px] h-6 w-[2px] rounded-l-sm bg-gradient-to-r from-card via-white/20 to-card" />
+        <div className="absolute -left-[7px] top-[100px] h-10 w-[2px] rounded-l-sm bg-gradient-to-r from-card via-white/20 to-card" />
+        <div className="absolute -left-[7px] top-[140px] h-10 w-[2px] rounded-l-sm bg-gradient-to-r from-card via-white/20 to-card" />
+        
+        {/* Right side button (power) */}
+        <div className="absolute -right-[7px] top-[120px] h-[50px] w-[2px] rounded-r-sm bg-gradient-to-r from-card via-white/20 to-card" />
 
         {/* Screen */}
-        <div className="relative h-[550px] sm:h-[600px] rounded-[1.75rem] border border-border/50 bg-gradient-to-b from-card/90 via-background to-background overflow-hidden">
-          <div className="absolute inset-0 pt-8 pb-4 px-3 text-xs sm:text-sm text-foreground">
+        <div className="relative h-[550px] sm:h-[600px] rounded-[2.5rem] border-[3px] border-black/40 bg-gradient-to-b from-card/90 via-background to-background overflow-hidden">
+          {/* Screen glare effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
+          
+          <div className="absolute inset-0 pt-10 pb-4 px-2.5 text-[0.7rem] sm:text-xs text-foreground">
             {/* Slide content */}
             {currentSlide === "home" && <HomeSlide pulse={pulse} />}
             {currentSlide === "step1" && <Step1Slide pulse={pulse} />}
@@ -151,74 +160,48 @@ function UrlBar() {
 
 function HomeSlide({ pulse }: { pulse: boolean }) {
   return (
-    <>
-      <UrlBar />
-      <div className="flex h-full flex-col gap-4 sm:flex-row">
-        <div className="flex-1">
-          <p className="text-[0.7rem] uppercase tracking-[0.24em] text-acari-green/90">
-            Idea → Launch
-          </p>
-          <h3 className="mt-1 text-base sm:text-lg font-semibold text-foreground">
-            Launch your business in hours, not months.
-          </h3>
-          <p className="mt-2 max-w-md text-xs sm:text-sm text-muted-foreground">
-            Acari uses AI to handle the busy work of building a company — from
-            branding to legal to payments — so you can focus on the work that
-            matters.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              className={`rounded-full bg-acari-green px-4 py-1.5 text-xs sm:text-sm font-medium text-background shadow-neon ${
-                pulse ? "cta-pulse" : ""
-              }`}
-            >
-              Get started
-            </button>
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="rounded-xl border border-border bg-card/80 p-3 text-xs sm:text-[0.78rem] text-foreground">
-            <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
-              Snapshot of what Acari builds
-            </p>
-            <ul className="mt-2 list-disc pl-4 space-y-1">
-              <li>Brand kit, website &amp; booking</li>
-              <li>LLC, EIN &amp; starter contracts</li>
-              <li>Payments, invoicing &amp; CRM</li>
-              <li>Launch checklist &amp; next steps</li>
-            </ul>
-          </div>
-        </div>
+    <div className="flex flex-col h-full justify-between">
+      <div className="space-y-2 sm:space-y-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground">
+          Welcome to Acari
+        </h3>
+        <p className="text-muted-foreground leading-snug text-[0.65rem] sm:text-xs">
+          Tell us your business idea and we'll build everything you need to
+          launch.
+        </p>
       </div>
-    </>
+      <button
+        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
+          pulse ? "animate-pulse scale-105" : ""
+        }`}
+      >
+        Get Started
+      </button>
+    </div>
   );
 }
 
 function Step1Slide({ pulse }: { pulse: boolean }) {
   return (
-    <div className="flex h-full flex-col">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-acari-green/60 bg-card/70 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-acari-green">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        Step 1
-      </span>
-      <h3 className="mt-2 text-base sm:text-lg font-semibold text-foreground">
-        Do you already have a business idea?
-      </h3>
-      <p className="mt-2 max-w-md text-xs sm:text-sm text-muted-foreground">
-        You can start from scratch, or tell Acari the business you've been
-        dreaming about.
-      </p>
-      <div className="mt-3 sm:mt-4 flex flex-wrap gap-2 sm:gap-3">
-        <div className="rounded-xl border border-acari-green/80 bg-acari-green/10 px-3 py-2 text-xs sm:text-sm text-acari-green shadow-acari-glow-subtle">
-          Yes, I have an idea
-        </div>
-        <div className="rounded-xl border border-border bg-card/80 px-3 py-2 text-xs sm:text-sm text-foreground">
-          No, help me find one
+    <div className="flex flex-col h-full justify-between">
+      <div className="space-y-2 sm:space-y-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground">
+          What's your idea?
+        </h3>
+        <div className="grid grid-cols-1 gap-2">
+          <div className="p-2 rounded-lg border border-border bg-card hover:bg-card/80 cursor-pointer transition-colors">
+            <div className="text-[0.65rem] sm:text-xs font-medium">💡 I have an idea</div>
+          </div>
+          <div className="p-2 rounded-lg border border-acari-green bg-acari-green/10 hover:bg-acari-green/20 cursor-pointer transition-colors">
+            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green">
+              🤔 Explore ideas
+            </div>
+          </div>
         </div>
       </div>
       <button
-        className={`mt-3 sm:mt-4 inline-flex items-center rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs sm:text-sm text-foreground ${
-          pulse ? "cta-pulse" : ""
+        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
+          pulse ? "animate-pulse scale-105" : ""
         }`}
       >
         Continue
@@ -229,35 +212,31 @@ function Step1Slide({ pulse }: { pulse: boolean }) {
 
 function Step2Slide({ pulse }: { pulse: boolean }) {
   return (
-    <div className="flex h-full flex-col">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-acari-green/60 bg-card/70 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-acari-green">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        Step 2
-      </span>
-      <h3 className="mt-2 text-base sm:text-lg font-semibold text-foreground">
-        Describe your idea in one sentence.
-      </h3>
-      <p className="mt-2 max-w-md text-xs sm:text-sm text-muted-foreground">
-        Acari uses your idea to assemble everything your business needs behind
-        the scenes.
-      </p>
-
-      <div className="mt-3 sm:mt-4 rounded-xl border border-border bg-card/80 p-3">
-        <p className="text-[0.7rem] text-muted-foreground">Your idea</p>
-        <div className="mt-1 flex min-h-[40px] items-center rounded-lg border border-border bg-background px-2 py-1 text-xs sm:text-sm">
-          <span>I want to start a lawn care business.</span>
-          <span className="typing-caret" />
+    <div className="flex flex-col h-full justify-between">
+      <div className="space-y-2 sm:space-y-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground">
+          Tell us about your idea
+        </h3>
+        <div className="space-y-2">
+          <input
+            type="text"
+            placeholder="Business name..."
+            className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-acari-green text-[0.65rem] sm:text-xs"
+            value="Green Thumb Lawn Care"
+            readOnly
+          />
+          <textarea
+            placeholder="Describe your vision..."
+            className="w-full px-2.5 py-1.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-acari-green resize-none text-[0.65rem] sm:text-xs"
+            rows={3}
+            value="I want to start a lawn care business"
+            readOnly
+          />
         </div>
       </div>
-
-      <div className="mt-2 sm:mt-3 flex items-center gap-2 text-[0.7rem] sm:text-xs text-muted-foreground">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        <span>Acari is mapping your idea to everything it needs to launch.</span>
-      </div>
-
       <button
-        className={`mt-3 sm:mt-4 inline-flex items-center rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs sm:text-sm text-foreground ${
-          pulse ? "cta-pulse" : ""
+        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
+          pulse ? "animate-pulse scale-105" : ""
         }`}
       >
         Continue
@@ -266,55 +245,34 @@ function Step2Slide({ pulse }: { pulse: boolean }) {
   );
 }
 
-function Step3Slide({
-  pulse,
-  items,
-}: {
-  pulse: boolean;
-  items: string[];
-}) {
+function Step3Slide({ pulse, items }: { pulse: boolean; items: string[] }) {
   return (
-    <div className="flex h-full flex-col">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-acari-green/60 bg-card/70 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-acari-green">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        Step 3
-      </span>
-      <h3 className="mt-2 text-base sm:text-lg font-semibold text-foreground">
-        Generating your lawn care business.
-      </h3>
-      <p className="mt-2 max-w-md text-xs sm:text-sm text-muted-foreground">
-        Acari is building your brand, website, legal docs, payments, and launch
-        checklist.
-      </p>
-
-      <div className="mt-2 sm:mt-3 rounded-xl border border-border bg-card/80 p-2 sm:p-3">
-        {items.map((label, idx) => (
-          <div
-            key={label}
-            className={`flex items-center justify-between text-xs sm:text-[0.78rem] text-foreground ${
-              idx < items.length - 1 ? 'mb-1 sm:mb-1.5' : ''
-            }`}
-          >
-            <span>{label}</span>
-            <span className="orbital">
-              <span className="orbital-orbit">
-                <span className="orbital-dot" />
-              </span>
-            </span>
-          </div>
-        ))}
+    <div className="flex flex-col h-full justify-between">
+      <div className="space-y-2 sm:space-y-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground">
+          We're building your business
+        </h3>
+        <div className="space-y-0.5 sm:space-y-1">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-card border border-border"
+            >
+              <div className="flex-shrink-0 h-3 w-3 rounded-full border-2 border-acari-green flex items-center justify-center">
+                <div className="h-1.5 w-1.5 rounded-full bg-acari-green animate-pulse" />
+              </div>
+              <span className="text-muted-foreground text-[0.6rem] sm:text-[0.65rem]">{item}</span>
+            </div>
+          ))}
+        </div>
       </div>
-
-      <p className="mt-2 text-[0.7rem] sm:text-xs text-muted-foreground">
-        This usually takes just a few moments.
-      </p>
-
       <button
-        className={`mt-2 sm:mt-3 inline-flex items-center rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs sm:text-sm text-foreground ${
-          pulse ? "cta-pulse" : ""
+        className={`w-full py-2 rounded-lg bg-muted text-muted-foreground font-medium cursor-not-allowed text-xs sm:text-sm ${
+          pulse ? "animate-pulse scale-105" : ""
         }`}
+        disabled
       >
-        Continue
+        Building...
       </button>
     </div>
   );
@@ -322,50 +280,52 @@ function Step3Slide({
 
 function Step4Slide({ pulse }: { pulse: boolean }) {
   return (
-    <div className="flex h-full flex-col">
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-acari-green/60 bg-card/70 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-acari-green">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        Step 4
-      </span>
-      <h3 className="mt-2 text-base sm:text-lg font-semibold text-foreground">
-        Congratulations — your lawn care business is live.
-      </h3>
-      <p className="mt-2 max-w-md text-xs sm:text-sm text-muted-foreground">
-        You now have a launch-ready business with brand, website, systems, and
-        paperwork set up for you by Acari.
-      </p>
-
-      <div className="mt-2 sm:mt-3 grid gap-2 sm:gap-3 grid-cols-1 sm:grid-cols-2">
-        <div className="rounded-xl border border-border bg-card/80 p-2 sm:p-3 text-xs sm:text-[0.78rem]">
-          <p className="mb-1 text-[0.7rem] text-muted-foreground">What's done</p>
-          <ul className="list-disc space-y-0.5 sm:space-y-1 pl-4">
-            <li>Brand kit &amp; logo</li>
-            <li>Booking website</li>
-            <li>Service contracts</li>
-            <li>Payment links</li>
-          </ul>
-        </div>
-        <div className="rounded-xl border border-border bg-card/80 p-2 sm:p-3 text-xs sm:text-[0.78rem]">
-          <p className="mb-1 text-[0.7rem] text-muted-foreground">Next steps</p>
-          <ul className="list-disc space-y-0.5 sm:space-y-1 pl-4">
-            <li>Share your booking page</li>
-            <li>Turn on marketing automations</li>
-            <li>Track your first few customers</li>
-          </ul>
+    <div className="flex flex-col h-full justify-between">
+      <div className="space-y-2 sm:space-y-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground">
+          Your business is ready!
+        </h3>
+        <div className="grid grid-cols-1 gap-1.5">
+          <div className="p-2 rounded-lg bg-card border border-border">
+            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
+              ✓ Brand
+            </div>
+            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
+              Logo & colors
+            </div>
+          </div>
+          <div className="p-2 rounded-lg bg-card border border-border">
+            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
+              ✓ Website
+            </div>
+            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
+              Live & bookable
+            </div>
+          </div>
+          <div className="p-2 rounded-lg bg-card border border-border">
+            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
+              ✓ Legal
+            </div>
+            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
+              LLC & contracts
+            </div>
+          </div>
+          <div className="p-2 rounded-lg bg-card border border-border">
+            <div className="text-[0.65rem] sm:text-xs font-medium text-acari-green mb-0.5">
+              ✓ Payments
+            </div>
+            <div className="text-[0.6rem] sm:text-[0.65rem] text-muted-foreground">
+              Ready to invoice
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 rounded-full border border-acari-green/80 bg-acari-green/15 px-3 py-1.5 text-xs sm:text-sm text-acari-green">
-        <span className="h-2 w-2 rounded-full bg-acari-green shadow-acari-glow" />
-        <span>Congrats! You just made your first sale.</span>
-      </div>
-
       <button
-        className={`mt-2 sm:mt-3 inline-flex items-center rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs sm:text-sm text-foreground ${
-          pulse ? "cta-pulse" : ""
+        className={`w-full py-2 rounded-lg bg-acari-green text-primary-foreground font-medium transition-all text-xs sm:text-sm ${
+          pulse ? "animate-pulse scale-105" : ""
         }`}
       >
-        Create another business
+        View Dashboard
       </button>
     </div>
   );
