@@ -108,25 +108,27 @@ export const DescribeIdea = () => {
             autoFocus
           />
 
-          <div className="flex gap-3">
-            <button
-              onClick={handleSubmitIdea}
-              disabled={!businessIdea.trim() || isAnalyzing}
-              className="group flex-1 px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isAnalyzing ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5" />
-                  Continue
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </>
-              )}
-            </button>
+          <div className="flex flex-col gap-3">
+            <div className="w-full flex justify-center">
+              <button
+                onClick={handleSubmitIdea}
+                disabled={!businessIdea.trim() || isAnalyzing}
+                className="group px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    Continue
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </>
+                )}
+              </button>
+            </div>
             <button
               onClick={() => navigate("/start")}
               className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"

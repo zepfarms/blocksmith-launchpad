@@ -26,7 +26,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Sending welcome email to:', email);
 
     const emailResponse = await resend.emails.send({
-      from: "Acari <support@acari.ai>",
+      from: "Acari <no-reply@acari.ai>",
       to: [email],
       subject: "Welcome to Acari! 🚀",
       html: `
