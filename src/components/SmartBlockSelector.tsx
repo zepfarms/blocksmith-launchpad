@@ -263,7 +263,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
     "Business Cards", 
     "Social Media Kit",
     "Email Setup",
-    "Name & Logo",
+    "Logo Generator",
     "Payment Processing"
   ];
 
@@ -309,7 +309,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
   };
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 bg-background">
+    <section className="relative pt-44 pb-20 px-4 sm:px-6 bg-background">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <div className="text-center space-y-4">
