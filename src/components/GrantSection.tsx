@@ -37,7 +37,7 @@ export const GrantSection = () => {
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] break-words">
                 Acari Startup Grant
               </h2>
-              <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] break-words">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] break-words">
                 Every Month we will give away <span className="text-acari-green">$1,000</span> to someone to Launch their business
               </h3>
             </div>
