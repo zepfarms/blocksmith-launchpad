@@ -41,3 +41,6 @@ verify_jwt = true
 
 [functions.automated-grace-period-reminders]
 verify_jwt = false
+
+[functions.generate-business-name]
+verify_jwt = false

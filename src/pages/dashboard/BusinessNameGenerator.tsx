@@ -106,9 +106,10 @@ export default function BusinessNameGenerator() {
         throw new Error('Invalid response format');
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating names:', error);
-      toast.error("Failed to generate names. Please try again.");
+      const errorMessage = error?.message || error?.error || 'Failed to generate names. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsGenerating(false);
     }
