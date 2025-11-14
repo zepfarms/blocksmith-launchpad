@@ -11,7 +11,7 @@ const generatingItems = [
   "Launch checklist",
 ];
 
-const slides = ["home", "step1", "step2", "step3", "step4"] as const;
+const slides = ["home", "step1", "step2", "step3", "step4", "step5"] as const;
 type SlideId = (typeof slides)[number];
 
 export function IdeaToLaunchFlow() {
@@ -117,6 +117,7 @@ function IPhoneMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: 
               <Step3Slide pulse={pulse} isClicked={isButtonClicked} items={generatingItems} />
             )}
             {currentSlide === "step4" && <Step4Slide pulse={pulse} isClicked={isButtonClicked} />}
+            {currentSlide === "step5" && <Step5Slide pulse={pulse} isClicked={isButtonClicked} />}
           </div>
         </div>
       </div>
@@ -146,6 +147,7 @@ function LaptopMockup({ currentSlide, pulse, isButtonClicked }: { currentSlide: 
                 <Step3Slide pulse={pulse} isClicked={isButtonClicked} items={generatingItems} />
               )}
               {currentSlide === "step4" && <Step4Slide pulse={pulse} isClicked={isButtonClicked} />}
+              {currentSlide === "step5" && <Step5Slide pulse={pulse} isClicked={isButtonClicked} />}
             </div>
           </div>
         </div>
@@ -476,6 +478,116 @@ function Step4Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }
             <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
           )}
           View Dashboard →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Step5Slide({ pulse, isClicked }: { pulse: boolean; isClicked: boolean }) {
+  // Generate confetti pieces
+  const confettiColors = [
+    "bg-acari-green",
+    "bg-yellow-400",
+    "bg-blue-400",
+    "bg-pink-400",
+    "bg-purple-400",
+  ];
+  
+  const confettiPieces = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    color: confettiColors[i % confettiColors.length],
+    left: `${(i * 5) % 100}%`,
+    delay: `${(i * 0.15) % 1}s`,
+    duration: `${2.5 + (i % 3) * 0.3}s`,
+    size: i % 3 === 0 ? "w-1 h-3" : "w-2 h-2",
+  }));
+
+  return (
+    <div className="h-full flex flex-col bg-background relative overflow-hidden">
+      <MobileHeader />
+      
+      {/* Falling Confetti */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {confettiPieces.map((piece) => (
+          <div
+            key={piece.id}
+            className={`absolute ${piece.color} ${piece.size} rounded-sm opacity-80`}
+            style={{
+              left: piece.left,
+              animation: `fall-confetti ${piece.duration} linear infinite`,
+              animationDelay: piece.delay,
+              top: "-10%",
+            }}
+          />
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes fall-confetti {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(110vh) rotate(360deg);
+            opacity: 0.5;
+          }
+        }
+      `}</style>
+      
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 space-y-6 z-10">
+        {/* Cha-Ching! Header */}
+        <div className="text-center space-y-2">
+          <div className="text-4xl mb-2 animate-bounce">💰</div>
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+            Cha-Ching!
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            You just completed your first sale!
+          </p>
+        </div>
+
+        {/* Sale Details Card */}
+        <div className="w-full bg-card border border-acari-green/30 rounded-xl p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Customer</span>
+            <span className="text-sm font-semibold text-foreground">Sarah M.</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Service</span>
+            <span className="text-sm text-foreground">Standard Lawn Care</span>
+          </div>
+          <div className="border-t border-border pt-3 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Amount</span>
+            <span className="text-xl font-bold text-acari-green">$125.00</span>
+          </div>
+          <div className="text-center text-xs text-muted-foreground">Just now</div>
+        </div>
+
+        {/* Celebration Message */}
+        <div className="text-center text-xs text-muted-foreground">
+          🎉 Your business is officially making money!
+        </div>
+      </div>
+      
+      {/* Button */}
+      <div className="px-4 pb-4">
+        <button
+          disabled
+          className={`relative w-full px-4 py-2.5 bg-acari-green text-background rounded-full font-semibold text-xs sm:text-sm transition-transform duration-150 ${
+            isClicked 
+              ? "scale-95 opacity-90" 
+              : pulse 
+                ? "scale-[1.02]" 
+                : "scale-100"
+          }`}
+        >
+          {isClicked && (
+            <span className="absolute inset-0 rounded-full bg-background/20 animate-[ping_0.3s_ease-out]" />
+          )}
+          View Details →
         </button>
       </div>
     </div>
