@@ -44,3 +44,6 @@ verify_jwt = false
 
 [functions.generate-business-name]
 verify_jwt = false
+
+[functions.generate-domain-names]
+verify_jwt = false

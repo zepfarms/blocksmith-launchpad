@@ -45,6 +45,7 @@ const Dashboard = () => {
   const [userEmail, setUserEmail] = useState("");
   const [emailVerified, setEmailVerified] = useState(true);
   const [showVerificationBanner, setShowVerificationBanner] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -111,15 +112,46 @@ const Dashboard = () => {
         );
         
         if (hasBusinessNameGenerator) {
+          const isCompleted = !!data.business_name;
           dashboardItems.push({
             id: "business-name-generator",
             title: "Business Name Generator",
-            status: "not-started",
+            status: isCompleted ? "ready" : "not-started",
             description: data.business_name 
               ? `Current name: ${data.business_name}`
               : "Choose your perfect business name",
             locked: false,
-            approved: false,
+            approved: isCompleted,
+            isFree: true,
+          });
+        }
+        
+        // Domain Name Generator - show if Business Name Generator exists or business name is set
+        const hasDomainBlock = allBlocks.some((block: string) => 
+          block === 'Domain Name Generator'
+        );
+        
+        if (hasDomainBlock || data.business_name) {
+          const { data: domainData } = await supabase
+            .from('user_domain_selections')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('business_id', data.id)
+            .maybeSingle();
+          
+          const isDomainComplete = !!domainData?.domain_name || domainData?.domain_status === 'skipped';
+          
+          dashboardItems.push({
+            id: "domain-name-generator",
+            title: "Domain Name Generator",
+            status: isDomainComplete ? "ready" : "not-started",
+            description: domainData?.domain_name 
+              ? `Domain: ${domainData.domain_name}`
+              : domainData?.domain_status === 'skipped'
+                ? "Skipped for now"
+                : "Choose your perfect domain",
+            locked: false,
+            approved: isDomainComplete,
             isFree: true,
           });
         }
@@ -435,9 +467,79 @@ const Dashboard = () => {
           </p>
         </div>
 
+        {/* Recommended Next Step Banner */}
+        {(() => {
+          const incomplete = items.filter(item => !item.approved);
+          let recommendedBlock = null;
+          
+          if (!businessData?.business_name) {
+            recommendedBlock = items.find(item => item.id === 'business-name-generator');
+          } else {
+            const domainBlock = items.find(item => item.id === 'domain-name-generator');
+            if (domainBlock && !domainBlock.approved) {
+              recommendedBlock = domainBlock;
+            } else {
+              const logoBlock = items.find(item => item.id === 'logo');
+              if (logoBlock && !logoBlock.approved) {
+                recommendedBlock = logoBlock;
+              } else {
+                recommendedBlock = incomplete[0];
+              }
+            }
+          }
+          
+          return recommendedBlock ? (
+            <div className="glass-card p-6 rounded-2xl border border-acari-green/30 bg-acari-green/5 mb-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm text-acari-green font-medium">RECOMMENDED NEXT STEP</p>
+                  <h3 className="text-xl font-bold text-white mt-1">{recommendedBlock.title}</h3>
+                  <p className="text-sm text-white/70 mt-1">{recommendedBlock.description}</p>
+                </div>
+                <Button 
+                  onClick={() => {
+                    if (recommendedBlock.id === 'business-name-generator') {
+                      navigate('/dashboard/business-name-generator');
+                    } else if (recommendedBlock.id === 'domain-name-generator') {
+                      navigate('/dashboard/domain-name-generator');
+                    } else if (recommendedBlock.id === 'logo') {
+                      navigate('/dashboard/logos');
+                    }
+                  }}
+                  className="bg-acari-green hover:bg-acari-green/90 whitespace-nowrap"
+                >
+                  Complete This Block
+                </Button>
+              </div>
+            </div>
+          ) : null;
+        })()}
+
+        {/* Show/Hide Completed Toggle */}
+        <div className="flex justify-end items-center gap-2">
+          <Label htmlFor="show-completed" className="text-sm text-muted-foreground cursor-pointer">
+            Show completed blocks
+          </Label>
+          <button
+            id="show-completed"
+            onClick={() => setShowCompleted(!showCompleted)}
+            className={cn(
+              "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+              showCompleted ? "bg-acari-green" : "bg-input"
+            )}
+          >
+            <span
+              className={cn(
+                "inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform",
+                showCompleted ? "translate-x-6" : "translate-x-1"
+              )}
+            />
+          </button>
+        </div>
+
         {/* Items grid */}
         <div className="grid md:grid-cols-2 gap-6">
-          {items.map((item) => (
+          {items.filter(item => showCompleted || !item.approved).map((item) => (
             <div
               key={item.id}
               className={cn(
@@ -462,7 +564,14 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
                   </div>
-                  {getStatusBadge(item.status)}
+                  {item.approved ? (
+                    <Badge className="bg-acari-green/10 text-acari-green border-acari-green/20">
+                      <CheckCircle2 className="w-3 h-3 mr-1" />
+                      Complete
+                    </Badge>
+                  ) : (
+                    getStatusBadge(item.status)
+                  )}
                 </div>
 
                 {/* Actions */}
@@ -477,6 +586,8 @@ const Dashboard = () => {
                           
                           if (item.id === 'business-name-generator') {
                             navigate('/dashboard/business-name-generator');
+                          } else if (item.id === 'domain-name-generator') {
+                            navigate('/dashboard/domain-name-generator');
                           } else if (item.id === 'logo') {
                             navigate('/dashboard/logos');
                           }
@@ -512,14 +623,18 @@ const Dashboard = () => {
                       onClick={() => {
                         if (item.id === 'business-name-generator') {
                           navigate('/dashboard/business-name-generator');
+                        } else if (item.id === 'domain-name-generator') {
+                          navigate('/dashboard/domain-name-generator');
                         } else if (item.id === 'logo') {
                           navigate('/dashboard/logos');
                         }
                       }}
                     >
                       {item.id === 'business-name-generator' 
-                        ? (businessData?.business_name ? 'Update Business Name' : 'Lock in an Awesome Business Name')
-                        : 'Create Logos'
+                        ? 'Lock in an Awesome Business Name'
+                        : item.id === 'domain-name-generator'
+                          ? 'Complete This Block'
+                          : 'Create Logos'
                       }
                     </button>
                   )}

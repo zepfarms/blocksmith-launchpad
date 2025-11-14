@@ -464,6 +464,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_domain_selections: {
+        Row: {
+          business_id: string
+          created_at: string
+          domain_name: string | null
+          domain_status: string
+          existing_website_url: string | null
+          has_existing_domain: boolean
+          id: string
+          registered_via_acari: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          domain_name?: string | null
+          domain_status?: string
+          existing_website_url?: string | null
+          has_existing_domain?: boolean
+          id?: string
+          registered_via_acari?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          domain_name?: string | null
+          domain_status?: string
+          existing_website_url?: string | null
+          has_existing_domain?: boolean
+          id?: string
+          registered_via_acari?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
