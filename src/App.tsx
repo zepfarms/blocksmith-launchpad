@@ -16,6 +16,7 @@ import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import GrantTerms from "./pages/GrantTerms";
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import LogoGeneration from "./pages/dashboard/LogoGeneration";
@@ -51,6 +52,7 @@ function App() {
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/grant-terms" element={<GrantTerms />} />
               <Route path="/support" element={<Support />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
               

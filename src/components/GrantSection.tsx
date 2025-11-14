@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const GrantSection = () => {
-  const navigate = useNavigate();
-
   return (
     <section className="relative py-16 sm:py-24 px-4 overflow-hidden">
       {/* Ambient Background Glow Effects */}
@@ -54,12 +52,22 @@ export const GrantSection = () => {
             </div>
 
             {/* Winners Notice */}
-            <div className="pt-4 sm:pt-6">
+            <div className="pt-4 sm:pt-6 space-y-4">
               <div className="inline-flex items-center gap-3 px-6 py-4 rounded-full bg-gradient-to-r from-neon-cyan/5 to-neon-purple/5 border border-neon-cyan/20">
                 <div className="w-2 h-2 rounded-full bg-acari-green animate-glow-pulse" />
                 <p className="text-sm sm:text-base md:text-lg font-medium text-foreground">
                   Winners will be posted on our site along with their business idea
                 </p>
+              </div>
+              
+              {/* Terms Link */}
+              <div className="text-center">
+                <Link 
+                  to="/grant-terms" 
+                  className="text-xs sm:text-sm text-muted-foreground hover:text-neon-cyan transition-colors duration-200 underline underline-offset-4"
+                >
+                  View Grant Terms & Conditions
+                </Link>
               </div>
             </div>
           </div>
