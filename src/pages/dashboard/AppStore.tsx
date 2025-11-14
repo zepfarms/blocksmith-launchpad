@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import { ArrowLeft, Search, ShoppingCart } from "lucide-react";
 import { BlockCard } from "@/components/BlockCard";
 import { BlockInfoModal } from "@/components/BlockInfoModal";
@@ -204,27 +205,46 @@ export default function AppStore() {
       return;
     }
 
-    const blockNames = cart.map(id => {
-      const block = blocks.find(b => b.id === id);
-      return block?.title || '';
-    }).filter(Boolean);
+    const selectedBlocks = cart.map(id => blocks.find(b => b.id === id)).filter(Boolean) as Block[];
+
+    // Separate one-time and monthly blocks
+    const oneTimeBlocks = selectedBlocks.filter(b => b.pricingType === 'one_time' && !b.isFree);
+    const monthlyBlocks = selectedBlocks.filter(b => b.pricingType === 'monthly' && !b.isFree);
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
-      const response = await supabase.functions.invoke('create-checkout-session', {
-        body: { blockNames },
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`
-        }
-      });
-
-      if (response.error) throw response.error;
-      if (response.data?.sessionUrl) {
-        window.location.href = response.data.sessionUrl;
+      if (!session) {
+        toast.error('Please sign in to continue');
+        navigate('/');
+        return;
       }
+
+      // If only monthly blocks, go to subscription checkout
+      if (monthlyBlocks.length > 0 && oneTimeBlocks.length === 0) {
+        const monthlyNames = monthlyBlocks.map(b => b.title).join(',');
+        navigate(`/dashboard/subscription-checkout?blocks=${monthlyNames}`);
+        return;
+      }
+
+      // If only one-time blocks, go to regular checkout
+      if (oneTimeBlocks.length > 0 && monthlyBlocks.length === 0) {
+        const oneTimeNames = oneTimeBlocks.map(b => b.title).join(',');
+        navigate(`/start/checkout?blocks=${oneTimeNames}`);
+        return;
+      }
+
+      // If mixed, show message
+      if (oneTimeBlocks.length > 0 && monthlyBlocks.length > 0) {
+        toast.error('Please checkout one-time and monthly blocks separately');
+        return;
+      }
+
+      // All free blocks
+      toast.success('All selected blocks are free!');
     } catch (error) {
-      console.error("Checkout error:", error);
+      console.error('Checkout error:', error);
+      toast.error('Failed to process checkout');
     }
   };
 

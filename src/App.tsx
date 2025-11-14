@@ -12,6 +12,8 @@ import Admin from "./pages/Admin";
 import AdminPricing from "./pages/admin/Pricing";
 import AdminCategories from "./pages/admin/Categories";
 import AppStore from "./pages/dashboard/AppStore";
+import Subscriptions from "./pages/dashboard/Subscriptions";
+import { SubscriptionCheckout } from "./pages/dashboard/SubscriptionCheckout";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
 import Privacy from "./pages/Privacy";
@@ -46,6 +48,8 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/logos" element={<LogoGeneration />} />
               <Route path="/dashboard/app-store" element={<AppStore />} />
+              <Route path="/dashboard/subscriptions" element={<Subscriptions />} />
+              <Route path="/dashboard/subscription-checkout" element={<SubscriptionCheckout />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
