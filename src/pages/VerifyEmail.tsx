@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Mail, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { Header } from "@/components/Header";
 
 export const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -136,17 +137,24 @@ export const VerifyEmail = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
-      <div className="max-w-md w-full space-y-8 animate-fade-in">
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 mx-auto bg-acari-green/10 rounded-full flex items-center justify-center">
-            <Mail className="w-8 h-8 text-acari-green" />
+    <>
+      <Header />
+      <div className="min-h-screen flex items-center justify-center px-4 bg-background pt-[72px] sm:pt-[80px]">
+        <div className="max-w-md w-full space-y-8 animate-fade-in">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 mx-auto bg-acari-green/10 rounded-full flex items-center justify-center">
+              <Mail className="w-8 h-8 text-acari-green" />
+            </div>
+            <h1 className="text-3xl font-black">Verify Your Email</h1>
+            <div className="text-center space-y-2">
+              <p className="text-muted-foreground">
+                We sent a 6-digit code to <span className="font-medium text-foreground">{email}</span>
+              </p>
+              <p className="text-sm text-muted-foreground/80">
+                Don't see it? Check your spam or junk folder
+              </p>
+            </div>
           </div>
-          <h1 className="text-3xl font-black">Verify Your Email</h1>
-          <p className="text-muted-foreground">
-            We sent a 6-digit code to <span className="font-medium text-foreground">{email}</span>
-          </p>
-        </div>
 
         <form onSubmit={handleVerify} className="space-y-6">
           <div className="space-y-2">
@@ -200,7 +208,8 @@ export const VerifyEmail = () => {
           </div>
         </form>
 
+        </div>
       </div>
-    </div>
+    </>
   );
 };

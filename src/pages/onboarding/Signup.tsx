@@ -115,19 +115,16 @@ export const Signup = () => {
       if (authData.user) {
         await saveBusinessData(authData.user);
         
-        // Send verification email and redirect
-        try {
-          await supabase.functions.invoke('send-verification-email', {
-            body: { email: authData.user.email }
-          });
-          
-          toast.success("Account created! Please check your email for the verification code.");
-          navigate("/verify-email");
-          return;
-        } catch (err) {
-          console.error('Verification email error:', err);
-          toast.error("Account created but couldn't send verification email. Please try again from your dashboard.");
-        }
+        // Navigate to verify-email immediately to prevent flicker
+        toast.success("Account created! Check your email for verification code.");
+        navigate("/verify-email");
+        
+        // Send verification email in background (fire-and-forget)
+        supabase.functions.invoke('send-verification-email', {
+          body: { email: authData.user.email }
+        }).catch(error => {
+          console.error('Error sending verification email:', error);
+        });
       }
     } catch (error: any) {
       console.error('Signup error:', error);

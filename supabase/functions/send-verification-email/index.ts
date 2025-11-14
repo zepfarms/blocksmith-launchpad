@@ -82,7 +82,7 @@ serve(async (req) => {
 
     // Send email via Resend
     const emailResponse = await resend.emails.send({
-      from: "Acari <onboarding@resend.dev>",
+      from: "Acari <no-reply@acari.ai>",
       to: [email],
       subject: "Verify your email address",
       html: `
