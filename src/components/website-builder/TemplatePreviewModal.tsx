@@ -2,7 +2,6 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { WebsiteTemplate } from "@/data/websiteTemplates";
 
 interface TemplatePreviewModalProps {
@@ -18,29 +17,13 @@ export const TemplatePreviewModal = ({
 }: TemplatePreviewModalProps) => {
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading');
-  const iframeSrc = template ? `/templates/${template.id}/index.html` : '';
-
-  useEffect(() => {
-    let cancelled = false;
-    if (!template) return;
-    setStatus('loading');
-    fetch(iframeSrc, { method: 'HEAD' })
-      .then((res) => {
-        if (!cancelled) setStatus(res.ok ? 'ok' : 'error');
-      })
-      .catch(() => {
-        if (!cancelled) setStatus('error');
-      });
-    return () => { cancelled = true; };
-  }, [template?.id, iframeSrc]);
-
   if (!template) return null;
 
   const handleUseTemplate = () => {
     navigate(`/dashboard/website-builder?template=${template.id}`);
     onClose();
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] p-0">
@@ -60,28 +43,12 @@ export const TemplatePreviewModal = ({
           </div>
 
           {/* Live Preview */}
-          <div className="flex-1 bg-muted relative overflow-hidden">
-            {status === 'ok' && (
-              <iframe
-                src={iframeSrc}
-                className="w-full h-full border-0"
-                title={`${template.name} Live Preview`}
-              />
-            )}
-            {status === 'loading' && (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                Loading preview...
-              </div>
-            )}
-            {status === 'error' && (
-              <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-muted-foreground p-6 text-center">
-                <p>We couldn't load the in-app preview for this template.</p>
-                <div className="flex gap-3">
-                  <Button onClick={() => window.open(iframeSrc, '_blank')}>Open in new tab</Button>
-                  <Button variant="outline" onClick={onClose}>Close</Button>
-                </div>
-              </div>
-            )}
+          <div className="flex-1 bg-gray-100 relative overflow-hidden">
+            <iframe
+              src={`/templates/${template.id}/index.html`}
+              className="w-full h-full border-0"
+              title={`${template.name} Live Preview`}
+            />
           </div>
 
           {/* Modal Footer */}

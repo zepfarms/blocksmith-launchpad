@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BUSINESS_NAME}} - {{TAGLINE}}</title>
+    <meta name="description" content="{{META_DESCRIPTION}}">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%2245%22%3E%3Ctext x=%2210%22 y=%2230%22 font-family=%22Georgia%22 font-size=%2228%22 fill=%22%230f172a%22%3E{{BUSINESS_NAME}}%3C/text%3E%3C/svg%3E'">
+            </div>
+            <button class="mobile-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#team">Our Team</a></li>
+                <li><a href="#expertise">Expertise</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="cta-button">Schedule Consultation</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">{{HERO_TITLE}}</h1>
+                <p class="hero-subtitle">{{HERO_SUBTITLE}}</p>
+                <div class="hero-cta-group">
+                    <a href="#contact" class="hero-cta primary">Get Started</a>
+                    <a href="#services" class="hero-cta secondary">Our Services</a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Clients Served</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive solutions tailored to your needs</p>
+            <div class="services-grid">
+                {{SERVICES_HTML}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section id="expertise" class="expertise">
+        <div class="container">
+            <h2 class="section-title">Areas of Expertise</h2>
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <div class="expertise-number">01</div>
+                    <h3>Strategic Planning</h3>
+                    <p>Comprehensive analysis and strategic guidance for complex matters.</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="expertise-number">02</div>
+                    <h3>Client Focus</h3>
+                    <p>Personalized attention and tailored solutions for every client.</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="expertise-number">03</div>
+                    <h3>Excellence</h3>
+                    <p>Commitment to the highest standards of professional service.</p>
+                </div>
+                <div class="expertise-card">
+                    <div class="expertise-number">04</div>
+                    <h3>Innovation</h3>
+                    <p>Leveraging modern approaches to deliver superior outcomes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team">
+        <div class="container">
+            <h2 class="section-title">Our Team</h2>
+            <p class="section-subtitle">Experienced professionals dedicated to your success</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{TEAM_PHOTO_1}}" alt="Team Member" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22350%22%3E%3Crect fill=%22%230f172a%22 width=%22300%22 height=%22350%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EProfessional%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="member-info">
+                        <h3>Senior Partner</h3>
+                        <p class="member-title">Managing Director</p>
+                        <p class="member-bio">25+ years of experience delivering exceptional results</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{TEAM_PHOTO_2}}" alt="Team Member" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22350%22%3E%3Crect fill=%22%230f172a%22 width=%22300%22 height=%22350%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EProfessional%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="member-info">
+                        <h3>Associate Partner</h3>
+                        <p class="member-title">Lead Consultant</p>
+                        <p class="member-bio">Specialized expertise in complex client matters</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{TEAM_PHOTO_3}}" alt="Team Member" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22350%22%3E%3Crect fill=%22%230f172a%22 width=%22300%22 height=%22350%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EProfessional%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="member-info">
+                        <h3>Senior Associate</h3>
+                        <p class="member-title">Client Relations</p>
+                        <p class="member-bio">Dedicated to exceptional client service and results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About {{BUSINESS_NAME}}</h2>
+                    <div class="about-description">{{ABOUT_TEXT}}</div>
+                    <ul class="values-list">
+                        <li>✓ Integrity in every interaction</li>
+                        <li>✓ Excellence as our standard</li>
+                        <li>✓ Client success as our mission</li>
+                        <li>✓ Innovation in our approach</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <img src="{{ABOUT_IMAGE_URL}}" alt="About {{BUSINESS_NAME}}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22500%22%3E%3Crect fill=%22%230f172a%22 width=%22600%22 height=%22500%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Georgia%22 font-size=%2228%22 fill=%22%233b82f6%22 text-anchor=%22middle%22 dy=%22.3em%22%3EProfessional Excellence%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">Client Testimonials</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="quote-mark">"</div>
+                    <p class="testimonial-text">Outstanding professionalism and expertise. They exceeded our expectations in every way.</p>
+                    <div class="testimonial-author">
+                        <strong>— John Anderson</strong>
+                        <span>CEO, Anderson Corp</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-mark">"</div>
+                    <p class="testimonial-text">Their strategic guidance was invaluable. Highly recommend their services.</p>
+                    <div class="testimonial-author">
+                        <strong>— Sarah Mitchell</strong>
+                        <span>Managing Director</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-mark">"</div>
+                    <p class="testimonial-text">Exceptional service, attention to detail, and results that speak for themselves.</p>
+                    <div class="testimonial-author">
+                        <strong>— Michael Chen</strong>
+                        <span>Business Owner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Schedule a Consultation</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p class="contact-intro">Contact us today to discuss how we can help you achieve your goals.</p>
+                    <div class="info-items">
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div>
+                                <strong>Office</strong>
+                                <p>{{ADDRESS}}</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📞</div>
+                            <div>
+                                <strong>Phone</strong>
+                                <a href="tel:{{PHONE}}">{{PHONE}}</a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">📧</div>
+                            <div>
+                                <strong>Email</strong>
+                                <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">🕒</div>
+                            <div>
+                                <strong>Hours</strong>
+                                <p>Mon-Fri: 9am-6pm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="tel" placeholder="Phone Number" required>
+                    <select required>
+                        <option value="">Type of Service Needed</option>
+                        <option value="consultation">Initial Consultation</option>
+                        <option value="ongoing">Ongoing Services</option>
+                        <option value="emergency">Urgent Matter</option>
+                    </select>
+                    <textarea placeholder="How can we help you?" rows="5" required></textarea>
+                    <button type="submit" class="submit-button">Submit Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>{{BUSINESS_NAME}}</h4>
+                    <p>Professional excellence in every engagement.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Our Services</a></li>
+                        <li><a href="#team">Our Team</a></li>
+                        <li><a href="#expertise">Expertise</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>{{ADDRESS}}<br>{{PHONE}}<br>{{EMAIL}}</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 {{BUSINESS_NAME}}. All rights reserved. | Professional Services</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
