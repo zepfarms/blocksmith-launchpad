@@ -140,13 +140,13 @@ export const BlockCard = ({
 
       {/* Ownership or Pricing badge */}
       <div className="mb-2">
-        {isOwned ? (
-          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
-            {ownershipLabel}
-          </Badge>
-        ) : pricingType === 'free' ? (
+        {pricingType === 'free' || isFree ? (
           <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
             FREE
+          </Badge>
+        ) : isOwned ? (
+          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px] md:text-xs">
+            {ownershipLabel}
           </Badge>
         ) : pricingType === 'monthly' ? (
           <Badge variant="outline" className="text-neon-purple border-neon-purple/30 text-[10px] md:text-xs">
