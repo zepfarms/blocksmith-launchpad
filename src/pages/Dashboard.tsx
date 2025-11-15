@@ -648,7 +648,7 @@ const Dashboard = () => {
                   )}
                   {item.status === "not-started" && (
                     <button
-                      className="flex-1 gap-2 px-4 py-2 rounded-full bg-white text-black hover:bg-gray-100 text-sm transition-all inline-flex items-center justify-center"
+                      className="flex-1 gap-2 px-4 py-2 rounded-full bg-acari-green/90 hover:bg-acari-green text-background text-sm font-semibold transition-all inline-flex items-center justify-center"
                       onClick={() => {
                         if (item.id === 'business-name-generator') {
                           navigate('/dashboard/business-name-generator');
@@ -699,7 +699,7 @@ const Dashboard = () => {
           ) : (
             <button
               onClick={() => navigate('/dashboard/app-store')}
-              className="group px-10 py-5 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-100 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+              className="group px-10 py-5 bg-acari-green/90 hover:bg-acari-green text-background rounded-full font-semibold text-lg transition-all duration-200 shadow-lg inline-flex items-center gap-2"
             >
               Browse Monthly Blocks
             </button>
