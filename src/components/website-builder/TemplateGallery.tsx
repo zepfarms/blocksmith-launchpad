@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, ExternalLink } from "lucide-react";
 import { WebsiteTemplate } from "@/data/websiteTemplates";
+import { previewTemplateFromZip } from "@/lib/previewFromZip";
 
 interface TemplateGalleryProps {
   templates: WebsiteTemplate[];
@@ -15,11 +16,39 @@ export const TemplateGallery = ({
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateGalleryProps) => {
-  const handlePreview = (livePreviewUrl?: string) => {
+  const zipMap: Record<string, string> = {
+    "automotive": "acari-auto-template_2.zip",
+    "creative": "acari-creative-template.zip",
+    "fitness": "acari-fitness-template.zip",
+    "professional-services": "acari-legal-template.zip",
+    "medical": "acari-medical-template.zip",
+    "plumbing": "acari-plumbing-template.zip",
+    "real-estate": "acari-realestate-template.zip",
+    "restaurant": "acari-restaurant-template.zip",
+    "retail": "acari-retail-template.zip",
+    "salon-spa": "acari-salon-template.zip",
+  };
+
+  const handlePreview = async (template: WebsiteTemplate) => {
+    const { livePreviewUrl, id } = template;
     if (livePreviewUrl) {
+      try {
+        const res = await fetch(livePreviewUrl, { method: 'HEAD' });
+        if (res.ok) {
+          window.open(livePreviewUrl, '_blank');
+          return;
+        }
+      } catch { /* fall back */ }
+    }
+    const zipName = zipMap[id];
+    if (zipName) {
+      await previewTemplateFromZip(`/templates/${zipName}`);
+    } else if (livePreviewUrl) {
+      // last resort
       window.open(livePreviewUrl, '_blank');
     }
   };
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -47,7 +76,7 @@ export const TemplateGallery = ({
             {/* Template Preview Area - Now with gradient placeholder */}
             <div 
               className="w-full h-56 rounded-lg border border-border overflow-hidden mb-4 cursor-pointer relative group/preview"
-              onClick={() => handlePreview(template.livePreviewUrl)}
+              onClick={() => handlePreview(template)}
             >
               {/* Premium gradient background as placeholder */}
               <div 
@@ -130,10 +159,9 @@ export const TemplateGallery = ({
               variant="outline"
               onClick={(e) => {
                 e.stopPropagation();
-                handlePreview(template.livePreviewUrl);
+                handlePreview(template);
               }}
               className="flex-1 rounded-full hover:shadow-neon transition-all"
-              disabled={!template.livePreviewUrl}
             >
               <ExternalLink className="mr-2 h-4 w-4" />
               {template.livePreviewUrl ? 'View Live' : 'Coming Soon'}

@@ -2,7 +2,10 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
-import AdmZip from "adm-zip";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AdmZip: any = require("adm-zip");
 import { componentTagger } from "lovable-tagger";
 
 // Auto-unzip user templates from public/templates/*.zip into folders for live previews
@@ -31,6 +34,7 @@ function unzipTemplatesPlugin(): Plugin {
       const zipPath = path.join(templatesDir, file);
       const outDir = path.join(templatesDir, target);
       try {
+        console.log("[unzip-templates] Extracting:", file, "→", target);
         // Ensure output dir exists and extract (overwrite = true)
         fs.mkdirSync(outDir, { recursive: true });
         const zip = new AdmZip(zipPath);
@@ -47,9 +51,10 @@ function unzipTemplatesPlugin(): Plugin {
             fs.rmSync(only, { recursive: true, force: true });
           }
         }
+        console.log("[unzip-templates] Done:", target);
         // We expect index.html to be present after extraction
       } catch (e) {
-        console.error("Template unzip failed for", file, e);
+        console.error("[unzip-templates] Failed:", file, e);
       }
     }
   };
