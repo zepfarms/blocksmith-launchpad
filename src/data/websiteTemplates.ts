@@ -4,6 +4,7 @@ export interface WebsiteTemplate {
   category: string;
   description: string;
   previewImage: string;
+  livePreviewUrl?: string; // URL to live React template
   colorScheme: string[];
   features: string[];
 }
@@ -83,12 +84,13 @@ export const websiteTemplates: WebsiteTemplate[] = [
   },
   {
     id: 'automotive',
-    name: 'Auto Services',
+    name: 'Auto Services Pro',
     category: 'Automotive',
-    description: 'Bold design for auto repair shops, detailing, and car services',
+    description: 'Bold, modern design for auto repair shops, detailing, and car services',
     previewImage: '/templates/automotive/index.html',
+    livePreviewUrl: '/templates/automotive',
     colorScheme: ['#dc2626', '#1a1a1a', '#f3f4f6'],
-    features: ['Service Menu', 'Appointment Booking', 'Vehicle Type Selector', 'Warranty Info', 'Review Section']
+    features: ['Service Menu', 'Appointment Booking', 'Vehicle Type Selector', 'Contact Form', 'Mobile Responsive', 'Modern UI']
   },
   {
     id: 'creative',
