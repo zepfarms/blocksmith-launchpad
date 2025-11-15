@@ -9,6 +9,7 @@ interface GenerateContentRequest {
   businessDescription: string;
   industry: string;
   businessName: string;
+  templateId?: string;
 }
 
 Deno.serve(async (req) => {
@@ -39,8 +40,24 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { businessDescription, industry, businessName }: GenerateContentRequest = await req.json();
-    console.log('Generating website content for:', businessName);
+    const { businessDescription, industry, businessName, templateId = 'local-business' }: GenerateContentRequest = await req.json();
+    console.log('Generating website content for:', businessName, 'with template:', templateId);
+
+    // Template-specific styling guidance
+    const templatePrompts: Record<string, string> = {
+      'local-business': 'Focus on emergency services, trust, and local expertise. Emphasize quick response and reliability. Use action-oriented language.',
+      'professional-services': 'Use sophisticated language. Highlight credentials, expertise, and professionalism. Focus on results and client success.',
+      'restaurant': 'Make it appetizing! Focus on food quality, ambiance, and dining experience. Use sensory language and create excitement.',
+      'salon-spa': 'Emphasize relaxation, luxury, and transformation. Use elegant, soothing language. Focus on the experience and results.',
+      'medical': 'Professional and trustworthy tone. Emphasize patient care, expertise, and modern facilities. Use reassuring language.',
+      'retail': 'Create excitement about products. Focus on quality, selection, and customer satisfaction. Use engaging, persuasive language.',
+      'fitness': 'Energetic and motivational tone. Focus on transformation, results, and community. Use action verbs and inspiring language.',
+      'real-estate': 'Professional and knowledgeable. Focus on finding the perfect home, expertise in the market, and personalized service.',
+      'automotive': 'Trustworthy and expert. Emphasize quality service, fair pricing, and customer satisfaction. Use confident language.',
+      'creative': 'Showcase creativity and unique vision. Focus on bringing ideas to life, attention to detail, and artistic excellence.'
+    };
+
+    const styleGuide = templatePrompts[templateId] || templatePrompts['local-business'];
 
     // Use Lovable AI to generate content
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
@@ -53,6 +70,9 @@ Deno.serve(async (req) => {
 Business Name: ${businessName}
 Industry: ${industry}
 Description: ${businessDescription}
+Template Style: ${templateId}
+
+Style Guidelines: ${styleGuide}
 
 Please generate:
 1. A compelling tagline (5-8 words)

@@ -102,18 +102,13 @@ export default function Templates() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">Colors:</span>
                     <div className="flex gap-1">
-                      <div 
-                        className="w-6 h-6 rounded-full border border-border"
-                        style={{ backgroundColor: template.colorScheme.primary }}
-                      />
-                      <div 
-                        className="w-6 h-6 rounded-full border border-border"
-                        style={{ backgroundColor: template.colorScheme.secondary }}
-                      />
-                      <div 
-                        className="w-6 h-6 rounded-full border border-border"
-                        style={{ backgroundColor: template.colorScheme.accent }}
-                      />
+                      {template.colorScheme.map((color, colorIndex) => (
+                        <div 
+                          key={colorIndex}
+                          className="w-6 h-6 rounded-full border border-border"
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
                     </div>
                   </div>
 

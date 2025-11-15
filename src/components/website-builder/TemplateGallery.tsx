@@ -1,7 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, Eye } from "lucide-react";
 import { WebsiteTemplate } from "@/data/websiteTemplates";
+import { useState } from "react";
+import { TemplatePreviewModal } from "./TemplatePreviewModal";
 
 interface TemplateGalleryProps {
   templates: WebsiteTemplate[];
@@ -14,49 +17,84 @@ export const TemplateGallery = ({
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateGalleryProps) => {
+  const [previewTemplate, setPreviewTemplate] = useState<WebsiteTemplate | null>(null);
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {templates.map((template) => (
-        <Card
-          key={template.id}
-          className={`p-6 cursor-pointer transition-all hover:shadow-lg ${
-            selectedTemplateId === template.id
-              ? 'border-primary border-2 shadow-lg'
-              : 'hover:border-primary/50'
-          }`}
-          onClick={() => onSelectTemplate(template.id)}
-        >
-          <div className="space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="text-6xl">{template.previewImage}</div>
-              {selectedTemplateId === template.id && (
-                <div className="bg-primary text-primary-foreground rounded-full p-1">
-                  <Check className="h-4 w-4" />
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {templates.map((template) => (
+          <Card
+            key={template.id}
+            className={`transition-all hover:shadow-lg ${
+              selectedTemplateId === template.id
+                ? 'ring-2 ring-primary'
+                : ''
+            }`}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="font-semibold text-lg mb-1">{template.name}</h3>
+                  <Badge variant="secondary" className="mb-2">
+                    {template.category}
+                  </Badge>
                 </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Badge variant="secondary">{template.category}</Badge>
-              <h3 className="text-xl font-semibold">{template.name}</h3>
-              <p className="text-sm text-muted-foreground">
+                {selectedTemplateId === template.id && (
+                  <div className="bg-primary text-primary-foreground rounded-full p-1">
+                    <Check className="h-4 w-4" />
+                  </div>
+                )}
+              </div>
+              
+              <p className="text-sm text-muted-foreground mb-4">
                 {template.description}
               </p>
-            </div>
 
-            <div className="pt-4 border-t">
-              <p className="text-xs font-medium mb-2">Includes:</p>
-              <div className="flex flex-wrap gap-1">
-                {template.features.map((feature, idx) => (
-                  <Badge key={idx} variant="outline" className="text-xs">
-                    {feature}
-                  </Badge>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {template.colorScheme.map((color, index) => (
+                  <div
+                    key={index}
+                    className="w-6 h-6 rounded-full border border-border"
+                    style={{ backgroundColor: color }}
+                  />
                 ))}
               </div>
+
+              <div className="text-xs text-muted-foreground mb-4">
+                {template.features.length} features included
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPreviewTemplate(template);
+                  }}
+                >
+                  <Eye className="mr-2 h-4 w-4" />
+                  Preview
+                </Button>
+                <Button
+                  size="sm"
+                  className="flex-1"
+                  variant={selectedTemplateId === template.id ? "default" : "secondary"}
+                  onClick={() => onSelectTemplate(template.id)}
+                >
+                  {selectedTemplateId === template.id ? "Selected" : "Select"}
+                </Button>
+              </div>
             </div>
-          </div>
-        </Card>
-      ))}
-    </div>
+          </Card>
+        ))}
+      </div>
+
+      <TemplatePreviewModal
+        template={previewTemplate}
+        isOpen={!!previewTemplate}
+        onClose={() => setPreviewTemplate(null)}
+      />
+    </>
   );
 };
