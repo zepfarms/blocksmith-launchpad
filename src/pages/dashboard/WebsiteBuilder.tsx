@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { websiteTemplates } from "@/data/websiteTemplates";
 import { TemplateGallery } from "@/components/website-builder/TemplateGallery";
@@ -131,14 +132,22 @@ const WebsiteBuilder = () => {
 
       case 'template':
         return (
-          <div className="max-w-6xl mx-auto space-y-8">
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold">Choose Your Template</h1>
-              <p className="text-xl text-muted-foreground">
-                Select a design that fits your business style
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center space-y-6 mb-12">
+              <Badge variant="outline" className="mb-4 px-4 py-2 text-sm rounded-full border-primary/50 bg-primary/10">
+                <Sparkles className="w-4 h-4 mr-2 inline" />
+                Step 2 of 5: Choose Your Design
+              </Badge>
+              
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                Choose Your Template
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Production-ready, fully responsive designs built with modern React
               </p>
             </div>
-            
+
             <TemplateGallery
               templates={websiteTemplates}
               selectedTemplateId={selectedTemplate}
