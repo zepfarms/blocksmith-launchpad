@@ -4,11 +4,7 @@ export interface WebsiteTemplate {
   category: string;
   description: string;
   previewImage: string;
-  colorScheme: {
-    primary: string;
-    secondary: string;
-    accent: string;
-  };
+  colorScheme: string[];
   features: string[];
 }
 
@@ -17,130 +13,90 @@ export const websiteTemplates: WebsiteTemplate[] = [
     id: 'local-business',
     name: 'Local Business Pro',
     category: 'Local Services',
-    description: 'Perfect for plumbers, electricians, handymen, and local contractors',
-    previewImage: '🏠',
-    colorScheme: {
-      primary: '#2563eb',
-      secondary: '#1e40af',
-      accent: '#f59e0b',
-    },
-    features: ['Contact Form', 'Service Areas Map', 'Testimonials', 'Call-to-Action'],
+    description: 'Perfect for plumbers, electricians, HVAC, and home service professionals',
+    previewImage: '/templates/local-business/index.html',
+    colorScheme: ['#1a365d', '#2563eb', '#60a5fa'],
+    features: ['Emergency CTA', '24/7 Badge', 'Service Grid', 'Trust Signals', 'Contact Form']
   },
   {
     id: 'professional-services',
     name: 'Professional Edge',
     category: 'Professional Services',
-    description: 'Ideal for lawyers, accountants, consultants, and professional firms',
-    previewImage: '💼',
-    colorScheme: {
-      primary: '#0f172a',
-      secondary: '#334155',
-      accent: '#3b82f6',
-    },
-    features: ['Team Bios', 'Case Studies', 'Contact Form', 'Service Showcase'],
+    description: 'Ideal for consultants, lawyers, accountants, and business professionals',
+    previewImage: '/templates/professional-services/index.html',
+    colorScheme: ['#111827', '#6366f1', '#c7d2fe'],
+    features: ['Modern Design', 'Expertise Showcase', 'Case Studies', 'Professional Layout', 'Lead Capture']
   },
   {
     id: 'restaurant',
     name: 'Restaurant Deluxe',
-    category: 'Food & Dining',
-    description: 'Great for restaurants, cafes, bakeries, and food trucks',
-    previewImage: '🍽️',
-    colorScheme: {
-      primary: '#dc2626',
-      secondary: '#991b1b',
-      accent: '#fbbf24',
-    },
-    features: ['Menu Display', 'Hours & Location', 'Photo Gallery', 'Online Ordering Link'],
+    category: 'Food & Beverage',
+    description: 'Stunning design for restaurants, cafes, bakeries, and food businesses',
+    previewImage: '/templates/restaurant/index.html',
+    colorScheme: ['#dc2626', '#f59e0b', '#fef3c7'],
+    features: ['Menu Showcase', 'Reservation System', 'Image Gallery', 'Hours Display', 'Location Map']
   },
   {
     id: 'salon-spa',
     name: 'Beauty & Wellness',
     category: 'Beauty & Wellness',
-    description: 'Perfect for salons, spas, barbershops, and wellness centers',
-    previewImage: '💅',
-    colorScheme: {
-      primary: '#ec4899',
-      secondary: '#be185d',
-      accent: '#8b5cf6',
-    },
-    features: ['Service Menu', 'Booking Link', 'Gallery', 'Staff Showcase'],
+    description: 'Elegant template for salons, spas, and wellness centers',
+    previewImage: '/templates/salon-spa/index.html',
+    colorScheme: ['#be185d', '#ec4899', '#fbcfe8'],
+    features: ['Service Menu', 'Booking CTA', 'Team Showcase', 'Premium Design', 'Treatment Gallery']
   },
   {
     id: 'medical',
     name: 'Medical Practice',
     category: 'Healthcare',
-    description: 'Designed for doctors, dentists, chiropractors, and medical offices',
-    previewImage: '⚕️',
-    colorScheme: {
-      primary: '#059669',
-      secondary: '#047857',
-      accent: '#10b981',
-    },
-    features: ['Appointment Form', 'Services List', 'Insurance Info', 'Patient Resources'],
+    description: 'Professional template for doctors, dentists, and medical practices',
+    previewImage: '/templates/medical/index.html',
+    colorScheme: ['#0066cc', '#00a896', '#e0f2fe'],
+    features: ['Appointment Booking', 'Services Grid', 'Trust Badges', 'Office Hours', 'Patient Forms']
   },
   {
     id: 'retail',
     name: 'Retail Showcase',
-    category: 'Retail',
-    description: 'Perfect for boutiques, gift shops, and specialty retail stores',
-    previewImage: '🛍️',
-    colorScheme: {
-      primary: '#7c3aed',
-      secondary: '#6d28d9',
-      accent: '#a78bfa',
-    },
-    features: ['Product Gallery', 'Store Hours', 'Location Map', 'Contact Form'],
+    category: 'Retail & E-commerce',
+    description: 'Eye-catching design for retail stores and product showcases',
+    previewImage: '/templates/retail/index.html',
+    colorScheme: ['#e63946', '#f77f00', '#fef3c7'],
+    features: ['Product Grid', 'Shopping Cart', 'Category Browse', 'Testimonials', 'Free Shipping Badge']
   },
   {
     id: 'fitness',
     name: 'Fitness Studio',
-    category: 'Fitness',
-    description: 'Great for gyms, yoga studios, personal trainers, and fitness centers',
-    previewImage: '💪',
-    colorScheme: {
-      primary: '#ea580c',
-      secondary: '#c2410c',
-      accent: '#fb923c',
-    },
-    features: ['Class Schedule', 'Trainer Bios', 'Membership Info', 'Contact Form'],
+    category: 'Fitness & Sports',
+    description: 'Energetic template for gyms, fitness studios, and personal trainers',
+    previewImage: '/templates/fitness/index.html',
+    colorScheme: ['#ff6b35', '#4ecdc4', '#1a1a1a'],
+    features: ['Class Schedule', 'Program Grid', 'Free Trial CTA', 'Membership Plans', 'Trainer Profiles']
   },
   {
     id: 'real-estate',
     name: 'Real Estate Agent',
     category: 'Real Estate',
-    description: 'Designed for real estate agents and property professionals',
-    previewImage: '🏡',
-    colorScheme: {
-      primary: '#0891b2',
-      secondary: '#0e7490',
-      accent: '#06b6d4',
-    },
-    features: ['Property Listings', 'Agent Bio', 'Testimonials', 'Contact Form'],
+    description: 'Professional template for real estate agents and property listings',
+    previewImage: '/templates/real-estate/index.html',
+    colorScheme: ['#2563eb', '#10b981', '#f3f4f6'],
+    features: ['Property Listings', 'Agent Bio', 'Viewing Scheduler', 'MLS Integration Ready', 'Search Filters']
   },
   {
     id: 'automotive',
     name: 'Auto Services',
     category: 'Automotive',
-    description: 'Perfect for auto repair shops, detailing, and car dealerships',
-    previewImage: '🚗',
-    colorScheme: {
-      primary: '#1f2937',
-      secondary: '#111827',
-      accent: '#ef4444',
-    },
-    features: ['Services List', 'Appointment Form', 'Photo Gallery', 'Special Offers'],
+    description: 'Bold design for auto repair shops, detailing, and car services',
+    previewImage: '/templates/automotive/index.html',
+    colorScheme: ['#dc2626', '#1a1a1a', '#f3f4f6'],
+    features: ['Service Menu', 'Appointment Booking', 'Vehicle Type Selector', 'Warranty Info', 'Review Section']
   },
   {
     id: 'creative',
     name: 'Creative Portfolio',
-    category: 'Creative',
-    description: 'Ideal for photographers, designers, artists, and creatives',
-    previewImage: '🎨',
-    colorScheme: {
-      primary: '#6366f1',
-      secondary: '#4f46e5',
-      accent: '#a855f7',
-    },
-    features: ['Portfolio Gallery', 'About Section', 'Service Packages', 'Contact Form'],
-  },
+    category: 'Creative & Design',
+    description: 'Stylish portfolio for designers, photographers, and creative professionals',
+    previewImage: '/templates/creative/index.html',
+    colorScheme: ['#8b5cf6', '#ec4899', '#f5f3ff'],
+    features: ['Portfolio Grid', 'Project Showcase', 'About Section', 'Contact Form', 'Smooth Animations']
+  }
 ];
