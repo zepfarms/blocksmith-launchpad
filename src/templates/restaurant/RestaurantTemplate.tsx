@@ -325,7 +325,7 @@ export default function RestaurantTemplate() {
 
       {!isPreview && (
         <Button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/templates')}
           className="fixed bottom-4 right-4 rounded-full shadow-lg"
           size="lg"
         >
