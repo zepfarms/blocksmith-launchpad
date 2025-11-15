@@ -221,7 +221,7 @@ const WebsiteBuilder = () => {
 
       case 'preview':
         return (
-          <div className="max-w-6xl mx-auto space-y-8">
+          <div className="max-w-7xl mx-auto space-y-8">
             <div className="text-center space-y-4">
               <h1 className="text-4xl font-bold">Review & Launch</h1>
               <p className="text-xl text-muted-foreground">
@@ -229,7 +229,25 @@ const WebsiteBuilder = () => {
               </p>
             </div>
             
-            <Card className="p-8 max-w-2xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Live Website Preview */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-semibold">Your Website Preview</h2>
+                <div className="border border-border rounded-lg overflow-hidden bg-muted/50" style={{ height: '600px' }}>
+                  <iframe
+                    src={`/templates/${selectedTemplate}?preview=true&businessName=${encodeURIComponent(businessName)}&industry=${encodeURIComponent(industry)}`}
+                    className="w-full h-full"
+                    title="Website Preview"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  This is a live preview of your website with AI-generated content
+                </p>
+              </div>
+
+              {/* Summary & Checkout */}
+              <div>
+            <Card className="p-8">
               <div className="space-y-6">
                 <div>
                   <h3 className="font-semibold mb-2">Summary</h3>
@@ -284,6 +302,8 @@ const WebsiteBuilder = () => {
                 </Button>
               </div>
             </Card>
+              </div>
+            </div>
           </div>
         );
 
