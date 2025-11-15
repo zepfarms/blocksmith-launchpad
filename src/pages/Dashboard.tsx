@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle2, Rocket, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye, Store } from "lucide-react";
+import { CheckCircle2, Rocket, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye, Store, HelpCircle, BookOpen, MessageCircle, FileText } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -11,16 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { VerificationBanner } from "@/components/VerificationBanner";
 import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 interface DashboardItem {
   id: string;
@@ -36,10 +26,6 @@ const Dashboard = () => {
   const [businessData, setBusinessData] = useState<any>(null);
   const [items, setItems] = useState<DashboardItem[]>([]);
   const [savedAssets, setSavedAssets] = useState<any[]>([]);
-  const [showLaunchDialog, setShowLaunchDialog] = useState(false);
-  const [launchingBusiness, setLaunchingBusiness] = useState(false);
-  const [totalCost, setTotalCost] = useState(0);
-  const [paidBlockCount, setPaidBlockCount] = useState(0);
   const [userEmail, setUserEmail] = useState("");
   const [emailVerified, setEmailVerified] = useState(true);
   const [showVerificationBanner, setShowVerificationBanner] = useState(false);
@@ -207,7 +193,6 @@ const Dashboard = () => {
         }
         
         setItems(dashboardItems);
-        calculatePricing(allBlocks);
         loadSavedAssets(session.user.id);
       }
     };
@@ -278,75 +263,6 @@ const Dashboard = () => {
     toast.success("Asset deleted");
   };
 
-  const calculatePricing = async (selectedBlocks: string[]) => {
-    if (!selectedBlocks || selectedBlocks.length === 0) {
-      setTotalCost(0);
-      setPaidBlockCount(0);
-      return;
-    }
-
-    const { data: pricing, error } = await supabase
-      .from('blocks_pricing')
-      .select('*')
-      .in('block_name', selectedBlocks);
-
-    if (!error && pricing) {
-      const paidBlocks = pricing.filter(p => !p.is_free && p.price_cents > 0);
-      const total = paidBlocks.reduce((sum, block) => sum + block.price_cents, 0);
-      setTotalCost(total);
-      setPaidBlockCount(paidBlocks.length);
-    }
-  };
-
-  const handleLaunchBusiness = async () => {
-    if (!businessData) return;
-
-    if (paidBlockCount === 0) {
-      setLaunchingBusiness(true);
-      
-      await supabase
-        .from('user_businesses')
-        .update({ status: 'launched', payment_status: 'completed' })
-        .eq('id', businessData.id);
-
-      toast.success("Your business is live! 🚀");
-      setLaunchingBusiness(false);
-      window.location.reload();
-      return;
-    }
-
-    setShowLaunchDialog(true);
-  };
-
-  const proceedToCheckout = async () => {
-    if (!businessData) return;
-
-    setLaunchingBusiness(true);
-    setShowLaunchDialog(false);
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error("Please log in to continue");
-        return;
-      }
-
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: { blockNames: businessData.selected_blocks }
-      });
-
-      if (error) throw error;
-
-      if (data?.sessionUrl) {
-        window.location.href = data.sessionUrl;
-      }
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      toast.error("Payment error. Please try again.");
-    } finally {
-      setLaunchingBusiness(false);
-    }
-  };
 
   const awaitingBlocks = items.filter(item => 
     item.completionStatus === 'not_started' || item.completionStatus === 'in_progress'
@@ -531,20 +447,50 @@ const Dashboard = () => {
               </div>
             )}
 
-            <div className="glass-card p-8 rounded-2xl border border-white/10 text-center space-y-4">
-              <h2 className="text-2xl font-bold text-white">Ready to Launch?</h2>
-              <p className="text-muted-foreground">
-                {paidBlockCount > 0 
-                  ? `Complete checkout for ${paidBlockCount} paid block${paidBlockCount > 1 ? 's' : ''} ($${(totalCost / 100).toFixed(2)})`
-                  : "All your blocks are free - launch now!"}
-              </p>
-              <Button
-                onClick={handleLaunchBusiness}
-                disabled={launchingBusiness}
-                className="bg-acari-green hover:bg-acari-green/90 text-black font-bold text-lg px-8 py-6"
-              >
-                {launchingBusiness ? "Processing..." : paidBlockCount > 0 ? "Proceed to Checkout" : "Launch Business"}
-              </Button>
+            <div className="glass-card p-8 rounded-2xl border border-white/10 space-y-6">
+              <div className="text-center space-y-2">
+                <HelpCircle className="w-12 h-12 mx-auto text-acari-green" />
+                <h2 className="text-2xl font-bold text-white">Need Help Getting Started?</h2>
+                <p className="text-muted-foreground">Access helpful resources and support</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <button
+                  onClick={() => navigate('/support')}
+                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
+                >
+                  <BookOpen className="w-8 h-8 mb-3 text-acari-green" />
+                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">FAQs & Support</h3>
+                  <p className="text-sm text-muted-foreground">Find answers to common questions</p>
+                </button>
+
+                <button
+                  onClick={() => navigate('/templates')}
+                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
+                >
+                  <FileText className="w-8 h-8 mb-3 text-acari-green" />
+                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">View Templates</h3>
+                  <p className="text-sm text-muted-foreground">Browse website design templates</p>
+                </button>
+
+                <button
+                  onClick={() => window.location.href = 'mailto:support@acari.com'}
+                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
+                >
+                  <MessageCircle className="w-8 h-8 mb-3 text-acari-green" />
+                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">Contact Support</h3>
+                  <p className="text-sm text-muted-foreground">Get direct help from our team</p>
+                </button>
+
+                <button
+                  onClick={() => navigate('/features')}
+                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
+                >
+                  <Rocket className="w-8 h-8 mb-3 text-acari-green" />
+                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">Getting Started Guide</h3>
+                  <p className="text-sm text-muted-foreground">Learn how to use the platform</p>
+                </button>
+              </div>
             </div>
           </TabsContent>
 
@@ -630,26 +576,6 @@ const Dashboard = () => {
         </Tabs>
       </div>
 
-      <AlertDialog open={showLaunchDialog} onOpenChange={setShowLaunchDialog}>
-        <AlertDialogContent className="bg-acari-dark border-white/20">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">Ready to Launch?</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground">
-              You have {paidBlockCount} paid block{paidBlockCount > 1 ? 's' : ''} totaling ${(totalCost / 100).toFixed(2)}.
-              Proceed to checkout to complete your purchase and launch your business.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-white/5 border-white/20 hover:bg-white/10">Cancel</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={proceedToCheckout}
-              className="bg-acari-green hover:bg-acari-green/90 text-black"
-            >
-              Proceed to Checkout
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
