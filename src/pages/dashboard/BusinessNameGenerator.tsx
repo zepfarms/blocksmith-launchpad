@@ -143,12 +143,27 @@ export default function BusinessNameGenerator() {
       return;
     }
 
-    // Mark block as completed
-    await supabase
-      .from('user_block_unlocks')
-      .update({ completion_status: 'completed' })
+    // Get business_id for the unlock record
+    const { data: business } = await supabase
+      .from('user_businesses')
+      .select('id')
       .eq('user_id', user.id)
-      .eq('block_name', 'Business Name Generator');
+      .single();
+
+    if (business) {
+      // Use upsert to insert or update the completion status
+      await supabase
+        .from('user_block_unlocks')
+        .upsert({
+          user_id: user.id,
+          business_id: business.id,
+          block_name: 'Business Name Generator',
+          unlock_type: 'free',
+          completion_status: 'completed'
+        }, {
+          onConflict: 'user_id,business_id,block_name'
+        });
+    }
 
     toast.success(`"${businessName}" is now your business name!`);
     setShowConfirmDialog(false);
