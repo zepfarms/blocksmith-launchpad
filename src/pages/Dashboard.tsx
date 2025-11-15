@@ -249,6 +249,23 @@ const Dashboard = () => {
           });
         }
         
+        // Professional Email Signature - free block
+        const hasEmailSignature = allBlocks.some((block: string) => 
+          block === 'Professional Email Signature'
+        );
+        
+        if (hasEmailSignature) {
+          dashboardItems.push({
+            id: "email-signature",
+            title: "Professional Email Signature",
+            status: "ready",
+            description: "Create branded email signatures",
+            locked: false,
+            approved: true,
+            isFree: true,
+          });
+        }
+        
         // Add other blocks from selection
         allBlocks.forEach((block: string) => {
           const isBusinessNameGen = block === 'Business Name Generator';
@@ -258,7 +275,9 @@ const Dashboard = () => {
           const isQRCodeGenerator = block === 'QR Code Generator';
           const isDomainGen = block === 'Domain Name Generator';
           
-          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock && !isSocialMediaChecker && !isQRCodeGenerator && !isDomainGen) {
+          const isEmailSignature = block === 'Professional Email Signature';
+          
+          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock && !isSocialMediaChecker && !isQRCodeGenerator && !isDomainGen && !isEmailSignature) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
@@ -308,11 +327,36 @@ const Dashboard = () => {
   };
 
   const handleApprove = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, approved: !item.approved } : item
-      )
-    );
+    // Navigate to the appropriate page based on id
+    switch (id) {
+      case 'business-name-generator':
+        navigate('/dashboard/business-name-generator');
+        break;
+      case 'domain-name-generator':
+        navigate('/dashboard/domain-name-generator');
+        break;
+      case 'logos':
+        navigate('/dashboard/logos');
+        break;
+      case 'business-plan-generator':
+        navigate('/dashboard/business-plan-generator');
+        break;
+      case 'social-media-checker':
+        navigate('/dashboard/social-media-checker');
+        break;
+      case 'qr-code-generator':
+        navigate('/dashboard/qr-code-generator');
+        break;
+      case 'email-signature':
+        navigate('/dashboard/email-signature-generator');
+        break;
+      default:
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, approved: !item.approved } : item
+          )
+        );
+    }
   };
 
   const handleApproveAsset = async (assetId: string) => {
