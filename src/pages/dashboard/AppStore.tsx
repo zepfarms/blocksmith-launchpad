@@ -303,23 +303,8 @@ export default function AppStore() {
         await Promise.all(unlockPromises);
       };
 
-      // Special handling for Domain + Website block
-      if (hasWebsiteBlock) {
-        // Unlock free blocks first
-        await unlockFreeBlocks();
-        
-        // If ONLY Domain + Website in cart (or with free blocks), go to builder
-        const paidBlocks = selectedBlocks.filter(b => !b.isFree && b.pricingType !== 'free');
-        if (paidBlocks.length === 1 && paidBlocks[0].title === "Domain + Website") {
-          toast.success('Redirecting to website setup...');
-          navigate('/dashboard/website-builder');
-          return;
-        }
-        
-        // If mixed with other paid blocks, show error
-        toast.error('Please checkout Domain + Website separately from other blocks');
-        return;
-      }
+      // Unlock free blocks first
+      await unlockFreeBlocks();
 
       // Case 1: ONLY free blocks
       if (freeBlocks.length > 0 && oneTimeBlocks.length === 0 && monthlyBlocks.length === 0) {

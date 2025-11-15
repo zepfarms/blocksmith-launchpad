@@ -31,11 +31,6 @@ import BusinessPlanGenerator from "./pages/dashboard/BusinessPlanGenerator";
 import SocialMediaChecker from "./pages/dashboard/SocialMediaChecker";
 import QRCodeGenerator from "./pages/dashboard/QRCodeGenerator";
 import EmailSignatureGenerator from "./pages/dashboard/EmailSignatureGenerator";
-import WebsiteBuilder from "./pages/dashboard/WebsiteBuilder";
-import { WebsiteEditor } from "./pages/dashboard/WebsiteEditor";
-import { MyWebsites } from "./pages/dashboard/MyWebsites";
-// import Templates from "./pages/Templates";
-import AdminWebsites from "./pages/admin/Websites";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
@@ -46,8 +41,6 @@ import { BlockSelection } from "./pages/onboarding/BlockSelection";
 import { Signup } from "./pages/onboarding/Signup";
 import { Checkout } from "./pages/onboarding/Checkout";
 import { VerifyEmail } from "./pages/VerifyEmail";
-import AutomotiveTemplate from "./templates/automotive/AutomotiveTemplate";
-import RestaurantTemplate from "./templates/restaurant/RestaurantTemplate";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -71,9 +64,6 @@ function App() {
                 <Route path="social-media-checker" element={<SocialMediaChecker />} />
               <Route path="qr-code-generator" element={<QRCodeGenerator />} />
               <Route path="email-signature-generator" element={<EmailSignatureGenerator />} />
-              <Route path="website-builder" element={<WebsiteBuilder />} />
-              <Route path="website-editor/:websiteId" element={<WebsiteEditor />} />
-              <Route path="my-websites" element={<MyWebsites />} />
                 <Route path="app-store" element={<AppStore />} />
                 <Route path="subscriptions" element={<Subscriptions />} />
                 <Route path="subscription-checkout" element={<SubscriptionCheckout />} />
@@ -83,24 +73,17 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
-              <Route path="/admin/websites" element={<AdminWebsites />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
               
               {/* Other pages */}
-              {/* <Route path="/templates" element={<Templates />} /> */}
-              <Route path="/templates/automotive" element={<AutomotiveTemplate />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/grant-terms" element={<GrantTerms />} />
               <Route path="/support" element={<Support />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
-              
-              {/* Template Preview Routes */}
-              <Route path="/templates/automotive" element={<AutomotiveTemplate />} />
-              <Route path="/templates/restaurant" element={<RestaurantTemplate />} />
               
               {/* Onboarding flow */}
               <Route path="/start" element={<OnboardingLayout />}>

@@ -180,16 +180,6 @@ const Dashboard = () => {
               isFree: true,
             });
           }
-          
-          if (blockName === 'Domain + Website') {
-            dashboardItems.push({
-              id: "website-builder",
-              title: "Website Builder",
-              completionStatus,
-              description: "Build and launch your professional website",
-              isFree: false,
-            });
-          }
         }
         
         setItems(dashboardItems);
@@ -243,9 +233,6 @@ const Dashboard = () => {
         break;
       case 'email-signature':
         navigate('/dashboard/email-signature-generator');
-        break;
-      case 'website-builder':
-        navigate('/dashboard/website-builder');
         break;
     }
   };

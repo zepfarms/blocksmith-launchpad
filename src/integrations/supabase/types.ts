@@ -45,15 +45,7 @@ export type Database = {
           notes?: string | null
           website_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "admin_audit_log_website_id_fkey"
-            columns: ["website_id"]
-            isOneToOne: false
-            referencedRelation: "user_websites"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       block_categories: {
         Row: {
@@ -683,106 +675,6 @@ export type Database = {
           },
           {
             foreignKeyName: "user_subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_websites: {
-        Row: {
-          admin_notes: string | null
-          analytics_data: Json | null
-          business_id: string | null
-          cloudflare_deployment_id: string | null
-          cloudflare_domain_id: string | null
-          cloudflare_pages_url: string | null
-          created_at: string
-          customization_data: Json
-          domain_expiry_date: string | null
-          domain_name: string
-          domain_owned_externally: boolean
-          domain_purchase_date: string | null
-          domain_verified: boolean
-          edited_by_admin: boolean | null
-          id: string
-          last_admin_edit_at: string | null
-          one_time_fee_paid: boolean | null
-          site_content: Json | null
-          status: string
-          subscription_id: string | null
-          template_id: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          admin_notes?: string | null
-          analytics_data?: Json | null
-          business_id?: string | null
-          cloudflare_deployment_id?: string | null
-          cloudflare_domain_id?: string | null
-          cloudflare_pages_url?: string | null
-          created_at?: string
-          customization_data?: Json
-          domain_expiry_date?: string | null
-          domain_name: string
-          domain_owned_externally?: boolean
-          domain_purchase_date?: string | null
-          domain_verified?: boolean
-          edited_by_admin?: boolean | null
-          id?: string
-          last_admin_edit_at?: string | null
-          one_time_fee_paid?: boolean | null
-          site_content?: Json | null
-          status?: string
-          subscription_id?: string | null
-          template_id: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          admin_notes?: string | null
-          analytics_data?: Json | null
-          business_id?: string | null
-          cloudflare_deployment_id?: string | null
-          cloudflare_domain_id?: string | null
-          cloudflare_pages_url?: string | null
-          created_at?: string
-          customization_data?: Json
-          domain_expiry_date?: string | null
-          domain_name?: string
-          domain_owned_externally?: boolean
-          domain_purchase_date?: string | null
-          domain_verified?: boolean
-          edited_by_admin?: boolean | null
-          id?: string
-          last_admin_edit_at?: string | null
-          one_time_fee_paid?: boolean | null
-          site_content?: Json | null
-          status?: string
-          subscription_id?: string | null
-          template_id?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_websites_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "user_businesses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_websites_subscription_id_fkey"
-            columns: ["subscription_id"]
-            isOneToOne: false
-            referencedRelation: "user_subscriptions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_websites_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
