@@ -415,6 +415,7 @@ export type Database = {
         Row: {
           block_name: string
           business_id: string
+          completion_status: string
           created_at: string
           expires_at: string | null
           id: string
@@ -426,6 +427,7 @@ export type Database = {
         Insert: {
           block_name: string
           business_id: string
+          completion_status?: string
           created_at?: string
           expires_at?: string | null
           id?: string
@@ -437,6 +439,7 @@ export type Database = {
         Update: {
           block_name?: string
           business_id?: string
+          completion_status?: string
           created_at?: string
           expires_at?: string | null
           id?: string
