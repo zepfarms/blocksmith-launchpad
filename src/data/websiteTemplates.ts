@@ -11,10 +11,19 @@ export interface WebsiteTemplate {
 
 export const websiteTemplates: WebsiteTemplate[] = [
   {
+    id: 'plumbing',
+    name: 'Plumbing Pro',
+    category: 'Home Services',
+    description: 'Professional template for plumbers with emergency service focus and trust-building features',
+    previewImage: '/templates/plumbing/index.html',
+    colorScheme: ['#0066cc', '#004d99', '#ff6b35'],
+    features: ['24/7 Emergency CTA', 'Service Grid', 'Quote Form', 'Trust Badges', 'Mobile Optimized']
+  },
+  {
     id: 'local-business',
     name: 'Local Business Pro',
     category: 'Local Services',
-    description: 'Perfect for plumbers, electricians, HVAC, and home service professionals',
+    description: 'Perfect for electricians, HVAC, and home service professionals',
     previewImage: '/templates/local-business/index.html',
     colorScheme: ['#1a365d', '#2563eb', '#60a5fa'],
     features: ['Emergency CTA', '24/7 Badge', 'Service Grid', 'Trust Signals', 'Contact Form']
