@@ -208,11 +208,11 @@ export default function BusinessNameGenerator() {
             className="text-lg mb-4"
           />
           
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <Button
               onClick={handleSave}
               disabled={!businessName.trim()}
-              className="flex-1"
+              className="w-full md:flex-1"
             >
               Save Business Name
             </Button>
@@ -220,7 +220,7 @@ export default function BusinessNameGenerator() {
               onClick={generateNames}
               disabled={isGenerating || isInCooldown}
               variant="outline"
-              className="flex-1"
+              className="w-full md:flex-1"
             >
               {isGenerating ? (
                 <>
