@@ -68,6 +68,9 @@ interface Block {
   monthlyPrice: number; // price in cents for monthly
   pricingType: 'free' | 'one_time' | 'monthly';
   description: string;
+  isAffiliate?: boolean;
+  affiliateLink?: string;
+  logoUrl?: string;
 }
 
 interface BlockPricing {
@@ -93,6 +96,7 @@ const iconMap: Record<string, React.ReactNode> = {
   "Media": <IconGrid color="#A78BFA" />,
   "Automation": <IconNetwork color="#60A5FA" />,
   "Support": <IconHex color="#22D3EE" />,
+  "Partnership": null, // Partnerships use logos instead
 };
 
 interface SmartBlockSelectorProps {
@@ -223,7 +227,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
         const lines = text.split('\n').slice(1); // Skip header
         const blocks: Block[] = lines
           .filter(line => line.trim())
-          .map((line, index) => {
+      .map((line, index) => {
             const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
             if (!matches || matches.length < 7) return null;
             
@@ -233,6 +237,9 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             const description = clean(matches[2]);
             
             const isFreeRaw = clean(matches[3]);
+            const isAffiliateRaw = clean(matches[7]) || 'FALSE';
+            const affiliateLink = clean(matches[8]) || '';
+            const logoUrl = clean(matches[9]) || '';
             
             // Get pricing from database, fallback to CSV is_free value
             const csv_is_free = isFreeRaw.toUpperCase() === 'TRUE';
@@ -251,7 +258,10 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               price: price_cents,
               monthlyPrice: monthly_price_cents,
               pricingType: pricing_type as 'free' | 'one_time' | 'monthly',
-              icon: iconMap[category] || <IconCircuit />
+              icon: iconMap[category] || <IconCircuit />,
+              isAffiliate: isAffiliateRaw.toUpperCase() === 'TRUE',
+              affiliateLink: affiliateLink,
+              logoUrl: logoUrl
             } as Block;
           })
           .filter((block): block is Block => block !== null);
@@ -289,8 +299,9 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
     return (blockCategoryMap.get(block.title) || []).includes(selectedCategory);
   });
 
-  const freeBlocks = filteredOtherBlocks.filter(b => b.isFree);
-  const paidBlocks = filteredOtherBlocks.filter(b => !b.isFree);
+  const partnershipBlocks = allBlocks.filter(b => b.isAffiliate);
+  const freeBlocks = filteredOtherBlocks.filter(b => b.isFree && !b.isAffiliate);
+  const paidBlocks = filteredOtherBlocks.filter(b => !b.isFree && !b.isAffiliate);
 
   const toggleBlock = (id: string) => {
     setSelectedBlocks(prev =>
@@ -414,6 +425,42 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               </div>
             )}
 
+            {/* Partnership Blocks */}
+            {partnershipBlocks.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <h3 className="text-2xl font-bold">🤝 Partnership Tools</h3>
+                  <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/30">
+                    Trusted Partners
+                  </Badge>
+                </div>
+                <p className="text-muted-foreground">
+                  Recommended tools from our trusted partners to help you build your business
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {partnershipBlocks.map((block, index) => (
+                  <BlockCard
+                    key={block.id}
+                    title={block.title}
+                    category={block.category}
+                    icon={block.icon}
+                    description={block.description}
+                    isFree={block.isFree}
+                    price={block.price}
+                    monthlyPrice={block.monthlyPrice}
+                    pricingType={block.pricingType}
+                    isSelected={selectedBlocks.includes(block.id)}
+                    onToggle={() => toggleBlock(block.id)}
+                    onInfoClick={() => setInfoModalBlock(block)}
+                    index={index}
+                    isAffiliate={block.isAffiliate}
+                    logoUrl={block.logoUrl}
+                  />
+                ))}
+                </div>
+              </div>
+            )}
+
             {/* More Free Blocks */}
             {freeBlocks.length > 0 && (
               <div className="space-y-4">
@@ -520,6 +567,9 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           icon={infoModalBlock.icon}
           onAdd={() => toggleBlock(infoModalBlock.id)}
           isSelected={selectedBlocks.includes(infoModalBlock.id)}
+          isAffiliate={infoModalBlock.isAffiliate}
+          affiliateLink={infoModalBlock.affiliateLink}
+          logoUrl={infoModalBlock.logoUrl}
         />
       )}
     </section>
