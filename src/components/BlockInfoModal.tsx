@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, ExternalLink } from "lucide-react";
 
 interface BlockInfoModalProps {
   isOpen: boolean;
@@ -14,6 +14,9 @@ interface BlockInfoModalProps {
   icon: React.ReactNode;
   onAdd: () => void;
   isSelected: boolean;
+  isAffiliate?: boolean;
+  affiliateLink?: string;
+  logoUrl?: string;
 }
 
 export const BlockInfoModal = ({
@@ -27,14 +30,34 @@ export const BlockInfoModal = ({
   icon,
   onAdd,
   isSelected,
+  isAffiliate = false,
+  affiliateLink,
+  logoUrl
 }: BlockInfoModalProps) => {
+  const handleAction = () => {
+    if (isAffiliate && affiliateLink) {
+      window.open(affiliateLink, '_blank', 'noopener,noreferrer');
+      onClose();
+    } else {
+      onAdd();
+      onClose();
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] bg-background border-white/10">
         <DialogHeader>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 flex items-center justify-center">
-              {icon}
+              {isAffiliate && logoUrl ? (
+                <img 
+                  src={logoUrl} 
+                  alt={`${title} logo`}
+                  className="w-12 h-12 object-contain rounded-lg"
+                />
+              ) : (
+                icon
+              )}
             </div>
             <div className="flex-1">
               <DialogTitle className="text-2xl font-bold mb-2">{title}</DialogTitle>
@@ -61,14 +84,16 @@ export const BlockInfoModal = ({
 
         <DialogFooter>
           <Button
-            onClick={() => {
-              onAdd();
-              onClose();
-            }}
+            onClick={handleAction}
             className="rounded-full w-full"
-            variant={isSelected ? "outline" : "default"}
+            variant={isAffiliate ? "default" : (isSelected ? "outline" : "default")}
           >
-            {isSelected ? (
+            {isAffiliate ? (
+              <>
+                Visit Partner Website
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </>
+            ) : isSelected ? (
               <>
                 <Check className="mr-2 h-4 w-4" />
                 Selected

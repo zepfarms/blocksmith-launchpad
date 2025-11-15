@@ -1,8 +1,9 @@
-name,category,description,is_free,typical_price,dependencies,tags
-Business Name Generator,Foundation,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup"
-Logo Generator,Foundation,AI-powered professional logo design and generation,TRUE,Free,,"branding,identity,design,ai"
-Business Plan Generator,Foundation,Generate a real downloaded PDF business plan for your business just by answering a few questions,TRUE,Free,,"planning,business,ai,foundation,pdf"
-Social Media Handle Checker,Foundation,Check availability of your business name across all major social platforms,TRUE,Free,,"social,branding,handles,username,foundation"
-QR Code Generator,Foundation,Generate customizable QR codes for websites URLs contact info WiFi and more with download options,TRUE,Free,,"qr,codes,marketing,tools,foundation"
-Professional Email Signature,Foundation,Create professional HTML email signatures with custom branding social links and contact info for all email clients,TRUE,Free,,"email,branding,signature,professional,foundation"
-Domain + Website,Launch,Professional website with custom domain hosting and AI-powered editing. Choose from 10 templates get AI-generated content and launch in minutes,FALSE,$10-20/mo,,"website,hosting,domain,ai,templates,launch"
+name,category,description,is_free,typical_price,dependencies,tags,is_affiliate,affiliate_link,logo_url
+Business Name Generator,Foundation,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup",FALSE,,
+Logo Generator,Foundation,AI-powered professional logo design and generation,TRUE,Free,,"branding,identity,design,ai",FALSE,,
+Business Plan Generator,Foundation,Generate a real downloaded PDF business plan for your business just by answering a few questions,TRUE,Free,,"planning,business,ai,foundation,pdf",FALSE,,
+Social Media Handle Checker,Foundation,Check availability of your business name across all major social platforms,TRUE,Free,,"social,branding,handles,username,foundation",FALSE,,
+QR Code Generator,Foundation,Generate customizable QR codes for websites URLs contact info WiFi and more with download options,TRUE,Free,,"qr,codes,marketing,tools,foundation",FALSE,,
+Professional Email Signature,Foundation,Create professional HTML email signatures with custom branding social links and contact info for all email clients,TRUE,Free,,"email,branding,signature,professional,foundation",FALSE,,
+Domain + Website,Launch,Professional website with custom domain hosting and AI-powered editing. Choose from 10 templates get AI-generated content and launch in minutes,FALSE,$10-20/mo,,"website,hosting,domain,ai,templates,launch",FALSE,,
+Lovable Website Builder,Partnership,Build beautiful websites with AI - no coding required. Just describe what you want and watch it come to life with the most powerful AI web builder,TRUE,Free,,"website,ai,nocode,builder,partner",TRUE,https://lovable.dev/?via=Acari,/lovable-logo.png

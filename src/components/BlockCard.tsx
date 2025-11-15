@@ -19,6 +19,8 @@ interface BlockCardProps {
   isUnlocked?: boolean;
   isPurchased?: boolean;
   hasActiveSubscription?: boolean;
+  isAffiliate?: boolean;
+  logoUrl?: string;
 }
 
 export const BlockCard = ({ 
@@ -36,7 +38,9 @@ export const BlockCard = ({
   index,
   isUnlocked = false,
   isPurchased = false,
-  hasActiveSubscription = false
+  hasActiveSubscription = false,
+  isAffiliate = false,
+  logoUrl
 }: BlockCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -108,7 +112,7 @@ export const BlockCard = ({
         </div>
       )}
 
-      {/* Icon container - larger */}
+      {/* Icon or Logo container */}
       <div
         className={cn(
           "relative w-14 h-14 md:w-16 md:h-16 mb-3 rounded-xl transition-all duration-500",
@@ -116,19 +120,33 @@ export const BlockCard = ({
           "border border-white/10",
           "flex items-center justify-center",
           "shadow-[0_4px_16px_rgba(0,0,0,0.3)]",
-          isSelected && "shadow-[0_0_20px_rgba(34,211,238,0.3)] border-neon-cyan/30 scale-110",
-          isHovered && !isSelected && "scale-105"
+          isAffiliate && "border-purple-500/30",
+          isSelected && !isAffiliate && "shadow-[0_0_20px_rgba(34,211,238,0.3)] border-neon-cyan/30 scale-110",
+          isSelected && isAffiliate && "shadow-[0_0_20px_rgba(168,85,247,0.4)] border-purple-500/50 scale-110",
+          isHovered && !isSelected && !isAffiliate && "scale-105",
+          isHovered && !isSelected && isAffiliate && "scale-105 border-purple-500/40"
         )}
       >
         {/* Inner glow */}
-        <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
         <div className={cn(
-          "relative transition-all duration-500 scale-75",
-          isSelected && "scale-90"
-        )}>
-          {icon}
-        </div>
+          "absolute inset-1 rounded-lg bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500",
+          isAffiliate ? "from-purple-500/10 to-purple-600/10" : "from-neon-cyan/10 to-neon-purple/10"
+        )} />
+        
+        {isAffiliate && logoUrl ? (
+          <img 
+            src={logoUrl} 
+            alt={`${title} logo`}
+            className="relative w-10 h-10 md:w-12 md:h-12 object-contain rounded-lg"
+          />
+        ) : (
+          <div className={cn(
+            "relative transition-all duration-500 scale-75",
+            isSelected && "scale-90"
+          )}>
+            {icon}
+          </div>
+        )}
       </div>
 
       {/* Category badge */}
