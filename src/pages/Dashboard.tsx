@@ -232,15 +232,33 @@ const Dashboard = () => {
           });
         }
         
+        // QR Code Generator - free block
+        const hasQRCodeGenerator = allBlocks.some((block: string) => 
+          block === 'QR Code Generator'
+        );
+        
+        if (hasQRCodeGenerator) {
+          dashboardItems.push({
+            id: "qr-code-generator",
+            title: "QR Code Generator",
+            status: "ready",
+            description: "Create custom QR codes for your business",
+            locked: false,
+            approved: true,
+            isFree: true,
+          });
+        }
+        
         // Add other blocks from selection
         allBlocks.forEach((block: string) => {
           const isBusinessNameGen = block === 'Business Name Generator';
           const isLogoBlock = block.toLowerCase().includes('logo');
           const isBusinessPlanBlock = block === 'Business Plan Generator';
           const isSocialMediaChecker = block === 'Social Media Handle Checker';
+          const isQRCodeGenerator = block === 'QR Code Generator';
           const isDomainGen = block === 'Domain Name Generator';
           
-          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock && !isSocialMediaChecker && !isDomainGen) {
+          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock && !isSocialMediaChecker && !isQRCodeGenerator && !isDomainGen) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
