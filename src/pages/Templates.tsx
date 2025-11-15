@@ -76,7 +76,8 @@ export default function Templates() {
             {filteredTemplates.map((template) => (
               <Card 
                 key={template.id}
-                className="group hover:shadow-2xl hover:scale-105 transition-all duration-300 border-border bg-card overflow-hidden flex flex-col"
+                className="group hover:shadow-2xl hover:scale-105 transition-all duration-300 border-border bg-card overflow-hidden flex flex-col cursor-pointer"
+                onClick={() => setPreviewTemplate(template)}
               >
                 <CardHeader>
                   {/* Template Icon/Preview */}
