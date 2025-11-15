@@ -210,9 +210,8 @@ export default function LogoGeneration() {
             </p>
             <Button
               onClick={() => generateLogos()}
-              size="xl"
-              variant="empire"
-              className="gap-2"
+              size="lg"
+              className="gap-2 bg-acari-green hover:bg-acari-green/90 text-background font-semibold rounded-full px-8 shadow-lg hover:shadow-xl hover:shadow-acari-green/20 transition-all duration-300"
             >
               Generate Logos
             </Button>
