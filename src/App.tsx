@@ -47,6 +47,7 @@ import { Signup } from "./pages/onboarding/Signup";
 import { Checkout } from "./pages/onboarding/Checkout";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import AutomotiveTemplate from "./templates/automotive/AutomotiveTemplate";
+import RestaurantTemplate from "./templates/restaurant/RestaurantTemplate";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -96,6 +97,10 @@ function App() {
               <Route path="/grant-terms" element={<GrantTerms />} />
               <Route path="/support" element={<Support />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
+              
+              {/* Template Preview Routes */}
+              <Route path="/templates/automotive" element={<AutomotiveTemplate />} />
+              <Route path="/templates/restaurant" element={<RestaurantTemplate />} />
               
               {/* Onboarding flow */}
               <Route path="/start" element={<OnboardingLayout />}>

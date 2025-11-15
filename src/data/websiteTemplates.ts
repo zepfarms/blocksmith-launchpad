@@ -34,6 +34,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Food & Beverage',
     description: 'Stunning design for restaurants, cafes, bakeries, and food businesses',
     previewImage: '/templates/restaurant/index.html',
+    livePreviewUrl: '/templates/restaurant',
     colorScheme: ['#dc2626', '#f59e0b', '#fef3c7'],
     features: ['Menu Showcase', 'Reservation System', 'Image Gallery', 'Hours Display', 'Location Map']
   },
