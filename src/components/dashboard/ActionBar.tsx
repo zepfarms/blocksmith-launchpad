@@ -15,7 +15,7 @@ export function ActionBar({ selectedCount, onSaveSelected, disabled }: ActionBar
             onClick={onSaveSelected}
             disabled={selectedCount === 0 || disabled}
             size="lg"
-            className="rounded-full px-8"
+            className="rounded-full px-8 bg-acari-green hover:bg-acari-green/90 text-background font-semibold shadow-lg hover:shadow-xl hover:shadow-acari-green/20 transition-all duration-300"
           >
             Save Selected ({selectedCount})
           </Button>
