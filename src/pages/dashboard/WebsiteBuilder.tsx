@@ -226,6 +226,8 @@ const WebsiteBuilder = () => {
                 domainType={domainOption?.type || 'new'}
                 selectedDomain={selectedDomain}
                 onDomainChange={setSelectedDomain}
+                businessName={businessName}
+                industry={industry}
               />
             </div>
           </div>

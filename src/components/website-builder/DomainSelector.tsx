@@ -11,6 +11,8 @@ interface DomainSelectorProps {
   domainType: 'new' | 'existing';
   selectedDomain: string;
   onDomainChange: (domain: string) => void;
+  businessName?: string;
+  industry?: string;
 }
 
 interface DomainAvailability {
@@ -23,6 +25,8 @@ export const DomainSelector = ({
   domainType,
   selectedDomain,
   onDomainChange,
+  businessName = '',
+  industry = '',
 }: DomainSelectorProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isChecking, setIsChecking] = useState(false);
@@ -93,8 +97,13 @@ export const DomainSelector = ({
   };
 
   const generateDomains = async () => {
-    // Try to get business name from context or use a placeholder
-    const businessName = selectedDomain || "business";
+    // Use business name and industry from props
+    const nameToUse = businessName?.trim() || industry?.trim() || "business";
+    
+    if (nameToUse === "business") {
+      toast.error("Please provide business details first");
+      return;
+    }
     
     setIsGenerating(true);
     setGeneratedDomains([]);
@@ -104,7 +113,10 @@ export const DomainSelector = ({
       const { data, error } = await supabase.functions.invoke(
         'generate-domain-names',
         {
-          body: { businessName },
+          body: { 
+            businessName: nameToUse,
+            industry: industry?.trim() || '',
+          },
         }
       );
 

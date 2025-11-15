@@ -39,7 +39,7 @@ serve(async (req) => {
   }
 
   try {
-    const { businessName } = await req.json();
+    const { businessName, industry } = await req.json();
 
     if (!businessName) {
       return new Response(
@@ -47,6 +47,8 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    const businessContext = industry ? `${businessName} (${industry})` : businessName;
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -60,30 +62,36 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-lite',
+        model: 'google/gemini-2.5-flash',
         messages: [
           {
             role: 'system',
-            content: `You are a domain name expert. Generate EXACTLY 15 creative, brandable domain names.
+            content: `You are a domain name expert specializing in creating SHORT, MEMORABLE, BRANDABLE domain names.
 
-STRICT GUIDELINES:
-- Generate EXACTLY 15 unique domain names
-- Keep domains SHORT (8-20 characters before TLD)
-- Use common TLDs (.com, .co, .io, .net)
-- Make them memorable and easy to spell
-- Mix styles: exact match, abbreviated, creative variations
-- NO hyphens or numbers
-- Include the business name or creative variations
-- Each should be brandable and professional
+CRITICAL RULES:
+- Generate EXACTLY 9 domain names (not 15)
+- Keep domains VERY SHORT (6-15 characters before TLD)
+- Make them EASY TO SPELL and MEMORABLE
+- Focus on CREATIVITY and BRANDABILITY
+- Use industry-relevant keywords when appropriate
+- NO hyphens, NO numbers, NO confusing spellings
+- Mix of exact match, creative variations, and industry terms
+- Use popular TLDs: .com, .co, .io, .net
+- Each domain should sound professional and trustworthy
+
+STYLE MIX:
+- 3 exact/close match domains
+- 3 creative/brandable variations  
+- 3 industry-specific combinations
 
 OUTPUT FORMAT:
-Return ONLY a valid JSON array of exactly 15 strings with TLDs included. NO MARKDOWN, NO BACKTICKS, NO CODE FENCES - just the raw JSON array.
-
-Example: ["businessname.com", "getbusinessname.co", "businessname.io", "trybusinessname.com"]`
+Return ONLY a valid JSON array of exactly 9 domain name strings. 
+NO MARKDOWN, NO BACKTICKS, NO EXPLANATION - just the raw JSON array.
+Example: ["quickauto.com","automax.co","fixmyride.io"]`
           },
           {
             role: 'user',
-            content: `Generate 15 domain names for business: ${businessName}`
+            content: `Generate 9 SHORT, MEMORABLE domain names for: ${businessContext}`
           }
         ]
       })
