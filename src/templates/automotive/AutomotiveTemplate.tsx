@@ -7,9 +7,15 @@ export default function AutomotiveTemplate() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Read preview data from URL params
+  const searchParams = new URLSearchParams(window.location.search);
+  const isPreview = searchParams.get('preview') === 'true';
+  const previewBusinessName = searchParams.get('businessName');
+  const previewIndustry = searchParams.get('industry');
+
   // Demo data
   const demoData = {
-    businessName: "AutoCare Pro",
+    businessName: previewBusinessName || "AutoCare Pro",
     logoUrl: "/acari-logo.png",
     heroTitle: "Expert Auto Care & Repair",
     heroSubtitle: "Professional automotive services you can trust. From routine maintenance to complex repairs.",

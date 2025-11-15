@@ -1,10 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check, Eye } from "lucide-react";
+import { Check, ExternalLink } from "lucide-react";
 import { WebsiteTemplate } from "@/data/websiteTemplates";
-import { useState } from "react";
-import { TemplatePreviewModal } from "./TemplatePreviewModal";
 
 interface TemplateGalleryProps {
   templates: WebsiteTemplate[];
@@ -17,10 +15,14 @@ export const TemplateGallery = ({
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateGalleryProps) => {
-  const [previewTemplate, setPreviewTemplate] = useState<WebsiteTemplate | null>(null);
+  const handlePreview = (livePreviewUrl?: string) => {
+    if (livePreviewUrl) {
+      window.open(livePreviewUrl, '_blank');
+    }
+  };
+
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {templates.map((template) => (
           <Card
             key={template.id}
@@ -70,10 +72,11 @@ export const TemplateGallery = ({
                   className="flex-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPreviewTemplate(template);
+                    handlePreview(template.livePreviewUrl);
                   }}
+                  disabled={!template.livePreviewUrl}
                 >
-                  <Eye className="mr-2 h-4 w-4" />
+                  <ExternalLink className="mr-2 h-4 w-4" />
                   Preview
                 </Button>
                 <Button
@@ -89,12 +92,5 @@ export const TemplateGallery = ({
           </Card>
         ))}
       </div>
-
-      <TemplatePreviewModal
-        template={previewTemplate}
-        isOpen={!!previewTemplate}
-        onClose={() => setPreviewTemplate(null)}
-      />
-    </>
   );
 };
