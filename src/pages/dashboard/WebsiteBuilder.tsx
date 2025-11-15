@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { websiteTemplates } from "@/data/websiteTemplates";
@@ -132,28 +133,30 @@ const WebsiteBuilder = () => {
 
       case 'template':
         return (
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center space-y-6 mb-12">
-              <Badge variant="outline" className="mb-4 px-4 py-2 text-sm rounded-full border-primary/50 bg-primary/10">
-                <Sparkles className="w-4 h-4 mr-2 inline" />
-                Step 2 of 5: Choose Your Design
-              </Badge>
-              
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                Choose Your Template
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Production-ready, fully responsive designs built with modern React
-              </p>
-            </div>
+          <ScrollArea className="h-[calc(100vh-200px)]">
+            <div className="max-w-7xl mx-auto px-4 pb-8">
+              <div className="text-center space-y-6 mb-12">
+                <Badge variant="outline" className="mb-4 px-4 py-2 text-sm rounded-full border-primary/50 bg-primary/10">
+                  <Sparkles className="w-4 h-4 mr-2 inline" />
+                  Step 2 of 5: Choose Your Design
+                </Badge>
+                
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  Choose Your Template
+                </h1>
+                
+                <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                  Production-ready, fully responsive designs built with modern React
+                </p>
+              </div>
 
-            <TemplateGallery
-              templates={websiteTemplates}
-              selectedTemplateId={selectedTemplate}
-              onSelectTemplate={setSelectedTemplate}
-            />
-          </div>
+              <TemplateGallery
+                templates={websiteTemplates}
+                selectedTemplateId={selectedTemplate}
+                onSelectTemplate={setSelectedTemplate}
+              />
+            </div>
+          </ScrollArea>
         );
 
       case 'describe':
