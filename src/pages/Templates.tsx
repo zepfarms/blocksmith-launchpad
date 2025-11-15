@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, ArrowLeft, Eye, ExternalLink, Sparkles, Zap } from "lucide-react";
-import { websiteTemplates, WebsiteTemplate } from "@/data/websiteTemplates";
+import { ArrowRight, ArrowLeft, ExternalLink, Sparkles, Zap } from "lucide-react";
+import { websiteTemplates } from "@/data/websiteTemplates";
 import { Header } from "@/components/Header";
-import { TemplatePreviewModal } from "@/components/website-builder/TemplatePreviewModal";
 
 export default function Templates() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [previewTemplate, setPreviewTemplate] = useState<WebsiteTemplate | null>(null);
-  const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null);
   const navigate = useNavigate();
   
   const categories = ["all", ...Array.from(new Set(websiteTemplates.map(t => t.category)))];
@@ -23,9 +20,9 @@ export default function Templates() {
     navigate(`/dashboard/website-builder?template=${templateId}`);
   };
 
-  const handleViewLive = (template: WebsiteTemplate) => {
-    if (template.livePreviewUrl) {
-      window.open(template.livePreviewUrl, '_blank');
+  const handleViewLive = (livePreviewUrl?: string) => {
+    if (livePreviewUrl) {
+      window.open(livePreviewUrl, '_blank');
     }
   };
 
@@ -113,8 +110,6 @@ export default function Templates() {
               <Card 
                 key={template.id}
                 className="group relative hover:shadow-premium transition-all duration-500 border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden flex flex-col"
-                onMouseEnter={() => setHoveredTemplate(template.id)}
-                onMouseLeave={() => setHoveredTemplate(null)}
                 style={{ animationDelay: `${idx * 100}ms` }}
               >
                 {/* Premium hover glow effect */}
@@ -135,7 +130,7 @@ export default function Templates() {
                   {/* Template Preview Area - Now with gradient placeholder */}
                   <div 
                     className="w-full h-56 rounded-lg border border-border overflow-hidden mb-4 cursor-pointer relative group/preview"
-                    onClick={() => handleViewLive(template)}
+                    onClick={() => handleViewLive(template.livePreviewUrl)}
                   >
                     {/* Premium gradient background as placeholder */}
                     <div 
@@ -218,7 +213,7 @@ export default function Templates() {
                     variant="outline"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleViewLive(template);
+                      handleViewLive(template.livePreviewUrl);
                     }}
                     className="flex-1 rounded-full hover:shadow-neon transition-all"
                     disabled={!template.livePreviewUrl}
@@ -280,12 +275,6 @@ export default function Templates() {
         </div>
       </section>
 
-      {/* Template Preview Modal */}
-      <TemplatePreviewModal
-        template={previewTemplate}
-        isOpen={!!previewTemplate}
-        onClose={() => setPreviewTemplate(null)}
-      />
     </div>
   );
 }
