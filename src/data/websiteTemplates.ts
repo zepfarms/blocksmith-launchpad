@@ -16,6 +16,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Home Services',
     description: 'Professional template for plumbers with emergency service focus and trust-building features',
     previewImage: '/templates/plumbing/index.html',
+    livePreviewUrl: '/templates/plumbing',
     colorScheme: ['#0066cc', '#004d99', '#ff6b35'],
     features: ['24/7 Emergency CTA', 'Service Grid', 'Quote Form', 'Trust Badges', 'Mobile Optimized']
   },
@@ -25,6 +26,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Local Services',
     description: 'Perfect for electricians, HVAC, and home service professionals',
     previewImage: '/templates/local-business/index.html',
+    livePreviewUrl: '/templates/local-business',
     colorScheme: ['#1a365d', '#2563eb', '#60a5fa'],
     features: ['Emergency CTA', '24/7 Badge', 'Service Grid', 'Trust Signals', 'Contact Form']
   },
@@ -34,6 +36,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Professional Services',
     description: 'Ideal for consultants, lawyers, accountants, and business professionals',
     previewImage: '/templates/professional-services/index.html',
+    livePreviewUrl: '/templates/professional-services',
     colorScheme: ['#111827', '#6366f1', '#c7d2fe'],
     features: ['Modern Design', 'Expertise Showcase', 'Case Studies', 'Professional Layout', 'Lead Capture']
   },
@@ -53,6 +56,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Beauty & Wellness',
     description: 'Elegant template for salons, spas, and wellness centers',
     previewImage: '/templates/salon-spa/index.html',
+    livePreviewUrl: '/templates/salon-spa',
     colorScheme: ['#be185d', '#ec4899', '#fbcfe8'],
     features: ['Service Menu', 'Booking CTA', 'Team Showcase', 'Premium Design', 'Treatment Gallery']
   },
@@ -62,6 +66,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Healthcare',
     description: 'Professional template for doctors, dentists, and medical practices',
     previewImage: '/templates/medical/index.html',
+    livePreviewUrl: '/templates/medical',
     colorScheme: ['#0066cc', '#00a896', '#e0f2fe'],
     features: ['Appointment Booking', 'Services Grid', 'Trust Badges', 'Office Hours', 'Patient Forms']
   },
@@ -71,6 +76,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Retail & E-commerce',
     description: 'Eye-catching design for retail stores and product showcases',
     previewImage: '/templates/retail/index.html',
+    livePreviewUrl: '/templates/retail',
     colorScheme: ['#e63946', '#f77f00', '#fef3c7'],
     features: ['Product Grid', 'Shopping Cart', 'Category Browse', 'Testimonials', 'Free Shipping Badge']
   },
@@ -80,6 +86,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Fitness & Sports',
     description: 'Energetic template for gyms, fitness studios, and personal trainers',
     previewImage: '/templates/fitness/index.html',
+    livePreviewUrl: '/templates/fitness',
     colorScheme: ['#ff6b35', '#4ecdc4', '#1a1a1a'],
     features: ['Class Schedule', 'Program Grid', 'Free Trial CTA', 'Membership Plans', 'Trainer Profiles']
   },
@@ -89,6 +96,7 @@ export const websiteTemplates: WebsiteTemplate[] = [
     category: 'Real Estate',
     description: 'Professional template for real estate agents and property listings',
     previewImage: '/templates/real-estate/index.html',
+    livePreviewUrl: '/templates/real-estate',
     colorScheme: ['#2563eb', '#10b981', '#f3f4f6'],
     features: ['Property Listings', 'Agent Bio', 'Viewing Scheduler', 'MLS Integration Ready', 'Search Filters']
   },
