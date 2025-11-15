@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, ArrowRight } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface BlockInfoModalProps {
   isOpen: boolean;
@@ -60,36 +60,23 @@ export const BlockInfoModal = ({
         </DialogHeader>
 
         <DialogFooter>
-          {title === "Domain + Website" ? (
-            <Button
-              onClick={() => {
-                onClose();
-                window.location.href = '/dashboard/website-builder';
-              }}
-              className="rounded-full w-full"
-            >
-              Use this block
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                onAdd();
-                onClose();
-              }}
-              className="rounded-full w-full"
-              variant={isSelected ? "outline" : "default"}
-            >
-              {isSelected ? (
-                <>
-                  <Check className="mr-2 h-4 w-4" />
-                  Selected
-                </>
-              ) : (
-                "Add to Selection"
-              )}
-            </Button>
-          )}
+          <Button
+            onClick={() => {
+              onAdd();
+              onClose();
+            }}
+            className="rounded-full w-full"
+            variant={isSelected ? "outline" : "default"}
+          >
+            {isSelected ? (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                Selected
+              </>
+            ) : (
+              "Add to Selection"
+            )}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
