@@ -286,7 +286,7 @@ export default function BusinessNameGenerator() {
         )}
 
         {hasGenerated && generatedNames.length > 0 && !isGenerating && (
-          <div>
+          <div className="mt-8">
             <h2 className="text-2xl font-bold text-white mb-6">
               AI-Generated Name Ideas
             </h2>
