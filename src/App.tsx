@@ -29,6 +29,7 @@ import LogoGeneration from "./pages/dashboard/LogoGeneration";
 import BusinessNameGenerator from "./pages/dashboard/BusinessNameGenerator";
 import DomainNameGenerator from "./pages/dashboard/DomainNameGenerator";
 import BusinessPlanGenerator from "./pages/dashboard/BusinessPlanGenerator";
+import SocialMediaChecker from "./pages/dashboard/SocialMediaChecker";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
@@ -60,6 +61,7 @@ function App() {
                 <Route path="business-name-generator" element={<BusinessNameGenerator />} />
                 <Route path="domain-name-generator" element={<DomainNameGenerator />} />
                 <Route path="business-plan-generator" element={<BusinessPlanGenerator />} />
+                <Route path="social-media-checker" element={<SocialMediaChecker />} />
                 <Route path="app-store" element={<AppStore />} />
                 <Route path="subscriptions" element={<Subscriptions />} />
                 <Route path="subscription-checkout" element={<SubscriptionCheckout />} />

@@ -215,13 +215,32 @@ const Dashboard = () => {
           });
         }
         
+        // Social Media Handle Checker - free block
+        const hasSocialMediaChecker = allBlocks.some((block: string) => 
+          block === 'Social Media Handle Checker'
+        );
+        
+        if (hasSocialMediaChecker) {
+          dashboardItems.push({
+            id: "social-media-checker",
+            title: "Social Media Handle Checker",
+            status: "ready",
+            description: "Check availability across all major platforms",
+            locked: false,
+            approved: true,
+            isFree: true,
+          });
+        }
+        
         // Add other blocks from selection
         allBlocks.forEach((block: string) => {
           const isBusinessNameGen = block === 'Business Name Generator';
           const isLogoBlock = block.toLowerCase().includes('logo');
           const isBusinessPlanBlock = block === 'Business Plan Generator';
+          const isSocialMediaChecker = block === 'Social Media Handle Checker';
+          const isDomainGen = block === 'Domain Name Generator';
           
-          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock) {
+          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock && !isSocialMediaChecker && !isDomainGen) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
@@ -648,6 +667,10 @@ const Dashboard = () => {
                             navigate('/dashboard/domain-name-generator');
                           } else if (item.id === 'logo') {
                             navigate('/dashboard/logos');
+                          } else if (item.id === 'business-plan-generator') {
+                            navigate('/dashboard/business-plan-generator');
+                          } else if (item.id === 'social-media-checker') {
+                            navigate('/dashboard/social-media-checker');
                           }
                         }}
                       >
@@ -685,6 +708,10 @@ const Dashboard = () => {
                           navigate('/dashboard/domain-name-generator');
                         } else if (item.id === 'logo') {
                           navigate('/dashboard/logos');
+                        } else if (item.id === 'business-plan-generator') {
+                          navigate('/dashboard/business-plan-generator');
+                        } else if (item.id === 'social-media-checker') {
+                          navigate('/dashboard/social-media-checker');
                         }
                       }}
                     >
@@ -692,7 +719,13 @@ const Dashboard = () => {
                         ? 'Lock in an Awesome Business Name'
                         : item.id === 'domain-name-generator'
                           ? 'Complete This Block'
-                          : 'Create Logos'
+                          : item.id === 'logo'
+                            ? 'Create Logos'
+                            : item.id === 'business-plan-generator'
+                              ? 'Generate Business Plan'
+                              : item.id === 'social-media-checker'
+                                ? 'Check Social Handles'
+                                : 'Get Started'
                       }
                     </button>
                   )}
