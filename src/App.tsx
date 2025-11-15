@@ -27,7 +27,6 @@ import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import LogoGeneration from "./pages/dashboard/LogoGeneration";
 import BusinessNameGenerator from "./pages/dashboard/BusinessNameGenerator";
-import DomainNameGenerator from "./pages/dashboard/DomainNameGenerator";
 import BusinessPlanGenerator from "./pages/dashboard/BusinessPlanGenerator";
 import SocialMediaChecker from "./pages/dashboard/SocialMediaChecker";
 import QRCodeGenerator from "./pages/dashboard/QRCodeGenerator";
@@ -66,7 +65,6 @@ function App() {
                 <Route index element={<Dashboard />} />
                 <Route path="logos" element={<LogoGeneration />} />
                 <Route path="business-name-generator" element={<BusinessNameGenerator />} />
-                <Route path="domain-name-generator" element={<DomainNameGenerator />} />
                 <Route path="business-plan-generator" element={<BusinessPlanGenerator />} />
                 <Route path="social-media-checker" element={<SocialMediaChecker />} />
               <Route path="qr-code-generator" element={<QRCodeGenerator />} />
