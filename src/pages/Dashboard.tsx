@@ -537,16 +537,46 @@ const Dashboard = () => {
           </button>
         </div>
 
+        {/* ALL BLOCKS Section */}
+        <div className="mb-4">
+          <h2 className="text-sm text-white/50 font-medium">ALL BLOCKS</h2>
+        </div>
+
         {/* Items grid */}
         <div className="grid md:grid-cols-2 gap-6">
-          {items.filter(item => showCompleted || !item.approved).map((item) => (
+          {(() => {
+            // Calculate recommended block ID to filter it out from main grid
+            const incomplete = items.filter(item => !item.approved);
+            let recommendedBlockId = null;
+            
+            if (!businessData?.business_name) {
+              recommendedBlockId = 'business-name-generator';
+            } else {
+              const domainBlock = items.find(item => item.id === 'domain-name-generator');
+              if (domainBlock && !domainBlock.approved) {
+                recommendedBlockId = 'domain-name-generator';
+              } else {
+                const logoBlock = items.find(item => item.id === 'logo');
+                if (logoBlock && !logoBlock.approved) {
+                  recommendedBlockId = 'logo';
+                } else {
+                  recommendedBlockId = incomplete[0]?.id;
+                }
+              }
+            }
+            
+            // Filter out the recommended block from the grid
+            return items
+              .filter(item => showCompleted || !item.approved)
+              .filter(item => item.id !== recommendedBlockId)
+              .map((item) => (
             <div
               key={item.id}
               className={cn(
-                "glass-card p-6 rounded-2xl border transition-all duration-300",
+                "glass-card p-6 rounded-2xl border transition-all duration-300 hover:border-acari-green/40",
                 item.approved
-                  ? "border-neon-cyan/50 bg-neon-cyan/5"
-                  : "border-white/10 hover:border-neon-cyan/20"
+                  ? "border-acari-green/30 bg-acari-green/5"
+                  : "border-white/10 hover:shadow-lg hover:shadow-acari-green/10"
               )}
             >
               <div className="space-y-4">
@@ -558,16 +588,15 @@ const Dashboard = () => {
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-foreground">{item.title}</h3>
                         {item.isFree && (
-                          <Badge className="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 text-xs">FREE</Badge>
+                          <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30 text-xs font-semibold">FREE</Badge>
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
                   </div>
                   {item.approved ? (
-                    <Badge className="bg-acari-green/10 text-acari-green border-acari-green/20">
-                      <CheckCircle2 className="w-3 h-3 mr-1" />
-                      Complete
+                    <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30 font-semibold">
+                      Complete ✓
                     </Badge>
                   ) : (
                     getStatusBadge(item.status)
@@ -641,7 +670,8 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-          ))}
+              ));
+          })()}
         </div>
 
         {/* Launch/Checkout section */}
