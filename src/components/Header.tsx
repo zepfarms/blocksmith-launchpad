@@ -63,11 +63,20 @@ export const Header = () => {
                   <Menu className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-black/95 backdrop-blur-md border-white/10">
-                <DropdownMenuItem onClick={() => navigate("/dashboard")} className="text-white">
+              <DropdownMenuContent 
+                align="end" 
+                className="z-[200] min-w-[180px] bg-background border border-white/20 backdrop-blur-xl shadow-xl"
+              >
+                <DropdownMenuItem 
+                  onClick={() => navigate("/dashboard")} 
+                  className="text-foreground hover:bg-white/10 focus:bg-white/10 cursor-pointer"
+                >
                   Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout} className="text-white">
+                <DropdownMenuItem 
+                  onClick={handleLogout} 
+                  className="text-foreground hover:bg-white/10 focus:bg-white/10 cursor-pointer"
+                >
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
