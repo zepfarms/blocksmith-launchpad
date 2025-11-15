@@ -144,6 +144,16 @@ export default function BusinessPlanGenerator() {
         }
       });
 
+      // Mark block as completed
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('user_block_unlocks')
+          .update({ completion_status: 'completed' })
+          .eq('user_id', user.id)
+          .eq('block_name', 'Business Plan Generator');
+      }
+
       toast.success("Business plan downloaded and saved to briefcase!");
     } catch (error) {
       console.error('Error saving PDF:', error);

@@ -143,6 +143,13 @@ export default function BusinessNameGenerator() {
       return;
     }
 
+    // Mark block as completed
+    await supabase
+      .from('user_block_unlocks')
+      .update({ completion_status: 'completed' })
+      .eq('user_id', user.id)
+      .eq('block_name', 'Business Name Generator');
+
     toast.success(`"${businessName}" is now your business name!`);
     setShowConfirmDialog(false);
     

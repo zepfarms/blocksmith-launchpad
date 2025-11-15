@@ -154,6 +154,13 @@ export default function LogoGeneration() {
           .eq('file_url', url);
       }
 
+      // Mark block as completed
+      await supabase
+        .from('user_block_unlocks')
+        .update({ completion_status: 'completed' })
+        .eq('user_id', user.id)
+        .ilike('block_name', '%logo%');
+
       navigate('/dashboard?tab=briefcase');
     } catch (error) {
       console.error('Error saving logos:', error);

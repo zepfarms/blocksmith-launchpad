@@ -292,7 +292,8 @@ export default function AppStore() {
             user_id: session.user.id,
             business_id: business.id,
             block_name: block.title,
-            unlock_type: 'free'
+            unlock_type: 'free',
+            completion_status: 'not_started'
           })
         );
 
