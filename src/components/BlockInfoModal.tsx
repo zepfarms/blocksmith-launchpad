@@ -68,7 +68,10 @@ export const BlockInfoModal = ({
               More Information
             </h4>
             <p className="text-sm text-muted-foreground mb-3">
-              Browse our collection of 10 professionally designed templates for different industries.
+              Browse our collection of 10 professionally designed templates for different industries. Preview each template before deciding!
+            </p>
+            <p className="text-xs text-muted-foreground mb-3">
+              💰 Pricing: $10/month with your own domain, or purchase a domain during setup
             </p>
             <Link to="/templates">
               <Button variant="outline" size="sm" className="w-full rounded-full">
