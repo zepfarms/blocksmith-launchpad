@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action_type: string
+          admin_user_id: string
+          changes_made: Json | null
+          created_at: string
+          customer_user_id: string | null
+          id: string
+          notes: string | null
+          website_id: string | null
+        }
+        Insert: {
+          action_type: string
+          admin_user_id: string
+          changes_made?: Json | null
+          created_at?: string
+          customer_user_id?: string | null
+          id?: string
+          notes?: string | null
+          website_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          admin_user_id?: string
+          changes_made?: Json | null
+          created_at?: string
+          customer_user_id?: string | null
+          id?: string
+          notes?: string | null
+          website_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_audit_log_website_id_fkey"
+            columns: ["website_id"]
+            isOneToOne: false
+            referencedRelation: "user_websites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       block_categories: {
         Row: {
           created_at: string
@@ -651,6 +692,7 @@ export type Database = {
       }
       user_websites: {
         Row: {
+          admin_notes: string | null
           analytics_data: Json | null
           business_id: string | null
           cloudflare_deployment_id: string | null
@@ -663,7 +705,9 @@ export type Database = {
           domain_owned_externally: boolean
           domain_purchase_date: string | null
           domain_verified: boolean
+          edited_by_admin: boolean | null
           id: string
+          last_admin_edit_at: string | null
           one_time_fee_paid: boolean | null
           site_content: Json | null
           status: string
@@ -673,6 +717,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           analytics_data?: Json | null
           business_id?: string | null
           cloudflare_deployment_id?: string | null
@@ -685,7 +730,9 @@ export type Database = {
           domain_owned_externally?: boolean
           domain_purchase_date?: string | null
           domain_verified?: boolean
+          edited_by_admin?: boolean | null
           id?: string
+          last_admin_edit_at?: string | null
           one_time_fee_paid?: boolean | null
           site_content?: Json | null
           status?: string
@@ -695,6 +742,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           analytics_data?: Json | null
           business_id?: string | null
           cloudflare_deployment_id?: string | null
@@ -707,7 +755,9 @@ export type Database = {
           domain_owned_externally?: boolean
           domain_purchase_date?: string | null
           domain_verified?: boolean
+          edited_by_admin?: boolean | null
           id?: string
+          last_admin_edit_at?: string | null
           one_time_fee_paid?: boolean | null
           site_content?: Json | null
           status?: string
