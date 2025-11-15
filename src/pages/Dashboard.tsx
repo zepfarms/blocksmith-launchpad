@@ -187,12 +187,41 @@ const Dashboard = () => {
           });
         }
         
+        // Business Plan Generator - free block
+        const hasBusinessPlanBlock = allBlocks.some((block: string) => 
+          block === 'Business Plan Generator'
+        );
+        
+        if (hasBusinessPlanBlock) {
+          const { data: planData } = await supabase
+            .from('business_plans')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('business_id', data.id)
+            .maybeSingle();
+          
+          const hasPlan = !!planData;
+          
+          dashboardItems.push({
+            id: "business-plan-generator",
+            title: "Business Plan Generator",
+            status: hasPlan ? "ready" : "not-started",
+            description: hasPlan
+              ? "Business plan created - View and edit"
+              : "Generate a professional SBA-quality business plan",
+            locked: false,
+            approved: hasPlan,
+            isFree: true,
+          });
+        }
+        
         // Add other blocks from selection
         allBlocks.forEach((block: string) => {
           const isBusinessNameGen = block === 'Business Name Generator';
           const isLogoBlock = block.toLowerCase().includes('logo');
+          const isBusinessPlanBlock = block === 'Business Plan Generator';
           
-          if (!isLogoBlock && !isBusinessNameGen) {
+          if (!isLogoBlock && !isBusinessNameGen && !isBusinessPlanBlock) {
             dashboardItems.push({
               id: block.toLowerCase().replace(/\s+/g, '-'),
               title: block,
