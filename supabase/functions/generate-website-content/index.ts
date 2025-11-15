@@ -85,7 +85,7 @@ Please generate:
 
 Format as JSON with keys: tagline, heroHeadline, heroSubheadline, aboutText, services (array of {name, description}), ctaText, metaDescription`;
 
-    const aiResponse = await fetch('https://api.lovable.app/v1/ai/completions', {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
