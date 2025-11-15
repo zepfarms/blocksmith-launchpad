@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BUSINESS_NAME}} - {{TAGLINE}}</title>
+    <meta name="description" content="{{META_DESCRIPTION}}">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-info">
+                <span>📍 {{ADDRESS}}</span>
+                <span>🕒 Open Daily 11am-10pm</span>
+            </div>
+            <div class="top-actions">
+                <a href="tel:{{PHONE}}">📞 {{PHONE}}</a>
+                <a href="#" class="order-online">Order Online</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2245%22%3E%3Ctext x=%2210%22 y=%2232%22 font-family=%22Brush Script MT,cursive%22 font-size=%2232%22 fill=%22%23dc2626%22%3E{{BUSINESS_NAME}}%3C/text%3E%3C/svg%3E'">
+            </div>
+            <button class="mobile-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#" class="reserve-button">Reserve Table</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">{{HERO_TITLE}}</h1>
+            <p class="hero-subtitle">{{HERO_SUBTITLE}}</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn-primary">View Menu</a>
+                <a href="tel:{{PHONE}}" class="btn-secondary">Call to Order</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <span class="subtitle">Welcome to</span>
+                    <h2>{{BUSINESS_NAME}}</h2>
+                    <div class="divider"></div>
+                    <p>{{ABOUT_TEXT}}</p>
+                    <div class="features">
+                        <div class="feature-item">✓ Fresh Ingredients Daily</div>
+                        <div class="feature-item">✓ Authentic Recipes</div>
+                        <div class="feature-item">✓ Family Atmosphere</div>
+                    </div>
+                </div>
+                <div class="welcome-image">
+                    <img src="{{ABOUT_IMAGE_URL}}" alt="Restaurant Interior" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22450%22%3E%3Crect fill=%22%23991b1b%22 width=%22600%22 height=%22450%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2228%22 fill=%22%23fbbf24%22 text-anchor=%22middle%22 dy=%22.3em%22%3EWelcome%3C/text%3E%3C/svg%3E'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu">
+        <div class="container">
+            <span class="section-subtitle">Discover</span>
+            <h2 class="section-title">Our Menu</h2>
+            <div class="divider center"></div>
+            
+            <div class="menu-nav">
+                <button class="menu-tab active" data-category="all">All</button>
+                <button class="menu-tab" data-category="appetizers">Appetizers</button>
+                <button class="menu-tab" data-category="mains">Main Courses</button>
+                <button class="menu-tab" data-category="desserts">Desserts</button>
+                <button class="menu-tab" data-category="drinks">Drinks</button>
+            </div>
+
+            <div class="menu-grid">
+                {{SERVICES_HTML}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Specials Section -->
+    <section class="specials">
+        <div class="container">
+            <div class="specials-content">
+                <div class="specials-image">
+                    <img src="{{SPECIAL_IMAGE_URL}}" alt="Chef's Special" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22500%22 height=%22600%22%3E%3Crect fill=%22%23dc2626%22 width=%22500%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2232%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3EChef%27s Special%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="specials-text">
+                    <span class="subtitle">This Week's</span>
+                    <h2>Chef's Special</h2>
+                    <div class="divider"></div>
+                    <p>Experience our chef's signature creation, crafted with the finest seasonal ingredients and traditional techniques passed down through generations.</p>
+                    <ul class="special-features">
+                        <li>🌟 Seasonal Fresh Ingredients</li>
+                        <li>🌟 Traditional Family Recipe</li>
+                        <li>🌟 Available for Limited Time</li>
+                    </ul>
+                    <a href="#" class="btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <span class="section-subtitle">Visual Journey</span>
+            <h2 class="section-title">Food Gallery</h2>
+            <div class="divider center"></div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="{{GALLERY_1}}" alt="Dish 1" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23dc2626%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Signature Dish</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="{{GALLERY_2}}" alt="Dish 2" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23991b1b%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Chef's Choice</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="{{GALLERY_3}}" alt="Dish 3" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23fbbf24%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Desserts</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="{{GALLERY_4}}" alt="Dish 4" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23dc2626%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Appetizers</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="{{GALLERY_5}}" alt="Dish 5" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23991b1b%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Beverages</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="{{GALLERY_6}}" alt="Dish 6" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23fbbf24%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E'">
+                    <div class="gallery-overlay">
+                        <span>Specials</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <div class="container">
+            <span class="section-subtitle">What People Say</span>
+            <h2 class="section-title">Customer Reviews</h2>
+            <div class="divider center"></div>
+            
+            <div class="reviews-slider">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Best food in town! The flavors are authentic and the atmosphere is amazing. Highly recommend!"</p>
+                    <div class="reviewer">
+                        <strong>Jennifer L.</strong>
+                        <span>Regular Customer</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Incredible dining experience. Every dish is prepared to perfection. We come here every week!"</p>
+                    <div class="reviewer">
+                        <strong>Marcus T.</strong>
+                        <span>Food Enthusiast</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Family-friendly atmosphere with outstanding service. The chef's special is a must-try!"</p>
+                    <div class="reviewer">
+                        <strong>Sarah & David K.</strong>
+                        <span>Loyal Patrons</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Visit Us</h2>
+                    <div class="divider"></div>
+                    <div class="info-block">
+                        <h3>📍 Location</h3>
+                        <p>{{ADDRESS}}</p>
+                    </div>
+                    <div class="info-block">
+                        <h3>📞 Phone</h3>
+                        <a href="tel:{{PHONE}}">{{PHONE}}</a>
+                    </div>
+                    <div class="info-block">
+                        <h3>📧 Email</h3>
+                        <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+                    </div>
+                    <div class="info-block">
+                        <h3>🕒 Hours</h3>
+                        <p>Monday - Thursday: 11am - 10pm<br>
+                        Friday - Saturday: 11am - 11pm<br>
+                        Sunday: 12pm - 9pm</p>
+                    </div>
+                </div>
+                <form class="reservation-form">
+                    <h2>Reserve a Table</h2>
+                    <div class="divider"></div>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="tel" placeholder="Phone Number" required>
+                    <div class="form-row">
+                        <input type="date" required>
+                        <input type="time" required>
+                    </div>
+                    <select required>
+                        <option value="">Number of Guests</option>
+                        <option value="1">1 Person</option>
+                        <option value="2">2 People</option>
+                        <option value="3">3 People</option>
+                        <option value="4">4 People</option>
+                        <option value="5">5+ People</option>
+                    </select>
+                    <textarea placeholder="Special Requests (Optional)" rows="3"></textarea>
+                    <button type="submit" class="btn-primary">Book Table</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>{{BUSINESS_NAME}}</h3>
+                    <p>Experience authentic flavors in a warm, welcoming atmosphere.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="Instagram">📷</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>{{ADDRESS}}<br>{{PHONE}}<br>{{EMAIL}}</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 {{BUSINESS_NAME}}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
