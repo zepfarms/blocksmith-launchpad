@@ -115,6 +115,56 @@ export type Database = {
         }
         Relationships: []
       }
+      business_plans: {
+        Row: {
+          business_id: string
+          created_at: string | null
+          edited_content: Json | null
+          finalized_at: string | null
+          generated_content: Json
+          id: string
+          questionnaire_data: Json
+          status: string | null
+          updated_at: string | null
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          business_id: string
+          created_at?: string | null
+          edited_content?: Json | null
+          finalized_at?: string | null
+          generated_content: Json
+          id?: string
+          questionnaire_data: Json
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          business_id?: string
+          created_at?: string | null
+          edited_content?: Json | null
+          finalized_at?: string | null
+          generated_content?: Json
+          id?: string
+          questionnaire_data?: Json
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_plans_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_verifications: {
         Row: {
           attempts: number
