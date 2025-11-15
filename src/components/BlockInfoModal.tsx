@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface BlockInfoModalProps {
   isOpen: boolean;
@@ -58,6 +59,26 @@ export const BlockInfoModal = ({
             {description || "No description available for this block."}
           </DialogDescription>
         </DialogHeader>
+
+        {/* More Information Section for Domain + Website */}
+        {title === "Domain + Website" && (
+          <div className="py-4 px-6 rounded-lg bg-primary/5 border border-primary/20">
+            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+              <ExternalLink className="h-4 w-4" />
+              More Information
+            </h4>
+            <p className="text-sm text-muted-foreground mb-3">
+              Browse our collection of 10 professionally designed templates for different industries.
+            </p>
+            <Link to="/templates">
+              <Button variant="outline" size="sm" className="w-full rounded-full">
+                View All Templates
+                <ExternalLink className="ml-2 h-3 w-3" />
+              </Button>
+            </Link>
+          </div>
+        )}
+
         <DialogFooter>
           <Button
             onClick={() => {
