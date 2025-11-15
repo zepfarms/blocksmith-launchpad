@@ -646,6 +646,97 @@ export type Database = {
           },
         ]
       }
+      user_websites: {
+        Row: {
+          analytics_data: Json | null
+          business_id: string | null
+          cloudflare_deployment_id: string | null
+          cloudflare_domain_id: string | null
+          cloudflare_pages_url: string | null
+          created_at: string
+          customization_data: Json
+          domain_expiry_date: string | null
+          domain_name: string
+          domain_owned_externally: boolean
+          domain_purchase_date: string | null
+          domain_verified: boolean
+          id: string
+          one_time_fee_paid: boolean | null
+          site_content: Json | null
+          status: string
+          subscription_id: string | null
+          template_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          analytics_data?: Json | null
+          business_id?: string | null
+          cloudflare_deployment_id?: string | null
+          cloudflare_domain_id?: string | null
+          cloudflare_pages_url?: string | null
+          created_at?: string
+          customization_data?: Json
+          domain_expiry_date?: string | null
+          domain_name: string
+          domain_owned_externally?: boolean
+          domain_purchase_date?: string | null
+          domain_verified?: boolean
+          id?: string
+          one_time_fee_paid?: boolean | null
+          site_content?: Json | null
+          status?: string
+          subscription_id?: string | null
+          template_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          analytics_data?: Json | null
+          business_id?: string | null
+          cloudflare_deployment_id?: string | null
+          cloudflare_domain_id?: string | null
+          cloudflare_pages_url?: string | null
+          created_at?: string
+          customization_data?: Json
+          domain_expiry_date?: string | null
+          domain_name?: string
+          domain_owned_externally?: boolean
+          domain_purchase_date?: string | null
+          domain_verified?: boolean
+          id?: string
+          one_time_fee_paid?: boolean | null
+          site_content?: Json | null
+          status?: string
+          subscription_id?: string | null
+          template_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_websites_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "user_businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_websites_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_websites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
