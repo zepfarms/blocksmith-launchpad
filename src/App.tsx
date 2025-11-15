@@ -46,6 +46,7 @@ import { BlockSelection } from "./pages/onboarding/BlockSelection";
 import { Signup } from "./pages/onboarding/Signup";
 import { Checkout } from "./pages/onboarding/Checkout";
 import { VerifyEmail } from "./pages/VerifyEmail";
+import AutomotiveTemplate from "./templates/automotive/AutomotiveTemplate";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -88,6 +89,7 @@ function App() {
               
               {/* Other pages */}
               <Route path="/templates" element={<Templates />} />
+              <Route path="/templates/automotive" element={<AutomotiveTemplate />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
