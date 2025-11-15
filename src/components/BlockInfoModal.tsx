@@ -1,8 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Check, ArrowRight } from "lucide-react";
 
 interface BlockInfoModalProps {
   isOpen: boolean;
@@ -60,46 +59,37 @@ export const BlockInfoModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        {/* More Information Section for Domain + Website */}
-        {title === "Domain + Website" && (
-          <div className="py-4 px-6 rounded-lg bg-primary/5 border border-primary/20">
-            <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-              <ExternalLink className="h-4 w-4" />
-              More Information
-            </h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              Browse our collection of 10 professionally designed templates for different industries. Preview each template before deciding!
-            </p>
-            <p className="text-xs text-muted-foreground mb-3">
-              💰 Pricing: $10/month with your own domain, or purchase a domain during setup
-            </p>
-            <Link to="/templates">
-              <Button variant="outline" size="sm" className="w-full rounded-full">
-                View All Templates
-                <ExternalLink className="ml-2 h-3 w-3" />
-              </Button>
-            </Link>
-          </div>
-        )}
-
         <DialogFooter>
-          <Button
-            onClick={() => {
-              onAdd();
-              onClose();
-            }}
-            className="rounded-full w-full"
-            variant={isSelected ? "outline" : "default"}
-          >
-            {isSelected ? (
-              <>
-                <Check className="mr-2 h-4 w-4" />
-                Selected
-              </>
-            ) : (
-              "Add to Selection"
-            )}
-          </Button>
+          {title === "Domain + Website" ? (
+            <Button
+              onClick={() => {
+                onClose();
+                window.location.href = '/dashboard/website-builder';
+              }}
+              className="rounded-full w-full"
+            >
+              Use this block
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                onAdd();
+                onClose();
+              }}
+              className="rounded-full w-full"
+              variant={isSelected ? "outline" : "default"}
+            >
+              {isSelected ? (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Selected
+                </>
+              ) : (
+                "Add to Selection"
+              )}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

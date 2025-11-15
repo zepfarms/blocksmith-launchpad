@@ -34,7 +34,7 @@ import EmailSignatureGenerator from "./pages/dashboard/EmailSignatureGenerator";
 import WebsiteBuilder from "./pages/dashboard/WebsiteBuilder";
 import { WebsiteEditor } from "./pages/dashboard/WebsiteEditor";
 import { MyWebsites } from "./pages/dashboard/MyWebsites";
-import Templates from "./pages/Templates";
+// import Templates from "./pages/Templates";
 import AdminWebsites from "./pages/admin/Websites";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
@@ -89,7 +89,7 @@ function App() {
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
               
               {/* Other pages */}
-              <Route path="/templates" element={<Templates />} />
+              {/* <Route path="/templates" element={<Templates />} /> */}
               <Route path="/templates/automotive" element={<AutomotiveTemplate />} />
               <Route path="/features" element={<Features />} />
               <Route path="/privacy" element={<Privacy />} />
