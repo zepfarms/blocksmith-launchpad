@@ -232,9 +232,12 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             const category = clean(matches[1]);
             const description = clean(matches[2]);
             
-            // Get pricing from database
+            const isFreeRaw = clean(matches[3]);
+            
+            // Get pricing from database, fallback to CSV is_free value
+            const csv_is_free = isFreeRaw.toUpperCase() === 'TRUE';
             const pricing = pricingData.get(name);
-            const is_free = pricing?.is_free ?? false;
+            const is_free = pricing?.is_free ?? csv_is_free;
             const price_cents = pricing?.price_cents ?? 0;
             const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
             const pricing_type = pricing?.pricing_type ?? 'free';
@@ -323,49 +326,17 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
 
         </div>
 
-        {/* Starter Blocks (Recommended but not pre-selected) */}
-        {starterBlockList.length > 0 && (
+        {/* Recommended Blocks - Merge starter and growth */}
+        {(starterBlockList.length > 0 || growthBlockList.length > 0) && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <h3 className="text-2xl font-bold">Recommended Starter Blocks</h3>
+              <h3 className="text-2xl font-bold">Recommended Blocks</h3>
               <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/30">
-                Essential for launch
+                AI-Selected for Your Business
               </Badge>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {starterBlockList.map((block, index) => (
-              <BlockCard
-                key={block.id}
-                title={block.title}
-                category={block.category}
-                icon={block.icon}
-                description={block.description}
-                isFree={block.isFree}
-                price={block.price}
-                monthlyPrice={block.monthlyPrice}
-                pricingType={block.pricingType}
-                isSelected={selectedBlocks.includes(block.id)}
-                onToggle={() => toggleBlock(block.id)}
-                onInfoClick={() => setInfoModalBlock(block)}
-                index={index}
-                isUnlocked={unlockedBlocks.has(block.title)}
-                isPurchased={purchasedBlocks.has(block.title)}
-                hasActiveSubscription={subscribedBlocks.has(block.title)}
-              />
-            ))}
-            </div>
-          </div>
-        )}
-
-        {/* Growth Blocks (Recommended next) */}
-        {growthBlockList.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <h3 className="text-2xl font-bold">Recommended Next</h3>
-              <Badge variant="outline">Growth blocks</Badge>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {growthBlockList.map((block, index) => (
+            {[...starterBlockList, ...growthBlockList].map((block, index) => (
               <BlockCard
                 key={block.id}
                 title={block.title}
@@ -443,11 +414,11 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               </div>
             )}
 
-            {/* Free Blocks */}
+            {/* More Free Blocks */}
             {freeBlocks.length > 0 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-2xl font-bold">Free Blocks</h3>
+                  <h3 className="text-2xl font-bold">More Free Blocks</h3>
                   <Badge className="bg-green-500/10 text-green-600 border-green-500/30">
                     No cost
                   </Badge>
@@ -477,11 +448,11 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
               </div>
             )}
 
-            {/* Paid Blocks */}
+            {/* Premium Blocks */}
             {paidBlocks.length > 0 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-2xl font-bold">Add-on Blocks</h3>
+                  <h3 className="text-2xl font-bold">Premium Blocks</h3>
                   <Badge variant="outline">Paid features</Badge>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
