@@ -7,6 +7,7 @@ interface BlockInfoModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  subtitle?: string;
   description: string;
   category: string;
   isFree: boolean;
@@ -23,6 +24,7 @@ export const BlockInfoModal = ({
   isOpen,
   onClose,
   title,
+  subtitle,
   description,
   category,
   isFree,
@@ -61,15 +63,16 @@ export const BlockInfoModal = ({
             </div>
             <div className="flex-1">
               <DialogTitle className="text-2xl font-bold mb-2">{title}</DialogTitle>
+              {subtitle && (
+                <p className="text-sm text-neon-cyan/80 mb-2">{subtitle}</p>
+              )}
               <div className="flex gap-2">
-                <Badge variant="outline" className="text-xs">
-                  {category}
-                </Badge>
-                {isFree ? (
-                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                    FREE
+                {!isAffiliate && (
+                  <Badge variant="outline" className="text-xs">
+                    {category}
                   </Badge>
-                ) : (
+                )}
+                {!isFree && (
                   <Badge variant="outline" className="text-xs">
                     ${(price / 100).toFixed(2)}
                   </Badge>

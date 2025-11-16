@@ -1,9 +1,9 @@
-name,category,description,is_free,typical_price,dependencies,tags,is_affiliate,affiliate_link,logo_url
-Business Name Generator,Foundation,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup",FALSE,,
-Logo Generator,Foundation,AI-powered professional logo design and generation,TRUE,Free,,"branding,identity,design,ai",FALSE,,
-Business Plan Generator,Foundation,Generate a real downloaded PDF business plan for your business just by answering a few questions,TRUE,Free,,"planning,business,ai,foundation,pdf",FALSE,,
-Social Media Handle Checker,Foundation,Check availability of your business name across all major social platforms,TRUE,Free,,"social,branding,handles,username,foundation",FALSE,,
-QR Code Generator,Foundation,Generate customizable QR codes for websites URLs contact info WiFi and more with download options,TRUE,Free,,"qr,codes,marketing,tools,foundation",FALSE,,
-Professional Email Signature,Foundation,Create professional HTML email signatures with custom branding social links and contact info for all email clients,TRUE,Free,,"email,branding,signature,professional,foundation",FALSE,,
-Lovable Website Builder,Partnership,Build beautiful websites with AI - no coding required. Just describe what you want and watch it come to life with the most powerful AI web builder,TRUE,Free,,"website,ai,nocode,builder,partner",TRUE,https://lovable.dev/?via=Acari,/lovable-logo.png
-Tailor Brands,Partnership,Start your LLC for $0 in 3 Steps. Launch a successful business by paying only the state fee. We'll guide you through every step of the way.,TRUE,Free,,"llc,business,legal,formation,partner",TRUE,,
+name,category,subtitle,description,is_free,typical_price,dependencies,tags,is_affiliate,affiliate_link,logo_url
+Business Name Generator,Foundation,Name Generator,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup",FALSE,,
+Logo Generator,Foundation,Logo Design,AI-powered professional logo design and generation,TRUE,Free,,"branding,identity,design,ai",FALSE,,
+Business Plan Generator,Foundation,Business Plan,Generate a real downloaded PDF business plan for your business just by answering a few questions,TRUE,Free,,"planning,business,ai,foundation,pdf",FALSE,,
+Social Media Handle Checker,Foundation,Handle Checker,Check availability of your business name across all major social platforms,TRUE,Free,,"social,branding,handles,username,foundation",FALSE,,
+QR Code Generator,Foundation,QR Codes,Generate customizable QR codes for websites URLs contact info WiFi and more with download options,TRUE,Free,,"qr,codes,marketing,tools,foundation",FALSE,,
+Professional Email Signature,Foundation,Email Signature,Create professional HTML email signatures with custom branding social links and contact info for all email clients,TRUE,Free,,"email,branding,signature,professional,foundation",FALSE,,
+Lovable Website Builder,Partnership,Website Builder,Build beautiful websites with AI - no coding required. Just describe what you want and watch it come to life with the most powerful AI web builder,TRUE,Free,,"website,ai,nocode,builder,partner",TRUE,https://lovable.dev/?via=Acari,/lovable-logo.png
+Tailor Brands,Partnership,Form LLC,Start your LLC for $0 in 3 Steps. Launch a successful business by paying only the state fee. We'll guide you through every step of the way.,TRUE,Free,,"llc,business,legal,formation,partner",TRUE,,

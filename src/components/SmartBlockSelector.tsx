@@ -61,6 +61,7 @@ const IconNetwork = ({ color = "currentColor" }) => (
 interface Block {
   id: string;
   title: string;
+  subtitle?: string;
   category: string;
   icon: React.ReactNode;
   isFree: boolean;
@@ -229,17 +230,18 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           .filter(line => line.trim())
       .map((line, index) => {
             const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-            if (!matches || matches.length < 7) return null;
+            if (!matches || matches.length < 8) return null;
             
             const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
             const name = clean(matches[0]);
             const category = clean(matches[1]);
-            const description = clean(matches[2]);
+            const subtitle = clean(matches[2]);
+            const description = clean(matches[3]);
             
-            const isFreeRaw = clean(matches[3]);
-            const isAffiliateRaw = clean(matches[7]) || 'FALSE';
-            const affiliateLink = clean(matches[8]) || '';
-            const logoUrl = clean(matches[9]) || '';
+            const isFreeRaw = clean(matches[4]);
+            const isAffiliateRaw = clean(matches[8]) || 'FALSE';
+            const affiliateLink = clean(matches[9]) || '';
+            const logoUrl = clean(matches[10]) || '';
             
             // Get pricing from database, fallback to CSV is_free value
             const csv_is_free = isFreeRaw.toUpperCase() === 'TRUE';
@@ -252,6 +254,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
             return {
               id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
               title: name,
+              subtitle,
               category,
               description,
               isFree: is_free,
@@ -442,6 +445,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                   <BlockCard
                     key={block.id}
                     title={block.title}
+                    subtitle={block.subtitle}
                     category={block.category}
                     icon={block.icon}
                     description={block.description}
@@ -560,6 +564,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           isOpen={true}
           onClose={() => setInfoModalBlock(null)}
           title={infoModalBlock.title}
+          subtitle={infoModalBlock.subtitle}
           description={infoModalBlock.description}
           category={infoModalBlock.category}
           isFree={infoModalBlock.isFree}
