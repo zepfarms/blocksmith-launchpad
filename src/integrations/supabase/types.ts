@@ -515,6 +515,8 @@ export type Database = {
       }
       document_templates: {
         Row: {
+          alternative_file_type: string | null
+          alternative_file_url: string | null
           category_id: string | null
           created_at: string
           created_by: string | null
@@ -533,6 +535,8 @@ export type Database = {
           view_count: number
         }
         Insert: {
+          alternative_file_type?: string | null
+          alternative_file_url?: string | null
           category_id?: string | null
           created_at?: string
           created_by?: string | null
@@ -551,6 +555,8 @@ export type Database = {
           view_count?: number
         }
         Update: {
+          alternative_file_type?: string | null
+          alternative_file_url?: string | null
           category_id?: string | null
           created_at?: string
           created_by?: string | null
