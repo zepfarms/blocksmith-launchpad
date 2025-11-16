@@ -85,9 +85,9 @@ export const BlockCard = ({
           e.stopPropagation();
           onInfoClick();
         }}
-        className="absolute top-2 left-2 w-6 h-6 rounded-md bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-black/60 hover:border-white/30 transition-all z-10"
+        className="absolute top-2 left-2 w-8 h-8 rounded-md bg-black/50 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center hover:bg-black/70 hover:border-white/50 transition-all z-10"
       >
-        <Info className="h-3 w-3 text-white/70 hover:text-white transition-colors" />
+        <Info className="h-4 w-4 text-white" />
       </button>
 
       {/* Selection indicator - top right - INSIDE card */}
