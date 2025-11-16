@@ -6,6 +6,7 @@ import { TemplateFilters } from "@/components/templates/TemplateFilters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Filter } from "lucide-react";
 
 export default function Templates() {
@@ -17,6 +18,8 @@ export default function Templates() {
   const [selectedFileTypes, setSelectedFileTypes] = useState<string[]>([]);
   const [showPremiumOnly, setShowPremiumOnly] = useState(false);
   const [sortBy, setSortBy] = useState("downloads");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 24;
 
   useEffect(() => {
     loadCategories();
@@ -24,6 +27,7 @@ export default function Templates() {
   }, []);
 
   useEffect(() => {
+    setCurrentPage(1); // Reset to page 1 when filters change
     loadTemplates();
   }, [selectedCategory, selectedFileTypes, showPremiumOnly, sortBy, searchQuery]);
 
@@ -101,6 +105,100 @@ export default function Templates() {
     );
   };
 
+  // Pagination calculations
+  const totalPages = Math.ceil(templates.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedTemplates = templates.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPaginationItems = () => {
+    const items = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => handlePageChange(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    } else {
+      // Always show first page
+      items.push(
+        <PaginationItem key={1}>
+          <PaginationLink
+            onClick={() => handlePageChange(1)}
+            isActive={currentPage === 1}
+            className="cursor-pointer"
+          >
+            1
+          </PaginationLink>
+        </PaginationItem>
+      );
+
+      if (currentPage > 3) {
+        items.push(
+          <PaginationItem key="ellipsis1">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      // Show pages around current page
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = start; i <= end; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => handlePageChange(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage < totalPages - 2) {
+        items.push(
+          <PaginationItem key="ellipsis2">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      // Always show last page
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            onClick={() => handlePageChange(totalPages)}
+            isActive={currentPage === totalPages}
+            className="cursor-pointer"
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
+
   const filtersSidebar = (
     <TemplateFilters
       categories={categories}
@@ -164,7 +262,7 @@ export default function Templates() {
               {/* Results Count */}
               <div className="mb-6">
                 <p className="text-sm text-muted-foreground">
-                  {loading ? "Loading..." : `${templates.length} template${templates.length !== 1 ? "s" : ""} found`}
+                  {loading ? "Loading..." : `${templates.length} template${templates.length !== 1 ? "s" : ""} found${totalPages > 1 ? ` (Page ${currentPage} of ${totalPages})` : ""}`}
                 </p>
               </div>
 
@@ -181,23 +279,50 @@ export default function Templates() {
                   <p className="text-sm text-muted-foreground">Try adjusting your filters or search query</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {templates.map((template) => (
-                    <TemplateCard
-                      key={template.id}
-                      id={template.id}
-                      title={template.title}
-                      description={template.description}
-                      slug={template.slug}
-                      thumbnailUrl={template.thumbnail_url}
-                      category={template.category}
-                      fileType={template.file_type}
-                      downloadCount={template.download_count}
-                      isFeatured={template.is_featured}
-                      isPremium={template.is_premium}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {paginatedTemplates.map((template) => (
+                      <TemplateCard
+                        key={template.id}
+                        id={template.id}
+                        title={template.title}
+                        description={template.description}
+                        slug={template.slug}
+                        thumbnailUrl={template.thumbnail_url}
+                        category={template.category}
+                        fileType={template.file_type}
+                        downloadCount={template.download_count}
+                        isFeatured={template.is_featured}
+                        isPremium={template.is_premium}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-12">
+                      <Pagination>
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious
+                              onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                          
+                          {renderPaginationItems()}
+                          
+                          <PaginationItem>
+                            <PaginationNext
+                              onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

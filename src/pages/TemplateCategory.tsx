@@ -6,6 +6,7 @@ import { TemplateFilters } from "@/components/templates/TemplateFilters";
 import { TemplateSearch } from "@/components/templates/TemplateSearch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { ChevronRight, Home } from "lucide-react";
 
 interface Category {
@@ -42,6 +43,8 @@ export default function TemplateCategory() {
   const [selectedFileTypes, setSelectedFileTypes] = useState<string[]>([]);
   const [showPremiumOnly, setShowPremiumOnly] = useState(false);
   const [sortBy, setSortBy] = useState<string>("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 24;
 
   useEffect(() => {
     loadCategory();
@@ -54,6 +57,7 @@ export default function TemplateCategory() {
   }, [category]);
 
   useEffect(() => {
+    setCurrentPage(1); // Reset to page 1 when filters change
     applyFilters();
   }, [templates, searchQuery, selectedFileTypes, showPremiumOnly, sortBy]);
 
@@ -153,6 +157,97 @@ export default function TemplateCategory() {
     setFilteredTemplates(filtered);
   };
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredTemplates.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedTemplates = filteredTemplates.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPaginationItems = () => {
+    const items = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => handlePageChange(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    } else {
+      items.push(
+        <PaginationItem key={1}>
+          <PaginationLink
+            onClick={() => handlePageChange(1)}
+            isActive={currentPage === 1}
+            className="cursor-pointer"
+          >
+            1
+          </PaginationLink>
+        </PaginationItem>
+      );
+
+      if (currentPage > 3) {
+        items.push(
+          <PaginationItem key="ellipsis1">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = start; i <= end; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => handlePageChange(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage < totalPages - 2) {
+        items.push(
+          <PaginationItem key="ellipsis2">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            onClick={() => handlePageChange(totalPages)}
+            isActive={currentPage === totalPages}
+            className="cursor-pointer"
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -214,7 +309,7 @@ export default function TemplateCategory() {
             </p>
           )}
           <p className="text-sm text-muted-foreground mt-4">
-            {filteredTemplates.length} {filteredTemplates.length === 1 ? 'template' : 'templates'} available
+            {filteredTemplates.length} {filteredTemplates.length === 1 ? 'template' : 'templates'} available{totalPages > 1 ? ` (Page ${currentPage} of ${totalPages})` : ""}
           </p>
         </div>
       </div>
@@ -268,23 +363,50 @@ export default function TemplateCategory() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredTemplates.map((template) => (
-                  <TemplateCard
-                    key={template.id}
-                    id={template.id}
-                    title={template.title}
-                    description={template.description}
-                    slug={template.slug}
-                    thumbnailUrl={template.thumbnail_url}
-                    category={template.document_categories}
-                    fileType={template.file_type}
-                    downloadCount={template.download_count}
-                    isFeatured={template.is_featured}
-                    isPremium={template.is_premium}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {paginatedTemplates.map((template) => (
+                    <TemplateCard
+                      key={template.id}
+                      id={template.id}
+                      title={template.title}
+                      description={template.description}
+                      slug={template.slug}
+                      thumbnailUrl={template.thumbnail_url}
+                      category={template.document_categories}
+                      fileType={template.file_type}
+                      downloadCount={template.download_count}
+                      isFeatured={template.is_featured}
+                      isPremium={template.is_premium}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-12">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                            className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                          />
+                        </PaginationItem>
+                        
+                        {renderPaginationItems()}
+                        
+                        <PaginationItem>
+                          <PaginationNext
+                            onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
