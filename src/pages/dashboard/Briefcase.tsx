@@ -18,7 +18,7 @@ interface Asset {
   status: string;
 }
 
-type AssetFilter = 'all' | 'logo' | 'business_plan' | 'qr_code' | 'email_signature' | 'social_handles';
+type AssetFilter = 'all' | 'logo' | 'business_plan' | 'qr_code' | 'email_signature' | 'social_handles' | 'edited_document';
 
 export default function Briefcase() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -36,15 +36,38 @@ export default function Briefcase() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      // Load assets from user_assets table
+      const { data: assetsData, error: assetsError } = await supabase
         .from('user_assets')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (assetsError) throw assetsError;
 
-      setAssets(data || []);
+      // Load edited documents from user_edited_documents table
+      const { data: docsData, error: docsError } = await supabase
+        .from('user_edited_documents')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (docsError) throw docsError;
+
+      // Combine and transform edited documents to match Asset interface
+      const editedDocAssets = (docsData || []).map(doc => ({
+        id: doc.id,
+        user_id: doc.user_id,
+        business_id: '', // No business_id for edited documents
+        asset_type: 'edited_document',
+        file_url: doc.file_url,
+        thumbnail_url: doc.thumbnail_url,
+        metadata: { title: doc.title, edit_count: doc.edit_count },
+        created_at: doc.created_at,
+        status: 'generated',
+      }));
+
+      setAssets([...(assetsData || []), ...editedDocAssets]);
     } catch (error) {
       console.error('Error loading assets:', error);
       toast.error('Failed to load assets');
@@ -77,6 +100,7 @@ export default function Briefcase() {
       qr_code: 'QR Codes',
       email_signature: 'Email Signatures',
       social_handles: 'Social Handles',
+      edited_document: 'Edited Documents',
     };
     return labels[type] || type;
   };

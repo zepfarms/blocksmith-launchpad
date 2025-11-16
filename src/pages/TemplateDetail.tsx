@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, FileText, Star } from "lucide-react";
+import { ArrowLeft, FileText, Star, Edit } from "lucide-react";
 
 export default function TemplateDetail() {
   const { slug } = useParams();
@@ -194,6 +194,26 @@ export default function TemplateDetail() {
                   />
                 )}
               </div>
+
+              {/* PDF Editor Promotion */}
+              {template.file_type === 'pdf' && (
+                <div className="mt-6 p-4 border border-primary/20 rounded-lg bg-primary/5">
+                  <div className="flex items-start gap-3">
+                    <Edit className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-foreground mb-1">Need to edit this PDF?</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Use our PDF Editor to customize text, add annotations, fill forms, and more. Try 3 edits free!
+                      </p>
+                      <Button asChild size="sm">
+                        <Link to="/dashboard/pdf-editor">
+                          Open PDF Editor
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Tags */}
