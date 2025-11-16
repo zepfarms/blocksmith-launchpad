@@ -124,7 +124,7 @@ export default function Overview() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl mt-4 sm:mt-6">
       {/* Welcome Banner */}
       <div className="glass-card p-6 md:p-8 mb-6 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-primary/20">
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
