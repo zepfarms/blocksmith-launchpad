@@ -1,5 +1,5 @@
 name,category,subtitle,description,is_free,typical_price,dependencies,tags,is_affiliate,affiliate_link,logo_url
-Business Name Generator,Foundation,Name Generator,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup",FALSE,,
+Business Name Generator,Foundation,Name Generator,AI-powered business name generation with 20 creative suggestions,TRUE,Free,,"branding,naming,ai,startup",FALSE,,/business-name-icon.png
 Logo Generator,Foundation,Logo Design,AI-powered professional logo design and generation,TRUE,Free,,"branding,identity,design,ai",FALSE,,/logo-generator-icon.png
 Business Plan Generator,Foundation,Business Plan,Generate a real downloaded PDF business plan for your business just by answering a few questions,TRUE,Free,,"planning,business,ai,foundation,pdf",FALSE,,
 Social Media Handle Checker,Foundation,Handle Checker,Check availability of your business name across all major social platforms,TRUE,Free,,"social,branding,handles,username,foundation",FALSE,,
