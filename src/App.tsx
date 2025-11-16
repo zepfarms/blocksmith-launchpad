@@ -15,6 +15,8 @@ import AdminCategories from "./pages/admin/Categories";
 import FailedPayments from "./pages/admin/FailedPayments";
 import Analytics from "./pages/admin/Analytics";
 import AdminBlocks from "./pages/admin/Blocks";
+import AffiliateBlocks from "./pages/admin/AffiliateBlocks";
+import AffiliateAnalytics from "./pages/admin/AffiliateAnalytics";
 import BlogPosts from "./pages/admin/BlogPosts";
 import BlogEditor from "./pages/admin/BlogEditor";
 import BlogCategories from "./pages/admin/BlogCategories";
@@ -93,6 +95,8 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
+              <Route path="/admin/affiliate-blocks" element={<AffiliateBlocks />} />
+              <Route path="/admin/affiliate-analytics" element={<AffiliateAnalytics />} />
               <Route path="/admin/blog" element={<BlogPosts />} />
               <Route path="/admin/blog/new" element={<BlogEditor />} />
               <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
