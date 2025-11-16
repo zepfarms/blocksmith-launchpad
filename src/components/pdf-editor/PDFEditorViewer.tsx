@@ -28,7 +28,7 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         // Preflight check: ensure SDK assets are available
         const probe = await fetch("/compdfkit/webviewer.js", { method: "HEAD" });
         if (!probe.ok) {
-          throw new Error("ComPDFKit assets not found at /compdfkit. Please contact support.");
+          throw new Error(`ComPDFKit assets missing. Expected /compdfkit/webviewer.js (status ${probe.status}).`);
         }
 
         // Dynamic import and normalize module shape
@@ -36,8 +36,12 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         const ComPDFKitViewer: any = (mod as any)?.default ?? (mod as any);
         
         if (typeof ComPDFKitViewer?.init !== "function") {
-          console.error("Unexpected ComPDFKit module shape:", mod);
-          throw new Error("ComPDFKitViewer.init not found. Please contact support.");
+          console.debug("ComPDFKit module shape", {
+            hasDefault: Boolean((mod as any)?.default),
+            keys: Object.keys(mod as any),
+            type: typeof ComPDFKitViewer,
+          });
+          throw new Error("ComPDFKitViewer.init not found. Check SDK version and import.");
         }
 
         await ComPDFKitViewer.init(
