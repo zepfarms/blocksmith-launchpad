@@ -46,14 +46,18 @@ const Dashboard = () => {
       const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
       const name = clean(matches[0]);
       const category = clean(matches[1]);
-      const description = clean(matches[2]);
-      const isAffiliateRaw = clean(matches[7]) || 'FALSE';
-      const affiliateLink = clean(matches[8]) || '';
-      const logoUrl = clean(matches[9]) || '';
+      const subtitle = clean(matches[2]);
+      const description = clean(matches[3]);
+      const isFreeRaw = clean(matches[4]) || 'TRUE';
+      const isAffiliateRaw = clean(matches[8]) || 'FALSE';
+      const affiliateLink = clean(matches[9]) || '';
+      const logoUrl = clean(matches[10]) || '';
       
       catalogMap.set(name, {
         category,
+        subtitle,
         description,
+        isFree: isFreeRaw.toUpperCase() === 'TRUE',
         isAffiliate: isAffiliateRaw.toUpperCase() === 'TRUE',
         affiliateLink,
         logoUrl
