@@ -323,6 +323,45 @@ export type Database = {
           },
         ]
       }
+      business_ideas: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string
+          display_order: number | null
+          growth_blocks: string
+          id: string
+          is_active: boolean
+          name: string
+          starter_blocks: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description: string
+          display_order?: number | null
+          growth_blocks: string
+          id?: string
+          is_active?: boolean
+          name: string
+          starter_blocks: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string
+          display_order?: number | null
+          growth_blocks?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          starter_blocks?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       business_plans: {
         Row: {
           business_id: string

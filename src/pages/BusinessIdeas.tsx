@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BusinessIdea {
   id: string;
@@ -23,30 +24,25 @@ const BusinessIdeas = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
-    fetch("/data/business_ideas_500.csv")
-      .then((res) => res.text())
-      .then((csv) => {
-        const lines = csv.split("\n").slice(1);
-        const parsed = lines
-          .filter((line) => line.trim())
-          .map((line) => {
-            const match = line.match(/^(\d+),([^,]+),"([^"]+)","([^"]+)","([^"]+)","([^"]+)"$/);
-            if (match) {
-              return {
-                id: match[1],
-                category: match[2],
-                name: match[3],
-                description: match[4],
-                starter_blocks: match[5],
-                growth_blocks: match[6],
-              };
-            }
-            return null;
-          })
-          .filter((item): item is BusinessIdea => item !== null);
-        setIdeas(parsed);
-        setFilteredIdeas(parsed);
-      });
+    const loadIdeas = async () => {
+      const { data, error } = await supabase
+        .from('business_ideas')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error loading business ideas:', error);
+        return;
+      }
+
+      if (data) {
+        setIdeas(data);
+        setFilteredIdeas(data);
+      }
+    };
+
+    loadIdeas();
   }, []);
 
   useEffect(() => {
