@@ -7,6 +7,7 @@ import { BetaSection } from "@/components/BetaSection";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { FeaturedTemplates } from "@/components/templates/FeaturedTemplates";
 import { AuthModal } from "@/components/AuthModal";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -90,6 +91,8 @@ const Index = () => {
       <div id="business-ideas">
         <BetaSection />
       </div>
+      
+      <FeaturedTemplates />
       
       <CTASection />
       
