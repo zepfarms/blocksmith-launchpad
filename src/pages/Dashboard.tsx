@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [userEmail, setUserEmail] = useState("");
   const [emailVerified, setEmailVerified] = useState(true);
   const [showVerificationBanner, setShowVerificationBanner] = useState(false);
+  const [activeTab, setActiveTab] = useState("my-apps");
 
   const loadBlocksCatalog = async (): Promise<Map<string, any>> => {
     const response = await fetch('/data/blocks_catalog.csv');
@@ -67,49 +68,48 @@ const Dashboard = () => {
     return catalogMap;
   };
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+  const loadDashboardData = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      navigate("/");
+      return;
+    }
+
+    setUserEmail(session.user.email || "");
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('email_verified')
+      .eq('id', session.user.id)
+      .maybeSingle();
+    
+    const verified = (profile as any)?.email_verified ?? true;
+    setEmailVerified(verified);
+    setShowVerificationBanner(!verified);
+
+    const { data, error } = await supabase
+      .from('user_businesses')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error loading business data:', error);
+      return;
+    }
+
+    if (data) {
+      setBusinessData(data);
       
-      if (!session) {
-        navigate("/");
-        return;
-      }
-
-      setUserEmail(session.user.email || "");
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('email_verified')
-        .eq('id', session.user.id)
-        .maybeSingle();
+      const { data: unlockedBlocks } = await supabase
+        .from('user_block_unlocks')
+        .select('block_name, completion_status')
+        .eq('user_id', session.user.id);
       
-      const verified = (profile as any)?.email_verified ?? true;
-      setEmailVerified(verified);
-      setShowVerificationBanner(!verified);
-
-      const { data, error } = await supabase
-        .from('user_businesses')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error loading business data:', error);
-        return;
-      }
-
-      if (data) {
-        setBusinessData(data);
-        
-        const { data: unlockedBlocks } = await supabase
-          .from('user_block_unlocks')
-          .select('block_name, completion_status')
-          .eq('user_id', session.user.id);
-        
-        const legacyBlocks = data.selected_blocks || [];
-        const appStoreBlocks = unlockedBlocks?.map(u => u.block_name) || [];
-        const allBlocks = [...new Set([...legacyBlocks, ...appStoreBlocks])];
+      const legacyBlocks = data.selected_blocks || [];
+      const appStoreBlocks = unlockedBlocks?.map(u => u.block_name) || [];
+      const allBlocks = [...new Set([...legacyBlocks, ...appStoreBlocks])];
         
         const dashboardItems: DashboardItem[] = [];
         const blocksCatalog = await loadBlocksCatalog();
@@ -289,10 +289,11 @@ const Dashboard = () => {
       }
     };
 
-    checkAuth();
+  useEffect(() => {
+    loadDashboardData();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      checkAuth();
+      loadDashboardData();
     });
 
     return () => {
@@ -376,7 +377,7 @@ const Dashboard = () => {
       )}
 
       <div className="container mx-auto px-4 py-8 pt-24 max-w-7xl">
-        <Tabs defaultValue="my-apps" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/5 border border-white/10">
             <TabsTrigger value="my-apps" className="data-[state=active]:bg-acari-green/20">
               <LayoutDashboard className="w-4 h-4 mr-2" />
@@ -531,7 +532,10 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="app-store" className="space-y-6">
-            <AppStore />
+            <AppStore onDataChanged={() => {
+              loadDashboardData();
+              setActiveTab("my-apps");
+            }} />
           </TabsContent>
 
           <TabsContent value="account" className="space-y-6">

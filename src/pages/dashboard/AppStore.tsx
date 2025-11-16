@@ -71,7 +71,11 @@ interface BlockPricing {
   description: string | null;
 }
 
-export default function AppStore() {
+interface AppStoreProps {
+  onDataChanged?: () => void;
+}
+
+export default function AppStore({ onDataChanged }: AppStoreProps = {}) {
   const navigate = useNavigate();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -321,7 +325,10 @@ export default function AppStore() {
         await unlockFreeBlocks();
         toast.success(`${freeBlocks.length} free block${freeBlocks.length > 1 ? 's' : ''} added to your dashboard!`);
         setCart([]);
-        navigate('/dashboard');
+        // Trigger dashboard refresh and switch to My Apps tab
+        if (onDataChanged) {
+          onDataChanged();
+        }
         return;
       }
 
