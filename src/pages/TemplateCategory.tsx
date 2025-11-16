@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TemplateCard } from "@/components/templates/TemplateCard";
 import { TemplateFilters } from "@/components/templates/TemplateFilters";
 import { TemplateSearch } from "@/components/templates/TemplateSearch";
+import { PDFEditorPromo } from "@/components/templates/PDFEditorPromo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
@@ -342,6 +343,11 @@ export default function TemplateCategory() {
 
           {/* Templates Grid */}
           <div className="flex-1">
+            {/* PDF Editor Promo */}
+            <div className="mb-8">
+              <PDFEditorPromo />
+            </div>
+            
             <div className="mb-6">
               <TemplateSearch value={searchQuery} onChange={setSearchQuery} />
             </div>
