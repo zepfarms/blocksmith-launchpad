@@ -132,18 +132,20 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
     e.preventDefault();
     setLoading(true);
 
-    const { data, error } = await supabase.auth.verifyOtp({
-      email: pendingEmail,
-      token: verificationCode,
-      type: 'signup',
+    // Use custom verify-email edge function instead of Supabase's verifyOtp
+    const { data, error } = await supabase.functions.invoke('verify-email', {
+      body: { 
+        email: pendingEmail,
+        code: verificationCode 
+      }
     });
 
     setLoading(false);
 
-    if (error) {
+    if (error || data?.error) {
       toast({
         title: "Verification failed",
-        description: error.message,
+        description: error?.message || data?.error || "Invalid verification code",
         variant: "destructive",
       });
       return;
