@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Upload, FileText, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { Upload, FileText, Trash2, ExternalLink, Loader2, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { AuthModal } from "@/components/AuthModal";
@@ -31,6 +31,7 @@ interface Template {
   thumbnail_url: string;
   is_premium: boolean;
   is_editable_online: boolean;
+  is_featured: boolean;
   download_count: number;
   view_count: number;
   created_at: string;
@@ -684,6 +685,7 @@ export default function DocumentLibrary() {
                     <TableHead>Title</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Type</TableHead>
+                    <TableHead className="text-center">Featured</TableHead>
                     <TableHead className="text-center">Downloads</TableHead>
                     <TableHead className="text-center">Views</TableHead>
                     <TableHead>Status</TableHead>
@@ -701,6 +703,13 @@ export default function DocumentLibrary() {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline">{template.file_type}</Badge>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {template.is_featured ? (
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mx-auto" />
+                        ) : (
+                          <Star className="h-4 w-4 text-muted-foreground/30 mx-auto" />
+                        )}
                       </TableCell>
                       <TableCell className="text-center">
                         {template.download_count}
