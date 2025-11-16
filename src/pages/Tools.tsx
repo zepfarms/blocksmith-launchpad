@@ -60,8 +60,9 @@ export default function Tools() {
       
       setBlocks((data || []) as Block[]);
       
+      // Extract unique categories and filter out empty/null values
       const uniqueCategories = Array.from(
-        new Set(data?.map((block) => block.category) || [])
+        new Set(data?.map((block) => block.category).filter(cat => cat && cat.trim() !== "") || [])
       );
       setCategories(uniqueCategories);
     } catch (error) {
@@ -130,7 +131,7 @@ export default function Tools() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((category) => (
+                {categories.filter(cat => cat && cat.trim() !== "").map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
