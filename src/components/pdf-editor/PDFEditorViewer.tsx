@@ -19,6 +19,37 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
 
     let timeoutId: number | undefined;
 
+    const resolveSdkPath = async (): Promise<string> => {
+      const candidates = [
+        "/compdfkit/dist",
+        "/compdfkit/public",
+        "/compdfkit/lib",
+        "/compdfkit/resources",
+        "/compdfkit/static",
+        "/compdfkit/build",
+        "/compdfkit",
+      ];
+
+      for (const candidate of candidates) {
+        try {
+          const minified = await fetch(`${candidate}/webviewer.min.js`, { method: "HEAD" });
+          if (minified.ok) {
+            console.log(`[PDFEditor] Found SDK at ${candidate}/webviewer.min.js`);
+            return candidate;
+          }
+          const normal = await fetch(`${candidate}/webviewer.js`, { method: "HEAD" });
+          if (normal.ok) {
+            console.log(`[PDFEditor] Found SDK at ${candidate}/webviewer.js`);
+            return candidate;
+          }
+        } catch (e) {
+          // Continue to next candidate
+        }
+      }
+      console.warn("[PDFEditor] No SDK path found, using fallback");
+      return "/compdfkit";
+    };
+
     const initializeViewer = async () => {
       try {
         setLoading(true);
@@ -39,8 +70,27 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           return;
         }
 
+        // Verify PDF is reachable
+        console.log("[PDFEditor] Checking PDF reachability:", pdfUrl);
+        try {
+          const pdfCheck = await fetch(pdfUrl, { method: "HEAD" });
+          if (!pdfCheck.ok) {
+            setError("Your PDF file couldn't be reached. Please try again.");
+            setLoading(false);
+            return;
+          }
+          console.log("[PDFEditor] PDF is reachable");
+        } catch (e) {
+          setError("Your PDF file couldn't be reached. Please check your connection.");
+          setLoading(false);
+          return;
+        }
+
         const rect = containerRef.current.getBoundingClientRect();
         console.log("[PDFEditor] Container rect", rect);
+
+        // Auto-detect the correct SDK path
+        const sdkPath = await resolveSdkPath();
 
         // Dynamic import from npm package
         const mod: any = await import("@compdfkit_pdf_sdk/webviewer");
@@ -60,14 +110,14 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         const options = {
           pdfUrl,
           license: publicKey,
-          path: "/compdfkit",
+          path: sdkPath,
         } as const;
         console.log("[PDFEditor] Initializing ComPDFKit", options);
 
         timeoutId = window.setTimeout(() => {
-          console.warn("[PDFEditor] Viewer timed out after 8s");
+          console.warn("[PDFEditor] Viewer timed out after 15s");
           setTimedOut(true);
-        }, 8000);
+        }, 15000);
 
         const instance = await WebViewer.init(options, containerRef.current!);
         console.log("[PDFEditor] ComPDFKit ready", { instance });

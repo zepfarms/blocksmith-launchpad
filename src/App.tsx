@@ -142,8 +142,7 @@ function App() {
                 <Route path="signup" element={<Signup />} />
               </Route>
               
-              {/* ComPDFKit asset routes - prevent SPA 404 */}
-              <Route path="/compdfkit/*" element={<></>} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
