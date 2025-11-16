@@ -316,6 +316,12 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
     starterBlockList = allBlocks.filter(b => combinedStarterNames.includes(b.title));
   }
   
+  // Fallback: if no blocks matched, show 5 random blocks
+  if (starterBlockList.length === 0 && allBlocks.length > 0) {
+    const shuffled = [...allBlocks].sort(() => 0.5 - Math.random());
+    starterBlockList = shuffled.slice(0, 5);
+  }
+  
   const growthBlockNames = growthBlocks.split(',').map(s => s.trim()).filter(Boolean);
   const growthBlockList = allBlocks.filter(b => 
     growthBlockNames.includes(b.title) && !starterBlockList.some(s => s.title === b.title)
@@ -355,6 +361,14 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
     onComplete(selectedTitles, paidOneTimeBlocks);
   };
 
+  // Auto-select the initial blocks if nothing is selected
+  useEffect(() => {
+    if (selectedBlocks.length === 0 && starterBlockList.length > 0) {
+      const autoSelectIds = starterBlockList.map(b => b.id);
+      setSelectedBlocks(autoSelectIds);
+    }
+  }, [starterBlockList.length]);
+
   return (
     <section className="relative pt-44 pb-20 px-4 sm:px-6 bg-background">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -363,8 +377,13 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
           <h2 className="text-4xl md:text-5xl font-black tracking-tight">
             Here's your starter plan
           </h2>
-          <p className="text-xl text-muted-foreground">
-            You can add or remove blocks now
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            {businessType === 'existing' 
+              ? 'Based on your business information, we\'ve curated some tools that might help you run your business more smoothly. You can add or remove any tools now, and you can always add more later from your dashboard.'
+              : 'Based on your business idea, we\'ve selected some essential tools to help you get started. Feel free to customize your selection - you can always add more tools later from your dashboard.'}
+          </p>
+          <p className="text-base text-muted-foreground/80 max-w-2xl mx-auto mt-2">
+            💡 Don't see any tools you like? Click "See More Blocks" below to browse our complete collection.
           </p>
 
         </div>
@@ -574,16 +593,22 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
 
           <button
             onClick={handleContinue}
-            disabled={selectedBlocks.length === 0}
-            className="group px-16 py-4 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
+            className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 min-w-[280px]"
           >
-            Continue
-            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+            <CheckCircle2 className="w-5 h-5" />
+            {selectedBlocks.length === 0 ? (
+              'Continue Without Tools'
+            ) : (
+              `Continue with ${selectedBlocks.length} Block${selectedBlocks.length !== 1 ? 's' : ''}`
+            )}
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
 
-          <p className="text-sm text-muted-foreground font-light text-center">
-            Save your plan. You'll only pay when you click Launch later.
-          </p>
+          {selectedBlocks.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              You can add tools later from your dashboard
+            </p>
+          )}
         </div>
       </div>
 
