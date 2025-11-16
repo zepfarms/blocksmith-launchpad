@@ -39,29 +39,24 @@ export function DashboardSidebar() {
 
   return (
     <Sidebar
-      className={`${collapsed ? "w-14" : "w-[280px] sm:w-60"} border-r border-white/10 bg-black/40 backdrop-blur-xl`}
-      collapsible="icon"
+      className="w-[200px] sm:w-60 border-r border-white/10 bg-black/40 backdrop-blur-xl"
+      collapsible="none"
     >
       <SidebarContent className="mt-16 sm:mt-20">
-        {/* Close button for mobile - positioned in menu */}
-        {!collapsed && (
-          <div className="lg:hidden px-4 py-3 border-b border-white/10 mb-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setOpen(false)}
-              className="w-full text-white border-white/20 hover:bg-white/10 flex items-center justify-center gap-2"
-            >
-              <X className="h-4 w-4" />
-              Close Menu
-            </Button>
-          </div>
-        )}
+        {/* Close button for mobile only */}
+        <div className="lg:hidden px-3 py-2 mb-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setOpen(false)}
+            className="w-full text-white/70 hover:bg-white/10 hover:text-white flex items-center justify-start gap-2"
+          >
+            <X className="h-4 w-4" />
+            <span className="text-sm">Close</span>
+          </Button>
+        </div>
         
         <SidebarGroup>
-          <SidebarGroupLabel className={collapsed ? "sr-only" : "text-xs sm:text-sm"}>
-            Navigation
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -70,11 +65,17 @@ export function DashboardSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.end}
-                      className="hover:bg-white/5 rounded-md transition-colors text-sm sm:text-base py-2" 
+                      className="hover:bg-white/5 rounded-md transition-colors text-sm py-2.5" 
                       activeClassName="bg-white/10 text-primary font-medium"
+                      onClick={() => {
+                        // Close sidebar on mobile after navigation
+                        if (window.innerWidth < 1024) {
+                          setOpen(false);
+                        }
+                      }}
                     >
-                      <item.icon className={`${collapsed ? "" : "mr-2"} h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0`} />
-                      {!collapsed && <span className="truncate">{item.title}</span>}
+                      <item.icon className="mr-3 h-5 w-5 flex-shrink-0" />
+                      <span className="truncate">{item.title}</span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
