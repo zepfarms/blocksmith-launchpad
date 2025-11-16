@@ -7,7 +7,7 @@ import {
   Shield, 
   Wallet, 
   Headphones,
-  Sparkles, 
+  Sparkles,
   FileText, 
   Globe, 
   Mail, 
@@ -16,7 +16,6 @@ import {
   Clock,
   CheckCircle,
   ArrowRight,
-  Palette,
   MessageSquare,
   QrCode,
   BadgeCheck,
@@ -31,30 +30,6 @@ const Features = () => {
   const navigate = useNavigate();
 
   const quickAccessTools = [
-    {
-      icon: Palette,
-      name: "Logo Generator",
-      description: "AI-powered logo designs for your brand",
-      category: "Branding",
-      route: "/dashboard/logo-generation",
-      color: "from-purple-500/20 to-pink-500/20"
-    },
-    {
-      icon: Sparkles,
-      name: "Business Name Generator",
-      description: "Find the perfect name for your business",
-      category: "Branding",
-      route: "/dashboard/business-name",
-      color: "from-blue-500/20 to-cyan-500/20"
-    },
-    {
-      icon: FileText,
-      name: "Business Plan Generator",
-      description: "Professional business plans in minutes",
-      category: "Planning",
-      route: "/dashboard/business-plan",
-      color: "from-green-500/20 to-emerald-500/20"
-    },
     {
       icon: QrCode,
       name: "QR Code Generator",

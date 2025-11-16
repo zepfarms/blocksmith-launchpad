@@ -30,7 +30,6 @@ import Help from "./pages/dashboard/Help";
 import Subscriptions from "./pages/dashboard/Subscriptions";
 import { PurchaseHistory } from "./pages/dashboard/PurchaseHistory";
 import { SubscriptionCheckout } from "./pages/dashboard/SubscriptionCheckout";
-import BusinessIdeas from "./pages/BusinessIdeas";
 import Templates from "./pages/Templates";
 import TemplateDetail from "./pages/TemplateDetail";
 import TemplateCategory from "./pages/TemplateCategory";
@@ -47,9 +46,6 @@ import Careers from "./pages/Careers";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
-import LogoGeneration from "./pages/dashboard/LogoGeneration";
-import BusinessNameGenerator from "./pages/dashboard/BusinessNameGenerator";
-import BusinessPlanGenerator from "./pages/dashboard/BusinessPlanGenerator";
 import SocialMediaChecker from "./pages/dashboard/SocialMediaChecker";
 import QRCodeGenerator from "./pages/dashboard/QRCodeGenerator";
 import EmailSignatureGenerator from "./pages/dashboard/EmailSignatureGenerator";
@@ -86,9 +82,6 @@ function App() {
                 <Route path="settings" element={<DashboardSettings />} />
                 <Route path="help" element={<Help />} />
                 {/* Tool-specific routes */}
-                <Route path="logos" element={<LogoGeneration />} />
-                <Route path="business-name-generator" element={<BusinessNameGenerator />} />
-                <Route path="business-plan-generator" element={<BusinessPlanGenerator />} />
                 <Route path="social-media-checker" element={<SocialMediaChecker />} />
                 <Route path="qr-code-generator" element={<QRCodeGenerator />} />
                 <Route path="email-signature-generator" element={<EmailSignatureGenerator />} />

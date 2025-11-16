@@ -123,23 +123,6 @@ const Dashboard = () => {
             continue;
           }
           
-          if (blockName === 'Business Name Generator') {
-            dashboardItems.push({
-              id: "business-name-generator",
-              title: "Business Name Generator",
-              completionStatus,
-              description: data.business_name 
-                ? `Current name: ${data.business_name}`
-                : "Choose your perfect business name",
-              isFree: true,
-              category: catalogInfo?.category,
-              isAffiliate: catalogInfo?.isAffiliate,
-              affiliateLink: catalogInfo?.affiliateLink,
-              logoUrl: catalogInfo?.logoUrl,
-            });
-            continue;
-          }
-          
           if (blockName === 'Domain Name Generator') {
             const { data: domainData } = await supabase
               .from('user_domain_selections')
@@ -156,53 +139,6 @@ const Dashboard = () => {
                   : completionStatus === "completed"
                   ? "Skipped for now"
                   : "Enter your domain or generate new ideas for your business",
-              isFree: true,
-              category: catalogInfo?.category,
-              isAffiliate: catalogInfo?.isAffiliate,
-              affiliateLink: catalogInfo?.affiliateLink,
-              logoUrl: catalogInfo?.logoUrl,
-            });
-            continue;
-          }
-          
-          if (blockName === 'Logo Generator') {
-            const { data: logoAssets } = await supabase
-              .from('user_assets')
-              .select('*')
-              .eq('user_id', session.user.id)
-              .eq('business_id', data.id)
-              .eq('asset_type', 'logo');
-
-            dashboardItems.push({
-              id: "logo-generator",
-              title: "Logo Generator",
-              completionStatus,
-              description: logoAssets && logoAssets.length > 0
-                ? `${logoAssets.length} logo${logoAssets.length !== 1 ? 's' : ''} saved`
-                : "Create your professional logo",
-              isFree: true,
-              category: catalogInfo?.category,
-              isAffiliate: catalogInfo?.isAffiliate,
-              affiliateLink: catalogInfo?.affiliateLink,
-              logoUrl: catalogInfo?.logoUrl,
-            });
-            continue;
-          }
-          
-          if (blockName === 'Business Plan Generator') {
-            const { data: planData } = await supabase
-              .from('business_plans')
-              .select('*')
-              .eq('business_id', data.id)
-              .maybeSingle();
-
-            dashboardItems.push({
-              id: "business-plan-generator",
-              title: "Business Plan Generator",
-              completionStatus,
-              description: planData
-                ? "Business plan created - View and edit"
-                : "Generate a professional SBA-quality business plan",
               isFree: true,
               category: catalogInfo?.category,
               isAffiliate: catalogInfo?.isAffiliate,
@@ -313,12 +249,6 @@ const Dashboard = () => {
         break;
       case 'domain-name-generator':
         navigate('/start/domain-selection');
-        break;
-      case 'logo-generator':
-        navigate('/dashboard/logo-generation');
-        break;
-      case 'business-plan-generator':
-        navigate('/dashboard/business-plan-generator');
         break;
       case 'social-media-checker':
         navigate('/dashboard/social-media-checker');
