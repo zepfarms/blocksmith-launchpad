@@ -237,7 +237,7 @@ export const Signup = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
@@ -245,14 +245,17 @@ export const Signup = () => {
                 Creating account...
               </>
             ) : (
-              "Create account & save"
+              <>
+                <CheckCircle className="w-5 h-5" />
+                Create account & save
+              </>
             )}
           </button>
 
           <button
             type="button"
             onClick={() => navigate("/start/blocks")}
-            className="w-full px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
           >
             Back
           </button>

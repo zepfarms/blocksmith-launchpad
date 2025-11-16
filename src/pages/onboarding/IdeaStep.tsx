@@ -30,17 +30,17 @@ export const IdeaStep = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={handleExistingBusiness}
-            className="group px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
+            className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
           >
             Already have a business
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
           <button
             onClick={handleNewBusiness}
-            className="px-10 py-5 border-2 border-white/20 text-white rounded-full font-medium text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+            className="px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
           >
             I want to start a business
-            <span>→</span>
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
         </div>
       </div>
