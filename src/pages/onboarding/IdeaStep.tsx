@@ -16,7 +16,7 @@ export const IdeaStep = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background">
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background pt-32">
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
         <div className="text-center space-y-4">
           <h2 className="text-4xl md:text-5xl font-black tracking-tight">
