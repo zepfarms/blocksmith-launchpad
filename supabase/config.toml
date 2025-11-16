@@ -68,3 +68,9 @@ verify_jwt = false
 
 [functions.send-newsletter-confirmation]
 verify_jwt = false
+
+[functions.track-affiliate-click]
+verify_jwt = false
+
+[functions.fetch-logo-from-url]
+verify_jwt = false

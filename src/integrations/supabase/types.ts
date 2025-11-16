@@ -47,6 +47,95 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_blocks: {
+        Row: {
+          affiliate_link: string | null
+          category: string
+          click_count: number | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          id: string
+          is_active: boolean | null
+          is_affiliate: boolean | null
+          logo_url: string | null
+          name: string
+          subtitle: string | null
+          tags: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          affiliate_link?: string | null
+          category: string
+          click_count?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          id?: string
+          is_active?: boolean | null
+          is_affiliate?: boolean | null
+          logo_url?: string | null
+          name: string
+          subtitle?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          affiliate_link?: string | null
+          category?: string
+          click_count?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean | null
+          is_affiliate?: boolean | null
+          logo_url?: string | null
+          name?: string
+          subtitle?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      affiliate_clicks: {
+        Row: {
+          block_id: string | null
+          clicked_at: string | null
+          id: string
+          ip_address: string | null
+          referrer: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          block_id?: string | null
+          clicked_at?: string | null
+          id?: string
+          ip_address?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          block_id?: string | null
+          clicked_at?: string | null
+          id?: string
+          ip_address?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_clicks_block_id_fkey"
+            columns: ["block_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_blocks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       block_categories: {
         Row: {
           created_at: string
