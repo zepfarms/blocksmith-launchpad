@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PDFEditorViewer } from "./PDFEditorViewer";
+import { PDFDiagnosticsPanel } from "./PDFDiagnosticsPanel";
 import { SaveDialog } from "./SaveDialog";
 import { UpgradeModal } from "./UpgradeModal";
 
@@ -140,7 +141,13 @@ export function DocumentEditor({ documentId, templateId, onBack }: DocumentEdito
         </div>
       </div>
 
-      <div className="flex-1">
+      {import.meta.env.DEV && (
+        <div className="container mx-auto px-4 py-2">
+          <PDFDiagnosticsPanel />
+        </div>
+      )}
+
+      <div className="flex-1 flex flex-col">
         <PDFEditorViewer pdfUrl={pdfUrl} />
       </div>
 
