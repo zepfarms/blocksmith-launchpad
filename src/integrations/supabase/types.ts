@@ -50,48 +50,78 @@ export type Database = {
       affiliate_blocks: {
         Row: {
           affiliate_link: string | null
+          block_type: string | null
           category: string
           click_count: number | null
           created_at: string | null
           created_by: string | null
           description: string
+          display_order: number | null
           id: string
+          internal_route: string | null
           is_active: boolean | null
           is_affiliate: boolean | null
+          is_featured: boolean | null
           logo_url: string | null
+          monthly_price_cents: number | null
           name: string
+          price_cents: number | null
+          pricing_type: string | null
+          stripe_monthly_price_id: string | null
+          stripe_price_id: string | null
+          stripe_product_id: string | null
           subtitle: string | null
           tags: string[] | null
           updated_at: string | null
         }
         Insert: {
           affiliate_link?: string | null
+          block_type?: string | null
           category: string
           click_count?: number | null
           created_at?: string | null
           created_by?: string | null
           description: string
+          display_order?: number | null
           id?: string
+          internal_route?: string | null
           is_active?: boolean | null
           is_affiliate?: boolean | null
+          is_featured?: boolean | null
           logo_url?: string | null
+          monthly_price_cents?: number | null
           name: string
+          price_cents?: number | null
+          pricing_type?: string | null
+          stripe_monthly_price_id?: string | null
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
           subtitle?: string | null
           tags?: string[] | null
           updated_at?: string | null
         }
         Update: {
           affiliate_link?: string | null
+          block_type?: string | null
           category?: string
           click_count?: number | null
           created_at?: string | null
           created_by?: string | null
           description?: string
+          display_order?: number | null
           id?: string
+          internal_route?: string | null
           is_active?: boolean | null
           is_affiliate?: boolean | null
+          is_featured?: boolean | null
           logo_url?: string | null
+          monthly_price_cents?: number | null
           name?: string
+          price_cents?: number | null
+          pricing_type?: string | null
+          stripe_monthly_price_id?: string | null
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
           subtitle?: string | null
           tags?: string[] | null
           updated_at?: string | null
