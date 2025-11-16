@@ -430,7 +430,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
 
             {/* Partnership Blocks */}
             {partnershipBlocks.length > 0 && (
-              <div className="space-y-4">
+              <div className="space-y-4 pt-8">
                 <div className="flex items-center gap-3">
                   <h3 className="text-2xl font-bold">🤝 Partnership Tools</h3>
                   <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/30">
@@ -440,7 +440,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
                 <p className="text-muted-foreground">
                   Recommended tools from our trusted partners to help you build your business
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-6">
                 {partnershipBlocks.map((block, index) => (
                   <BlockCard
                     key={block.id}
