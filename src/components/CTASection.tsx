@@ -34,12 +34,12 @@ export const CTASection = () => {
 
               <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-4 justify-center items-center w-full px-2">
                 <button onClick={() => navigate("/start")} className="group px-5 py-3 sm:px-10 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/10 transition-all duration-200 inline-flex items-center justify-center gap-2">
-                  Start Building Free
+                  Get Started
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                 </button>
 
                 <button onClick={() => navigate("/features")} className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 inline-flex items-center justify-center gap-2">
-                  Explore Features
+                  Features
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
