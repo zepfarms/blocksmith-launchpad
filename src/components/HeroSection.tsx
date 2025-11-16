@@ -60,7 +60,7 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
 
           {/* Subheadline */}
           <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto font-light pt-4 px-2 break-words">
-            Curated Tools to Start, Run, and Grow Your Company
+            Get matched with apps to Start, Run and Grow Your Business
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
             onClick={onCTAClick}
             className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
           >
-            Match and Grow Now
+            Find Your Tools Now
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
           <button

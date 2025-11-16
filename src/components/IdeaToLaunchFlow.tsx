@@ -59,14 +59,14 @@ export function IdeaToLaunchFlow() {
         {/* Heading */}
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
-            From idea to launch in one flow
+            Get matched with apps to Start, Run and Grow Your Business
           </h2>
           <p className="mt-3 text-sm sm:text-base text-muted-foreground">
-            Watch how Acari turns a simple idea{" "}
+            Watch how Acari matches you with the right tools{" "}
             <span className="text-acari-green">
-              "I want to start a lawn care business"
-            </span>{" "}
-            into a fully launched business.
+              to turn your business idea into reality
+            </span>
+            .
           </p>
         </div>
 
