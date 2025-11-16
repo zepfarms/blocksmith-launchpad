@@ -20,6 +20,18 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
     let timeoutId: number | undefined;
 
     const resolveSdkPath = async (): Promise<string> => {
+      // First check if the UI bundle is available (preferred path)
+      try {
+        const uiResponse = await fetch("/compdfkit/ui/index.html", { method: "HEAD" });
+        if (uiResponse.ok) {
+          console.log("[PDFEditor] Found UI → using /compdfkit");
+          return "/compdfkit";
+        }
+      } catch (e) {
+        // UI not found, try other paths
+      }
+
+      // Fallback: check other subfolders for webviewer files
       const candidates = [
         "/compdfkit/dist",
         "/compdfkit/public",
@@ -27,26 +39,24 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         "/compdfkit/resources",
         "/compdfkit/static",
         "/compdfkit/build",
-        "/compdfkit",
       ];
 
       for (const candidate of candidates) {
-        try {
-          const minified = await fetch(`${candidate}/webviewer.min.js`, { method: "HEAD" });
-          if (minified.ok) {
-            console.log(`[PDFEditor] Found SDK at ${candidate}/webviewer.min.js`);
-            return candidate;
+        for (const fileName of ["webviewer.min.js", "webviewer.js"]) {
+          const url = `${candidate}/${fileName}`;
+          try {
+            const response = await fetch(url, { method: "HEAD" });
+            if (response.ok) {
+              console.log(`[PDFEditor] Found SDK at ${candidate} → using /compdfkit`);
+              return "/compdfkit";
+            }
+          } catch (e) {
+            // Continue to next candidate
           }
-          const normal = await fetch(`${candidate}/webviewer.js`, { method: "HEAD" });
-          if (normal.ok) {
-            console.log(`[PDFEditor] Found SDK at ${candidate}/webviewer.js`);
-            return candidate;
-          }
-        } catch (e) {
-          // Continue to next candidate
         }
       }
-      console.warn("[PDFEditor] No SDK path found, using fallback");
+
+      console.warn("[PDFEditor] No SDK path found, defaulting to /compdfkit");
       return "/compdfkit";
     };
 
@@ -127,7 +137,7 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         const options = {
           pdfUrl,
           license: publicKey,
-          path: sdkPath,
+          path: "/compdfkit",
         } as const;
         console.log("[PDFEditor] Initializing ComPDFKit", options);
 

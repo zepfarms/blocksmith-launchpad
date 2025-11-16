@@ -7,7 +7,7 @@ import fs from "fs";
 
 // ComPDFKit asset copy helper: probe known subfolders at runtime to avoid copy errors
 const webviewerRoot = path.resolve(__dirname, "node_modules/@compdfkit_pdf_sdk/webviewer");
-const compdfkitCandidates = ["public", "dist", "lib", "resources", "static", "build"];
+const compdfkitCandidates = ["public", "dist", "lib", "resources", "static", "build", "ui"];
 
 function buildComPDFKitTargets() {
   const targets: { src: string; dest: string }[] = [];
