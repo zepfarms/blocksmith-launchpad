@@ -415,7 +415,7 @@ export const QuestionnaireStep = ({ initialData, onComplete, onBack }: Questionn
 
   return (
     <Card className="w-full max-w-3xl mx-auto">
-      <CardHeader>
+      <CardHeader className="pt-8">
         <div className="flex items-center justify-between mb-4">
           <Badge variant="outline" className="text-sm">
             Step {currentStep + 1} of {steps.length}

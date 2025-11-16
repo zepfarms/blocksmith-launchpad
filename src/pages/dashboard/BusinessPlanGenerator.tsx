@@ -270,7 +270,7 @@ export default function BusinessPlanGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background pt-24 p-6">
       {renderStep()}
     </div>
   );

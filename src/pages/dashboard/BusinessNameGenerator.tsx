@@ -178,7 +178,7 @@ export default function BusinessNameGenerator() {
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       <Header />
       
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="container mx-auto px-4 pt-24 pb-8 max-w-5xl">
         <Button
           variant="ghost"
           onClick={() => navigate('/dashboard')}
