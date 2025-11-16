@@ -129,7 +129,7 @@ export const Footer = () => {
               </ul>
             </div>
 
-            <div>
+            <div className="hidden md:block">
               <h4 className="font-semibold mb-2 sm:mb-3 text-white text-sm sm:text-base">Connect</h4>
               <div className="flex items-center gap-3 mb-4">
                 <a
