@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Sparkles, CheckCircle2, Search } from "lucide-react";
+import { toast } from "sonner";
 
 interface BusinessIdea {
   id: string;
@@ -34,34 +35,28 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [selectedIdeaRow, setSelectedIdeaRow] = useState<BusinessIdea | null>(null);
 
-  // Load business ideas from CSV
+  // Load business ideas from database
   useEffect(() => {
-    fetch('/data/business_ideas.csv')
-      .then(res => res.text())
-      .then(text => {
-        const lines = text.split('\n').slice(1); // Skip header
-        const ideas: BusinessIdea[] = lines
-          .filter(line => line.trim())
-          .map((line, index) => {
-            const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-            if (!matches || matches.length < 6) return null;
-            
-            const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
-            
-            return {
-              id: clean(matches[0]) || String(index + 1),
-              category: clean(matches[1]),
-              name: clean(matches[2]),
-              description: clean(matches[3]),
-              starter_blocks: clean(matches[4]),
-              growth_blocks: clean(matches[5])
-            };
-          })
-          .filter((idea): idea is BusinessIdea => idea !== null);
-        
-        setBusinessIdeas(ideas);
-        setFilteredIdeas(ideas);
-      });
+    const loadIdeas = async () => {
+      const { data, error } = await supabase
+        .from('business_ideas')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error loading business ideas:', error);
+        toast.error('Failed to load business ideas');
+        return;
+      }
+
+      if (data) {
+        setBusinessIdeas(data);
+        setFilteredIdeas(data);
+      }
+    };
+
+    loadIdeas();
   }, []);
 
   // Filter ideas based on search and category

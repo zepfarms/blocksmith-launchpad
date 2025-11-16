@@ -22,33 +22,26 @@ export const DescribeIdea = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [businessIdeas, setBusinessIdeas] = useState<BusinessIdea[]>([]);
 
-  // Load business ideas from CSV
+  // Load business ideas from database
   useEffect(() => {
-    fetch('/data/business_ideas.csv')
-      .then(res => res.text())
-      .then(text => {
-        const lines = text.split('\n').slice(1);
-        const ideas: BusinessIdea[] = lines
-          .filter(line => line.trim())
-          .map((line, index) => {
-            const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-            if (!matches || matches.length < 6) return null;
-            
-            const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
-            
-            return {
-              id: clean(matches[0]) || String(index + 1),
-              category: clean(matches[1]),
-              name: clean(matches[2]),
-              description: clean(matches[3]),
-              starter_blocks: clean(matches[4]),
-              growth_blocks: clean(matches[5])
-            };
-          })
-          .filter((idea): idea is BusinessIdea => idea !== null);
-        
-        setBusinessIdeas(ideas);
-      });
+    const loadIdeas = async () => {
+      const { data, error } = await supabase
+        .from('business_ideas')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error loading business ideas:', error);
+        return;
+      }
+
+      if (data) {
+        setBusinessIdeas(data);
+      }
+    };
+
+    loadIdeas();
   }, []);
 
   const handleSubmitIdea = async () => {
