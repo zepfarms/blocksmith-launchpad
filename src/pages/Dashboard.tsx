@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { CheckCircle2, Rocket, LayoutDashboard, User, CreditCard, Briefcase, Trash2, Eye, Store, HelpCircle, BookOpen, MessageCircle, FileText } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { LayoutDashboard, User, Briefcase, Trash2, Eye, Store } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
@@ -33,7 +31,6 @@ const Dashboard = () => {
   const [userEmail, setUserEmail] = useState("");
   const [emailVerified, setEmailVerified] = useState(true);
   const [showVerificationBanner, setShowVerificationBanner] = useState(false);
-  const [showCompleted, setShowCompleted] = useState(false);
 
   const loadBlocksCatalog = async (): Promise<Map<string, any>> => {
     const response = await fetch('/data/blocks_catalog.csv');
@@ -148,23 +145,23 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
           if (blockName === 'Domain Name Generator') {
             const { data: domainData } = await supabase
               .from('user_domain_selections')
               .select('*')
-              .eq('user_id', session.user.id)
               .eq('business_id', data.id)
               .maybeSingle();
-            
+
             dashboardItems.push({
               id: "domain-name-generator",
               title: "Domain Name Generator",
               completionStatus,
-              description: domainData?.domain_name 
-                ? `Domain: ${domainData.domain_name}`
-                : domainData?.domain_status === 'skipped'
+              description: domainData
+                  ? domainData.existing_website_url || domainData.domain_name || "Domain selected"
+                  : completionStatus === "completed"
                   ? "Skipped for now"
                   : "Enter your domain or generate new ideas for your business",
               isFree: true,
@@ -173,17 +170,19 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
-          if (blockName.toLowerCase().includes('logo')) {
+          if (blockName === 'Logo Generator') {
             const { data: logoAssets } = await supabase
               .from('user_assets')
               .select('*')
               .eq('user_id', session.user.id)
+              .eq('business_id', data.id)
               .eq('asset_type', 'logo');
-            
+
             dashboardItems.push({
-              id: "logo",
+              id: "logo-generator",
               title: "Logo Generator",
               completionStatus,
               description: logoAssets && logoAssets.length > 0
@@ -195,16 +194,16 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
           if (blockName === 'Business Plan Generator') {
             const { data: planData } = await supabase
               .from('business_plans')
               .select('*')
-              .eq('user_id', session.user.id)
               .eq('business_id', data.id)
               .maybeSingle();
-            
+
             dashboardItems.push({
               id: "business-plan-generator",
               title: "Business Plan Generator",
@@ -218,6 +217,7 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
           if (blockName === 'Social Media Handle Checker') {
@@ -232,6 +232,7 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
           if (blockName === 'QR Code Generator') {
@@ -246,6 +247,7 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
           
           if (blockName === 'Professional Email Signature') {
@@ -260,7 +262,22 @@ const Dashboard = () => {
               affiliateLink: catalogInfo?.affiliateLink,
               logoUrl: catalogInfo?.logoUrl,
             });
+            continue;
           }
+
+          // Generic fallback for ALL other blocks
+          const blockCatalogInfo = blocksCatalog.get(blockName) || {};
+          dashboardItems.push({
+            id: blockName.toLowerCase().replace(/\s+/g, '-'),
+            title: blockName,
+            completionStatus,
+            description: blockCatalogInfo.description || `Complete your ${blockName}`,
+            isFree: blockCatalogInfo.isFree !== false,
+            category: blockCatalogInfo.category,
+            isAffiliate: blockCatalogInfo.isAffiliate,
+            affiliateLink: blockCatalogInfo.affiliateLink,
+            logoUrl: blockCatalogInfo.logoUrl,
+          });
         }
         
         setItems(dashboardItems);
@@ -280,50 +297,32 @@ const Dashboard = () => {
   }, [navigate]);
 
   const loadSavedAssets = async (userId: string) => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('user_assets')
       .select('*')
       .eq('user_id', userId)
-      .in('status', ['saved', 'approved'])
       .order('created_at', { ascending: false });
 
-    if (!error && data) {
+    if (data) {
       setSavedAssets(data);
     }
   };
 
-  const handleCompleteBlock = async (id: string, item?: DashboardItem) => {
-    // Handle affiliate blocks - open link in new tab and mark as completed
+  const handleCompleteBlock = (blockId: string, item?: DashboardItem) => {
     if (item?.isAffiliate && item.affiliateLink) {
-      window.open(item.affiliateLink, '_blank', 'noopener,noreferrer');
-      
-      // Mark as completed in database
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user && businessData) {
-        await supabase
-          .from('user_block_unlocks')
-          .update({ completion_status: 'completed' })
-          .eq('user_id', user.id)
-          .eq('block_name', item.title)
-          .eq('business_id', businessData.id);
-        
-        toast.success(`${item.title} marked as visited`);
-        
-        // Reload the dashboard to reflect changes
-        window.location.reload();
-      }
+      window.open(item.affiliateLink, '_blank');
       return;
     }
-    
-    switch (id) {
+
+    switch (blockId) {
       case 'business-name-generator':
         navigate('/dashboard/business-name-generator');
         break;
       case 'domain-name-generator':
-        navigate('/dashboard/domain-name-generator');
+        navigate('/start/domain-selection');
         break;
-      case 'logo':
-        navigate('/dashboard/logos');
+      case 'logo-generator':
+        navigate('/dashboard/logo-generation');
         break;
       case 'business-plan-generator':
         navigate('/dashboard/business-plan-generator');
@@ -353,12 +352,9 @@ const Dashboard = () => {
     toast.success("Asset deleted");
   };
 
-
   const awaitingBlocks = items.filter(item => 
     item.completionStatus === 'not_started' || item.completionStatus === 'in_progress'
   );
-  const completedBlocks = items.filter(item => item.completionStatus === 'completed');
-  const recommendedBlock = awaitingBlocks[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-acari-dark via-acari-dark/95 to-acari-dark">
@@ -376,11 +372,15 @@ const Dashboard = () => {
       )}
 
       <div className="container mx-auto px-4 py-8 pt-24 max-w-7xl">
-        <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/5 border border-white/10">
-            <TabsTrigger value="dashboard" className="data-[state=active]:bg-acari-green/20">
+        <Tabs defaultValue="my-apps" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/5 border border-white/10">
+            <TabsTrigger value="my-apps" className="data-[state=active]:bg-acari-green/20">
               <LayoutDashboard className="w-4 h-4 mr-2" />
-              Dashboard
+              My Apps
+            </TabsTrigger>
+            <TabsTrigger value="briefcase" className="data-[state=active]:bg-acari-green/20">
+              <Briefcase className="w-4 h-4 mr-2" />
+              Briefcase
             </TabsTrigger>
             <TabsTrigger value="app-store" className="data-[state=active]:bg-acari-green/20">
               <Store className="w-4 h-4 mr-2" />
@@ -390,32 +390,20 @@ const Dashboard = () => {
               <User className="w-4 h-4 mr-2" />
               Account
             </TabsTrigger>
-            <TabsTrigger value="purchases" className="data-[state=active]:bg-acari-green/20">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Purchases
-            </TabsTrigger>
-            <TabsTrigger value="briefcase" className="data-[state=active]:bg-acari-green/20">
-              <Briefcase className="w-4 h-4 mr-2" />
-              Briefcase
-            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="dashboard" className="space-y-8">
+          <TabsContent value="my-apps" className="space-y-8">
             <div className="glass-card p-8 rounded-2xl border border-white/10 text-center space-y-4">
               <h1 className="text-4xl font-bold text-white">
-                Welcome to Your Business Dashboard
+                My Apps
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {businessData?.business_name || "Your Business"}
               </p>
             </div>
 
-            {awaitingBlocks.length > 0 && (
+            {awaitingBlocks.length > 0 ? (
               <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                  <Rocket className="w-6 h-6 text-acari-green" />
-                  Recommended Next Steps
-                </h2>
                 <div className="grid gap-4 md:grid-cols-2">
                   {awaitingBlocks.map((item) => (
                     <div
@@ -424,7 +412,7 @@ const Dashboard = () => {
                     >
                       <div className="flex-1 space-y-3">
                         <div className="flex items-start gap-3">
-                          {item.logoUrl && item.isAffiliate && (
+                          {item.logoUrl && (
                             <img src={item.logoUrl} alt={item.title} className="w-10 h-10 rounded flex-shrink-0" />
                           )}
                           <div className="flex-1 min-w-0">
@@ -432,6 +420,9 @@ const Dashboard = () => {
                               <h3 className="font-semibold text-foreground">{item.title}</h3>
                               {item.isFree && (
                                 <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30 text-xs">FREE</Badge>
+                              )}
+                              {item.isAffiliate && (
+                                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">PARTNER</Badge>
                               )}
                               {item.category && (
                                 <Badge variant="outline" className="text-xs">{item.category}</Badge>
@@ -451,199 +442,80 @@ const Dashboard = () => {
                   ))}
                 </div>
               </div>
-            )}
-
-            {/* Looking for more apps section */}
-            <div className="glass-card p-8 rounded-2xl border border-white/10 text-center">
-              <h3 className="text-xl font-semibold text-white mb-3">
-                Looking to add more apps?
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Discover additional tools and features in our App Store
-              </p>
-              <Button
-                onClick={() => navigate('/dashboard/app-store')}
-                variant="outline"
-                className="border-acari-green/40 text-acari-green hover:bg-acari-green/10"
-              >
-                <Store className="w-4 h-4 mr-2" />
-                Visit App Store
-              </Button>
-            </div>
-
-            {completedBlocks.length > 0 && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6 text-acari-green" />
-                    Completed Blocks
-                  </h2>
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor="show-completed" className="text-sm text-muted-foreground">
-                      Show completed
-                    </Label>
-                    <Switch 
-                      id="show-completed"
-                      checked={showCompleted}
-                      onCheckedChange={setShowCompleted}
-                    />
-                  </div>
-                </div>
-                
-                {showCompleted && (
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {completedBlocks.map((item) => (
-                      <div
-                        key={item.id}
-                        className="glass-card p-6 rounded-2xl border border-acari-green/30 bg-acari-green/5"
-                      >
-                        <div className="space-y-4">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-foreground">{item.title}</h3>
-                                <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30">
-                                  Complete ✓
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button 
-                              onClick={() => handleCompleteBlock(item.id)}
-                              variant="outline"
-                              className="flex-1 border-white/20 hover:bg-white/5"
-                            >
-                              <Eye className="w-4 h-4 mr-2" />
-                              View
-                            </Button>
-                            <Button 
-                              onClick={() => handleCompleteBlock(item.id)}
-                              variant="outline"
-                              className="flex-1 border-white/20 hover:bg-white/5"
-                            >
-                              Use Again
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+            ) : (
+              <div className="glass-card p-8 rounded-2xl border border-white/10 text-center">
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  All apps completed!
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  Your saved work is available in the Briefcase tab. Add more apps from the App Store.
+                </p>
+                <Button
+                  onClick={() => navigate('/dashboard/app-store')}
+                  variant="outline"
+                  className="border-acari-green/40 text-acari-green hover:bg-acari-green/10"
+                >
+                  <Store className="w-4 h-4 mr-2" />
+                  Visit App Store
+                </Button>
               </div>
             )}
-
-            <div className="glass-card p-8 rounded-2xl border border-white/10 space-y-6">
-              <div className="text-center space-y-2">
-                <HelpCircle className="w-12 h-12 mx-auto text-acari-green" />
-                <h2 className="text-2xl font-bold text-white">Need Help Getting Started?</h2>
-                <p className="text-muted-foreground">Access helpful resources and support</p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <button
-                  onClick={() => navigate('/support')}
-                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
-                >
-                  <BookOpen className="w-8 h-8 mb-3 text-acari-green" />
-                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">FAQs & Support</h3>
-                  <p className="text-sm text-muted-foreground">Find answers to common questions</p>
-                </button>
-
-                <button
-                  onClick={() => navigate('/templates')}
-                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
-                >
-                  <FileText className="w-8 h-8 mb-3 text-acari-green" />
-                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">View Templates</h3>
-                  <p className="text-sm text-muted-foreground">Browse website design templates</p>
-                </button>
-
-                <button
-                  onClick={() => window.location.href = 'mailto:support@acari.com'}
-                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
-                >
-                  <MessageCircle className="w-8 h-8 mb-3 text-acari-green" />
-                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">Contact Support</h3>
-                  <p className="text-sm text-muted-foreground">Get direct help from our team</p>
-                </button>
-
-                <button
-                  onClick={() => navigate('/features')}
-                  className="glass-card p-6 rounded-xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 text-left group"
-                >
-                  <Rocket className="w-8 h-8 mb-3 text-acari-green" />
-                  <h3 className="font-semibold text-white mb-1 group-hover:text-acari-green transition-colors">Getting Started Guide</h3>
-                  <p className="text-sm text-muted-foreground">Learn how to use the platform</p>
-                </button>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="app-store">
-            <AppStore />
-          </TabsContent>
-
-          <TabsContent value="account" className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-bold text-white mb-4">Account Information</h2>
-              <div className="space-y-4">
-                <div>
-                  <Label>Email</Label>
-                  <Input value={userEmail} disabled className="bg-white/5" />
-                </div>
-                <div>
-                  <Label>Business Name</Label>
-                  <Input value={businessData?.business_name || ""} disabled className="bg-white/5" />
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="purchases">
-            <div className="glass-card p-6 rounded-2xl border border-white/10 text-center">
-              <CreditCard className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-              <h2 className="text-xl font-bold text-white mb-2">Purchase History</h2>
-              <p className="text-muted-foreground">Your purchase history will appear here</p>
-            </div>
           </TabsContent>
 
           <TabsContent value="briefcase" className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-bold text-white mb-4">Saved Assets</h2>
+            <div className="glass-card p-8 rounded-2xl border border-white/10">
+              <h2 className="text-2xl font-bold text-white mb-6">Saved Assets</h2>
+
               {savedAssets.length === 0 ? (
-                <div className="text-center py-8">
-                  <Briefcase className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">No saved assets yet</p>
+                <div className="text-center py-12">
+                  <Briefcase className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">
+                    Your saved assets will appear here
+                  </p>
                 </div>
               ) : (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {savedAssets.map((asset) => (
-                    <div key={asset.id} className="glass-card p-4 rounded-xl border border-white/10">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-white capitalize">{asset.asset_type}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(asset.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
+                    <div
+                      key={asset.id}
+                      className="glass-card p-4 rounded-lg border border-white/10 hover:border-acari-green/40 transition-all"
+                    >
+                      <div className="aspect-square mb-3 rounded overflow-hidden bg-white/5 flex items-center justify-center">
+                        {asset.thumbnail_url ? (
+                          <img
+                            src={asset.thumbnail_url}
+                            alt={asset.asset_type}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <img
+                            src={asset.file_url}
+                            alt={asset.asset_type}
+                            className="w-full h-full object-contain"
+                          />
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <Badge variant="outline" className="text-xs">
+                          {asset.asset_type}
+                        </Badge>
                         <div className="flex gap-2">
                           <Button
                             size="sm"
                             variant="outline"
+                            className="flex-1 border-white/20 hover:bg-white/5"
                             onClick={() => window.open(asset.file_url, '_blank')}
-                            className="border-white/20"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3 h-3 mr-1" />
+                            View
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
+                            className="border-red-500/20 hover:bg-red-500/10 text-red-400"
                             onClick={() => handleDeleteAsset(asset.id)}
-                            className="border-white/20 text-red-400 hover:text-red-300"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3 h-3" />
                           </Button>
                         </div>
                       </div>
@@ -653,9 +525,42 @@ const Dashboard = () => {
               )}
             </div>
           </TabsContent>
+
+          <TabsContent value="app-store" className="space-y-6">
+            <AppStore />
+          </TabsContent>
+
+          <TabsContent value="account" className="space-y-6">
+            <div className="glass-card p-8 rounded-2xl border border-white/10">
+              <h2 className="text-2xl font-bold text-white mb-6">Account Settings</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Email</label>
+                  <Input
+                    type="email"
+                    value={userEmail}
+                    disabled
+                    className="mt-1 bg-white/5 border-white/10"
+                  />
+                </div>
+                
+                <div className="pt-4">
+                  <Button
+                    variant="destructive"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      navigate("/");
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
-
     </div>
   );
 };
