@@ -53,7 +53,6 @@ import BusinessPlanGenerator from "./pages/dashboard/BusinessPlanGenerator";
 import SocialMediaChecker from "./pages/dashboard/SocialMediaChecker";
 import QRCodeGenerator from "./pages/dashboard/QRCodeGenerator";
 import EmailSignatureGenerator from "./pages/dashboard/EmailSignatureGenerator";
-import PDFEditor from "./pages/dashboard/PDFEditor";
 import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
@@ -93,7 +92,6 @@ function App() {
                 <Route path="social-media-checker" element={<SocialMediaChecker />} />
                 <Route path="qr-code-generator" element={<QRCodeGenerator />} />
                 <Route path="email-signature-generator" element={<EmailSignatureGenerator />} />
-                <Route path="pdf-editor" element={<PDFEditor />} />
                 <Route path="subscriptions" element={<Subscriptions />} />
                 <Route path="subscription-checkout" element={<SubscriptionCheckout />} />
                 <Route path="purchase-history" element={<PurchaseHistory />} />
