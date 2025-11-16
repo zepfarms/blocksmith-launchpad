@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Upload, FileText, Trash2, ExternalLink, Loader2, Star } from "lucide-react";
+import { Upload, FileText, Trash2, ExternalLink, Loader2, Star, Pencil } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { AuthModal } from "@/components/AuthModal";
@@ -29,11 +29,14 @@ interface Template {
   file_type: string;
   file_url: string;
   thumbnail_url: string;
+  alternative_file_type?: string | null;
+  alternative_file_url?: string | null;
   is_premium: boolean;
   is_editable_online: boolean;
   is_featured: boolean;
   download_count: number;
   view_count: number;
+  tags?: string[] | null;
   created_at: string;
   document_categories: {
     name: string;
@@ -46,6 +49,7 @@ export default function DocumentLibrary() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingTemplate, setEditingTemplate] = useState<Template | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -213,7 +217,7 @@ export default function DocumentLibrary() {
       if (!user) throw new Error("Not authenticated");
 
       let fileUrl = formData.file_url;
-      let thumbnailUrl = "";
+      let thumbnailUrl = editingTemplate?.thumbnail_url || "";
       let alternativeFileUrl = formData.alternative_file_url;
 
       // Use already-uploaded primary file URL or upload if needed
@@ -246,7 +250,7 @@ export default function DocumentLibrary() {
         .map((t) => t.trim())
         .filter((t) => t);
 
-      const { error } = await supabase.from("document_templates").insert({
+      const templateData = {
         title: formData.title,
         slug: formData.slug,
         description: formData.description,
@@ -260,17 +264,32 @@ export default function DocumentLibrary() {
         is_editable_online: formData.is_editable_online,
         is_featured: formData.is_featured,
         tags: tagsArray,
-        created_by: user.id,
-      });
+      };
+
+      let error;
+      if (editingTemplate) {
+        // Update existing template
+        const result = await supabase
+          .from("document_templates")
+          .update(templateData)
+          .eq("id", editingTemplate.id);
+        error = result.error;
+      } else {
+        // Insert new template
+        const result = await supabase
+          .from("document_templates")
+          .insert({ ...templateData, created_by: user.id });
+        error = result.error;
+      }
 
       if (error) throw error;
 
-      toast.success("Template uploaded successfully!");
+      toast.success(editingTemplate ? "Template updated successfully!" : "Template uploaded successfully!");
       setIsDialogOpen(false);
       resetForm();
       loadTemplates();
     } catch (error: any) {
-      toast.error(error.message || "Failed to upload template");
+      toast.error(error.message || (editingTemplate ? "Failed to update template" : "Failed to upload template"));
     } finally {
       setUploading(false);
     }
@@ -298,6 +317,30 @@ export default function DocumentLibrary() {
     setSecondaryFile(null);
     setPrimaryFileUploaded("");
     setAlternativeFileUploaded("");
+    setEditingTemplate(null);
+  };
+
+  const handleEdit = (template: Template) => {
+    setEditingTemplate(template);
+    setFormData({
+      title: template.title,
+      slug: template.slug,
+      description: template.description || "",
+      category_id: template.category_id,
+      file_type: template.file_type as "pdf" | "docx" | "google-docs" | "html",
+      file_url: template.file_url || "",
+      google_docs_link: template.file_type === "google-docs" ? template.file_url : "",
+      alternative_file_type: (template.alternative_file_type || "") as "" | "pdf" | "docx" | "google-docs" | "html",
+      alternative_file_url: template.alternative_file_url || "",
+      alternative_google_docs_link: template.alternative_file_type === "google-docs" ? template.alternative_file_url || "" : "",
+      is_premium: template.is_premium,
+      is_editable_online: template.is_editable_online,
+      is_featured: template.is_featured,
+      tags: template.tags?.join(", ") || "",
+    });
+    setPrimaryFileUploaded(template.file_url ? template.title : "");
+    setAlternativeFileUploaded(template.alternative_file_url ? `${template.title} (alt)` : "");
+    setIsDialogOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -341,7 +384,10 @@ export default function DocumentLibrary() {
             Manage templates, forms, and documents
           </p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) resetForm();
+        }}>
           <DialogTrigger asChild>
             <Button size="lg">
               <Upload className="mr-2 h-4 w-4" />
@@ -350,9 +396,9 @@ export default function DocumentLibrary() {
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Upload New Template</DialogTitle>
+              <DialogTitle>{editingTemplate ? "Edit Template" : "Upload New Template"}</DialogTitle>
               <DialogDescription>
-                Add a new document template to the library
+                {editingTemplate ? "Update template information and files" : "Add a new document template to the library"}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -667,7 +713,7 @@ export default function DocumentLibrary() {
                 </Button>
                 <Button type="submit" disabled={uploading}>
                   {uploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Upload Template
+                  {editingTemplate ? "Update Template" : "Upload Template"}
                 </Button>
               </div>
             </form>
@@ -759,6 +805,14 @@ export default function DocumentLibrary() {
                                   : "text-muted-foreground"
                               }`}
                             />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleEdit(template)}
+                            title="Edit template"
+                          >
+                            <Pencil className="h-4 w-4" />
                           </Button>
                           {template.file_url && (
                             <Button
