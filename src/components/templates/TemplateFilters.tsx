@@ -3,6 +3,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
 
 interface Category {
   id: string;
@@ -68,30 +69,42 @@ export function TemplateFilters({
       </Card>
 
       {/* Categories */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Categories</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RadioGroup value={selectedCategory} onValueChange={onCategoryChange}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="all" id="category-all" />
-              <Label htmlFor="category-all" className="cursor-pointer">
-                All Categories
-              </Label>
-            </div>
-            <Separator className="my-2" />
-            {categories.map((category) => (
-              <div key={category.id} className="flex items-center space-x-2">
-                <RadioGroupItem value={category.id} id={`category-${category.id}`} />
-                <Label htmlFor={`category-${category.id}`} className="cursor-pointer">
-                  {category.name}
+      {categories.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Categories</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RadioGroup value={selectedCategory} onValueChange={onCategoryChange}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="all" id="category-all" />
+                <Label htmlFor="category-all" className="cursor-pointer">
+                  All Categories
                 </Label>
               </div>
-            ))}
-          </RadioGroup>
-        </CardContent>
-      </Card>
+              <Separator className="my-2" />
+              {categories.map((category) => (
+                <div key={category.id} className="flex items-center space-x-2">
+                  <RadioGroupItem value={category.id} id={`category-${category.id}`} />
+                  <Label htmlFor={`category-${category.id}`} className="cursor-pointer">
+                    <Link
+                      to={`/templates/category/${category.slug}`}
+                      className="hover:underline"
+                      onClick={(e) => {
+                        if (selectedCategory === category.id) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      {category.name}
+                    </Link>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </CardContent>
+        </Card>
+      )}
 
       {/* File Types */}
       <Card>

@@ -33,6 +33,7 @@ import { SubscriptionCheckout } from "./pages/dashboard/SubscriptionCheckout";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Templates from "./pages/Templates";
 import TemplateDetail from "./pages/TemplateDetail";
+import TemplateCategory from "./pages/TemplateCategory";
 import Features from "./pages/Features";
 import Tools from "./pages/Tools";
 import Privacy from "./pages/Privacy";
@@ -116,6 +117,7 @@ function App() {
         <Route path="/tools" element={<Tools />} />
         <Route path="/templates" element={<Templates />} />
         <Route path="/templates/:slug" element={<TemplateDetail />} />
+        <Route path="/templates/category/:categorySlug" element={<TemplateCategory />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
               <Route path="/grant-terms" element={<GrantTerms />} />
