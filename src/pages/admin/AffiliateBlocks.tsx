@@ -20,6 +20,14 @@ interface AffiliateBlock {
   description: string;
   logo_url: string | null;
   affiliate_link: string | null;
+  block_type: string | null;
+  internal_route: string | null;
+  pricing_type: string | null;
+  price_cents: number | null;
+  monthly_price_cents: number | null;
+  stripe_price_id: string | null;
+  stripe_monthly_price_id: string | null;
+  stripe_product_id: string | null;
   is_affiliate: boolean;
   is_active: boolean;
   tags: string[] | null;
@@ -47,6 +55,14 @@ const AffiliateBlocks = () => {
     description: "",
     logo_url: "",
     affiliate_link: "",
+    block_type: "affiliate" as "affiliate" | "internal",
+    internal_route: "",
+    pricing_type: "free",
+    price_cents: "0",
+    monthly_price_cents: "0",
+    stripe_price_id: "",
+    stripe_monthly_price_id: "",
+    stripe_product_id: "",
     tags: "",
     is_active: true,
     company_url: "",
@@ -134,7 +150,15 @@ const AffiliateBlocks = () => {
       category: formData.category,
       description: formData.description,
       logo_url: formData.logo_url || null,
-      affiliate_link: formData.affiliate_link || null,
+      block_type: formData.block_type,
+      affiliate_link: formData.block_type === "affiliate" ? (formData.affiliate_link || null) : null,
+      internal_route: formData.block_type === "internal" ? (formData.internal_route || null) : null,
+      pricing_type: formData.block_type === "internal" ? formData.pricing_type : "free",
+      price_cents: formData.block_type === "internal" ? parseInt(formData.price_cents) || 0 : 0,
+      monthly_price_cents: formData.block_type === "internal" ? parseInt(formData.monthly_price_cents) || 0 : 0,
+      stripe_price_id: formData.block_type === "internal" ? (formData.stripe_price_id || null) : null,
+      stripe_monthly_price_id: formData.block_type === "internal" ? (formData.stripe_monthly_price_id || null) : null,
+      stripe_product_id: formData.block_type === "internal" ? (formData.stripe_product_id || null) : null,
       tags: formData.tags ? formData.tags.split(",").map(t => t.trim()) : null,
       is_active: formData.is_active,
     };
@@ -177,6 +201,14 @@ const AffiliateBlocks = () => {
       description: block.description,
       logo_url: block.logo_url || "",
       affiliate_link: block.affiliate_link || "",
+      block_type: (block.block_type || "affiliate") as "affiliate" | "internal",
+      internal_route: block.internal_route || "",
+      pricing_type: block.pricing_type || "free",
+      price_cents: block.price_cents?.toString() || "0",
+      monthly_price_cents: block.monthly_price_cents?.toString() || "0",
+      stripe_price_id: block.stripe_price_id || "",
+      stripe_monthly_price_id: block.stripe_monthly_price_id || "",
+      stripe_product_id: block.stripe_product_id || "",
       tags: block.tags?.join(", ") || "",
       is_active: block.is_active,
       company_url: "",
@@ -214,6 +246,14 @@ const AffiliateBlocks = () => {
       description: "",
       logo_url: "",
       affiliate_link: "",
+      block_type: "affiliate",
+      internal_route: "",
+      pricing_type: "free",
+      price_cents: "0",
+      monthly_price_cents: "0",
+      stripe_price_id: "",
+      stripe_monthly_price_id: "",
+      stripe_product_id: "",
       tags: "",
       is_active: true,
       company_url: "",
@@ -227,7 +267,9 @@ const AffiliateBlocks = () => {
     const matchesCategory = filterCategory === "all" || block.category === filterCategory;
     const matchesStatus = filterStatus === "all" || 
                          (filterStatus === "active" && block.is_active) ||
-                         (filterStatus === "inactive" && !block.is_active);
+                         (filterStatus === "inactive" && !block.is_active) ||
+                         (filterStatus === "internal" && block.block_type === "internal") ||
+                         (filterStatus === "partner" && block.block_type === "affiliate");
     
     return matchesSearch && matchesCategory && matchesStatus;
   });
@@ -239,8 +281,8 @@ const AffiliateBlocks = () => {
   return (
     <div className="container mx-auto p-8 max-w-7xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Affiliate Blocks Management</h1>
-        <p className="text-muted-foreground">Manage your affiliate partnerships with click tracking</p>
+        <h1 className="text-3xl font-bold mb-2">Blocks Management</h1>
+        <p className="text-muted-foreground">Manage internal tools and partner integrations</p>
       </div>
 
       {/* Form */}
@@ -249,29 +291,47 @@ const AffiliateBlocks = () => {
           {editingBlock ? "Edit Block" : "Add New Block"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="name">Company Name *</Label>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Block Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="e.g., Stripe"
                 required
               />
             </div>
-            <div>
-              <Label htmlFor="subtitle">Subtitle/Tagline</Label>
+
+            <div className="space-y-2">
+              <Label htmlFor="subtitle">Subtitle</Label>
               <Input
                 id="subtitle"
                 value={formData.subtitle}
                 onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                placeholder="e.g., Payment processing made easy"
+                placeholder="Brief tagline"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+          <div className="space-y-2">
+            <Label htmlFor="block_type">Block Type *</Label>
+            <Select 
+              value={formData.block_type} 
+              onValueChange={(value: "affiliate" | "internal") => setFormData({ ...formData, block_type: value })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="internal">Internal Tool</SelectItem>
+                <SelectItem value="affiliate">Partner</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <Label htmlFor="category">Category *</Label>
               <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                 <SelectTrigger>
@@ -284,7 +344,7 @@ const AffiliateBlocks = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="tags">Tags (comma-separated)</Label>
               <Input
                 id="tags"
@@ -339,15 +399,120 @@ const AffiliateBlocks = () => {
             </div>
           )}
 
-          <div>
-            <Label htmlFor="affiliate_link">Affiliate Link</Label>
-            <Input
-              id="affiliate_link"
-              value={formData.affiliate_link}
-              onChange={(e) => setFormData({ ...formData, affiliate_link: e.target.value })}
-              placeholder="https://partner.com/ref/yourcode"
-            />
-          </div>
+          {formData.block_type === "affiliate" && (
+            <div className="space-y-2">
+              <Label htmlFor="affiliate_link">Affiliate Link</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="affiliate_link"
+                  value={formData.affiliate_link}
+                  onChange={(e) => setFormData({ ...formData, affiliate_link: e.target.value })}
+                  placeholder="https://partner.com/signup?ref=acari"
+                />
+                {formData.affiliate_link && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => window.open(formData.affiliate_link, "_blank")}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {formData.block_type === "internal" && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="internal_route">Internal Route *</Label>
+                <Input
+                  id="internal_route"
+                  value={formData.internal_route}
+                  onChange={(e) => setFormData({ ...formData, internal_route: e.target.value })}
+                  placeholder="/dashboard/tool-name"
+                  required={formData.block_type === "internal"}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="pricing_type">Pricing Type</Label>
+                  <Select 
+                    value={formData.pricing_type} 
+                    onValueChange={(value) => setFormData({ ...formData, pricing_type: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="free">Free</SelectItem>
+                      <SelectItem value="one_time">One-time Payment</SelectItem>
+                      <SelectItem value="monthly">Monthly Subscription</SelectItem>
+                      <SelectItem value="both">Both Options</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="price_cents">One-time Price (cents)</Label>
+                  <Input
+                    id="price_cents"
+                    type="number"
+                    value={formData.price_cents}
+                    onChange={(e) => setFormData({ ...formData, price_cents: e.target.value })}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="monthly_price_cents">Monthly Price (cents)</Label>
+                  <Input
+                    id="monthly_price_cents"
+                    type="number"
+                    value={formData.monthly_price_cents}
+                    onChange={(e) => setFormData({ ...formData, monthly_price_cents: e.target.value })}
+                    placeholder="0"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="stripe_product_id">Stripe Product ID</Label>
+                  <Input
+                    id="stripe_product_id"
+                    value={formData.stripe_product_id}
+                    onChange={(e) => setFormData({ ...formData, stripe_product_id: e.target.value })}
+                    placeholder="prod_xxx"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="stripe_price_id">Stripe One-time Price ID</Label>
+                  <Input
+                    id="stripe_price_id"
+                    value={formData.stripe_price_id}
+                    onChange={(e) => setFormData({ ...formData, stripe_price_id: e.target.value })}
+                    placeholder="price_xxx"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="stripe_monthly_price_id">Stripe Monthly Price ID</Label>
+                  <Input
+                    id="stripe_monthly_price_id"
+                    value={formData.stripe_monthly_price_id}
+                    onChange={(e) => setFormData({ ...formData, stripe_monthly_price_id: e.target.value })}
+                    placeholder="price_xxx"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="flex items-center gap-2">
             <Switch
@@ -390,11 +555,13 @@ const AffiliateBlocks = () => {
           </SelectContent>
         </Select>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="w-32">
-            <SelectValue />
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter by type/status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="all">All Blocks</SelectItem>
+            <SelectItem value="internal">Internal Tools</SelectItem>
+            <SelectItem value="partner">Partners</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="inactive">Inactive</SelectItem>
           </SelectContent>
@@ -407,12 +574,12 @@ const AffiliateBlocks = () => {
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
-                <th className="px-4 py-3 text-left">Logo</th>
                 <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-left">Type</th>
                 <th className="px-4 py-3 text-left">Category</th>
-                <th className="px-4 py-3 text-left">Clicks</th>
-                <th className="px-4 py-3 text-left">Affiliate Link</th>
+                <th className="px-4 py-3 text-left">Link/Route</th>
                 <th className="px-4 py-3 text-left">Status</th>
+                <th className="px-4 py-3 text-left">Clicks</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -420,33 +587,26 @@ const AffiliateBlocks = () => {
               {filteredBlocks.map((block) => (
                 <tr key={block.id} className="border-t hover:bg-muted/50">
                   <td className="px-4 py-3">
-                    {block.logo_url ? (
-                      <img src={block.logo_url} alt={block.name} className="h-10 w-10 object-contain" />
-                    ) : (
-                      <div className="h-10 w-10 bg-muted rounded flex items-center justify-center text-xs">
-                        No Logo
+                    <div className="flex items-center gap-2">
+                      {block.logo_url && (
+                        <img src={block.logo_url} alt={block.name} className="w-8 h-8 object-contain" />
+                      )}
+                      <div>
+                        <div className="font-medium">{block.name}</div>
+                        {block.subtitle && <div className="text-sm text-muted-foreground">{block.subtitle}</div>}
                       </div>
-                    )}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
-                    <div>
-                      <div className="font-medium">{block.name}</div>
-                      {block.subtitle && (
-                        <div className="text-sm text-muted-foreground">{block.subtitle}</div>
-                      )}
-                    </div>
+                    <Badge variant={block.block_type === "internal" ? "default" : "secondary"}>
+                      {block.block_type === "internal" ? "Internal" : "Partner"}
+                    </Badge>
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant="outline">{block.category}</Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{block.click_count || 0}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    {block.affiliate_link ? (
+                    {block.block_type === "affiliate" && block.affiliate_link ? (
                       <a 
                         href={block.affiliate_link} 
                         target="_blank" 
@@ -454,36 +614,38 @@ const AffiliateBlocks = () => {
                         className="flex items-center gap-1 text-primary hover:underline"
                       >
                         <LinkIcon className="h-3 w-3" />
-                        <span className="text-sm">Link</span>
+                        Link
                       </a>
+                    ) : block.block_type === "internal" && block.internal_route ? (
+                      <code className="text-xs bg-muted px-2 py-1 rounded">{block.internal_route}</code>
                     ) : (
-                      <span className="text-muted-foreground text-sm">No link</span>
+                      <span className="text-muted-foreground text-sm">—</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {block.is_active ? (
-                      <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 hover:bg-green-500/20">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Active
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary">
-                        <EyeOff className="h-3 w-3 mr-1" />
-                        Inactive
-                      </Badge>
-                    )}
+                    <Badge variant={block.is_active ? "default" : "secondary"}>
+                      {block.is_active ? (
+                        <><Eye className="h-3 w-3 mr-1" /> Active</>
+                      ) : (
+                        <><EyeOff className="h-3 w-3 mr-1" /> Inactive</>
+                      )}
+                    </Badge>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-mono">{block.click_count}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
-                      <Button size="sm" variant="outline" onClick={() => handleEdit(block)}>
-                        <Edit className="h-4 w-4" />
+                      <Button variant="outline" size="sm" onClick={() => handleEdit(block)}>
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
                       </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => setDeleteBlock(block)}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
+                      <Button variant="destructive" size="sm" onClick={() => setDeleteBlock(block)}>
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Delete
                       </Button>
                     </div>
                   </td>
