@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
     viteStaticCopy({
       targets: [
         {
-          src: "node_modules/@compdfkit_pdf_sdk/webviewer/lib/*",
+          src: "node_modules/@compdfkit_pdf_sdk/webviewer/dist/*",
           dest: "compdfkit",
         },
       ],
