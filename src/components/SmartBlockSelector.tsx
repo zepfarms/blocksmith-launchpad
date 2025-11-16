@@ -575,6 +575,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           isAffiliate={infoModalBlock.isAffiliate}
           affiliateLink={infoModalBlock.affiliateLink}
           logoUrl={infoModalBlock.logoUrl}
+          showAffiliateButton={false}
         />
       )}
     </section>

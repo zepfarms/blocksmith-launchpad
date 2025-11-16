@@ -18,6 +18,7 @@ interface BlockInfoModalProps {
   isAffiliate?: boolean;
   affiliateLink?: string;
   logoUrl?: string;
+  showAffiliateButton?: boolean; // Control whether to show "Visit Partner Website" button
 }
 
 export const BlockInfoModal = ({
@@ -34,10 +35,12 @@ export const BlockInfoModal = ({
   isSelected,
   isAffiliate = false,
   affiliateLink,
-  logoUrl
+  logoUrl,
+  showAffiliateButton = true // Default to true (show in dashboard)
 }: BlockInfoModalProps) => {
   const handleAction = () => {
-    if (isAffiliate && affiliateLink) {
+    // Only allow affiliate link navigation if showAffiliateButton is true
+    if (isAffiliate && affiliateLink && showAffiliateButton) {
       window.open(affiliateLink, '_blank', 'noopener,noreferrer');
       onClose();
     } else {
@@ -89,9 +92,9 @@ export const BlockInfoModal = ({
           <Button
             onClick={handleAction}
             className="rounded-full w-full"
-            variant={isAffiliate ? "default" : (isSelected ? "outline" : "default")}
+            variant={isAffiliate && showAffiliateButton ? "default" : (isSelected ? "outline" : "default")}
           >
-            {isAffiliate ? (
+            {isAffiliate && showAffiliateButton ? (
               <>
                 Visit Partner Website
                 <ExternalLink className="ml-2 h-4 w-4" />
