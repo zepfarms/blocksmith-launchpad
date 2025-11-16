@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export const BetaSection = () => {
   const navigate = useNavigate();
@@ -32,14 +33,14 @@ export const BetaSection = () => {
               </h2>
 
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-light px-4 break-words">
-                Be among the first to launch your business with us
+                Get early access to tools that automate, build, and grow your business
               </p>
 
               <div className="max-w-3xl mx-auto pt-2 sm:pt-4 px-4">
                 <p className="text-sm sm:text-base md:text-lg text-foreground/90 leading-relaxed font-light break-words">
-                  We're a new startup, and we're excited to help solve the real problems of entrepreneurship. 
-                  Starting a business can be overwhelming when you have to do it all alone. 
-                  Now you don't — meet your first business partner that works as hard as you do.
+                  Running a business means wearing every hat—marketing, operations, finance, and more. 
+                  We've built a platform where you don't have to do it alone. 
+                  Access 200+ tools that automate the busy work, so you can focus on growing your business.
                 </p>
               </div>
 
@@ -47,17 +48,17 @@ export const BetaSection = () => {
               <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-4 justify-center items-center pt-6 sm:pt-8">
                 <button
                   onClick={() => navigate("/start")}
-                  className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
+                  className="group px-5 py-3 sm:px-10 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   Start Building Free
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                 </button>
                 <button
                   onClick={() => navigate("/features")}
-                  className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-neon-cyan/30 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+                  className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   Explore Features
-                  <span>→</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
