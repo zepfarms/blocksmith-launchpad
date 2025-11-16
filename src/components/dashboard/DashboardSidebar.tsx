@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, Briefcase, Store, Settings, HelpCircle } from "lucide-react";
+import { LayoutDashboard, Package, Briefcase, Store, Settings, HelpCircle, X } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -11,7 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
+  SidebarHeader,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, end: true },
@@ -23,7 +25,7 @@ const menuItems = [
 ];
 
 export function DashboardSidebar() {
-  const { state } = useSidebar();
+  const { state, setOpen } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
   const collapsed = state === "collapsed";
@@ -40,7 +42,19 @@ export function DashboardSidebar() {
       className={`${collapsed ? "w-14" : "w-60"} border-r border-white/10 bg-black/40 backdrop-blur-xl`}
       collapsible="icon"
     >
-      <SidebarContent className="mt-16 sm:mt-20">
+      {/* Close button for mobile */}
+      <SidebarHeader className="lg:hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setOpen(false)}
+          className="ml-auto text-white hover:bg-white/10"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </SidebarHeader>
+      
+      <SidebarContent className="mt-16 sm:mt-20 lg:mt-20">
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? "sr-only" : "text-xs sm:text-sm"}>
             Navigation
