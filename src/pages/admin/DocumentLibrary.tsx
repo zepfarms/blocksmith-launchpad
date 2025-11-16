@@ -54,12 +54,20 @@ export default function DocumentLibrary() {
     file_type: "pdf" as "pdf" | "docx" | "google-docs" | "html",
     file_url: "",
     google_docs_link: "",
+    alternative_file_type: "" as "" | "pdf" | "docx" | "google-docs" | "html",
+    alternative_file_url: "",
+    alternative_google_docs_link: "",
     is_premium: false,
     is_editable_online: true,
     tags: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [secondaryFile, setSecondaryFile] = useState<File | null>(null);
+  const [uploadingPrimary, setUploadingPrimary] = useState(false);
+  const [uploadingAlternative, setUploadingAlternative] = useState(false);
+  const [primaryFileUploaded, setPrimaryFileUploaded] = useState<string>("");
+  const [alternativeFileUploaded, setAlternativeFileUploaded] = useState<string>("");
 
   useEffect(() => {
     loadCategories();
@@ -132,6 +140,52 @@ export default function DocumentLibrary() {
     return publicUrl;
   };
 
+  // Upload primary file immediately on selection
+  const handlePrimaryFileChange = async (file: File | null) => {
+    if (!file) return;
+    
+    setSelectedFile(file);
+    setUploadingPrimary(true);
+    
+    try {
+      const ext = file.name.split(".").pop();
+      const filePath = `primary-${Date.now()}.${ext}`;
+      const url = await uploadFile(file, filePath);
+      
+      setPrimaryFileUploaded(file.name);
+      setFormData({ ...formData, file_url: url });
+      toast.success(`${file.name} uploaded successfully`);
+    } catch (error: any) {
+      toast.error(`Failed to upload ${file.name}`);
+      setSelectedFile(null);
+    } finally {
+      setUploadingPrimary(false);
+    }
+  };
+
+  // Upload alternative file immediately on selection
+  const handleAlternativeFileChange = async (file: File | null) => {
+    if (!file) return;
+    
+    setSecondaryFile(file);
+    setUploadingAlternative(true);
+    
+    try {
+      const ext = file.name.split(".").pop();
+      const filePath = `alternative-${Date.now()}.${ext}`;
+      const url = await uploadFile(file, filePath);
+      
+      setAlternativeFileUploaded(file.name);
+      setFormData({ ...formData, alternative_file_url: url });
+      toast.success(`${file.name} uploaded successfully`);
+    } catch (error: any) {
+      toast.error(`Failed to upload ${file.name}`);
+      setSecondaryFile(null);
+    } finally {
+      setUploadingAlternative(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
@@ -142,14 +196,24 @@ export default function DocumentLibrary() {
 
       let fileUrl = formData.file_url;
       let thumbnailUrl = "";
+      let alternativeFileUrl = formData.alternative_file_url;
 
-      // Upload main file if selected
-      if (selectedFile && formData.file_type !== "google-docs") {
+      // Use already-uploaded primary file URL or upload if needed
+      if (!fileUrl && selectedFile && formData.file_type !== "google-docs") {
         const ext = selectedFile.name.split(".").pop();
         const filePath = `${formData.slug}-${Date.now()}.${ext}`;
         fileUrl = await uploadFile(selectedFile, filePath);
       } else if (formData.file_type === "google-docs") {
         fileUrl = formData.google_docs_link;
+      }
+
+      // Use already-uploaded alternative file URL or upload if needed
+      if (!alternativeFileUrl && secondaryFile && formData.alternative_file_type !== "google-docs") {
+        const ext = secondaryFile.name.split(".").pop();
+        const altFilePath = `${formData.slug}-alt-${Date.now()}.${ext}`;
+        alternativeFileUrl = await uploadFile(secondaryFile, altFilePath);
+      } else if (formData.alternative_file_type === "google-docs") {
+        alternativeFileUrl = formData.alternative_google_docs_link;
       }
 
       // Upload thumbnail if selected
@@ -171,6 +235,8 @@ export default function DocumentLibrary() {
         category_id: formData.category_id,
         file_type: formData.file_type,
         file_url: fileUrl,
+        alternative_file_type: formData.alternative_file_type || null,
+        alternative_file_url: alternativeFileUrl || null,
         thumbnail_url: thumbnailUrl,
         is_premium: formData.is_premium,
         is_editable_online: formData.is_editable_online,
@@ -200,12 +266,18 @@ export default function DocumentLibrary() {
       file_type: "pdf",
       file_url: "",
       google_docs_link: "",
+      alternative_file_type: "",
+      alternative_file_url: "",
+      alternative_google_docs_link: "",
       is_premium: false,
       is_editable_online: true,
       tags: "",
     });
     setSelectedFile(null);
     setThumbnailFile(null);
+    setSecondaryFile(null);
+    setPrimaryFileUploaded("");
+    setAlternativeFileUploaded("");
   };
 
   const handleDelete = async (id: string) => {
@@ -348,16 +420,148 @@ export default function DocumentLibrary() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Label htmlFor="file">Upload File *</Label>
+                  <Label htmlFor="file">Upload Primary File *</Label>
                   <Input
                     id="file"
                     type="file"
-                    accept={formData.file_type === "pdf" ? ".pdf" : ".docx,.doc"}
-                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    accept={
+                      formData.file_type === "pdf" 
+                        ? ".pdf" 
+                        : formData.file_type === "docx"
+                        ? ".docx,.doc"
+                        : formData.file_type === "html"
+                        ? ".html,.htm"
+                        : "*"
+                    }
+                    onChange={(e) => handlePrimaryFileChange(e.target.files?.[0] || null)}
                     required={!formData.file_url}
+                    disabled={uploadingPrimary}
                   />
+                  {uploadingPrimary && (
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      Uploading...
+                    </div>
+                  )}
+                  {primaryFileUploaded && !uploadingPrimary && (
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-green-600 dark:text-green-400">
+                        ✓ Uploaded: {primaryFileUploaded}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 text-xs"
+                        onClick={() => {
+                          setSelectedFile(null);
+                          setPrimaryFileUploaded("");
+                          setFormData({ ...formData, file_url: "" });
+                        }}
+                      >
+                        Replace
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
+
+              {/* Alternative Format Section */}
+              <div className="space-y-3 p-4 border border-border/50 rounded-lg bg-muted/20">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-semibold">Alternative Format (Optional)</Label>
+                  <Badge variant="secondary" className="text-xs">Recommended</Badge>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Upload a second version in a different format (e.g., if primary is PDF, add DOCX version)
+                </p>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="alternative_file_type">Alternative File Type</Label>
+                  <Select
+                    value={formData.alternative_file_type}
+                    onValueChange={(value: any) =>
+                      setFormData({ ...formData, alternative_file_type: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select format (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">None</SelectItem>
+                      <SelectItem value="pdf">PDF</SelectItem>
+                      <SelectItem value="docx">DOCX</SelectItem>
+                      <SelectItem value="google-docs">Google Docs</SelectItem>
+                      <SelectItem value="html">HTML</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {formData.alternative_file_type && formData.alternative_file_type !== "google-docs" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="secondary_file">Upload Alternative File</Label>
+                    <Input
+                      id="secondary_file"
+                      type="file"
+                      accept={
+                        formData.alternative_file_type === "pdf" 
+                          ? ".pdf" 
+                          : formData.alternative_file_type === "docx"
+                          ? ".docx,.doc"
+                          : formData.alternative_file_type === "html"
+                          ? ".html,.htm"
+                          : "*"
+                      }
+                      onChange={(e) => handleAlternativeFileChange(e.target.files?.[0] || null)}
+                      disabled={uploadingAlternative}
+                    />
+                    {uploadingAlternative && (
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Uploading alternative file...
+                      </div>
+                    )}
+                    {alternativeFileUploaded && !uploadingAlternative && (
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-green-600 dark:text-green-400">
+                          ✓ Uploaded: {alternativeFileUploaded}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 text-xs"
+                          onClick={() => {
+                            setSecondaryFile(null);
+                            setAlternativeFileUploaded("");
+                            setFormData({ ...formData, alternative_file_url: "" });
+                          }}
+                        >
+                          Replace
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {formData.alternative_file_type === "google-docs" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="alternative_google_docs_link">Alternative Google Docs Link</Label>
+                    <Input
+                      id="alternative_google_docs_link"
+                      type="url"
+                      value={formData.alternative_google_docs_link}
+                      onChange={(e) =>
+                        setFormData({ ...formData, alternative_google_docs_link: e.target.value })
+                      }
+                      placeholder="https://docs.google.com/document/d/..."
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Make sure the link is set to "Anyone with the link can view"
+                    </p>
+                  </div>
+                )}
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="thumbnail">Thumbnail (optional)</Label>
