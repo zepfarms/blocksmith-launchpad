@@ -145,7 +145,7 @@ export const DashboardLayout = () => {
         />
       )}
 
-      <main className="flex-1 pt-[72px] sm:pt-[80px]">
+      <main className="flex-1 pt-16 sm:pt-24 md:pt-28">
         <Outlet />
       </main>
 
