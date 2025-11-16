@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "My Apps", url: "/dashboard", icon: Package, end: true },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, end: true },
+  { title: "My Apps", url: "/dashboard/my-apps", icon: Package },
   { title: "Briefcase", url: "/dashboard/briefcase", icon: Briefcase },
   { title: "App Store", url: "/dashboard/app-store", icon: Store },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
