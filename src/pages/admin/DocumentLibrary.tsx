@@ -60,6 +60,7 @@ export default function DocumentLibrary() {
     alternative_google_docs_link: "",
     is_premium: false,
     is_editable_online: true,
+    is_featured: false,
     tags: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -256,6 +257,7 @@ export default function DocumentLibrary() {
         thumbnail_url: thumbnailUrl,
         is_premium: formData.is_premium,
         is_editable_online: formData.is_editable_online,
+        is_featured: formData.is_featured,
         tags: tagsArray,
         created_by: user.id,
       });
@@ -287,6 +289,7 @@ export default function DocumentLibrary() {
       alternative_google_docs_link: "",
       is_premium: false,
       is_editable_online: true,
+      is_featured: false,
       tags: "",
     });
     setSelectedFile(null);
@@ -624,6 +627,17 @@ export default function DocumentLibrary() {
                 <Label htmlFor="is_editable_online">
                   Can be edited online
                 </Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="is_featured"
+                  checked={formData.is_featured}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, is_featured: checked })
+                  }
+                />
+                <Label htmlFor="is_featured">Featured Template</Label>
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
