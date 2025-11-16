@@ -20,6 +20,7 @@ import AffiliateAnalytics from "./pages/admin/AffiliateAnalytics";
 import BlogPosts from "./pages/admin/BlogPosts";
 import BlogEditor from "./pages/admin/BlogEditor";
 import BlogCategories from "./pages/admin/BlogCategories";
+import DocumentLibrary from "./pages/admin/DocumentLibrary";
 import Overview from "./pages/dashboard/Overview";
 import MyApps from "./pages/dashboard/MyApps";
 import Briefcase from "./pages/dashboard/Briefcase";
@@ -96,6 +97,7 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
+              <Route path="/admin/document-library" element={<DocumentLibrary />} />
               <Route path="/admin/affiliate-blocks" element={<AffiliateBlocks />} />
               <Route path="/admin/affiliate-analytics" element={<AffiliateAnalytics />} />
               <Route path="/admin/blog" element={<BlogPosts />} />
