@@ -12,7 +12,7 @@ interface BlockCardProps {
   isFree: boolean;
   price: number;
   monthlyPrice: number;
-  pricingType: 'free' | 'one_time' | 'monthly';
+  pricingType: 'free' | 'one_time' | 'monthly' | 'both';
   isSelected: boolean;
   onToggle: () => void;
   onInfoClick: () => void;
