@@ -93,12 +93,28 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
       },
     });
 
-    setLoading(false);
-
     if (error) {
+      setLoading(false);
       toast({
         title: "Signup failed",
         description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Send verification email
+    const { error: emailError } = await supabase.functions.invoke('send-verification-email', {
+      body: { email }
+    });
+
+    setLoading(false);
+
+    if (emailError) {
+      console.error('Failed to send verification email:', emailError);
+      toast({
+        title: "Warning",
+        description: "Account created but verification email failed to send. Please contact support.",
         variant: "destructive",
       });
       return;
