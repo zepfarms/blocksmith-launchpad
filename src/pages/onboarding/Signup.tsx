@@ -33,7 +33,7 @@ export const Signup = () => {
   }, [data.selectedBlocks, navigate, searchParams]);
 
   const saveBusinessData = async (user: any) => {
-    const { error } = await supabase.from('user_businesses').insert({
+    const { data: businessData, error } = await supabase.from('user_businesses').insert({
       user_id: user.id,
       business_name: data.businessName || "New Business",
       business_idea: data.businessIdea,
@@ -41,12 +41,67 @@ export const Signup = () => {
       selected_blocks: data.selectedBlocks,
       business_type: data.businessType || null,
       status: 'building'
-    });
+    }).select().single();
 
     if (error) {
       console.error('Error saving business data:', error);
       toast.error("We couldn't save your business information. Please try again.");
       return;
+    }
+
+    // Create unlocks for all selected blocks (affiliate and free blocks)
+    if (businessData && data.selectedBlocks.length > 0) {
+      try {
+        const response = await fetch('/data/blocks_catalog.csv');
+        const text = await response.text();
+        const lines = text.split('\n').slice(1);
+        
+        const affiliateBlocks = new Set<string>();
+        const freeBlocks = new Set<string>();
+        
+        lines.filter(line => line.trim()).forEach(line => {
+          const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
+          if (!matches || matches.length < 9) return;
+          
+          const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
+          const name = clean(matches[0]);
+          const isFreeRaw = clean(matches[4]) || 'TRUE';
+          const isAffiliateRaw = clean(matches[8]) || 'FALSE';
+          
+          if (isAffiliateRaw.toUpperCase() === 'TRUE') {
+            affiliateBlocks.add(name);
+          }
+          if (isFreeRaw.toUpperCase() === 'TRUE') {
+            freeBlocks.add(name);
+          }
+        });
+        
+        // Get all selected blocks that are either affiliate or free
+        const blocksToUnlock = data.selectedBlocks.filter(
+          name => affiliateBlocks.has(name) || freeBlocks.has(name)
+        );
+        
+        if (blocksToUnlock.length > 0) {
+          const { error: unlockError } = await supabase
+            .from('user_block_unlocks')
+            .upsert(
+              blocksToUnlock.map(name => ({
+                user_id: user.id,
+                business_id: businessData.id,
+                block_name: name,
+                unlock_type: 'free',
+                completion_status: 'not_started'
+              })),
+              { onConflict: 'user_id,block_name,business_id' }
+            );
+          
+          if (unlockError) {
+            console.error('Error creating block unlocks:', unlockError);
+          }
+        }
+      } catch (catalogError) {
+        console.error('Error loading blocks catalog:', catalogError);
+      }
     }
 
     // Send welcome email
