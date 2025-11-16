@@ -25,7 +25,7 @@ export const ConfirmIdea = () => {
   const businessType = data.aiAnalysis.replace(/I understand you want to start a |I understand you want to start |business|!|./gi, '').trim();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background pt-24">
+    <section className="relative flex flex-col px-4 sm:px-6 bg-background py-12 md:py-16">
       <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
         <div className="text-center space-y-3">
           {/* Dynamic icon based on business type */}
@@ -40,7 +40,11 @@ export const ConfirmIdea = () => {
           {/* Exciting headline */}
           <h2 className="text-2xl md:text-3xl font-black tracking-tight">
             {data.businessType === 'existing' 
-              ? '🎯 Ready to Supercharge Your Business?' 
+              ? (
+                <span className="flex items-center justify-center gap-2">
+                  🚀 Ready to Supercharge Your Business?
+                </span>
+              )
               : '✨ Your Business Journey Starts Here!'}
           </h2>
           
@@ -50,9 +54,9 @@ export const ConfirmIdea = () => {
               {data.businessType === 'existing'
                 ? (
                   <>
-                    Perfect! We're about to unlock <span className="text-acari-green font-bold">powerful tools</span> tailored specifically for your <span className="text-acari-green font-bold">{businessType}</span> business. 
+                    Perfect! We're about to unlock <span className="text-acari-green font-bold">powerful tools</span> tailored specifically for your business. 
                     <br /><br />
-                    Get ready to <span className="text-acari-green">streamline operations</span>, <span className="text-acari-green">save time</span>, and <span className="text-acari-green">accelerate growth</span>. 🚀
+                    Get ready to <span className="text-acari-green">streamline operations</span>, <span className="text-acari-green">save time</span>, and <span className="text-acari-green">accelerate growth</span>.
                   </>
                 )
                 : (
@@ -69,7 +73,7 @@ export const ConfirmIdea = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
           <button
             onClick={handleConfirm}
-            className="group px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-acari-green/20"
+            className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
           >
             <CheckCircle2 className="w-5 h-5" />
             Yes, let's do this!
@@ -79,7 +83,7 @@ export const ConfirmIdea = () => {
             onClick={handleEdit}
             className="px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
           >
-            Let me refine
+            Make Changes
           </button>
         </div>
 
