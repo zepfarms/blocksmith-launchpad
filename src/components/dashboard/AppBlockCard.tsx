@@ -57,58 +57,53 @@ export function AppBlockCard({ block, onClick }: AppBlockCardProps) {
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div className="glass-card p-3 hover:scale-[1.02] transition-all duration-200 group cursor-pointer">
+    <div className="glass-card p-2 hover:scale-[1.02] transition-all duration-200 group cursor-pointer">
       {/* Logo/Icon */}
-      <div className="relative mb-2 h-20 sm:h-24 rounded-lg bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
+      <div className="relative mb-1.5 h-12 sm:h-16 rounded-md bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
         {block.logoUrl ? (
           <img
             src={block.logoUrl}
             alt={block.name}
-            className="w-full h-full object-contain p-2"
+            className="w-full h-full object-contain p-1"
           />
         ) : (
-          <div className="text-xl sm:text-2xl font-bold text-primary">
+          <div className="text-lg sm:text-xl font-bold text-primary">
             {block.name.charAt(0)}
           </div>
         )}
       </div>
 
       {/* Badges */}
-      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
-        <Badge className={`text-xs ${getCategoryColor(block.category)}`}>
+      <div className="flex flex-wrap gap-1 mb-1.5">
+        <Badge className={`text-[10px] px-1 py-0 ${getCategoryColor(block.category)}`}>
           {block.category}
         </Badge>
         {block.isFree && (
-          <Badge className="text-xs bg-green-500/20 text-green-400 border-green-500/30">
+          <Badge className="text-[10px] px-1 py-0 bg-green-500/20 text-green-400 border-green-500/30">
             FREE
           </Badge>
         )}
         {block.isAffiliate && (
-          <Badge className="text-xs bg-orange-500/20 text-orange-400 border-orange-500/30">
+          <Badge className="text-[10px] px-1 py-0 bg-orange-500/20 text-orange-400 border-orange-500/30">
             PARTNER
           </Badge>
         )}
       </div>
 
       {/* Content */}
-      <div className="mb-2">
-        <h3 className="text-sm font-semibold text-foreground mb-0.5 line-clamp-1">
+      <div className="mb-1.5">
+        <h3 className="text-xs font-semibold text-foreground line-clamp-1">
           {block.name}
         </h3>
-        {block.subtitle && (
-          <p className="text-xs text-primary/80 mb-1 line-clamp-1">
-            {block.subtitle}
-          </p>
-        )}
-        <p className="text-xs text-muted-foreground line-clamp-1">
+        <p className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
           {block.description}
         </p>
       </div>
 
       {/* Status Indicator */}
-      <div className="flex items-center gap-1.5 mb-2 pb-2 border-b border-white/10">
-        <StatusIcon className={`w-3 h-3 ${statusConfig.color}`} />
-        <span className={`text-xs ${statusConfig.color}`}>
+      <div className="flex items-center gap-1 mb-1.5 pb-1.5 border-b border-white/10">
+        <StatusIcon className={`w-2.5 h-2.5 ${statusConfig.color}`} />
+        <span className={`text-[10px] ${statusConfig.color}`}>
           {statusConfig.label}
         </span>
       </div>
@@ -116,13 +111,13 @@ export function AppBlockCard({ block, onClick }: AppBlockCardProps) {
       {/* Action Button */}
       <Button
         onClick={onClick}
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs h-7"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-[10px] h-6 px-2"
         size="sm"
       >
         {block.isAffiliate ? (
           <>
             Visit
-            <ExternalLink className="w-3 h-3 ml-1" />
+            <ExternalLink className="w-2.5 h-2.5 ml-1" />
           </>
         ) : (
           statusConfig.buttonText
