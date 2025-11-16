@@ -546,7 +546,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
           <button
             onClick={handleContinue}
             disabled={selectedBlocks.length === 0}
-            className="group px-10 py-7 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
+            className="group px-16 py-4 bg-acari-green text-black rounded-full font-bold text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed mx-auto"
           >
             Continue
             <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
