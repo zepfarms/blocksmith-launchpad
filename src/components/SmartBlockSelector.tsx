@@ -374,15 +374,6 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
-          {/* Animated icon */}
-          <div className="flex justify-center mb-4">
-            <div className="relative">
-              <div className="absolute inset-0 bg-acari-green/20 blur-xl rounded-full animate-pulse" />
-              <div className="relative text-6xl">
-                {businessType === 'existing' ? '⚡' : '🚀'}
-              </div>
-            </div>
-          </div>
           
           {/* Exciting headline with gradient */}
           <h2 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white via-acari-green to-white bg-clip-text text-transparent animate-fade-in">
@@ -428,6 +419,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
               <BlockCard
                 key={block.id}
                 title={block.title}
+                subtitle={block.subtitle}
                 category={block.category}
                 icon={block.icon}
                 description={block.description}
@@ -442,6 +434,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
                 isUnlocked={unlockedBlocks.has(block.title)}
                 isPurchased={purchasedBlocks.has(block.title)}
                 hasActiveSubscription={subscribedBlocks.has(block.title)}
+                logoUrl={block.logoUrl}
               />
             ))}
             </div>
@@ -553,6 +546,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
                   <BlockCard
                     key={block.id}
                     title={block.title}
+                    subtitle={block.subtitle}
                     category={block.category}
                     icon={block.icon}
                     description={block.description}
@@ -567,6 +561,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
                     isUnlocked={unlockedBlocks.has(block.title)}
                     isPurchased={purchasedBlocks.has(block.title)}
                     hasActiveSubscription={subscribedBlocks.has(block.title)}
+                    logoUrl={block.logoUrl}
                   />
                 ))}
                 </div>
@@ -585,6 +580,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
                   <BlockCard
                     key={block.id}
                     title={block.title}
+                    subtitle={block.subtitle}
                     category={block.category}
                     icon={block.icon}
                     description={block.description}
@@ -599,6 +595,7 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
                     isUnlocked={unlockedBlocks.has(block.title)}
                     isPurchased={purchasedBlocks.has(block.title)}
                     hasActiveSubscription={subscribedBlocks.has(block.title)}
+                    logoUrl={block.logoUrl}
                   />
                 ))}
                 </div>
@@ -608,30 +605,27 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
         )}
 
         {/* Continue Button */}
-        <div className="w-full flex flex-col items-center gap-6 pt-8 mx-auto">
-          <div className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-background/20 backdrop-blur-sm border border-neon-cyan/30">
-            <CheckCircle2 className="w-5 h-5 text-acari-green" />
-            <span className="text-lg font-medium text-foreground">
-              {selectedBlocks.length}{" "}
-              {selectedBlocks.length === 1 ? "Block" : "Blocks"} Selected
-            </span>
-          </div>
-
+        <div className="w-full flex flex-col items-center gap-3 pt-8 mx-auto">
           <button
             onClick={handleContinue}
-            className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 min-w-[280px]"
+            className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] transition-all duration-300 flex items-center justify-center gap-2 min-w-[280px]"
           >
-            <CheckCircle2 className="w-5 h-5" />
             {selectedBlocks.length === 0 ? (
               'Continue Without Tools'
             ) : (
               `Continue with ${selectedBlocks.length} Block${selectedBlocks.length !== 1 ? 's' : ''}`
             )}
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2 duration-300" />
           </button>
 
+          {selectedBlocks.length > 0 && (
+            <p className="text-xs text-muted-foreground/60">
+              {selectedBlocks.length} {selectedBlocks.length === 1 ? "block" : "blocks"} selected
+            </p>
+          )}
+
           {selectedBlocks.length === 0 && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground/80">
               You can add tools later from your dashboard
             </p>
           )}
