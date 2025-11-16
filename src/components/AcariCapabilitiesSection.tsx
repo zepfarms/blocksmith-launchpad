@@ -37,15 +37,15 @@ export default function AcariCapabilitiesSection() {
             </div>
 
             <h2 className="mt-3 text-2xl sm:text-[1.8rem] lg:text-[2rem] font-semibold text-white leading-tight">
-              Things Acari can accomplish for you
+              Find Your Tools to Start, Run and Grow
             </h2>
 
             <p className="mt-3 text-sm sm:text-[0.95rem] leading-relaxed text-slate-400 max-w-md">
-              Describe the business you want to launch — Acari assembles every piece for you:{" "}
+              Tell us about your business needs — Acari matches you with the right tools:{" "}
               <span style={{ color: acariGreen }}>
-                brand, website, systems, paperwork, and more
+                brand building, operations, systems, legal, and more
               </span>
-              . One prompt in, an entire operation out.
+              . One platform, endless possibilities for your business.
             </p>
 
             <ul className="mt-4 space-y-2.5 text-sm text-slate-200">
@@ -54,27 +54,27 @@ export default function AcariCapabilitiesSection() {
                   className="mt-1 h-2 w-2 flex-shrink-0 rounded-full"
                   style={{ background: acariGreen, boxShadow: `0 0 8px ${acariGreen}` }}
                 />
-                <span>From logo to LLC to live website, built in one workflow.</span>
+                <span>Get matched with tools perfectly suited to your business needs.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span
                   className="mt-1 h-2 w-2 flex-shrink-0 rounded-full"
                   style={{ background: acariGreen, boxShadow: `0 0 8px ${acariGreen}` }}
                 />
-                <span>AI-crafted assets tailored to your industry, market, and offer.</span>
+                <span>Curated apps for every stage—starting, running, and growing.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span
                   className="mt-1 h-2 w-2 flex-shrink-0 rounded-full"
                   style={{ background: acariGreen, boxShadow: `0 0 8px ${acariGreen}` }}
                 />
-                <span>You stay in control — approve, tweak, and launch faster than ever.</span>
+                <span>You stay in control—choose tools that work for you.</span>
               </li>
             </ul>
 
             <p className="mt-4 text-[12px] text-slate-400">
-              If you need it to start or grow a business,{" "}
-              <span style={{ color: acariGreen }}>Acari can handle it for you.</span>
+              Whatever tools you need to build and grow your business,{" "}
+              <span style={{ color: acariGreen }}>Acari helps you find them.</span>
             </p>
           </div>
 
