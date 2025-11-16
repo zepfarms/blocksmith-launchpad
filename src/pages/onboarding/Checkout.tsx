@@ -33,9 +33,10 @@ export const Checkout = () => {
       }
 
       const { data, error } = await supabase
-        .from('blocks_pricing')
+        .from('affiliate_blocks')
         .select('*')
-        .in('block_name', blockNames)
+        .in('name', blockNames)
+        .eq('block_type', 'internal')
         .eq('pricing_type', 'one_time');
 
       if (error) {
@@ -46,7 +47,7 @@ export const Checkout = () => {
       }
 
       // Filter only paid one-time blocks
-      const paidBlocks = data?.filter(b => !b.is_free && b.price_cents > 0) || [];
+      const paidBlocks = data?.filter(b => b.price_cents && b.price_cents > 0) || [];
       
       if (paidBlocks.length === 0) {
         toast.error('No paid blocks selected');
@@ -54,7 +55,16 @@ export const Checkout = () => {
         return;
       }
 
-      setBlocks(paidBlocks);
+      setBlocks(paidBlocks.map(b => ({
+        block_name: b.name,
+        price_cents: b.price_cents || 0,
+        monthly_price_cents: b.monthly_price_cents || 0,
+        pricing_type: b.pricing_type || 'one_time',
+        is_free: b.pricing_type === 'free',
+        stripe_price_id: b.stripe_price_id,
+        stripe_product_id: b.stripe_product_id,
+        description: b.description
+      })));
       setLoading(false);
     };
 

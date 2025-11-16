@@ -10,11 +10,9 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
-import AdminPricing from "./pages/admin/Pricing";
 import AdminCategories from "./pages/admin/Categories";
 import FailedPayments from "./pages/admin/FailedPayments";
 import Analytics from "./pages/admin/Analytics";
-import AdminBlocks from "./pages/admin/Blocks";
 import AffiliateBlocks from "./pages/admin/AffiliateBlocks";
 import AffiliateAnalytics from "./pages/admin/AffiliateAnalytics";
 import BlogPosts from "./pages/admin/BlogPosts";
@@ -109,9 +107,6 @@ function App() {
               <Route path="/admin/blog/new" element={<BlogEditor />} />
               <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
               <Route path="/admin/blog/categories" element={<BlogCategories />} />
-              <Route path="/admin/pricing" element={<AdminPricing />} />
-              <Route path="/admin/categories" element={<AdminCategories />} />
-              <Route path="/admin/blocks" element={<AdminBlocks />} />
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
               
               {/* Other pages */}
