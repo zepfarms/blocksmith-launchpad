@@ -106,6 +106,18 @@ const QRCodeGenerator = () => {
 
       if (insertError) throw insertError;
 
+      // Update completion status
+      const { error: updateError } = await supabase
+        .from('user_block_unlocks')
+        .update({ completion_status: 'completed' })
+        .eq('user_id', user.id)
+        .eq('business_id', businessId)
+        .eq('block_name', 'QR Code Generator');
+
+      if (updateError) {
+        console.error('Error updating completion status:', updateError);
+      }
+
       toast.success("QR code saved to your library!");
     } catch (error) {
       console.error("Error saving QR code:", error);

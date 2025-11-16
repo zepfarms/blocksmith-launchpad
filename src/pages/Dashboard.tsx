@@ -143,6 +143,10 @@ const Dashboard = () => {
                 ? `Current name: ${data.business_name}`
                 : "Choose your perfect business name",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -164,6 +168,10 @@ const Dashboard = () => {
                   ? "Skipped for now"
                   : "Enter your domain or generate new ideas for your business",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -182,6 +190,10 @@ const Dashboard = () => {
                 ? `${logoAssets.length} logo${logoAssets.length !== 1 ? 's' : ''} saved`
                 : "Create your professional logo",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -201,6 +213,10 @@ const Dashboard = () => {
                 ? "Business plan created - View and edit"
                 : "Generate a professional SBA-quality business plan",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -211,6 +227,10 @@ const Dashboard = () => {
               completionStatus,
               description: "Check availability across all major platforms",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -221,6 +241,10 @@ const Dashboard = () => {
               completionStatus,
               description: "Create custom QR codes for your business",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
           
@@ -231,6 +255,10 @@ const Dashboard = () => {
               completionStatus,
               description: "Generate professional email signatures",
               isFree: true,
+              category: catalogInfo?.category,
+              isAffiliate: catalogInfo?.isAffiliate,
+              affiliateLink: catalogInfo?.affiliateLink,
+              logoUrl: catalogInfo?.logoUrl,
             });
           }
         }
