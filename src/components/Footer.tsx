@@ -73,11 +73,6 @@ export const Footer = () => {
                     Templates
                   </Link>
                 </li>
-                <li>
-                  <Link to="/business-ideas" className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors">
-                    Business Ideas
-                  </Link>
-                </li>
               </ul>
             </div>
 

@@ -1,61 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { Textarea } from "@/components/ui/textarea";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Sparkles } from "lucide-react";
-import { toast } from "sonner";
-
-interface BusinessIdea {
-  id: string;
-  category: string;
-  name: string;
-  description: string;
-  starter_blocks: string;
-  growth_blocks: string;
-}
+import { Sparkles } from "lucide-react";
 
 export const DescribeIdea = () => {
   const navigate = useNavigate();
   const { data, updateData } = useOnboarding();
   const [businessIdea, setBusinessIdea] = useState(data.businessIdea);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [businessIdeas] = useState<BusinessIdea[]>([]);
 
-  const handleSubmitIdea = async () => {
+  const handleSubmitIdea = () => {
     if (!businessIdea.trim()) return;
     
-    setIsAnalyzing(true);
-    try {
-      const { data: analysisData, error } = await supabase.functions.invoke('analyze-business-idea', {
-        body: { businessIdea }
-      });
+    updateData({
+      businessIdea,
+      aiAnalysis: businessIdea,
+    });
 
-      if (error) throw error;
-
-      const aiAnalysis = analysisData.analysis;
-      
-      // Try to match with a business idea row
-      const lowerIdea = businessIdea.toLowerCase();
-      const matchedIdea = businessIdeas.find(idea => 
-        lowerIdea.includes(idea.name.toLowerCase()) ||
-        lowerIdea.includes(idea.category.toLowerCase()) ||
-        idea.description.toLowerCase().split(' ').some(word => lowerIdea.includes(word))
-      );
-      
-      updateData({
-        businessIdea,
-        aiAnalysis,
-        selectedIdeaRow: matchedIdea || null,
-      });
-
-      navigate("/start/confirm");
-    } catch (error) {
-      console.error('Error analyzing idea:', error);
-      toast.error("We couldn't analyze your idea. Please try again.");
-    } finally {
-      setIsAnalyzing(false);
-    }
+    navigate("/start/confirm");
   };
 
   return (
@@ -89,21 +51,12 @@ export const DescribeIdea = () => {
             <div className="w-full flex justify-center">
               <button
                 onClick={handleSubmitIdea}
-                disabled={!businessIdea.trim() || isAnalyzing}
+                disabled={!businessIdea.trim()}
                 className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isAnalyzing ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5" />
-                    Continue
-                    <span className="transition-transform group-hover:translate-x-1">→</span>
-                  </>
-                )}
+                <Sparkles className="w-5 h-5" />
+                Continue
+                <span className="transition-transform group-hover:translate-x-1">→</span>
               </button>
             </div>
           </div>

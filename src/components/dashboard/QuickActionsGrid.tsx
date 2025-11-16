@@ -1,33 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
-  Image, 
-  FileText, 
   QrCode, 
   Mail, 
   Share2, 
-  Store,
-  Type
+  Store
 } from "lucide-react";
 
 export function QuickActionsGrid() {
   const navigate = useNavigate();
 
   const quickActions = [
-    {
-      icon: Image,
-      label: "Generate Logo",
-      description: "Create a new logo",
-      onClick: () => navigate("/dashboard/logos"),
-      color: "text-blue-400",
-    },
-    {
-      icon: FileText,
-      label: "Business Plan",
-      description: "Build your plan",
-      onClick: () => navigate("/dashboard/business-plan-generator"),
-      color: "text-purple-400",
-    },
     {
       icon: QrCode,
       label: "QR Code",
@@ -48,13 +31,6 @@ export function QuickActionsGrid() {
       description: "Check handles",
       onClick: () => navigate("/dashboard/social-media-checker"),
       color: "text-pink-400",
-    },
-    {
-      icon: Type,
-      label: "Business Name",
-      description: "Generate names",
-      onClick: () => navigate("/dashboard/business-name-generator"),
-      color: "text-cyan-400",
     },
     {
       icon: Store,
