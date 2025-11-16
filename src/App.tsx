@@ -143,7 +143,6 @@ function App() {
               </Route>
               
               {/* ComPDFKit asset routes - prevent SPA 404 */}
-              <Route path="/@compdfkit/*" element={<></>} />
               <Route path="/compdfkit/*" element={<></>} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

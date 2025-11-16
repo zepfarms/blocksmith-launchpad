@@ -34,7 +34,7 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           {
             pdfUrl,
             license: publicKey,
-            path: "/@compdfkit",
+            path: "/compdfkit",
           },
           containerRef.current!
         );
