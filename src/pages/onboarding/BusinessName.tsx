@@ -39,7 +39,7 @@ export const BusinessName = () => {
             value={businessName}
             onChange={(e) => setBusinessName(e.target.value)}
             placeholder="e.g., Pawsome Walks"
-            className="text-lg text-center"
+            className="text-lg text-center border-white/30 focus-visible:border-acari-green/50"
             autoFocus
           />
 
