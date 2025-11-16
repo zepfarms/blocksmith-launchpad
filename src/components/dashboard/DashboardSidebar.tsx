@@ -42,23 +42,22 @@ export function DashboardSidebar() {
       className={`${collapsed ? "w-14" : "w-[280px] sm:w-60"} border-r border-white/10 bg-black/40 backdrop-blur-xl`}
       collapsible="icon"
     >
-      {/* Close button for mobile - always visible at top */}
-      {!collapsed && (
-        <SidebarHeader className="lg:hidden p-4 flex items-center justify-between border-b border-white/10">
-          <span className="text-sm font-medium text-white/70">Navigation</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setOpen(false)}
-            className="text-white hover:bg-white/10 h-8 w-8"
-            aria-label="Close menu"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </SidebarHeader>
-      )}
-      
-      <SidebarContent className={collapsed ? "mt-16 sm:mt-20" : "mt-0 sm:mt-20 lg:mt-20"}>
+      <SidebarContent className="mt-16 sm:mt-20">
+        {/* Close button for mobile - positioned in menu */}
+        {!collapsed && (
+          <div className="lg:hidden px-4 py-3 border-b border-white/10 mb-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setOpen(false)}
+              className="w-full text-white border-white/20 hover:bg-white/10 flex items-center justify-center gap-2"
+            >
+              <X className="h-4 w-4" />
+              Close Menu
+            </Button>
+          </div>
+        )}
+        
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? "sr-only" : "text-xs sm:text-sm"}>
             Navigation
