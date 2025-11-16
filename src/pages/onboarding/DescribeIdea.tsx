@@ -17,7 +17,7 @@ export const DescribeIdea = () => {
       aiAnalysis: businessIdea,
     });
 
-    navigate("/start/confirm");
+    navigate("/start/name");
   };
 
   return (
