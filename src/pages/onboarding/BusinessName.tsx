@@ -19,9 +19,9 @@ export const BusinessName = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background">
-      <div className="max-w-4xl mx-auto space-y-8 animate-fade-in w-full">
-        <div className="text-center space-y-4">
+    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background pt-24">
+      <div className="max-w-4xl mx-auto space-y-6 animate-fade-in w-full">
+        <div className="text-center space-y-3">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
             {data.businessType === 'existing'
               ? 'What is the name of your business?'
