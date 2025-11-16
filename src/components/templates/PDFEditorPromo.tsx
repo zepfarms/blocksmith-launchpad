@@ -1,10 +1,37 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Edit, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthModal } from "@/components/AuthModal";
+import { supabase } from "@/integrations/supabase/client";
 
 export function PDFEditorPromo() {
+  const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleTryFreeEdits = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
+      navigate("/dashboard/pdf-editor");
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    navigate("/dashboard/pdf-editor");
+  };
+
   return (
+    <>
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
     <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
       <div className="p-8">
@@ -31,24 +58,23 @@ export function PDFEditorPromo() {
                 <span className="text-muted-foreground">/month</span>
               </div>
               <div className="h-6 w-px bg-border" />
-              <span className="text-sm text-muted-foreground">or $29 lifetime • 3 free edits</span>
+              <span className="text-sm text-muted-foreground">or $29 lifetime</span>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <Button asChild size="lg" className="gap-2">
-              <Link to="/onboarding/signup">
+              <Link to="/start?selectedBlock=PDF Editor">
                 Get Started
                 <Sparkles className="h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/dashboard/pdf-editor">
-                Try Free Edits
-              </Link>
+            <Button onClick={handleTryFreeEdits} variant="outline" size="lg">
+              Try Free Edits
             </Button>
           </div>
         </div>
       </div>
     </Card>
+    </>
   );
 }
