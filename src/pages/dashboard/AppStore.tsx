@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { ArrowLeft, Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import { BlockCard } from "@/components/BlockCard";
 import { BlockInfoModal } from "@/components/BlockInfoModal";
 
