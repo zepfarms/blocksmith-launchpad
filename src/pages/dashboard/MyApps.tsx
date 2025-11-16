@@ -187,40 +187,43 @@ export default function MyApps() {
             placeholder="Search your apps..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white/5 border-white/10"
+            className="pl-10 bg-white/5 border-white/10 w-full"
           />
         </div>
 
-        <Tabs value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as CategoryFilter)}>
-          <TabsList className="bg-white/5 border border-white/10">
-            <TabsTrigger value="all" className="data-[state=active]:bg-white/10">
-              All ({counts.all})
-            </TabsTrigger>
-            <TabsTrigger value="foundation" className="data-[state=active]:bg-white/10">
-              Foundation ({counts.foundation})
-            </TabsTrigger>
-            <TabsTrigger value="growth" className="data-[state=active]:bg-white/10">
-              Growth ({counts.growth})
-            </TabsTrigger>
-            <TabsTrigger value="partnerships" className="data-[state=active]:bg-white/10">
-              Partnerships ({counts.partnerships})
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        {/* Category Tabs - Scrollable on mobile */}
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <Tabs value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as CategoryFilter)}>
+            <TabsList className="w-max min-w-full sm:w-full bg-white/5 border border-white/10 inline-flex">
+              <TabsTrigger value="all" className="whitespace-nowrap px-3 sm:px-4 data-[state=active]:bg-white/10">
+                All ({counts.all})
+              </TabsTrigger>
+              <TabsTrigger value="foundation" className="whitespace-nowrap px-3 sm:px-4 data-[state=active]:bg-white/10">
+                Foundation ({counts.foundation})
+              </TabsTrigger>
+              <TabsTrigger value="growth" className="whitespace-nowrap px-3 sm:px-4 data-[state=active]:bg-white/10">
+                Growth ({counts.growth})
+              </TabsTrigger>
+              <TabsTrigger value="partnerships" className="whitespace-nowrap px-3 sm:px-4 data-[state=active]:bg-white/10">
+                Partnerships ({counts.partnerships})
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
       </div>
 
       {filteredBlocks.length === 0 ? (
-        <div className="glass-card p-12 text-center">
-          <PackageOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-xl font-semibold mb-2">No apps found</h3>
-          <p className="text-muted-foreground">
+        <div className="glass-card p-8 sm:p-12 text-center">
+          <PackageOpen className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg sm:text-xl font-semibold mb-2">No apps found</h3>
+          <p className="text-sm sm:text-base text-muted-foreground px-4">
             {searchQuery || selectedCategory !== 'all'
               ? 'Try adjusting your search or filters'
               : 'Visit the App Store to unlock your first app'}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredBlocks.map((block) => (
             <AppBlockCard
               key={block.name}

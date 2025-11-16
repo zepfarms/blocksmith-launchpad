@@ -40,9 +40,9 @@ export function DashboardSidebar() {
       className={`${collapsed ? "w-14" : "w-60"} border-r border-white/10 bg-black/40 backdrop-blur-xl`}
       collapsible="icon"
     >
-      <SidebarContent className="mt-20">
+      <SidebarContent className="mt-16 sm:mt-20">
         <SidebarGroup>
-          <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
+          <SidebarGroupLabel className={collapsed ? "sr-only" : "text-xs sm:text-sm"}>
             Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -53,11 +53,11 @@ export function DashboardSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.end}
-                      className="hover:bg-white/5 rounded-md transition-colors" 
+                      className="hover:bg-white/5 rounded-md transition-colors text-sm sm:text-base py-2" 
                       activeClassName="bg-white/10 text-primary font-medium"
                     >
-                      <item.icon className={`${collapsed ? "" : "mr-2"} h-5 w-5`} />
-                      {!collapsed && <span>{item.title}</span>}
+                      <item.icon className={`${collapsed ? "" : "mr-2"} h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0`} />
+                      {!collapsed && <span className="truncate">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
