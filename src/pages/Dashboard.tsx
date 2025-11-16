@@ -376,15 +376,15 @@ const Dashboard = () => {
                   {awaitingBlocks.map((item) => (
                     <div
                       key={item.id}
-                      className="glass-card p-6 rounded-2xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10"
+                      className="glass-card p-6 rounded-2xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10 flex flex-col"
                     >
-                      <div className="space-y-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              {item.logoUrl && item.isAffiliate ? (
-                                <img src={item.logoUrl} alt={item.title} className="w-8 h-8 rounded" />
-                              ) : null}
+                      <div className="flex-1 space-y-3">
+                        <div className="flex items-start gap-3">
+                          {item.logoUrl && item.isAffiliate && (
+                            <img src={item.logoUrl} alt={item.title} className="w-10 h-10 rounded flex-shrink-0" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
                               <h3 className="font-semibold text-foreground">{item.title}</h3>
                               {item.isFree && (
                                 <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30 text-xs">FREE</Badge>
@@ -393,16 +393,16 @@ const Dashboard = () => {
                                 <Badge variant="outline" className="text-xs">{item.category}</Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{item.description}</p>
+                            <p className="text-sm text-muted-foreground line-clamp-3">{item.description}</p>
                           </div>
                         </div>
-                        <Button 
-                          onClick={() => handleCompleteBlock(item.id, item)}
-                          className="w-full bg-acari-green hover:bg-acari-green/90 text-black"
-                        >
-                          {item.isAffiliate ? 'Visit Partner Website' : 'Complete This Block'}
-                        </Button>
                       </div>
+                      <Button 
+                        onClick={() => handleCompleteBlock(item.id, item)}
+                        className="w-full bg-acari-green hover:bg-acari-green/90 text-black mt-4"
+                      >
+                        {item.isAffiliate ? 'Visit Partner Website' : 'Complete This Block'}
+                      </Button>
                     </div>
                   ))}
                 </div>
