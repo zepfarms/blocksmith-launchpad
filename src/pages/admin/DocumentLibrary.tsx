@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Upload, FileText, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { AuthModal } from "@/components/AuthModal";
 
 interface Category {
   id: string;
@@ -68,6 +69,7 @@ export default function DocumentLibrary() {
   const [uploadingAlternative, setUploadingAlternative] = useState(false);
   const [primaryFileUploaded, setPrimaryFileUploaded] = useState<string>("");
   const [alternativeFileUploaded, setAlternativeFileUploaded] = useState<string>("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     loadCategories();
@@ -143,6 +145,13 @@ export default function DocumentLibrary() {
   // Upload primary file immediately on selection
   const handlePrimaryFileChange = async (file: File | null) => {
     if (!file) return;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { 
+      setShowAuthModal(true); 
+      toast.error("Please log in to upload files."); 
+      return; 
+    }
     
     setSelectedFile(file);
     setUploadingPrimary(true);
@@ -166,6 +175,13 @@ export default function DocumentLibrary() {
   // Upload alternative file immediately on selection
   const handleAlternativeFileChange = async (file: File | null) => {
     if (!file) return;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { 
+      setShowAuthModal(true); 
+      toast.error("Please log in to upload files."); 
+      return; 
+    }
     
     setSecondaryFile(file);
     setUploadingAlternative(true);
@@ -718,6 +734,13 @@ export default function DocumentLibrary() {
           )}
         </CardContent>
       </Card>
+
+      <AuthModal 
+        open={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+        defaultView="login" 
+        onSuccess={() => setShowAuthModal(false)} 
+      />
     </div>
   );
 }
