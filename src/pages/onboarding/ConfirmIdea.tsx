@@ -28,24 +28,21 @@ export const ConfirmIdea = () => {
     <section className="relative flex flex-col px-4 sm:px-6 bg-background py-12 md:py-16">
       <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
         <div className="text-center space-y-3">
-          {/* Dynamic icon based on business type */}
-          <div className="flex justify-center">
-            {data.businessType === 'existing' ? (
-              <Rocket className="w-12 h-12 text-acari-green animate-bounce" />
-            ) : (
-              <Sparkles className="w-12 h-12 text-acari-green animate-pulse" />
-            )}
-          </div>
-          
           {/* Exciting headline */}
           <h2 className="text-2xl md:text-3xl font-black tracking-tight">
             {data.businessType === 'existing' 
               ? (
                 <span className="flex items-center justify-center gap-2">
-                  🚀 Ready to Supercharge Your Business?
+                  <Rocket className="w-8 h-8 text-acari-green animate-bounce" />
+                  Ready to Supercharge Your Business?
                 </span>
               )
-              : '✨ Your Business Journey Starts Here!'}
+              : (
+                <span className="flex items-center justify-center gap-2">
+                  <Sparkles className="w-8 h-8 text-acari-green animate-pulse" />
+                  Your Business Journey Starts Here!
+                </span>
+              )}
           </h2>
           
           {/* Exciting confirmation card with gradient */}
