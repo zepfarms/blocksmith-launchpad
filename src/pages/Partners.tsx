@@ -63,23 +63,23 @@ export default function Partners() {
   const benefits = [
     {
       icon: TrendingUp,
-      title: "Reach Engaged Entrepreneurs",
-      description: "Connect with thousands of motivated business builders actively seeking solutions."
-    },
-    {
-      icon: Handshake,
-      title: "Earn Affiliate Revenue",
-      description: "Generate income through our competitive affiliate program."
+      title: "Reach Thousands of Entrepreneurs",
+      description: "Get your product in front of motivated business owners actively building their ventures."
     },
     {
       icon: Zap,
-      title: "Seamless Integration",
-      description: "Easy integration process with our platform and technical support."
+      title: "Featured Placement",
+      description: "Premium visibility on our platform with enhanced promotional opportunities."
+    },
+    {
+      icon: TrendingUp,
+      title: "Performance Tracking",
+      description: "Access detailed analytics on user engagement and conversion metrics."
     },
     {
       icon: HeadphonesIcon,
       title: "Dedicated Support",
-      description: "Work with our partnership team to maximize your success."
+      description: "Your partnership success manager helps optimize your listing and performance."
     }
   ];
 
@@ -101,10 +101,10 @@ export default function Partners() {
           {/* Hero */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-acari-green to-neon-cyan bg-clip-text text-transparent">
-              Partner with Acari
+              Showcase Your Product to Thousands
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Join our network of partners helping entrepreneurs succeed. Reach thousands of business builders while growing your own business.
+              Partner with Acari to get your product or service in front of motivated entrepreneurs building their businesses. Grow your customer base while helping others succeed.
             </p>
           </div>
 
@@ -120,33 +120,36 @@ export default function Partners() {
           </div>
 
           {/* Partnership Types */}
-          <div className="glass-card p-8 mb-12">
-            <h2 className="text-2xl font-bold mb-6">Partnership Types</h2>
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Partnership Opportunities</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <h3 className="font-bold mb-2">Affiliate Partners</h3>
-                <p className="text-sm text-muted-foreground">
-                  Promote products and services to our entrepreneur community and earn commissions.
+              <div className="glass-card p-6 text-center hover:border-acari-green transition-colors">
+                <h3 className="text-xl font-bold mb-3">Platform Listing</h3>
+                <p className="text-muted-foreground">
+                  Get listed in our tools directory with direct links to your product or service.
                 </p>
               </div>
-              <div>
-                <h3 className="font-bold mb-2">Integration Partners</h3>
-                <p className="text-sm text-muted-foreground">
-                  Integrate your service directly into the Acari platform for seamless user experience.
+              <div className="glass-card p-6 text-center hover:border-acari-green transition-colors">
+                <h3 className="text-xl font-bold mb-3">Featured Partner</h3>
+                <p className="text-muted-foreground">
+                  Premium placement with enhanced visibility and promotional opportunities.
                 </p>
               </div>
-              <div>
-                <h3 className="font-bold mb-2">Service Providers</h3>
-                <p className="text-sm text-muted-foreground">
-                  Offer specialized services to entrepreneurs building their businesses.
+              <div className="glass-card p-6 text-center hover:border-acari-green transition-colors">
+                <h3 className="text-xl font-bold mb-3">Integration Partner</h3>
+                <p className="text-muted-foreground">
+                  Deep platform integration with seamless user experience and co-marketing.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Application Form */}
-          <div className="glass-card p-8 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Apply to Become a Partner</h2>
+          <div className="glass-card p-8 md:p-12">
+            <h2 className="text-3xl font-bold mb-4 text-center">Become a Partner</h2>
+            <p className="text-muted-foreground mb-8 text-center">
+              Interested in showcasing your product or service to thousands of entrepreneurs? Fill out the form below and we'll get back to you.
+            </p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -207,9 +210,10 @@ export default function Partners() {
                     <SelectValue placeholder="Select partnership type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="affiliate">Affiliate Partner</SelectItem>
-                    <SelectItem value="integration">Integration Partner</SelectItem>
-                    <SelectItem value="service">Service Provider</SelectItem>
+                    <SelectItem value="platform-listing">Platform Listing</SelectItem>
+                    <SelectItem value="featured-placement">Featured Placement</SelectItem>
+                    <SelectItem value="integration">Integration Partnership</SelectItem>
+                    <SelectItem value="custom">Custom Partnership</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
