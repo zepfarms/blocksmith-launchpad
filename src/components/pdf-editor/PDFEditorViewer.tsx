@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { PDFDiagnosticsPanel } from "./PDFDiagnosticsPanel";
+
 
 interface PDFEditorViewerProps {
   pdfUrl: string;
@@ -9,22 +10,37 @@ interface PDFEditorViewerProps {
 export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [timedOut, setTimedOut] = useState(false);
 
   useEffect(() => {
     if (!pdfUrl || !containerRef.current) return;
 
+    let timeoutId: number | undefined;
+
     const initializeViewer = async () => {
       try {
+        setLoading(true);
+        setError(null);
+        setTimedOut(false);
+
         const publicKey = import.meta.env.VITE_COMPDFKIT_PUBLIC_KEY;
 
         if (!publicKey) {
           toast({
             variant: "destructive",
             title: "Configuration Error",
-            description: "PDF Editor is not properly configured. Please contact support.",
+            description:
+              "PDF Editor is not properly configured. Please contact support.",
           });
+          setError("PDF Editor is not configured");
+          setLoading(false);
           return;
         }
+
+        const rect = containerRef.current.getBoundingClientRect();
+        console.log("[PDFEditor] Container rect", rect);
 
         // Dynamic import from npm package
         const mod: any = await import("@compdfkit_pdf_sdk/webviewer");
@@ -36,6 +52,8 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
             title: "PDF SDK not loaded",
             description: "Failed to load ComPDFKit viewer module.",
           });
+          setError("Failed to load viewer module");
+          setLoading(false);
           return;
         }
 
@@ -46,10 +64,20 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         } as const;
         console.log("[PDFEditor] Initializing ComPDFKit", options);
 
+        timeoutId = window.setTimeout(() => {
+          console.warn("[PDFEditor] Viewer timed out after 8s");
+          setTimedOut(true);
+        }, 8000);
+
         const instance = await WebViewer.init(options, containerRef.current!);
         console.log("[PDFEditor] ComPDFKit ready", { instance });
+        if (timeoutId) clearTimeout(timeoutId);
+        setLoading(false);
       } catch (error: any) {
         console.error("Error initializing PDF viewer:", error);
+        if (timeoutId) clearTimeout(timeoutId);
+        setLoading(false);
+        setError(error?.message || "Failed to initialize PDF viewer");
         toast({
           variant: "destructive",
           title: "Error loading PDF editor",
@@ -61,6 +89,7 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
     initializeViewer();
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
       }
@@ -69,12 +98,33 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
 
   return (
     <>
-      <div 
+      <div
         ref={containerRef}
-        className="w-full h-full min-h-[600px] bg-background"
-        style={{ minHeight: "calc(100vh - 120px)" }}
-      />
-      <PDFDiagnosticsPanel />
+        className="relative w-full bg-background overflow-hidden"
+        style={{ height: "calc(100vh - 140px)", minHeight: "600px" }}
+      >
+        {(loading || error || timedOut) && (
+          <div className="absolute inset-0 grid place-items-center bg-background/60 backdrop-blur-sm">
+            {loading && !timedOut && !error && (
+              <div className="flex flex-col items-center gap-3">
+                <div className="h-8 w-8 rounded-full border-2 border-muted-foreground border-t-transparent animate-spin" />
+                <p className="text-sm text-muted-foreground">Preparing PDF editor...</p>
+              </div>
+            )}
+
+            {(error || timedOut) && (
+              <div className="flex flex-col items-center gap-3 text-center max-w-sm">
+                <p className="text-sm text-muted-foreground">
+                  {error || "The editor is taking longer than expected to load."}
+                </p>
+                <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                  <Button variant="secondary" size="sm">Open PDF in new tab</Button>
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }
