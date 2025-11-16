@@ -68,7 +68,7 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4 md:pt-8 px-4 w-full max-w-full">
           <button
             onClick={onCTAClick}
-            className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg flex items-center justify-center gap-2"
+            className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
           >
             Find Your Tools Now
             <span className="transition-transform group-hover:translate-x-1">→</span>
