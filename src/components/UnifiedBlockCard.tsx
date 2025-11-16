@@ -121,7 +121,10 @@ export const UnifiedBlockCard = ({
     if (context === 'public') {
       return (
         <button
-          onClick={handleClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick();
+          }}
           className="w-full py-2.5 px-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
         >
           Sign up to access
