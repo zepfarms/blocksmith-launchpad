@@ -69,8 +69,8 @@ export const BlockCard = ({
         "h-full flex flex-col items-center text-center",
         "shadow-[0_0_20px_rgba(34,211,238,0.15)]",
         isOwned && "opacity-75 cursor-not-allowed",
-        !isOwned && isSelected && "neon-border shadow-[0_0_30px_rgba(34,211,238,0.3)]",
-        !isOwned && isHovered && !isSelected && "border-neon-cyan/20"
+        !isOwned && isSelected && "neon-border shadow-[0_0_40px_rgba(34,211,238,0.4)] scale-[1.02]",
+        !isOwned && isHovered && !isSelected && "border-neon-cyan/30 shadow-[0_0_25px_rgba(34,211,238,0.2)] scale-[1.01]"
       )}
       style={{
         animationDelay: `${index * 50}ms`,
@@ -194,13 +194,6 @@ export const BlockCard = ({
         </p>
       )}
 
-      {/* Modular connection lines */}
-      {isSelected && (
-        <>
-          <div className="absolute top-0 left-1/2 w-px h-8 bg-gradient-to-b from-neon-cyan/50 to-transparent -translate-x-1/2 -translate-y-8" />
-          <div className="absolute bottom-0 left-1/2 w-px h-8 bg-gradient-to-t from-neon-cyan/50 to-transparent -translate-x-1/2 translate-y-8" />
-        </>
-      )}
     </button>
   );
 };
