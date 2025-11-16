@@ -27,24 +27,33 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
         }
 
         // Dynamic import from npm package
-        const ComPDFKitModule = await import("@compdfkit_pdf_sdk/webviewer");
-        const ComPDFKitViewer = ComPDFKitModule.default || ComPDFKitModule;
+        const mod: any = await import("@compdfkit_pdf_sdk/webviewer");
+        const WebViewer = mod?.default ?? mod;
+        if (!WebViewer?.init) {
+          console.error("ComPDFKit WebViewer.init not found", { mod });
+          toast({
+            variant: "destructive",
+            title: "PDF SDK not loaded",
+            description: "Failed to load ComPDFKit viewer module.",
+          });
+          return;
+        }
 
-        await ComPDFKitViewer.init(
-          {
-            pdfUrl,
-            license: publicKey,
-            path: "/compdfkit",
-          },
-          containerRef.current!
-        );
+        const options = {
+          pdfUrl,
+          license: publicKey,
+          path: "/compdfkit",
+        } as const;
+        console.log("[PDFEditor] Initializing ComPDFKit", options);
 
+        const instance = await WebViewer.init(options, containerRef.current!);
+        console.log("[PDFEditor] ComPDFKit ready", { instance });
       } catch (error: any) {
         console.error("Error initializing PDF viewer:", error);
         toast({
           variant: "destructive",
           title: "Error loading PDF editor",
-          description: error.message || "Failed to initialize PDF viewer",
+          description: error?.message || "Failed to initialize PDF viewer",
         });
       }
     };
