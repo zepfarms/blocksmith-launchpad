@@ -135,7 +135,7 @@ export const BlockCard = ({
           isAffiliate ? "from-purple-500/10 to-purple-600/10" : "from-neon-cyan/10 to-neon-purple/10"
         )} />
         
-        {isAffiliate && logoUrl ? (
+        {logoUrl ? (
           <img 
             src={logoUrl} 
             alt={`${title} logo`}
