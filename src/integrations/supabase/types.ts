@@ -526,6 +526,7 @@ export type Database = {
           file_url: string | null
           id: string
           is_editable_online: boolean
+          is_featured: boolean
           is_premium: boolean
           slug: string
           tags: string[] | null
@@ -546,6 +547,7 @@ export type Database = {
           file_url?: string | null
           id?: string
           is_editable_online?: boolean
+          is_featured?: boolean
           is_premium?: boolean
           slug: string
           tags?: string[] | null
@@ -566,6 +568,7 @@ export type Database = {
           file_url?: string | null
           id?: string
           is_editable_online?: boolean
+          is_featured?: boolean
           is_premium?: boolean
           slug?: string
           tags?: string[] | null
