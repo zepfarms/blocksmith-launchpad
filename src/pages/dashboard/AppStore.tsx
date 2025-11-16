@@ -50,6 +50,7 @@ const iconMap: Record<string, React.ReactNode> = {
 interface Block {
   id: string;
   title: string;
+  subtitle?: string;
   category: string;
   icon: React.ReactNode;
   isFree: boolean;
@@ -57,6 +58,8 @@ interface Block {
   monthlyPrice: number;
   pricingType: 'free' | 'one_time' | 'monthly';
   description: string;
+  isAffiliate?: boolean;
+  logoUrl?: string;
 }
 
 interface BlockPricing {
@@ -194,12 +197,16 @@ export default function AppStore() {
           .filter(line => line.trim())
           .map((line) => {
             const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-            if (!matches || matches.length < 7) return null;
+            if (!matches || matches.length < 11) return null;
             
             const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
             const name = clean(matches[0]);
             const category = clean(matches[1]);
-            const csvDescription = clean(matches[2]);
+            const subtitle = clean(matches[2]);
+            const csvDescription = clean(matches[3]);
+            const isAffiliate = clean(matches[8]) === 'TRUE';
+            const affiliateLink = clean(matches[9]);
+            const logoUrl = clean(matches[10]);
             
             const pricing = pricingData.get(name);
             const is_free = pricing?.is_free ?? false;
@@ -211,13 +218,16 @@ export default function AppStore() {
             return {
               id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
               title: name,
+              subtitle: subtitle || undefined,
               category,
               description: dbDescription || csvDescription,
               isFree: is_free,
               price: price_cents,
               monthlyPrice: monthly_price_cents,
               pricingType: pricing_type as 'free' | 'one_time' | 'monthly',
-              icon: iconMap[category] || <IconCircuit />
+              icon: iconMap[category] || <IconCircuit />,
+              isAffiliate,
+              logoUrl: logoUrl || undefined
             } as Block;
           })
           .filter((block): block is Block => block !== null);
@@ -427,6 +437,7 @@ export default function AppStore() {
             <BlockCard
               key={block.id}
               title={block.title}
+              subtitle={block.subtitle}
               category={block.category}
               icon={block.icon}
               description={block.description}
@@ -441,6 +452,8 @@ export default function AppStore() {
               isUnlocked={unlockedBlocks.has(block.title)}
               isPurchased={purchasedBlocks.has(block.title)}
               hasActiveSubscription={subscribedBlocks.has(block.title)}
+              isAffiliate={block.isAffiliate}
+              logoUrl={block.logoUrl}
             />
           ))}
         </div>
@@ -474,6 +487,7 @@ export default function AppStore() {
           isOpen={true}
           onClose={() => setInfoModalBlock(null)}
           title={infoModalBlock.title}
+          subtitle={infoModalBlock.subtitle}
           description={infoModalBlock.description}
           category={infoModalBlock.category}
           isFree={infoModalBlock.isFree}
