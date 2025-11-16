@@ -52,27 +52,21 @@ export const Signup = () => {
     // Create unlocks for all selected blocks (affiliate and free blocks)
     if (businessData && data.selectedBlocks.length > 0) {
       try {
-        const response = await fetch('/data/blocks_catalog.csv');
-        const text = await response.text();
-        const lines = text.split('\n').slice(1);
+        const { data: blocks } = await supabase
+          .from('affiliate_blocks')
+          .select('name, block_type, pricing_type')
+          .in('name', data.selectedBlocks)
+          .eq('is_active', true);
         
         const affiliateBlocks = new Set<string>();
         const freeBlocks = new Set<string>();
         
-        lines.filter(line => line.trim()).forEach(line => {
-          const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-          if (!matches || matches.length < 9) return;
-          
-          const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
-          const name = clean(matches[0]);
-          const isFreeRaw = clean(matches[4]) || 'TRUE';
-          const isAffiliateRaw = clean(matches[8]) || 'FALSE';
-          
-          if (isAffiliateRaw.toUpperCase() === 'TRUE') {
-            affiliateBlocks.add(name);
+        blocks?.forEach(block => {
+          if (block.block_type === 'affiliate') {
+            affiliateBlocks.add(block.name);
           }
-          if (isFreeRaw.toUpperCase() === 'TRUE') {
-            freeBlocks.add(name);
+          if (block.pricing_type === 'free') {
+            freeBlocks.add(block.name);
           }
         });
         
