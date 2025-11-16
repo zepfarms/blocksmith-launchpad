@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import WebViewer from "@compdfkit_pdf_sdk/webviewer";
 
 interface PDFEditorViewerProps {
   pdfUrl: string;
@@ -14,9 +15,6 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
 
     const initializeViewer = async () => {
       try {
-        // @ts-ignore - ComPDFKit WebViewer library
-        const { ComPDFKitViewer } = await import("@compdfkit_pdf_sdk/webviewer");
-
         const publicKey = import.meta.env.VITE_COMPDFKIT_PUBLIC_KEY;
 
         if (!publicKey) {
@@ -28,7 +26,7 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           return;
         }
 
-        ComPDFKitViewer.init({
+        await WebViewer({
           pdfUrl: pdfUrl,
           license: publicKey,
           path: "/compdfkit",
