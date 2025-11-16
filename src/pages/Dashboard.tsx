@@ -263,11 +263,26 @@ const Dashboard = () => {
     }
   };
 
-  const handleCompleteBlock = (id: string, item?: DashboardItem) => {
-    // Handle affiliate blocks - open link in new tab
+  const handleCompleteBlock = async (id: string, item?: DashboardItem) => {
+    // Handle affiliate blocks - open link in new tab and mark as completed
     if (item?.isAffiliate && item.affiliateLink) {
       window.open(item.affiliateLink, '_blank', 'noopener,noreferrer');
-      toast.success(`Opening ${item.title} in a new tab`);
+      
+      // Mark as completed in database
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && businessData) {
+        await supabase
+          .from('user_block_unlocks')
+          .update({ completion_status: 'completed' })
+          .eq('user_id', user.id)
+          .eq('block_name', item.title)
+          .eq('business_id', businessData.id);
+        
+        toast.success(`${item.title} marked as visited`);
+        
+        // Reload the dashboard to reflect changes
+        window.location.reload();
+      }
       return;
     }
     
