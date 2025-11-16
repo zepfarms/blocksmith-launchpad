@@ -34,34 +34,22 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("my-apps");
 
   const loadBlocksCatalog = async (): Promise<Map<string, any>> => {
-    const response = await fetch('/data/blocks_catalog.csv');
-    const text = await response.text();
-    const lines = text.split('\n').slice(1);
+    const { data: blocks } = await supabase
+      .from('affiliate_blocks')
+      .select('*')
+      .eq('is_active', true);
     
     const catalogMap = new Map();
     
-    lines.filter(line => line.trim()).forEach(line => {
-      const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-      if (!matches || matches.length < 7) return;
-      
-      const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
-      const name = clean(matches[0]);
-      const category = clean(matches[1]);
-      const subtitle = clean(matches[2]);
-      const description = clean(matches[3]);
-      const isFreeRaw = clean(matches[4]) || 'TRUE';
-      const isAffiliateRaw = clean(matches[8]) || 'FALSE';
-      const affiliateLink = clean(matches[9]) || '';
-      const logoUrl = clean(matches[10]) || '';
-      
-      catalogMap.set(name, {
-        category,
-        subtitle,
-        description,
-        isFree: isFreeRaw.toUpperCase() === 'TRUE',
-        isAffiliate: isAffiliateRaw.toUpperCase() === 'TRUE',
-        affiliateLink,
-        logoUrl
+    blocks?.forEach(block => {
+      catalogMap.set(block.name, {
+        category: block.category,
+        subtitle: block.subtitle,
+        description: block.description,
+        isFree: block.pricing_type === 'free',
+        isAffiliate: block.block_type === 'affiliate',
+        affiliateLink: block.affiliate_link || '',
+        logoUrl: block.logo_url || ''
       });
     });
     
