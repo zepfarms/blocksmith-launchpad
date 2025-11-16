@@ -101,7 +101,9 @@ const AffiliateBlocks = () => {
         .order("display_order");
 
       if (error) throw error;
-      setCategories(data?.map(c => c.name) || []);
+      // Filter out any empty or null category names
+      const validCategories = data?.map(c => c.name).filter(name => name && name.trim() !== "") || [];
+      setCategories(validCategories);
     } catch (error: any) {
       console.error("Error loading categories:", error);
     }
@@ -338,7 +340,7 @@ const AffiliateBlocks = () => {
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map(cat => (
+                  {categories.filter(cat => cat && cat.trim() !== "").map(cat => (
                     <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                   ))}
                 </SelectContent>
@@ -549,7 +551,7 @@ const AffiliateBlocks = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            {categories.map(cat => (
+            {categories.filter(cat => cat && cat.trim() !== "").map(cat => (
               <SelectItem key={cat} value={cat}>{cat}</SelectItem>
             ))}
           </SelectContent>
