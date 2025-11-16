@@ -53,7 +53,7 @@ import { OnboardingLayout } from "./pages/onboarding/OnboardingLayout";
 import { IdeaStep } from "./pages/onboarding/IdeaStep";
 import { DescribeIdea } from "./pages/onboarding/DescribeIdea";
 import { BrowseIdeas } from "./pages/onboarding/BrowseIdeas";
-import { ConfirmIdea } from "./pages/onboarding/ConfirmIdea";
+
 import { BusinessName } from "./pages/onboarding/BusinessName";
 import { BlockSelection } from "./pages/onboarding/BlockSelection";
 import { Signup } from "./pages/onboarding/Signup";
@@ -126,7 +126,7 @@ function App() {
               <Route path="/start" element={<OnboardingLayout />}>
                 <Route index element={<IdeaStep />} />
                 <Route path="describe" element={<DescribeIdea />} />
-                <Route path="confirm" element={<ConfirmIdea />} />
+                
                 <Route path="name" element={<BusinessName />} />
                 <Route path="blocks" element={<BlockSelection />} />
                 <Route path="checkout" element={<Checkout />} />
