@@ -31,6 +31,7 @@ import { PurchaseHistory } from "./pages/dashboard/PurchaseHistory";
 import { SubscriptionCheckout } from "./pages/dashboard/SubscriptionCheckout";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import Features from "./pages/Features";
+import Tools from "./pages/Tools";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import GrantTerms from "./pages/GrantTerms";
@@ -107,9 +108,10 @@ function App() {
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
               
               {/* Other pages */}
-              <Route path="/features" element={<Features />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/tools" element={<Tools />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
               <Route path="/grant-terms" element={<GrantTerms />} />
               <Route path="/support" element={<Support />} />
               <Route path="/about" element={<About />} />
