@@ -19,7 +19,7 @@ export const BusinessName = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background pt-24">
+    <section className="relative flex flex-col px-4 sm:px-6 bg-background py-12 md:py-16">
       <div className="max-w-4xl mx-auto space-y-6 animate-fade-in w-full">
         <div className="text-center space-y-3">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
@@ -34,7 +34,7 @@ export const BusinessName = () => {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-2xl mx-auto">
           <Input
             value={businessName}
             onChange={(e) => setBusinessName(e.target.value)}
@@ -47,7 +47,7 @@ export const BusinessName = () => {
             <button
               onClick={handleContinue}
               disabled={!businessName.trim()}
-              className="group flex-1 px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
               <span className="transition-transform group-hover:translate-x-1">→</span>
