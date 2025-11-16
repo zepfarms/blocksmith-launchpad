@@ -32,14 +32,14 @@ export const CTASection = () => {
                 Join, and be one the first <span className="text-acari-green font-semibold">100 entrepreneurs</span> building real businesses with Acari.ai. Start for free, pay only when you're ready to launch.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-2">
-                <button onClick={() => navigate("/start")} className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-2 hover-scale">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-4 justify-center items-center w-full px-2">
+                <button onClick={() => navigate("/start")} className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center justify-center gap-2 hover-scale">
                   Start Building Free
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </button>
 
-                <button onClick={() => navigate("/start/browse")} className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 inline-flex items-center justify-center gap-2">
-                  Browse Business Ideas
+                <button onClick={() => navigate("/features")} className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 inline-flex items-center justify-center gap-2">
+                  Explore Features
                 </button>
               </div>
 

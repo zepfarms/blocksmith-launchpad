@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export const BetaSection = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden max-w-full">
       {/* Background ambient effects */}
@@ -37,6 +41,24 @@ export const BetaSection = () => {
                   Starting a business can be overwhelming when you have to do it all alone. 
                   Now you don't — meet your first business partner that works as hard as you do.
                 </p>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-4 justify-center items-center pt-6 sm:pt-8">
+                <button
+                  onClick={() => navigate("/start")}
+                  className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  Start Building Free
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </button>
+                <button
+                  onClick={() => navigate("/features")}
+                  className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-neon-cyan/30 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  Explore Features
+                  <span>→</span>
+                </button>
               </div>
             </div>
           </div>

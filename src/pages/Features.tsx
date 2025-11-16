@@ -1,238 +1,441 @@
-import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { 
+  Building2, 
+  Megaphone, 
+  Cog, 
+  Shield, 
+  Wallet, 
+  Headphones,
   Sparkles, 
-  Zap, 
-  Users, 
-  CreditCard, 
+  FileText, 
   Globe, 
-  Mail,
-  ShieldCheck,
+  Mail, 
+  CreditCard, 
   TrendingUp,
-  Package,
-  Megaphone,
-  FileText,
-  Briefcase,
-  ArrowLeft
+  Clock,
+  CheckCircle,
+  ArrowRight,
+  Palette,
+  MessageSquare,
+  QrCode,
+  BadgeCheck,
+  Share2,
+  BarChart
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const Features = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("start");
 
-  const tabs = [
-    { id: "start", label: "Getting Started", icon: Sparkles },
-    { id: "building", label: "Building", icon: Package },
-    { id: "launch", label: "Launch & Grow", icon: TrendingUp },
-    { id: "support", label: "Support", icon: Users },
+  const quickAccessTools = [
+    {
+      icon: Palette,
+      name: "Logo Generator",
+      description: "AI-powered logo designs for your brand",
+      category: "Branding",
+      route: "/dashboard/logo-generation",
+      color: "from-purple-500/20 to-pink-500/20"
+    },
+    {
+      icon: Sparkles,
+      name: "Business Name Generator",
+      description: "Find the perfect name for your business",
+      category: "Branding",
+      route: "/dashboard/business-name",
+      color: "from-blue-500/20 to-cyan-500/20"
+    },
+    {
+      icon: FileText,
+      name: "Business Plan Generator",
+      description: "Professional business plans in minutes",
+      category: "Planning",
+      route: "/dashboard/business-plan",
+      color: "from-green-500/20 to-emerald-500/20"
+    },
+    {
+      icon: QrCode,
+      name: "QR Code Generator",
+      description: "Custom QR codes for your business",
+      category: "Marketing",
+      route: "/dashboard/qr-code",
+      color: "from-orange-500/20 to-red-500/20"
+    },
+    {
+      icon: Mail,
+      name: "Email Signature",
+      description: "Professional email signatures",
+      category: "Branding",
+      route: "/dashboard/email-signature",
+      color: "from-indigo-500/20 to-purple-500/20"
+    },
+    {
+      icon: Share2,
+      name: "Social Media Checker",
+      description: "Check handle availability across platforms",
+      category: "Marketing",
+      route: "/dashboard/social-media",
+      color: "from-pink-500/20 to-rose-500/20"
+    }
   ];
 
-  const features = {
-    start: [
-      {
-        icon: Sparkles,
-        title: "AI-Powered Idea Analysis",
-        description: "Tell us your business idea and our AI analyzes it instantly, understanding exactly what you want to build and recommending the perfect blocks for your needs."
-      },
-      {
-        icon: Package,
-        title: "Smart Block Selection",
-        description: "Choose from 200+ pre-built business blocks covering everything from websites to marketing, legal setup to payment processing. Each block is designed to work together seamlessly."
-      },
-      {
-        icon: Users,
-        title: "Personalized Onboarding",
-        description: "Our conversational onboarding flow guides you step-by-step, asking the right questions to understand your business and build a customized launch plan just for you."
-      },
-      {
-        icon: Briefcase,
-        title: "500+ Business Ideas",
-        description: "Browse our curated library of 500+ proven business ideas across 20+ categories. Get inspired or find your perfect match with AI-powered recommendations."
-      }
-    ],
-    building: [
-      {
-        icon: Globe,
-        title: "Professional Website",
-        description: "Get a beautiful, mobile-responsive website built for you. No coding required. We handle design, hosting, and setup so you can focus on your business."
-      },
-      {
-        icon: Zap,
-        title: "Brand Identity & Logo",
-        description: "Receive custom logo designs, brand colors, typography, and complete brand guidelines. Build a professional identity that stands out."
-      },
-      {
-        icon: CreditCard,
-        title: "Payment Processing",
-        description: "Accept payments instantly with integrated Stripe or PayPal. We set up everything from checkout pages to subscription billing."
-      },
-      {
-        icon: Mail,
-        title: "Email Marketing Setup",
-        description: "Launch with professional email campaigns. We create templates, set up automation, and connect your email service provider."
-      },
-      {
-        icon: ShieldCheck,
-        title: "Legal & Compliance",
-        description: "Get essential legal documents including terms of service, privacy policy, and business registration guidance. Stay compliant from day one."
-      },
-      {
-        icon: FileText,
-        title: "Business Documentation",
-        description: "Receive business cards, letterheads, invoices, contracts, and all the professional documents you need to run your business."
-      }
-    ],
-    launch: [
-      {
-        icon: Megaphone,
-        title: "Marketing Strategy",
-        description: "Launch with a complete marketing plan including social media strategy, content calendar, ad templates, and growth tactics tailored to your business."
-      },
-      {
-        icon: TrendingUp,
-        title: "Growth Missions",
-        description: "Get step-by-step missions designed to help you acquire your first 10, 50, and 100 customers. Each mission includes proven tactics and templates."
-      },
-      {
-        icon: Globe,
-        title: "SEO & Online Presence",
-        description: "Optimize your site for search engines, claim your Google My Business listing, and establish your presence across relevant online directories."
-      },
-      {
-        icon: Users,
-        title: "Customer Acquisition Tools",
-        description: "Access lead magnets, conversion-optimized landing pages, and automated follow-up sequences to turn visitors into paying customers."
-      }
-    ],
-    support: [
-      {
-        icon: Users,
-        title: "Real Human Help",
-        description: "You're not alone. Get access to real human experts who can answer questions, provide guidance, and help you succeed. Not just AI—actual people who care."
-      },
-      {
-        icon: Sparkles,
-        title: "AI Co-Founder",
-        description: "Your AI business partner works 24/7 to build, optimize, and improve your business. Ask questions anytime and get intelligent, personalized responses."
-      },
-      {
-        icon: ShieldCheck,
-        title: "You Own Everything",
-        description: "Every asset we create is 100% yours. Download your logo files, export your website, keep all your content. No lock-in, no hidden fees."
-      },
-      {
-        icon: Zap,
-        title: "Fast Turnaround",
-        description: "Most businesses are ready to launch within 48 hours. We work fast so you can start getting customers and making money quickly."
-      }
-    ]
-  };
+  const featureCategories = [
+    {
+      icon: Building2,
+      title: "Foundation & Setup",
+      features: [
+        "Business Registration & Legal Structure",
+        "Logo & Brand Identity Design",
+        "Professional Website Development",
+        "Comprehensive Business Plan",
+        "Domain & Email Setup"
+      ]
+    },
+    {
+      icon: Megaphone,
+      title: "Marketing & Growth",
+      features: [
+        "Social Media Account Setup",
+        "Email Marketing Automation",
+        "SEO & Content Strategy",
+        "Ad Campaign Templates",
+        "Analytics & Tracking"
+      ]
+    },
+    {
+      icon: Cog,
+      title: "Operations & Tools",
+      features: [
+        "Payment Processing Integration",
+        "CRM & Customer Management",
+        "Inventory & Order Management",
+        "Workflow Automation",
+        "Project Management Tools"
+      ]
+    },
+    {
+      icon: Shield,
+      title: "Legal & Compliance",
+      features: [
+        "Terms of Service & Privacy Policy",
+        "Business Contracts & Agreements",
+        "Compliance Documentation",
+        "Tax Setup Guidance",
+        "Insurance Recommendations"
+      ]
+    },
+    {
+      icon: Wallet,
+      title: "Finance & Banking",
+      features: [
+        "Business Bank Account Setup",
+        "Accounting Software Integration",
+        "Invoice & Payment Systems",
+        "Financial Planning Tools",
+        "Expense Tracking"
+      ]
+    },
+    {
+      icon: Headphones,
+      title: "Support & Resources",
+      features: [
+        "24/7 Human Support Access",
+        "Launch Roadmap & Timeline",
+        "Educational Resources",
+        "Community Access",
+        "Ongoing Business Guidance"
+      ]
+    }
+  ];
 
-  const TabIcon = tabs.find(t => t.id === activeTab)?.icon || Sparkles;
+  const useCaseExamples = [
+    {
+      name: "E-commerce Store",
+      description: "Launch your online shop with complete payment processing, inventory management, and marketing automation",
+      tools: ["Shopify", "Stripe", "Mailchimp"],
+      timeframe: "48 hours",
+      gradient: "from-purple-500/10 to-pink-500/10"
+    },
+    {
+      name: "Consulting Business",
+      description: "Professional website, booking system, client management, and automated workflows",
+      tools: ["Website", "Calendly", "HubSpot"],
+      timeframe: "24 hours",
+      gradient: "from-blue-500/10 to-cyan-500/10"
+    },
+    {
+      name: "Local Service Business",
+      description: "Google My Business setup, local SEO, website, payment processing, and scheduling",
+      tools: ["GMB", "Square", "Jobber"],
+      timeframe: "36 hours",
+      gradient: "from-green-500/10 to-emerald-500/10"
+    },
+    {
+      name: "SaaS Product",
+      description: "Full tech stack setup, user authentication, payment integration, and customer support tools",
+      tools: ["AWS", "Stripe", "Intercom"],
+      timeframe: "48 hours",
+      gradient: "from-orange-500/10 to-red-500/10"
+    },
+    {
+      name: "Content Creator",
+      description: "Website, social media setup, email list building, and monetization tools",
+      tools: ["WordPress", "Patreon", "ConvertKit"],
+      timeframe: "24 hours",
+      gradient: "from-indigo-500/10 to-purple-500/10"
+    },
+    {
+      name: "Restaurant / Cafe",
+      description: "Online ordering system, reservation platform, menu management, and delivery integration",
+      tools: ["Toast", "OpenTable", "DoorDash"],
+      timeframe: "36 hours",
+      gradient: "from-pink-500/10 to-rose-500/10"
+    }
+  ];
+
+  const stats = [
+    { number: "200+", label: "Tools & Services" },
+    { number: "500+", label: "Business Ideas" },
+    { number: "48hrs", label: "Avg. Launch Time" },
+    { number: "100%", label: "You Own Everything" }
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white">
       <Header />
       
-      <main className="container mx-auto px-4 py-12 pt-32">
-        <div className="max-w-6xl mx-auto">
-          {/* Back Button */}
-          <button
-            onClick={() => navigate("/")}
-            className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Home</span>
-          </button>
-
-          {/* Header */}
-          <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">Knowledge Base</h1>
-            <p className="text-xl text-gray-400">
-              Everything you need to know about building with Acari
-            </p>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-3 mb-8 bg-white/5 p-2 rounded-full">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${
-                    activeTab === tab.id
-                      ? "bg-acari-green text-black hover:bg-acari-green/90"
-                      : "text-gray-400 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Content Card */}
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12">
-            {/* Section Header */}
-            <div className="flex items-start gap-4 mb-8">
-              <div className="bg-white/10 rounded-2xl p-4">
-                <TabIcon className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold mb-2">
-                  {tabs.find(t => t.id === activeTab)?.label}
-                </h2>
-                <p className="text-gray-400">
-                  {activeTab === "start" && "Everything you need to know to start building amazing businesses"}
-                  {activeTab === "building" && "All the tools and services to build your complete business"}
-                  {activeTab === "launch" && "Strategies and tools to launch and grow your customer base"}
-                  {activeTab === "support" && "The support and resources to ensure your success"}
-                </p>
-              </div>
-            </div>
-
-            {/* Features Grid */}
-            <div className="space-y-8">
-              {features[activeTab as keyof typeof features].map((feature, index) => {
-                const FeatureIcon = feature.icon;
-                return (
-                  <div key={index} className="border-b border-white/10 pb-8 last:border-0 last:pb-0">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-primary/20 rounded-xl p-3 flex-shrink-0">
-                        <FeatureIcon className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                        <p className="text-gray-400 leading-relaxed">{feature.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className="mt-12 text-center">
-            <h3 className="text-2xl font-bold mb-4">Ready to Build Your Business?</h3>
-            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              Join thousands of entrepreneurs who are turning their ideas into real businesses with Acari. Start building today.
-            </p>
-            <button
+      {/* Hero Section */}
+      <section className="relative py-20 sm:py-32 px-4 bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.1),transparent_50%)]" />
+        
+        <div className="relative max-w-6xl mx-auto text-center">
+          <Badge variant="outline" className="mb-8 text-acari-green border-acari-green/30">
+            <Sparkles className="w-3 h-3 mr-2" />
+            Everything You Need to Launch
+          </Badge>
+          
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-white to-acari-green bg-clip-text text-transparent">
+            What Can You Build?
+          </h1>
+          
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">
+            From idea to launch in 48 hours. Access 200+ tools and services to build, launch, and grow your business.
+          </p>
+          
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4 justify-center">
+            <button 
               onClick={() => navigate("/start")}
-              className="px-10 py-5 bg-acari-green text-black rounded-full font-medium text-lg hover:bg-acari-green/90 transition-all duration-200 shadow-lg inline-flex items-center gap-2"
+              className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
             >
               Start Building Free
-              <span className="transition-transform hover:translate-x-1">→</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+            </button>
+            <button 
+              onClick={() => navigate("/tools")}
+              className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              Browse Tools
             </button>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* Quick Access Tools Grid */}
+      <section className="py-20 px-4 bg-black">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Start Creating <span className="text-acari-green">Right Now</span>
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Try our free tools instantly - no signup required
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quickAccessTools.map((tool) => (
+              <Card 
+                key={tool.name}
+                className="group bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-acari-green/50 transition-all duration-300 cursor-pointer overflow-hidden"
+                onClick={() => navigate(tool.route)}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                
+                <CardHeader className="relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-acari-green/20 to-acari-green/5 group-hover:from-acari-green/30 group-hover:to-acari-green/10 transition-all duration-300">
+                      <tool.icon className="w-6 h-6 text-acari-green" />
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {tool.category}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl group-hover:text-acari-green transition-colors">
+                    {tool.name}
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    {tool.description}
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent className="relative pt-0">
+                  <button className="text-sm text-acari-green font-medium flex items-center gap-2 group-hover:gap-3 transition-all">
+                    Try It Free
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Categories */}
+      <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Everything You Need to <span className="text-acari-green">Launch</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              We handle the complexity so you can focus on building your business
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featureCategories.map((category) => (
+              <Card key={category.title} className="bg-card/50 border-border/50 hover:border-acari-green/30 transition-all duration-300">
+                <CardHeader>
+                  <div className="mb-4 p-3 rounded-xl bg-gradient-to-br from-acari-green/20 to-acari-green/5 w-fit">
+                    <category.icon className="w-8 h-8 text-acari-green" />
+                  </div>
+                  <CardTitle className="text-xl mb-4">{category.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    {category.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-3 text-sm text-muted-foreground">
+                        <CheckCircle className="w-4 h-4 text-acari-green flex-shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Use Case Examples */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-900 to-black">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Real Businesses You Can <span className="text-acari-green">Launch</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              See what's possible with our platform - these are just a few examples
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {useCaseExamples.map((example) => (
+              <Card key={example.name} className={`bg-gradient-to-br ${example.gradient} border-border/50 hover:border-acari-green/50 transition-all duration-300 group`}>
+                <CardHeader>
+                  <CardTitle className="text-xl mb-2 group-hover:text-acari-green transition-colors">
+                    {example.name}
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">
+                    {example.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {example.tools.map((tool) => (
+                      <Badge key={tool} variant="secondary" className="text-xs">
+                        {tool}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-acari-green">
+                    <Clock className="w-4 h-4" />
+                    <span className="font-medium">Launch in {example.timeframe}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 px-4 bg-black border-y border-white/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-acari-green mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-sm sm:text-base text-muted-foreground">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-8">
+            <BadgeCheck className="w-16 h-16 text-acari-green mx-auto mb-4" />
+          </div>
+          
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+            Ready to Build Your Business?
+          </h2>
+          
+          <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Join the first 100 entrepreneurs building real businesses with Acari.ai. Start for free, pay only when you're ready to launch.
+          </p>
+          
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4 justify-center mb-8">
+            <button 
+              onClick={() => navigate("/start")}
+              className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              Start Building Free
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+            </button>
+            <button 
+              onClick={() => navigate("/tools")}
+              className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              Browse Tools
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs sm:text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span>No credit card required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span>Build first, pay when ready</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span>Launch in 48 hours</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
