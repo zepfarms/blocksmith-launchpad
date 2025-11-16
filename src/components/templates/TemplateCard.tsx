@@ -34,12 +34,12 @@ export function TemplateCard({
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       <CardHeader className="p-0">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg bg-muted">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-t-lg bg-muted/30 p-4">
           {thumbnailUrl ? (
             <img
               src={thumbnailUrl}
               alt={title}
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+              className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
           ) : (

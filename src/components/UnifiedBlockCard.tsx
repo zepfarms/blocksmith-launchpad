@@ -69,7 +69,7 @@ export const UnifiedBlockCard = ({
       if (context === 'public') {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-          navigate('/start/signup');
+          navigate('/start');
           return;
         }
       }
@@ -109,7 +109,7 @@ export const UnifiedBlockCard = ({
       if (context === 'public') {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-          navigate('/start/signup');
+          navigate('/start');
           return;
         }
       }

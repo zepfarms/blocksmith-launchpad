@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { TemplateCard } from "@/components/templates/TemplateCard";
 import { TemplateSearch } from "@/components/templates/TemplateSearch";
 import { TemplateFilters } from "@/components/templates/TemplateFilters";
@@ -215,16 +217,21 @@ export default function Templates() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
+      
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-primary/5 to-background py-16 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Business Templates Library</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Download professional templates to kickstart your business. All templates are free and customizable.
-          </p>
-          <div className="max-w-2xl mx-auto">
-            <TemplateSearch value={searchQuery} onChange={setSearchQuery} />
+      <section className="relative bg-gradient-to-br from-primary/5 via-background to-background pt-32 pb-16 border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-4 mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Business Document Templates
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Professional templates to streamline your business operations. Download and customize for your needs.
+            </p>
           </div>
+          
+          <TemplateSearch value={searchQuery} onChange={setSearchQuery} />
         </div>
       </section>
 
@@ -328,6 +335,8 @@ export default function Templates() {
           </div>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 }
