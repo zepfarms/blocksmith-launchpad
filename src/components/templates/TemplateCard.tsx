@@ -34,21 +34,35 @@ export function TemplateCard({
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       <CardHeader className="p-0">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-t-lg bg-muted/30 p-4">
-          {thumbnailUrl ? (
-            <img
-              src={thumbnailUrl}
-              alt={title}
-              className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <FileText className="h-16 w-16 text-muted-foreground" />
-            </div>
-          )}
+        {/* Computer/Browser Frame */}
+        <div className="relative aspect-[3/4] overflow-hidden rounded-t-lg bg-gradient-to-b from-slate-200 to-slate-300 p-3">
+          {/* Browser Window Chrome */}
+          <div className="bg-slate-100 rounded-t-lg px-3 py-2 mb-2 flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+          </div>
+          
+          {/* Document Display Area */}
+          <div className="bg-white rounded-b-lg shadow-inner relative overflow-hidden" style={{ height: 'calc(100% - 36px)' }}>
+            {thumbnailUrl ? (
+              <div className="absolute inset-0 p-3">
+                <img
+                  src={thumbnailUrl}
+                  alt={title}
+                  className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <FileText className="h-16 w-16 text-muted-foreground" />
+              </div>
+            )}
+          </div>
+          
           {isFeatured && (
-            <div className="absolute top-2 right-2">
+            <div className="absolute top-4 right-4 z-10">
               <Badge variant="default" className="bg-primary/90 backdrop-blur-sm">
                 <Star className="h-3 w-3 mr-1 fill-current" />
                 Featured
