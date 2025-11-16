@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Upload, FileText, Trash2, ExternalLink, Loader2, Star, Pencil } from "lucide-react";
+import { Upload, FileText, Trash2, ExternalLink, Loader2, Star, Pencil, Eye } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { AuthModal } from "@/components/AuthModal";
@@ -814,6 +814,14 @@ export default function DocumentLibrary() {
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => window.open(`/templates/${template.slug}`, "_blank")}
+                            title="View on site"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
                           {template.file_url && (
                             <Button
                               size="sm"
@@ -821,6 +829,7 @@ export default function DocumentLibrary() {
                               onClick={() =>
                                 window.open(template.file_url, "_blank")
                               }
+                              title="Download file"
                             >
                               <ExternalLink className="h-4 w-4" />
                             </Button>
@@ -829,6 +838,7 @@ export default function DocumentLibrary() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleDelete(template.id)}
+                            title="Delete template"
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
