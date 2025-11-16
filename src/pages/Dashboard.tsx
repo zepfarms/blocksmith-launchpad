@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { VerificationBanner } from "@/components/VerificationBanner";
 import { toast } from "sonner";
+import AppStore from "@/pages/dashboard/AppStore";
 
 interface DashboardItem {
   id: string;
@@ -553,14 +554,7 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="app-store">
-            <div className="text-center py-12">
-              <Store className="w-16 h-16 mx-auto mb-4 text-acari-green" />
-              <h2 className="text-2xl font-bold text-white mb-2">App Store</h2>
-              <p className="text-muted-foreground mb-4">Browse and add more blocks to your business</p>
-              <Button onClick={() => navigate('/dashboard/app-store')} className="bg-acari-green hover:bg-acari-green/90 text-black">
-                Browse Apps
-              </Button>
-            </div>
+            <AppStore />
           </TabsContent>
 
           <TabsContent value="account" className="space-y-6">
