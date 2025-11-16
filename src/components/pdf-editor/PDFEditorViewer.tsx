@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { PDFDiagnosticsPanel } from "./PDFDiagnosticsPanel";
-// @ts-ignore - ComPDFKit assets loaded via static copy
-import ComPDFKitViewer from "/@compdfkit/webviewer";
 
 interface PDFEditorViewerProps {
   pdfUrl: string;
@@ -28,10 +26,15 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           return;
         }
 
+        // Dynamic import from npm package
+        const ComPDFKitModule = await import("@compdfkit_pdf_sdk/webviewer");
+        const ComPDFKitViewer = ComPDFKitModule.default || ComPDFKitModule;
+
         await ComPDFKitViewer.init(
           {
             pdfUrl,
             license: publicKey,
+            path: "/@compdfkit",
           },
           containerRef.current!
         );
