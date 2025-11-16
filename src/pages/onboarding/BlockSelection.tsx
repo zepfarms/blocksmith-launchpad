@@ -29,6 +29,7 @@ export const BlockSelection = () => {
     <SmartBlockSelector
       starterBlocks={data.selectedIdeaRow?.starter_blocks || ""}
       growthBlocks={data.selectedIdeaRow?.growth_blocks || ""}
+      businessType={data.businessType}
       onComplete={handleComplete}
     />
   );

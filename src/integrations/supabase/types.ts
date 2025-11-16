@@ -510,6 +510,7 @@ export type Database = {
           ai_analysis: string | null
           business_idea: string
           business_name: string
+          business_type: string | null
           created_at: string
           id: string
           payment_status: string | null
@@ -524,6 +525,7 @@ export type Database = {
           ai_analysis?: string | null
           business_idea: string
           business_name: string
+          business_type?: string | null
           created_at?: string
           id?: string
           payment_status?: string | null
@@ -538,6 +540,7 @@ export type Database = {
           ai_analysis?: string | null
           business_idea?: string
           business_name?: string
+          business_type?: string | null
           created_at?: string
           id?: string
           payment_status?: string | null

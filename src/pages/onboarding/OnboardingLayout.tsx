@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 const stepMap: Record<string, number> = {
   "/start": 1,
   "/start/describe": 2,
-  "/start/browse": 2,
   "/start/confirm": 3,
   "/start/name": 4,
   "/start/blocks": 5,
@@ -15,7 +14,6 @@ const stepMap: Record<string, number> = {
 
 const backLabels: Record<string, string> = {
   "/start/describe": "Back",
-  "/start/browse": "Back",
   "/start/confirm": "Back",
   "/start/name": "Back",
   "/start/blocks": "Back",
@@ -24,7 +22,6 @@ const backLabels: Record<string, string> = {
 
 const backPathMap: Record<string, string> = {
   "/start/describe": "/start",
-  "/start/browse": "/start",
   "/start/confirm": "/start/describe",
   "/start/name": "/start/confirm",
   "/start/blocks": "/start/name",

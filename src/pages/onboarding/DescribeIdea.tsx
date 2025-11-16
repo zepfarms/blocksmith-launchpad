@@ -92,10 +92,14 @@ export const DescribeIdea = () => {
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in w-full">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            What business do you want to start?
+            {data.businessType === 'existing' 
+              ? 'Tell us about your business' 
+              : 'Great! Tell us about your idea'}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Describe your idea in 1-2 sentences, be as thorough as possible as this will help us get you the best results.
+            {data.businessType === 'existing'
+              ? 'Tell us about what type of business you have in one to two sentences.'
+              : 'Tell me what kind of business you want to start in one to two sentences.'}
           </p>
         </div>
 
@@ -103,7 +107,9 @@ export const DescribeIdea = () => {
           <Textarea
             value={businessIdea}
             onChange={(e) => setBusinessIdea(e.target.value)}
-            placeholder="e.g., I want to start a dog walking business in my neighborhood"
+            placeholder={data.businessType === 'existing'
+              ? 'e.g., I own a dog walking business in Austin, Texas'
+              : 'e.g., I want to start a dog walking business in my neighborhood'}
             className="min-h-[120px] text-lg"
             autoFocus
           />

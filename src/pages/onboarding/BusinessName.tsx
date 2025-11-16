@@ -23,10 +23,14 @@ export const BusinessName = () => {
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in w-full">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            Do you have a name for your business yet?
+            {data.businessType === 'existing'
+              ? 'What is the name of your business?'
+              : 'Do you have a name for your new business?'}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Don't worry, you can always change it later
+            {data.businessType === 'existing'
+              ? 'This helps us personalize your experience'
+              : "Don't worry, you can always change it later"}
           </p>
         </div>
 

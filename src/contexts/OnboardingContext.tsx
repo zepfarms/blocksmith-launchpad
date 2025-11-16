@@ -15,6 +15,7 @@ interface OnboardingData {
   selectedIdeaRow: BusinessIdea | null;
   businessName: string;
   selectedBlocks: string[];
+  businessType: 'existing' | 'new' | '';
 }
 
 interface OnboardingContextType {
@@ -31,6 +32,7 @@ const initialData: OnboardingData = {
   selectedIdeaRow: null,
   businessName: "",
   selectedBlocks: [],
+  businessType: "",
 };
 
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {

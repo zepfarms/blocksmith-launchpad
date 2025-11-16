@@ -103,10 +103,27 @@ const iconMap: Record<string, React.ReactNode> = {
 interface SmartBlockSelectorProps {
   starterBlocks?: string;
   growthBlocks?: string;
+  businessType?: 'existing' | 'new' | '';
   onComplete: (selectedBlocks: string[], paidBlocks?: string[]) => void;
 }
 
-export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onComplete }: SmartBlockSelectorProps) => {
+// Default blocks for existing businesses
+const EXISTING_BUSINESS_BLOCKS = [
+  "Social Media Handle Checker",
+  "Business Plan Generator",
+  "Email Signature Generator",
+  "QR Code Generator",
+];
+
+// Default blocks for new businesses
+const NEW_BUSINESS_BLOCKS = [
+  "Business Name Generator",
+  "Logo Generator",
+  "Social Media Handle Checker",
+  "Business Plan Generator",
+];
+
+export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", businessType = "", onComplete }: SmartBlockSelectorProps) => {
   const [allBlocks, setAllBlocks] = useState<Block[]>([]);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [showAllBlocks, setShowAllBlocks] = useState(false);
@@ -273,27 +290,39 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", onCo
       });
   }, [pricingData]);
 
-  // Enhanced starter recommendations: always show these essential blocks for any business
-  const essentialStarterTitles = [
-    "Business Name Generator",
-    "Website Builder",
-    "Business Cards", 
-    "Social Media Kit",
-    "Email Setup",
-    "Logo Generator",
-    "Payment Processing"
-  ];
-
-  const starterBlockNames = starterBlocks.split(',').map(s => s.trim()).filter(Boolean);
+  // Determine which blocks to show based on business type
+  let starterBlockList: Block[] = [];
+  
+  if (businessType === 'existing') {
+    // For existing businesses, show optimized/improvement tools
+    starterBlockList = allBlocks.filter(b => EXISTING_BUSINESS_BLOCKS.includes(b.title));
+  } else if (businessType === 'new') {
+    // For new businesses, show launch/creation tools
+    starterBlockList = allBlocks.filter(b => NEW_BUSINESS_BLOCKS.includes(b.title));
+  } else {
+    // Fallback to original logic if no business type specified
+    const essentialStarterTitles = [
+      "Business Name Generator",
+      "Website Builder",
+      "Business Cards", 
+      "Social Media Kit",
+      "Email Setup",
+      "Logo Generator",
+      "Payment Processing"
+    ];
+    
+    const starterBlockNames = starterBlocks.split(',').map(s => s.trim()).filter(Boolean);
+    const combinedStarterNames = [...new Set([...essentialStarterTitles, ...starterBlockNames])];
+    starterBlockList = allBlocks.filter(b => combinedStarterNames.includes(b.title));
+  }
+  
   const growthBlockNames = growthBlocks.split(',').map(s => s.trim()).filter(Boolean);
+  const growthBlockList = allBlocks.filter(b => 
+    growthBlockNames.includes(b.title) && !starterBlockList.some(s => s.title === b.title)
+  );
   
-  // Combine AI-recommended starters with essential starters
-  const combinedStarterNames = [...new Set([...essentialStarterTitles, ...starterBlockNames])];
-  
-  const starterBlockList = allBlocks.filter(b => combinedStarterNames.includes(b.title));
-  const growthBlockList = allBlocks.filter(b => growthBlockNames.includes(b.title) && !combinedStarterNames.includes(b.title));
   const otherBlocks = allBlocks.filter(b => 
-    !combinedStarterNames.includes(b.title) && !growthBlockNames.includes(b.title)
+    !starterBlockList.some(s => s.title === b.title) && !growthBlockNames.includes(b.title)
   );
 
   // Filter other blocks by category

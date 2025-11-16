@@ -91,7 +91,6 @@ function App() {
               <Route path="/start" element={<OnboardingLayout />}>
                 <Route index element={<IdeaStep />} />
                 <Route path="describe" element={<DescribeIdea />} />
-                <Route path="browse" element={<BrowseIdeas />} />
                 <Route path="confirm" element={<ConfirmIdea />} />
                 <Route path="name" element={<BusinessName />} />
                 <Route path="blocks" element={<BlockSelection />} />
