@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { TemplateCard } from "@/components/templates/TemplateCard";
 import { TemplateSearch } from "@/components/templates/TemplateSearch";
 import { TemplateFilters } from "@/components/templates/TemplateFilters";
+import { PDFEditorPromo } from "@/components/templates/PDFEditorPromo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -246,6 +247,10 @@ export default function Templates() {
 
             {/* Templates Grid */}
             <div>
+              {/* PDF Editor Promo */}
+              <div className="mb-8">
+                <PDFEditorPromo />
+              </div>
               {/* Mobile Filters */}
               <div className="lg:hidden mb-6">
                 <Sheet>
