@@ -31,7 +31,11 @@ export const ConfirmIdea = () => {
           </div>
           
           <div className="max-w-2xl mx-auto p-6 rounded-2xl bg-card border border-border">
-            <p className="text-lg leading-relaxed">{data.aiAnalysis}</p>
+            <p className="text-lg leading-relaxed">
+              {data.businessType === 'existing'
+                ? `Got it! I understand you own a ${data.aiAnalysis.replace(/I understand you want to start a |I understand you want to start |business|!|./gi, '').trim()} business. Based on that I can recommend some Tools to help make your business run smoother.`
+                : `Got it! I understand you want to start a ${data.aiAnalysis.replace(/I understand you want to start a |I understand you want to start |business|!|./gi, '').trim()} business.`}
+            </p>
           </div>
         </div>
 

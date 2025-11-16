@@ -39,6 +39,7 @@ export const Signup = () => {
       business_idea: data.businessIdea,
       ai_analysis: data.aiAnalysis,
       selected_blocks: data.selectedBlocks,
+      business_type: data.businessType || null,
       status: 'building'
     });
 
