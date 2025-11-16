@@ -124,18 +124,7 @@ export function DocumentEditor({ documentId, templateId, onBack }: DocumentEdito
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <div>
-                <h1 className="text-xl font-semibold text-foreground">{documentTitle}</h1>
-                {hasUnlimitedAccess ? (
-                  <p className="text-sm text-green-600 dark:text-green-400">
-                    ✓ Unlimited Access
-                  </p>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    {editCount}/3 free edits used
-                  </p>
-                )}
-              </div>
+              <h1 className="text-xl font-semibold text-foreground">{documentTitle}</h1>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="gap-2">
