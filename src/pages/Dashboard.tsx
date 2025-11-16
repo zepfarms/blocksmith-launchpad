@@ -19,6 +19,9 @@ interface DashboardItem {
   description: string;
   isFree?: boolean;
   category?: string;
+  isAffiliate?: boolean;
+  affiliateLink?: string;
+  logoUrl?: string;
 }
 
 const Dashboard = () => {
@@ -30,6 +33,37 @@ const Dashboard = () => {
   const [emailVerified, setEmailVerified] = useState(true);
   const [showVerificationBanner, setShowVerificationBanner] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
+
+  const loadBlocksCatalog = async (): Promise<Map<string, any>> => {
+    const response = await fetch('/data/blocks_catalog.csv');
+    const text = await response.text();
+    const lines = text.split('\n').slice(1);
+    
+    const catalogMap = new Map();
+    
+    lines.filter(line => line.trim()).forEach(line => {
+      const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
+      if (!matches || matches.length < 7) return;
+      
+      const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
+      const name = clean(matches[0]);
+      const category = clean(matches[1]);
+      const description = clean(matches[2]);
+      const isAffiliateRaw = clean(matches[7]) || 'FALSE';
+      const affiliateLink = clean(matches[8]) || '';
+      const logoUrl = clean(matches[9]) || '';
+      
+      catalogMap.set(name, {
+        category,
+        description,
+        isAffiliate: isAffiliateRaw.toUpperCase() === 'TRUE',
+        affiliateLink,
+        logoUrl
+      });
+    });
+    
+    return catalogMap;
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -76,10 +110,28 @@ const Dashboard = () => {
         const allBlocks = [...new Set([...legacyBlocks, ...appStoreBlocks])];
         
         const dashboardItems: DashboardItem[] = [];
+        const blocksCatalog = await loadBlocksCatalog();
         
         for (const blockName of allBlocks) {
           const unlock = unlockedBlocks?.find(u => u.block_name === blockName);
           const completionStatus = (unlock?.completion_status || 'not_started') as "not_started" | "in_progress" | "completed";
+          const catalogInfo = blocksCatalog.get(blockName);
+          
+          // Handle affiliate blocks dynamically
+          if (catalogInfo?.isAffiliate) {
+            dashboardItems.push({
+              id: blockName.toLowerCase().replace(/\s+/g, '-'),
+              title: blockName,
+              completionStatus,
+              description: catalogInfo.description,
+              isFree: true,
+              category: catalogInfo.category,
+              isAffiliate: true,
+              affiliateLink: catalogInfo.affiliateLink,
+              logoUrl: catalogInfo.logoUrl
+            });
+            continue;
+          }
           
           if (blockName === 'Business Name Generator') {
             dashboardItems.push({
@@ -211,7 +263,14 @@ const Dashboard = () => {
     }
   };
 
-  const handleCompleteBlock = (id: string) => {
+  const handleCompleteBlock = (id: string, item?: DashboardItem) => {
+    // Handle affiliate blocks - open link in new tab
+    if (item?.isAffiliate && item.affiliateLink) {
+      window.open(item.affiliateLink, '_blank', 'noopener,noreferrer');
+      toast.success(`Opening ${item.title} in a new tab`);
+      return;
+    }
+    
     switch (id) {
       case 'business-name-generator':
         navigate('/dashboard/business-name-generator');
@@ -307,39 +366,14 @@ const Dashboard = () => {
               </p>
             </div>
 
-            {recommendedBlock && (
+            {awaitingBlocks.length > 0 && (
               <div className="space-y-4">
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                   <Rocket className="w-6 h-6 text-acari-green" />
-                  Recommended Next Step
+                  Recommended Next Steps
                 </h2>
-                <div className="glass-card p-6 rounded-2xl border border-acari-green/40 bg-acari-green/5">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-semibold text-white">{recommendedBlock.title}</h3>
-                        {recommendedBlock.isFree && (
-                          <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30">FREE</Badge>
-                        )}
-                      </div>
-                      <p className="text-muted-foreground mb-4">{recommendedBlock.description}</p>
-                      <Button 
-                        onClick={() => handleCompleteBlock(recommendedBlock.id)}
-                        className="bg-acari-green hover:bg-acari-green/90 text-black font-semibold"
-                      >
-                        Complete This Block
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {awaitingBlocks.length > 1 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-white">Apps Awaiting Completion</h2>
                 <div className="grid gap-4 md:grid-cols-2">
-                  {awaitingBlocks.slice(1).map((item) => (
+                  {awaitingBlocks.map((item) => (
                     <div
                       key={item.id}
                       className="glass-card p-6 rounded-2xl border border-white/10 hover:border-acari-green/40 transition-all hover:shadow-lg hover:shadow-acari-green/10"
@@ -348,28 +382,50 @@ const Dashboard = () => {
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
+                              {item.logoUrl && item.isAffiliate ? (
+                                <img src={item.logoUrl} alt={item.title} className="w-8 h-8 rounded" />
+                              ) : null}
                               <h3 className="font-semibold text-foreground">{item.title}</h3>
                               {item.isFree && (
                                 <Badge className="bg-acari-green/20 text-acari-green border-acari-green/30 text-xs">FREE</Badge>
+                              )}
+                              {item.category && (
+                                <Badge variant="outline" className="text-xs">{item.category}</Badge>
                               )}
                             </div>
                             <p className="text-sm text-muted-foreground">{item.description}</p>
                           </div>
                         </div>
-                        <div className="flex gap-2">
-                          <Button 
-                            onClick={() => handleCompleteBlock(item.id)}
-                            className="flex-1 bg-acari-green hover:bg-acari-green/90 text-black"
-                          >
-                            Complete This Block
-                          </Button>
-                        </div>
+                        <Button 
+                          onClick={() => handleCompleteBlock(item.id, item)}
+                          className="w-full bg-acari-green hover:bg-acari-green/90 text-black"
+                        >
+                          {item.isAffiliate ? 'Visit Partner Website' : 'Complete This Block'}
+                        </Button>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
+
+            {/* Looking for more apps section */}
+            <div className="glass-card p-8 rounded-2xl border border-white/10 text-center">
+              <h3 className="text-xl font-semibold text-white mb-3">
+                Looking to add more apps?
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Discover additional tools and features in our App Store
+              </p>
+              <Button
+                onClick={() => navigate('/dashboard/app-store')}
+                variant="outline"
+                className="border-acari-green/40 text-acari-green hover:bg-acari-green/10"
+              >
+                <Store className="w-4 h-4 mr-2" />
+                Visit App Store
+              </Button>
+            </div>
 
             {completedBlocks.length > 0 && (
               <div className="space-y-4">
