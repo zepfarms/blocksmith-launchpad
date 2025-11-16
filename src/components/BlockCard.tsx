@@ -187,6 +187,13 @@ export const BlockCard = ({
         {title}
       </h3>
 
+      {/* Subtitle */}
+      {subtitle && (
+        <p className="text-[10px] md:text-xs text-muted-foreground mt-1">
+          {subtitle}
+        </p>
+      )}
+
       {/* Modular connection lines */}
       {isSelected && (
         <>
