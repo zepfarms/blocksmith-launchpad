@@ -60,9 +60,11 @@ export function TemplateCard({
       <CardContent className="flex-1 p-4">
         <div className="space-y-2">
           {category && (
-            <Badge variant="secondary" className="text-xs">
-              {category.name}
-            </Badge>
+            <Link to={`/templates/category/${category.slug}`}>
+              <Badge variant="secondary" className="text-xs hover:bg-secondary/80 transition-colors cursor-pointer">
+                {category.name}
+              </Badge>
+            </Link>
           )}
           <CardTitle className="line-clamp-2 text-lg">{title}</CardTitle>
           {description && (
