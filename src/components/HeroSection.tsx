@@ -1,39 +1,13 @@
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 
 interface HeroSectionProps {
   onCTAClick: () => void;
-  onSignInClick?: () => void;
 }
 
-export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => {
+export const HeroSection = ({ onCTAClick }: HeroSectionProps) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSignInClick = () => {
-    if (user) {
-      navigate("/dashboard");
-    } else if (onSignInClick) {
-      onSignInClick();
-    }
-  };
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden bg-black max-w-full">
       {/* Grid pattern overlay */}
@@ -65,19 +39,19 @@ export const HeroSection = ({ onCTAClick, onSignInClick }: HeroSectionProps) => 
         </div>
 
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4 md:pt-8 px-4 w-full max-w-full">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:gap-4 items-center justify-center pt-4 md:pt-8 px-4 w-full max-w-full">
           <button
             onClick={onCTAClick}
-            className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
+            className="group px-5 py-3 sm:px-10 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
           >
-            Find Your Tools Now
+            Build Your Stack
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </button>
           <button
-            onClick={handleSignInClick}
-            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-base sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
+            onClick={() => navigate("/tools")}
+            className="px-5 py-3 sm:px-10 sm:py-5 border-2 border-white/20 text-white rounded-full font-medium text-sm sm:text-lg hover:bg-white/5 transition-all duration-200 flex items-center justify-center gap-2"
           >
-            {user ? "Dashboard" : "Sign In"}
+            Browse Tools
             <span>→</span>
           </button>
         </div>

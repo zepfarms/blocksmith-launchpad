@@ -79,10 +79,7 @@ const Index = () => {
   return (
     <div className="min-h-screen overflow-x-hidden max-w-full w-full">
       <Header />
-      <HeroSection
-        onCTAClick={handleHeroCTA} 
-        onSignInClick={() => setShowAuthModal(true)}
-      />
+      <HeroSection onCTAClick={handleHeroCTA} />
       
       <AcariCapabilitiesSection />
       
