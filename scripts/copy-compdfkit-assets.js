@@ -3,13 +3,13 @@ const fs = require("fs");
 const path = require("path");
 
 const sourceRoot = path.join(__dirname, "../node_modules/@compdfkit_pdf_sdk/webviewer");
-const destRoot = path.join(__dirname, "../public/compdfkit");
+const destCompdfkit = path.join(__dirname, "../public/compdfkit");
+const destAtCompdfkit = path.join(__dirname, "../public/@compdfkit");
 
-const candidates = ["public", "dist", "lib", "resources", "static", "build"];
+const candidates = ["public", "dist", "lib", "resources", "static", "build", "ui"]; // include ui if it's top-level in some versions
 
 function copyRecursive(src, dest) {
   if (!fs.existsSync(src)) return false;
-  
   const stats = fs.statSync(src);
   if (stats.isDirectory()) {
     if (!fs.existsSync(dest)) {
@@ -30,25 +30,19 @@ function copyRecursive(src, dest) {
   }
 }
 
-function main() {
-  console.log("[ComPDFKit] Postinstall: Copying assets to public/compdfkit...");
-
-  if (!fs.existsSync(sourceRoot)) {
-    console.warn(`[ComPDFKit] Package not found at ${sourceRoot}, skipping asset copy.`);
-    return;
+function cleanDir(dir) {
+  if (fs.existsSync(dir)) {
+    fs.rmSync(dir, { recursive: true, force: true });
   }
+  fs.mkdirSync(dir, { recursive: true });
+}
 
-  // Clean destination
-  if (fs.existsSync(destRoot)) {
-    fs.rmSync(destRoot, { recursive: true, force: true });
-  }
-  fs.mkdirSync(destRoot, { recursive: true });
-
+function copyTo(destRoot) {
   let copied = false;
   for (const candidate of candidates) {
     const srcPath = path.join(sourceRoot, candidate);
     if (fs.existsSync(srcPath)) {
-      console.log(`[ComPDFKit] Copying from ${candidate}/...`);
+      console.log(`[ComPDFKit] Copying from ${candidate}/ to ${destRoot}...`);
       const files = fs.readdirSync(srcPath);
       for (const file of files) {
         copyRecursive(path.join(srcPath, file), path.join(destRoot, file));
@@ -56,9 +50,8 @@ function main() {
       copied = true;
     }
   }
-
   if (!copied) {
-    console.log("[ComPDFKit] No known subfolder found, copying entire package...");
+    console.log(`[ComPDFKit] No known subfolder found, copying entire package to ${destRoot}...`);
     const files = fs.readdirSync(sourceRoot);
     for (const file of files) {
       if (file !== "node_modules") {
@@ -66,6 +59,21 @@ function main() {
       }
     }
   }
+}
+
+function main() {
+  console.log("[ComPDFKit] Postinstall: Copying assets to public/compdfkit and public/@compdfkit...");
+
+  if (!fs.existsSync(sourceRoot)) {
+    console.warn(`[ComPDFKit] Package not found at ${sourceRoot}, skipping asset copy.`);
+    return;
+  }
+
+  cleanDir(destCompdfkit);
+  cleanDir(destAtCompdfkit);
+
+  copyTo(destCompdfkit);
+  copyTo(destAtCompdfkit);
 
   console.log("[ComPDFKit] Asset copy complete ✓");
 }
