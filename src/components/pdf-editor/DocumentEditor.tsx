@@ -32,6 +32,19 @@ export function DocumentEditor({ documentId, templateId, onBack }: DocumentEdito
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Check if user is admin - admins get unlimited access
+      const { data: adminRole } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (adminRole) {
+        setHasUnlimitedAccess(true);
+        return;
+      }
+
       // Check if user has purchased unlimited access
       const { data: purchases } = await supabase
         .from("user_block_purchases")
@@ -113,7 +126,11 @@ export function DocumentEditor({ documentId, templateId, onBack }: DocumentEdito
               </Button>
               <div>
                 <h1 className="text-xl font-semibold text-foreground">{documentTitle}</h1>
-                {!hasUnlimitedAccess && (
+                {hasUnlimitedAccess ? (
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    ✓ Unlimited Access
+                  </p>
+                ) : (
                   <p className="text-sm text-muted-foreground">
                     {editCount}/3 free edits used
                   </p>
