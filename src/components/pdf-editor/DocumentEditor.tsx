@@ -116,7 +116,7 @@ export function DocumentEditor({ documentId, templateId, onBack }: DocumentEdito
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="border-b border-border bg-card">
+      <div className="bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
