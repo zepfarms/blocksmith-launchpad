@@ -57,7 +57,7 @@ export function PDFDiagnosticsPanel() {
   if (import.meta.env.PROD) return null;
 
   return (
-    <Card className="fixed bottom-4 right-4 p-4 w-96 bg-background/95 backdrop-blur-sm border-2 z-50">
+    <Card className="fixed top-4 right-4 p-3 w-80 bg-background/95 backdrop-blur-sm border-2 z-40">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm">ComPDFKit Diagnostics</h3>
