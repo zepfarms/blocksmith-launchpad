@@ -21,8 +21,6 @@ export const ConfirmIdea = () => {
     navigate("/start/describe");
   };
 
-  // Extract business type from AI analysis
-  const businessType = data.aiAnalysis.replace(/I understand you want to start a |I understand you want to start |business|!|./gi, '').trim();
 
   return (
     <section className="relative flex flex-col px-4 sm:px-6 bg-background py-12 md:py-16">
@@ -48,21 +46,7 @@ export const ConfirmIdea = () => {
           {/* Exciting confirmation card with gradient */}
           <div className="max-w-2xl mx-auto p-8 rounded-2xl bg-gradient-to-br from-card via-card to-acari-green/5 border-2 border-acari-green/30 shadow-lg shadow-acari-green/10">
             <p className="text-xl md:text-2xl leading-relaxed font-medium">
-              {data.businessType === 'existing'
-                ? (
-                  <>
-                    Perfect! We're about to unlock <span className="text-acari-green font-bold">powerful tools</span> tailored specifically for your business. 
-                    <br /><br />
-                    Get ready to <span className="text-acari-green">streamline operations</span>, <span className="text-acari-green">save time</span>, and <span className="text-acari-green">accelerate growth</span>.
-                  </>
-                )
-                : (
-                  <>
-                    Exciting! Your <span className="text-acari-green font-bold">{businessType}</span> business is about to come to life. 
-                    <br /><br />
-                    We're curating the <span className="text-acari-green">perfect toolkit</span> to help you <span className="text-acari-green">launch faster</span> and <span className="text-acari-green">smarter</span>. 🎯
-                  </>
-                )}
+              Perfect! It seems like you have a solid idea. Now let's see how we can help get you the tools you need for your business.
             </p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, ArrowLeft, Sparkles, Rocket, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Sparkles, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,7 +37,7 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
   const [analysisConfirmed, setAnalysisConfirmed] = useState(false);
   const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [email, setEmail] = useState("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
@@ -77,28 +77,9 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
     }
 
     if (step === 2) {
-      // Analyze the idea using AI
-      setIsAnalyzing(true);
-      try {
-        const { data: analysisData, error } = await supabase.functions.invoke('analyze-idea', {
-          body: { name: data.name, vision: data.vision }
-        });
-
-        if (error) {
-          console.error('Analysis error:', error);
-          toast.error("Couldn't analyze your idea. Please try again.");
-          setIsAnalyzing(false);
-          return;
-        }
-
-        setAiAnalysis(analysisData.analysis);
-        setIsAnalyzing(false);
-        setStep(3);
-      } catch (error) {
-        console.error('Analysis error:', error);
-        toast.error("Couldn't analyze your idea. Please try again.");
-        setIsAnalyzing(false);
-      }
+      // Set static confirmation message
+      setAiAnalysis("Perfect! It seems like you have a solid idea.");
+      setStep(3);
       return;
     }
 
@@ -437,7 +418,6 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
               size="lg"
               onClick={handleBack}
               className="gap-2"
-              disabled={isAnalyzing}
             >
               <ArrowLeft className="w-5 h-5" />
               Back
@@ -448,14 +428,8 @@ export const JourneyFlow = ({ onComplete, onBack }: JourneyFlowProps) => {
               size="lg"
               onClick={handleNext}
               className="gap-2"
-              disabled={isAnalyzing}
             >
-              {isAnalyzing ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Analyzing...
-                </>
-              ) : step === 5 ? (
+              {step === 5 ? (
                 <>
                   Continue
                   <ArrowRight className="w-5 h-5" />
