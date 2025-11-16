@@ -59,3 +59,12 @@ verify_jwt = false
 
 [functions.generate-domain-names]
 verify_jwt = false
+
+[functions.send-contact-notification]
+verify_jwt = false
+
+[functions.send-partner-inquiry]
+verify_jwt = false
+
+[functions.send-newsletter-confirmation]
+verify_jwt = false

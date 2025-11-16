@@ -148,6 +148,107 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author_id: string
+          category_id: string | null
+          content: string
+          created_at: string | null
+          excerpt: string | null
+          featured_image_url: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          read_time_minutes: number | null
+          scheduled_for: string | null
+          slug: string
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          view_count: number | null
+        }
+        Insert: {
+          author_id: string
+          category_id?: string | null
+          content: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          read_time_minutes?: number | null
+          scheduled_for?: string | null
+          slug: string
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string
+          category_id?: string | null
+          content?: string
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image_url?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          read_time_minutes?: number | null
+          scheduled_for?: string | null
+          slug?: string
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_plans: {
         Row: {
           business_id: string
@@ -198,6 +299,57 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          admin_notes: string | null
+          company: string | null
+          created_at: string | null
+          email: string
+          id: string
+          message: string
+          metadata: Json | null
+          name: string
+          phone: string | null
+          status: string | null
+          subject: string | null
+          type: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          company?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          message: string
+          metadata?: Json | null
+          name: string
+          phone?: string | null
+          status?: string | null
+          subject?: string | null
+          type: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          message?: string
+          metadata?: Json | null
+          name?: string
+          phone?: string | null
+          status?: string | null
+          subject?: string | null
+          type?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       email_verifications: {
         Row: {
           attempts: number
@@ -228,6 +380,54 @@ export type Database = {
           expires_at?: string
           id?: string
           used?: boolean
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          admin_notes: string | null
+          applicant_name: string
+          cover_letter: string | null
+          created_at: string | null
+          email: string
+          id: string
+          job_title: string
+          linkedin_url: string | null
+          phone: string | null
+          portfolio_url: string | null
+          resume_url: string | null
+          status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          applicant_name: string
+          cover_letter?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          job_title: string
+          linkedin_url?: string | null
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          admin_notes?: string | null
+          applicant_name?: string
+          cover_letter?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          job_title?: string
+          linkedin_url?: string | null
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string | null
+          years_experience?: number | null
         }
         Relationships: []
       }
@@ -271,6 +471,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          email: string
+          id: string
+          name: string | null
+          status: string | null
+          subscribed_at: string | null
+          subscription_source: string | null
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          name?: string | null
+          status?: string | null
+          subscribed_at?: string | null
+          subscription_source?: string | null
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          name?: string | null
+          status?: string | null
+          subscribed_at?: string | null
+          subscription_source?: string | null
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
