@@ -1127,6 +1127,63 @@ export type Database = {
         }
         Relationships: []
       }
+      user_edited_documents: {
+        Row: {
+          created_at: string | null
+          edit_count: number | null
+          file_url: string
+          id: string
+          last_edited_at: string | null
+          original_file_url: string | null
+          template_id: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          edit_count?: number | null
+          file_url: string
+          id?: string
+          last_edited_at?: string | null
+          original_file_url?: string | null
+          template_id?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          edit_count?: number | null
+          file_url?: string
+          id?: string
+          last_edited_at?: string | null
+          original_file_url?: string | null
+          template_id?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_edited_documents_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "document_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_edited_documents_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
