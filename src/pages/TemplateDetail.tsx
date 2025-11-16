@@ -117,22 +117,36 @@ export default function TemplateDetail() {
       {/* Template Detail */}
       <section className="max-w-6xl mx-auto px-6 pb-12">
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Thumbnail */}
+          {/* Thumbnail with Laptop Frame */}
           <div>
-            <div className="aspect-[4/3] rounded-lg overflow-hidden bg-muted relative">
-              {template.thumbnail_url ? (
-                <img
-                  src={template.thumbnail_url}
-                  alt={template.title}
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <FileText className="h-24 w-24 text-muted-foreground" />
-                </div>
-              )}
+            {/* Computer/Browser Frame - Laptop proportions */}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gradient-to-b from-slate-200 to-slate-300 p-2">
+              {/* Browser Window Chrome - Compact */}
+              <div className="bg-slate-100 rounded-t-md px-2 py-1.5 mb-1 flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              
+              {/* Document Display Area - Tight fit */}
+              <div className="bg-white rounded-b-md shadow-inner relative overflow-hidden" style={{ height: 'calc(100% - 26px)' }}>
+                {template.thumbnail_url ? (
+                  <div className="absolute inset-0 p-1">
+                    <img
+                      src={template.thumbnail_url}
+                      alt={template.title}
+                      className="object-contain w-full h-full"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <FileText className="h-12 w-12 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              
               {template.is_featured && (
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-3 right-3 z-10">
                   <Badge variant="default" className="bg-primary/90 backdrop-blur-sm">
                     <Star className="h-4 w-4 mr-1 fill-current" />
                     Featured
