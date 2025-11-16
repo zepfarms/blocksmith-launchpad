@@ -15,11 +15,21 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     viteStaticCopy({
       targets: [
+        // Try multiple possible source locations for ComPDFKit assets
         {
-          src: "node_modules/@compdfkit_pdf_sdk/webviewer/dist",
+          src: "node_modules/@compdfkit_pdf_sdk/webviewer/public/**/*",
+          dest: "compdfkit",
+        },
+        {
+          src: "node_modules/@compdfkit_pdf_sdk/webviewer/lib/**/*",
+          dest: "compdfkit",
+        },
+        {
+          src: "node_modules/@compdfkit_pdf_sdk/webviewer/dist/**/*",
           dest: "compdfkit",
         },
       ],
+      structured: true,
     }),
   ].filter(Boolean),
   resolve: {
