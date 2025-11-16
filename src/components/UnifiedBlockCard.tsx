@@ -137,7 +137,10 @@ export const UnifiedBlockCard = ({
       if (block.block_type === 'affiliate') {
         return (
           <button
-            onClick={handleClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
             className="w-full py-2.5 px-4 bg-purple-500/10 hover:bg-purple-500/20 text-purple-500 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
           >
             Visit Partner
@@ -153,7 +156,10 @@ export const UnifiedBlockCard = ({
         
         return (
           <button
-            onClick={handleClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
             className="w-full py-2.5 px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
           >
             {priceText} - Add to Business
@@ -166,7 +172,10 @@ export const UnifiedBlockCard = ({
     if (context === 'my-apps') {
       return (
         <button
-          onClick={handleClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick();
+          }}
           className="w-full py-2.5 px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2"
         >
           {block.block_type === 'affiliate' ? 'Visit' : 'Launch'}
