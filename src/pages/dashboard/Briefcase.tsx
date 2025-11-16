@@ -115,7 +115,7 @@ export default function Briefcase() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl mt-4 sm:mt-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Briefcase</h1>

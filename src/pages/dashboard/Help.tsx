@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Help() {
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-4xl mt-4 sm:mt-6">
       <h1 className="text-3xl font-bold mb-2">Help & Support</h1>
       <p className="text-muted-foreground mb-8">Get help with your Acari experience</p>
 
