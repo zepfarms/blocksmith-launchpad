@@ -27,11 +27,11 @@ export function PDFEditorPromo() {
             </div>
             <div className="flex items-center gap-4 pt-2">
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-foreground">$15</span>
+                <span className="text-3xl font-bold text-foreground">$5</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               <div className="h-6 w-px bg-border" />
-              <span className="text-sm text-muted-foreground">3 free edits to try</span>
+              <span className="text-sm text-muted-foreground">or $29 lifetime • 3 free edits</span>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
