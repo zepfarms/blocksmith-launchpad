@@ -82,14 +82,23 @@ export default function Subscriptions() {
   const loadAvailableBlocks = async () => {
     try {
       const { data, error } = await supabase
-        .from('blocks_pricing')
+        .from('affiliate_blocks')
         .select('*')
+        .eq('block_type', 'internal')
         .eq('pricing_type', 'monthly')
-        .order('block_name');
+        .order('name');
 
       if (error) throw error;
 
-      setAvailableBlocks(data || []);
+      setAvailableBlocks((data || []).map(b => ({
+        block_name: b.name,
+        price_cents: b.price_cents || 0,
+        monthly_price_cents: b.monthly_price_cents || 0,
+        pricing_type: b.pricing_type || 'monthly',
+        is_free: b.pricing_type === 'free',
+        stripe_monthly_price_id: b.stripe_monthly_price_id,
+        stripe_product_id: b.stripe_product_id
+      })));
     } catch (error) {
       console.error('Error loading available blocks:', error);
     }

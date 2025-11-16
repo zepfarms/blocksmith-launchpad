@@ -33,9 +33,10 @@ export const SubscriptionCheckout = () => {
       }
 
       const { data, error } = await supabase
-        .from('blocks_pricing')
+        .from('affiliate_blocks')
         .select('*')
-        .in('block_name', blockNames)
+        .in('name', blockNames)
+        .eq('block_type', 'internal')
         .eq('pricing_type', 'monthly');
 
       if (error) {
@@ -46,7 +47,7 @@ export const SubscriptionCheckout = () => {
       }
 
       // Filter only paid monthly blocks
-      const paidBlocks = data?.filter(b => !b.is_free && b.monthly_price_cents > 0) || [];
+      const paidBlocks = data?.filter(b => b.monthly_price_cents && b.monthly_price_cents > 0) || [];
       
       if (paidBlocks.length === 0) {
         toast.error('No monthly subscription blocks selected');
@@ -54,7 +55,16 @@ export const SubscriptionCheckout = () => {
         return;
       }
 
-      setBlocks(paidBlocks);
+      setBlocks(paidBlocks.map(b => ({
+        block_name: b.name,
+        price_cents: b.price_cents || 0,
+        monthly_price_cents: b.monthly_price_cents || 0,
+        pricing_type: b.pricing_type || 'monthly',
+        is_free: b.pricing_type === 'free',
+        stripe_monthly_price_id: b.stripe_monthly_price_id,
+        stripe_product_id: b.stripe_product_id,
+        description: b.description
+      })));
       setLoading(false);
     };
 

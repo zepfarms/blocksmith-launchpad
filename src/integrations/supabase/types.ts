@@ -222,51 +222,6 @@ export type Database = {
           },
         ]
       }
-      blocks_pricing: {
-        Row: {
-          block_name: string
-          created_at: string
-          description: string | null
-          id: string
-          is_free: boolean
-          monthly_price_cents: number
-          price_cents: number
-          pricing_type: string
-          stripe_monthly_price_id: string | null
-          stripe_price_id: string | null
-          stripe_product_id: string | null
-          updated_at: string
-        }
-        Insert: {
-          block_name: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_free?: boolean
-          monthly_price_cents?: number
-          price_cents?: number
-          pricing_type?: string
-          stripe_monthly_price_id?: string | null
-          stripe_price_id?: string | null
-          stripe_product_id?: string | null
-          updated_at?: string
-        }
-        Update: {
-          block_name?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_free?: boolean
-          monthly_price_cents?: number
-          price_cents?: number
-          pricing_type?: string
-          stripe_monthly_price_id?: string | null
-          stripe_price_id?: string | null
-          stripe_product_id?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       blog_categories: {
         Row: {
           created_at: string | null
