@@ -68,6 +68,21 @@ export default function AppStore() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Check if user is admin - admins have access to all blocks
+      const { data: adminRole } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (adminRole) {
+        // Admins have access to everything
+        const allBlockNames = blocks.map(b => b.name);
+        setOwnedBlocks(new Set(allBlockNames));
+        return;
+      }
+
       const { data: business } = await supabase
         .from("user_businesses")
         .select("id")
