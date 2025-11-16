@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { PDFDiagnosticsPanel } from "./PDFDiagnosticsPanel";
 
 interface PDFEditorViewerProps {
   pdfUrl: string;
@@ -73,10 +74,13 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
   }, [pdfUrl, toast]);
 
   return (
-    <div 
-      ref={containerRef}
-      className="w-full h-full min-h-[600px] bg-background"
-      style={{ minHeight: "calc(100vh - 120px)" }}
-    />
+    <>
+      <div 
+        ref={containerRef}
+        className="w-full h-full min-h-[600px] bg-background"
+        style={{ minHeight: "calc(100vh - 120px)" }}
+      />
+      <PDFDiagnosticsPanel />
+    </>
   );
 }
