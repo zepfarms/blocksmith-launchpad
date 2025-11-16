@@ -488,7 +488,6 @@ export default function DocumentLibrary() {
                       <SelectValue placeholder="Select format (optional)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">None</SelectItem>
                       <SelectItem value="pdf">PDF</SelectItem>
                       <SelectItem value="docx">DOCX</SelectItem>
                       <SelectItem value="google-docs">Google Docs</SelectItem>
