@@ -34,19 +34,19 @@ export function TemplateCard({
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 h-full flex flex-col">
       <CardHeader className="p-0">
-        {/* Computer/Browser Frame */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-t-lg bg-gradient-to-b from-slate-200 to-slate-300 p-3">
-          {/* Browser Window Chrome */}
-          <div className="bg-slate-100 rounded-t-lg px-3 py-2 mb-2 flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+        {/* Computer/Browser Frame - Laptop proportions */}
+        <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg bg-gradient-to-b from-slate-200 to-slate-300 p-2">
+          {/* Browser Window Chrome - Compact */}
+          <div className="bg-slate-100 rounded-t-md px-2 py-1.5 mb-1 flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-red-500"></div>
+            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+            <div className="w-2 h-2 rounded-full bg-green-500"></div>
           </div>
           
-          {/* Document Display Area */}
-          <div className="bg-white rounded-b-lg shadow-inner relative overflow-hidden" style={{ height: 'calc(100% - 36px)' }}>
+          {/* Document Display Area - Tight fit */}
+          <div className="bg-white rounded-b-md shadow-inner relative overflow-hidden" style={{ height: 'calc(100% - 26px)' }}>
             {thumbnailUrl ? (
-              <div className="absolute inset-0 p-3">
+              <div className="absolute inset-0 p-1">
                 <img
                   src={thumbnailUrl}
                   alt={title}
@@ -56,13 +56,13 @@ export function TemplateCard({
               </div>
             ) : (
               <div className="flex items-center justify-center h-full">
-                <FileText className="h-16 w-16 text-muted-foreground" />
+                <FileText className="h-12 w-12 text-muted-foreground" />
               </div>
             )}
           </div>
           
           {isFeatured && (
-            <div className="absolute top-4 right-4 z-10">
+            <div className="absolute top-3 right-3 z-10">
               <Badge variant="default" className="bg-primary/90 backdrop-blur-sm">
                 <Star className="h-3 w-3 mr-1 fill-current" />
                 Featured
