@@ -15,6 +15,9 @@ import AdminCategories from "./pages/admin/Categories";
 import FailedPayments from "./pages/admin/FailedPayments";
 import Analytics from "./pages/admin/Analytics";
 import AdminBlocks from "./pages/admin/Blocks";
+import BlogPosts from "./pages/admin/BlogPosts";
+import BlogEditor from "./pages/admin/BlogEditor";
+import BlogCategories from "./pages/admin/BlogCategories";
 import Overview from "./pages/dashboard/Overview";
 import MyApps from "./pages/dashboard/MyApps";
 import Briefcase from "./pages/dashboard/Briefcase";
@@ -90,6 +93,10 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
+              <Route path="/admin/blog" element={<BlogPosts />} />
+              <Route path="/admin/blog/new" element={<BlogEditor />} />
+              <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
+              <Route path="/admin/blog/categories" element={<BlogCategories />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
               <Route path="/admin/blocks" element={<AdminBlocks />} />
