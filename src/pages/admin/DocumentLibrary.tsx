@@ -317,6 +317,21 @@ export default function DocumentLibrary() {
     loadTemplates();
   };
 
+  const handleToggleFeatured = async (id: string, currentStatus: boolean) => {
+    const { error } = await supabase
+      .from("document_templates")
+      .update({ is_featured: !currentStatus })
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Failed to update featured status");
+      return;
+    }
+
+    toast.success(currentStatus ? "Removed from featured" : "Added to featured");
+    loadTemplates();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -729,6 +744,22 @@ export default function DocumentLibrary() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() =>
+                              handleToggleFeatured(template.id, template.is_featured)
+                            }
+                            title={template.is_featured ? "Remove from featured" : "Add to featured"}
+                          >
+                            <Star
+                              className={`h-4 w-4 ${
+                                template.is_featured
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-muted-foreground"
+                              }`}
+                            />
+                          </Button>
                           {template.file_url && (
                             <Button
                               size="sm"
