@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { UnifiedBlockCard } from "@/components/UnifiedBlockCard";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -93,39 +92,37 @@ export default function MyApps() {
   };
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">My Apps</h1>
-          <p className="text-muted-foreground mt-2">
-            Access and manage your unlocked business apps
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">My Apps</h1>
+        <p className="text-muted-foreground mt-2">
+          Access and manage your unlocked business apps
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-12">Loading your apps...</div>
+      ) : blocks.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">
+            You haven't unlocked any apps yet. Visit the App Store to get started!
           </p>
         </div>
-
-        {loading ? (
-          <div className="text-center py-12">Loading your apps...</div>
-        ) : blocks.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              You haven't unlocked any apps yet. Visit the App Store to get started!
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blocks.map((block) => (
-              <UnifiedBlockCard
-                key={block.id}
-                block={block}
-                context="my-apps"
-                isOwned={true}
-                completionStatus={
-                  userUnlocks.get(block.name)?.completion_status || "not_started"
-                }
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </DashboardLayout>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blocks.map((block) => (
+            <UnifiedBlockCard
+              key={block.id}
+              block={block}
+              context="my-apps"
+              isOwned={true}
+              completionStatus={
+                userUnlocks.get(block.name)?.completion_status || "not_started"
+              }
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

@@ -532,10 +532,7 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="app-store" className="space-y-6">
-            <AppStore onDataChanged={() => {
-              loadDashboardData();
-              setActiveTab("my-apps");
-            }} />
+            <AppStore />
           </TabsContent>
 
           <TabsContent value="account" className="space-y-6">
