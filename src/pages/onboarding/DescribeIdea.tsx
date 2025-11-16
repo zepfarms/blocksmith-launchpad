@@ -88,7 +88,7 @@ export const DescribeIdea = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-background">
+    <section className="relative flex flex-col px-4 sm:px-6 bg-background py-12 md:py-16">
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in w-full">
         <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
@@ -119,7 +119,7 @@ export const DescribeIdea = () => {
               <button
                 onClick={handleSubmitIdea}
                 disabled={!businessIdea.trim() || isAnalyzing}
-                className="group px-8 sm:px-10 py-4 sm:py-5 bg-acari-green text-black rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group px-8 sm:px-10 py-4 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-base sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAnalyzing ? (
                   <>
