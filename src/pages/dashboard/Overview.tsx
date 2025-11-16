@@ -135,6 +135,12 @@ export default function Overview() {
         </p>
       </div>
 
+      {/* Quick Actions */}
+      <div className="glass-card p-6 mb-6">
+        <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+        <QuickActionsGrid />
+      </div>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
         <StatsCard
@@ -184,19 +190,10 @@ export default function Overview() {
         </div>
       )}
 
-      {/* Quick Actions & Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Quick Actions */}
-        <div className="glass-card p-6">
-          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-          <QuickActionsGrid />
-        </div>
-
-        {/* Recent Activity */}
-        <div className="glass-card p-6">
-          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-          <RecentActivityFeed activities={recentActivities} />
-        </div>
+      {/* Recent Activity */}
+      <div className="glass-card p-6">
+        <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+        <RecentActivityFeed activities={recentActivities} />
       </div>
     </div>
   );
