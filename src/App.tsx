@@ -20,6 +20,7 @@ import BlogEditor from "./pages/admin/BlogEditor";
 import BlogCategories from "./pages/admin/BlogCategories";
 import DocumentLibrary from "./pages/admin/DocumentLibrary";
 import TemplateAnalytics from "./pages/admin/TemplateAnalytics";
+import BlockCategoryManagement from "./pages/admin/BlockCategoryManagement";
 import Overview from "./pages/dashboard/Overview";
 import MyApps from "./pages/dashboard/MyApps";
 import Briefcase from "./pages/dashboard/Briefcase";
@@ -103,6 +104,7 @@ function App() {
               <Route path="/admin/template-analytics" element={<TemplateAnalytics />} />
               <Route path="/admin/affiliate-blocks" element={<AffiliateBlocks />} />
               <Route path="/admin/affiliate-analytics" element={<AffiliateAnalytics />} />
+              <Route path="/admin/block-categories" element={<BlockCategoryManagement />} />
               <Route path="/admin/blog" element={<BlogPosts />} />
               <Route path="/admin/blog/new" element={<BlogEditor />} />
               <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
