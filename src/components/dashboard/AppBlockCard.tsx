@@ -57,17 +57,17 @@ export function AppBlockCard({ block, onClick }: AppBlockCardProps) {
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div className="glass-card p-4 sm:p-6 hover:scale-[1.02] transition-all duration-200 group cursor-pointer">
+    <div className="glass-card p-3 sm:p-4 hover:scale-[1.02] transition-all duration-200 group cursor-pointer">
       {/* Logo/Icon */}
-      <div className="relative mb-4 aspect-square rounded-lg bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
+      <div className="relative mb-3 aspect-video rounded-lg bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
         {block.logoUrl ? (
           <img
             src={block.logoUrl}
             alt={block.name}
-            className="w-full h-full object-contain p-3 sm:p-4"
+            className="w-full h-full object-contain p-2 sm:p-3"
           />
         ) : (
-          <div className="text-3xl sm:text-4xl font-bold text-primary">
+          <div className="text-2xl sm:text-3xl font-bold text-primary">
             {block.name.charAt(0)}
           </div>
         )}
@@ -91,24 +91,24 @@ export function AppBlockCard({ block, onClick }: AppBlockCardProps) {
       </div>
 
       {/* Content */}
-      <div className="mb-4">
-        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1 line-clamp-1">
+      <div className="mb-3">
+        <h3 className="text-sm sm:text-base font-semibold text-foreground mb-0.5 line-clamp-1">
           {block.name}
         </h3>
         {block.subtitle && (
-          <p className="text-xs sm:text-sm text-primary/80 mb-2 line-clamp-1">
+          <p className="text-xs text-primary/80 mb-1.5 line-clamp-1">
             {block.subtitle}
           </p>
         )}
-        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+        <p className="text-xs text-muted-foreground line-clamp-2">
           {block.description}
         </p>
       </div>
 
       {/* Status Indicator */}
-      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/10">
-        <StatusIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${statusConfig.color}`} />
-        <span className={`text-xs sm:text-sm ${statusConfig.color}`}>
+      <div className="flex items-center gap-1.5 mb-3 pb-3 border-b border-white/10">
+        <StatusIcon className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${statusConfig.color}`} />
+        <span className={`text-xs ${statusConfig.color}`}>
           {statusConfig.label}
         </span>
       </div>
@@ -116,13 +116,13 @@ export function AppBlockCard({ block, onClick }: AppBlockCardProps) {
       {/* Action Button */}
       <Button
         onClick={onClick}
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs h-8"
         size="sm"
       >
         {block.isAffiliate ? (
           <>
             Visit Partner
-            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
+            <ExternalLink className="w-3 h-3 ml-1.5" />
           </>
         ) : (
           statusConfig.buttonText
