@@ -202,12 +202,16 @@ export default function TemplateDetail() {
                     <Edit className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-foreground mb-1">Need to edit this PDF?</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Use our PDF Editor to customize text, add annotations, fill forms, and more. Try 3 edits free!
+                      <p className="text-sm text-muted-foreground mb-2">
+                        Use our PDF Editor to customize text, add annotations, fill forms, and more.
                       </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-sm font-medium text-foreground">$5/month</span>
+                        <span className="text-sm text-muted-foreground">or $29 lifetime</span>
+                      </div>
                       <Button asChild size="sm">
-                        <Link to="/dashboard/pdf-editor">
-                          Open PDF Editor
+                        <Link to="/start?selectedBlock=PDF Editor">
+                          Get PDF Editor
                         </Link>
                       </Button>
                     </div>
