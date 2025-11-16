@@ -117,50 +117,52 @@ export default function Briefcase() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl mt-4 sm:mt-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Briefcase</h1>
-        <p className="text-muted-foreground">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Briefcase</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
           Manage and download all your saved assets
         </p>
       </div>
 
-      {/* Filter Tabs */}
-      <Tabs value={selectedFilter} onValueChange={(value) => setSelectedFilter(value as AssetFilter)} className="mb-6">
-        <TabsList className="bg-white/5 border border-white/10">
-          <TabsTrigger value="all" className="data-[state=active]:bg-white/10">
-            All Assets ({counts.all})
-          </TabsTrigger>
-          <TabsTrigger value="logo" className="data-[state=active]:bg-white/10">
-            Logos ({counts.logo})
-          </TabsTrigger>
-          <TabsTrigger value="business_plan" className="data-[state=active]:bg-white/10">
-            Business Plans ({counts.business_plan})
-          </TabsTrigger>
-          <TabsTrigger value="qr_code" className="data-[state=active]:bg-white/10">
-            QR Codes ({counts.qr_code})
-          </TabsTrigger>
-          <TabsTrigger value="email_signature" className="data-[state=active]:bg-white/10">
-            Signatures ({counts.email_signature})
-          </TabsTrigger>
-          <TabsTrigger value="social_handles" className="data-[state=active]:bg-white/10">
-            Social ({counts.social_handles})
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      {/* Filter Tabs - Scrollable on mobile */}
+      <div className="mb-6 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <Tabs value={selectedFilter} onValueChange={(value) => setSelectedFilter(value as AssetFilter)}>
+          <TabsList className="w-max min-w-full sm:w-full bg-white/5 border border-white/10 inline-flex">
+            <TabsTrigger value="all" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              All Assets ({counts.all})
+            </TabsTrigger>
+            <TabsTrigger value="logo" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              Logos ({counts.logo})
+            </TabsTrigger>
+            <TabsTrigger value="business_plan" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              Business Plans ({counts.business_plan})
+            </TabsTrigger>
+            <TabsTrigger value="qr_code" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              QR Codes ({counts.qr_code})
+            </TabsTrigger>
+            <TabsTrigger value="email_signature" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              Signatures ({counts.email_signature})
+            </TabsTrigger>
+            <TabsTrigger value="social_handles" className="whitespace-nowrap px-3 sm:px-4 text-xs sm:text-sm data-[state=active]:bg-white/10">
+              Social ({counts.social_handles})
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
 
       {/* Assets Grid */}
       {filteredAssets.length === 0 ? (
-        <div className="glass-card p-12 text-center">
-          <FileX className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-xl font-semibold mb-2">No assets found</h3>
-          <p className="text-muted-foreground mb-4">
+        <div className="glass-card p-8 sm:p-12 text-center">
+          <FileX className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg sm:text-xl font-semibold mb-2">No assets found</h3>
+          <p className="text-sm sm:text-base text-muted-foreground mb-4 px-4">
             {selectedFilter === 'all'
               ? 'Start creating assets using the tools in My Apps'
               : `No ${getAssetTypeLabel(selectedFilter).toLowerCase()} have been created yet`}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredAssets.map((asset) => (
             <AssetCard
               key={asset.id}
