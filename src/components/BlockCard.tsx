@@ -79,38 +79,36 @@ export const BlockCard = ({
       {/* Permanent ambient glow effect */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 animate-glow-pulse opacity-50" />
 
-      {/* Info icon - top left */}
+      {/* Info icon - top left - INSIDE card */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           onInfoClick();
         }}
-        className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all z-10"
+        className="absolute top-2 left-2 w-6 h-6 rounded-md bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-black/60 hover:border-white/30 transition-all z-10"
       >
-        <Info className="h-3.5 w-3.5 text-white" />
+        <Info className="h-3 w-3 text-white/70 hover:text-white transition-colors" />
       </button>
 
-      {/* Ownership/Selection indicator - top right */}
-      {isOwned ? (
-        <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full transition-all duration-300 z-10 flex items-center justify-center border-2 bg-green-500 border-green-500">
-          <Check className="h-4 w-4 text-white" />
-        </div>
-      ) : (
+      {/* Selection indicator - top right - INSIDE card */}
+      {!isOwned && (
         <div
           className={cn(
-            "absolute -top-2 -right-2 w-7 h-7 rounded-full transition-all duration-300 z-10",
-            "flex items-center justify-center",
-            "border-2",
+            "absolute top-2 right-2 w-5 h-5 rounded-md transition-all duration-300 z-10",
+            "flex items-center justify-center text-xs font-bold",
             isSelected 
-              ? "bg-neon-cyan border-neon-cyan" 
-              : "bg-white/10 border-white/20 backdrop-blur-sm"
+              ? "bg-neon-cyan/90 text-black" 
+              : "bg-black/40 backdrop-blur-sm border border-white/10 text-white/50"
           )}
         >
-          {isSelected ? (
-            <Check className="h-4 w-4 text-black" />
-          ) : (
-            <Plus className="h-4 w-4 text-white" />
-          )}
+          {isSelected ? "✓" : "+"}
+        </div>
+      )}
+
+      {/* Ownership indicator - top right - INSIDE card (for owned blocks) */}
+      {isOwned && (
+        <div className="absolute top-2 right-2 w-5 h-5 rounded-md bg-green-500/90 flex items-center justify-center z-10 text-xs font-bold text-white">
+          ✓
         </div>
       )}
 
