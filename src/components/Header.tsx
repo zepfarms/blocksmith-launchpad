@@ -57,9 +57,6 @@ export const Header = () => {
             <button onClick={() => navigate("/templates")} className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
               Templates
             </button>
-            <button onClick={() => navigate("/start/browse")} className="text-white/80 hover:text-white transition-colors text-xs sm:text-sm">
-              Business Ideas
-            </button>
           </div>
 
           {user ? (

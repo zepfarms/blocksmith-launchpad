@@ -29,35 +29,11 @@ export const ConversationalForm = ({ onComplete }: ConversationalFormProps) => {
   const [businessIdea, setBusinessIdea] = useState("");
   const [aiAnalysis, setAiAnalysis] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [businessIdeas, setBusinessIdeas] = useState<BusinessIdea[]>([]);
+  const [businessIdeas] = useState<BusinessIdea[]>([]);
   const [filteredIdeas, setFilteredIdeas] = useState<BusinessIdea[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [selectedIdeaRow, setSelectedIdeaRow] = useState<BusinessIdea | null>(null);
-
-  // Load business ideas from database
-  useEffect(() => {
-    const loadIdeas = async () => {
-      const { data, error } = await supabase
-        .from('business_ideas')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true });
-
-      if (error) {
-        console.error('Error loading business ideas:', error);
-        toast.error('Failed to load business ideas');
-        return;
-      }
-
-      if (data) {
-        setBusinessIdeas(data);
-        setFilteredIdeas(data);
-      }
-    };
-
-    loadIdeas();
-  }, []);
 
   // Filter ideas based on search and category
   useEffect(() => {

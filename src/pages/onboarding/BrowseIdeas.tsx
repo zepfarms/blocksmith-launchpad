@@ -29,35 +29,11 @@ const priorityCategories = [
 export const BrowseIdeas = () => {
   const navigate = useNavigate();
   const { updateData } = useOnboarding();
-  const [businessIdeas, setBusinessIdeas] = useState<BusinessIdea[]>([]);
+  const [businessIdeas] = useState<BusinessIdea[]>([]);
   const [filteredIdeas, setFilteredIdeas] = useState<BusinessIdea[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [showAllCategories, setShowAllCategories] = useState(false);
-
-  // Load business ideas from database
-  useEffect(() => {
-    const loadIdeas = async () => {
-      const { data, error } = await supabase
-        .from('business_ideas')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true });
-
-      if (error) {
-        console.error('Error loading business ideas:', error);
-        toast.error('Failed to load business ideas');
-        return;
-      }
-
-      if (data) {
-        setBusinessIdeas(data);
-        setFilteredIdeas(data);
-      }
-    };
-
-    loadIdeas();
-  }, []);
 
   // Filter ideas based on search and category
   useEffect(() => {

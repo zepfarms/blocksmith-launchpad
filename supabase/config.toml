@@ -1,5 +1,8 @@
 project_id = "zkkndhebaefxyuuvpobn"
 
+[functions.generate-business-ideas]
+verify_jwt = false
+
 [functions.check-domain-availability]
 verify_jwt = false
 
