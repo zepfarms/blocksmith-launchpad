@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 
 interface BlockCardProps {
   title: string;
+  subtitle?: string;
   icon: React.ReactNode;
   category: string;
   description: string;
@@ -24,7 +25,8 @@ interface BlockCardProps {
 }
 
 export const BlockCard = ({ 
-  title, 
+  title,
+  subtitle,
   icon, 
   category, 
   description, 

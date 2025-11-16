@@ -1,4 +1,4 @@
-import { Users, DollarSign, FolderTree, AlertCircle, BarChart3, Globe } from "lucide-react";
+import { Users, DollarSign, FolderTree, AlertCircle, BarChart3, Globe, Package } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -19,6 +19,7 @@ const adminItems = [
   { title: "Websites", url: "/admin/websites", icon: Globe },
   { title: "Pricing", url: "/admin/pricing", icon: DollarSign },
   { title: "Categories", url: "/admin/categories", icon: FolderTree },
+  { title: "Blocks", url: "/admin/blocks", icon: Package },
   { title: "Failed Payments", url: "/admin/failed-payments", icon: AlertCircle },
 ];
 
