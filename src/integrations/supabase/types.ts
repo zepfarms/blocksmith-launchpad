@@ -439,6 +439,145 @@ export type Database = {
         }
         Relationships: []
       }
+      document_analytics: {
+        Row: {
+          action_type: string
+          created_at: string
+          document_id: string
+          id: string
+          ip_address: string | null
+          referrer: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          document_id: string
+          id?: string
+          ip_address?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          document_id?: string
+          id?: string
+          ip_address?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_analytics_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "document_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      document_templates: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          download_count: number
+          file_type: Database["public"]["Enums"]["document_file_type"]
+          file_url: string | null
+          id: string
+          is_editable_online: boolean
+          is_premium: boolean
+          slug: string
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          view_count: number
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          download_count?: number
+          file_type: Database["public"]["Enums"]["document_file_type"]
+          file_url?: string | null
+          id?: string
+          is_editable_online?: boolean
+          is_premium?: boolean
+          slug: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          view_count?: number
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          download_count?: number
+          file_type?: Database["public"]["Enums"]["document_file_type"]
+          file_url?: string | null
+          id?: string
+          is_editable_online?: boolean
+          is_premium?: boolean
+          slug?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_templates_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "document_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_verifications: {
         Row: {
           attempts: number
@@ -872,6 +1011,50 @@ export type Database = {
         }
         Relationships: []
       }
+      user_documents: {
+        Row: {
+          content: Json
+          created_at: string
+          document_type: string
+          file_url: string | null
+          id: string
+          template_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          document_type: string
+          file_url?: string | null
+          id?: string
+          template_id?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          document_type?: string
+          file_url?: string | null
+          id?: string
+          template_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_documents_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "document_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_domain_selections: {
         Row: {
           business_id: string
@@ -1019,6 +1202,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      document_file_type: "pdf" | "docx" | "google-docs" | "html"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1147,6 +1331,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      document_file_type: ["pdf", "docx", "google-docs", "html"],
     },
   },
 } as const
