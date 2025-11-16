@@ -39,6 +39,28 @@ export default function MyApps() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Check if user is admin
+      const { data: adminRole } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      // For admins, show all blocks without requiring a business
+      if (adminRole) {
+        const { data: allBlocks, error } = await supabase
+          .from("affiliate_blocks")
+          .select("*")
+          .eq("is_active", true)
+          .order("display_order", { ascending: true });
+
+        if (error) throw error;
+        setBlocks((allBlocks || []) as Block[]);
+        setLoading(false);
+        return;
+      }
+
       const { data: business } = await supabase
         .from("user_businesses")
         .select("id")
@@ -47,7 +69,10 @@ export default function MyApps() {
         .limit(1)
         .maybeSingle();
 
-      if (!business) return;
+      if (!business) {
+        setLoading(false);
+        return;
+      }
 
       const { data: unlocks } = await supabase
         .from("user_block_unlocks")
