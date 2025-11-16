@@ -67,7 +67,7 @@ interface Block {
   isFree: boolean;
   price: number; // price in cents for one-time
   monthlyPrice: number; // price in cents for monthly
-  pricingType: 'free' | 'one_time' | 'monthly';
+  pricingType: 'free' | 'one_time' | 'monthly' | 'both';
   description: string;
   isAffiliate?: boolean;
   affiliateLink?: string;
@@ -211,84 +211,40 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
     loadCategories();
   }, []);
 
-  // Load pricing data from database
+  // Load blocks from database (unified affiliate_blocks table)
   useEffect(() => {
-    const loadPricing = async () => {
+    const loadBlocks = async () => {
       const { supabase } = await import('@/integrations/supabase/client');
       const { data, error } = await supabase
-        .from('blocks_pricing')
-        .select('*');
+        .from('affiliate_blocks')
+        .select('*')
+        .eq('block_type', 'internal')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
       
       if (!error && data) {
-        const pricingMap = new Map<string, BlockPricing>();
-        data.forEach(item => {
-          pricingMap.set(item.block_name, {
-            block_name: item.block_name,
-            price_cents: item.price_cents,
-            monthly_price_cents: item.monthly_price_cents || 0,
-            pricing_type: item.pricing_type || 'free',
-            is_free: item.is_free
-          });
-        });
-        setPricingData(pricingMap);
+        const blocks: Block[] = data.map(block => ({
+          id: block.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          title: block.name,
+          subtitle: block.subtitle || '',
+          category: block.category,
+          description: block.description,
+          isFree: block.pricing_type === 'free',
+          price: block.price_cents || 0,
+          monthlyPrice: block.monthly_price_cents || 0,
+          pricingType: (block.pricing_type || 'free') as 'free' | 'one_time' | 'monthly',
+          icon: block.logo_url ? null : (iconMap[block.category] || <IconCircuit />),
+          isAffiliate: false,
+          affiliateLink: undefined,
+          logoUrl: block.logo_url || undefined
+        }));
+        
+        setAllBlocks(blocks);
       }
     };
     
-    loadPricing();
+    loadBlocks();
   }, []);
-
-  // Load blocks from CSV and merge with pricing
-  useEffect(() => {
-    fetch('/data/blocks_catalog.csv')
-      .then(res => res.text())
-      .then(text => {
-        const lines = text.split('\n').slice(1); // Skip header
-        const blocks: Block[] = lines
-          .filter(line => line.trim())
-      .map((line, index) => {
-            const matches = line.match(/(?:^|,)("(?:[^"]|"")*"|[^,]*)/g);
-            if (!matches || matches.length < 8) return null;
-            
-            const clean = (str: string) => str.replace(/^,?"?|"?$/g, '').trim();
-            const name = clean(matches[0]);
-            const category = clean(matches[1]);
-            const subtitle = clean(matches[2]);
-            const description = clean(matches[3]);
-            
-            const isFreeRaw = clean(matches[4]);
-            const isAffiliateRaw = clean(matches[8]) || 'FALSE';
-            const affiliateLink = clean(matches[9]) || '';
-            const logoUrl = clean(matches[10]) || '';
-            
-            // Get pricing from database, fallback to CSV is_free value
-            const csv_is_free = isFreeRaw.toUpperCase() === 'TRUE';
-            const pricing = pricingData.get(name);
-            const is_free = pricing?.is_free ?? csv_is_free;
-            const price_cents = pricing?.price_cents ?? 0;
-            const monthly_price_cents = pricing?.monthly_price_cents ?? 0;
-            const pricing_type = pricing?.pricing_type ?? 'free';
-            
-            return {
-              id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-              title: name,
-              subtitle,
-              category,
-              description,
-              isFree: is_free,
-              price: price_cents,
-              monthlyPrice: monthly_price_cents,
-              pricingType: pricing_type as 'free' | 'one_time' | 'monthly',
-              icon: iconMap[category] || <IconCircuit />,
-              isAffiliate: isAffiliateRaw.toUpperCase() === 'TRUE',
-              affiliateLink: affiliateLink,
-              logoUrl: logoUrl
-            } as Block;
-          })
-          .filter((block): block is Block => block !== null);
-        
-        setAllBlocks(blocks);
-      });
-  }, [pricingData]);
 
   // Determine which blocks to show based on business type
   let starterBlockList: Block[] = [];
