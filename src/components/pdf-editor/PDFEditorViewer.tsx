@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { SimplePdfViewer } from "./SimplePdfViewer";
+import { RefreshCw } from "lucide-react";
 
 
 interface PDFEditorViewerProps {
@@ -13,11 +15,14 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [timedOut, setTimedOut] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
+  const [editorReady, setEditorReady] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!pdfUrl || !containerRef.current) return;
 
     let timeoutId: number | undefined;
+    let fallbackTimeoutId: number | undefined;
 
 const resolveSdkPath = async (): Promise<string> => {
       const bases = ["/@compdfkit/webviewer", "/compdfkit"];
@@ -64,6 +69,8 @@ const resolveSdkPath = async (): Promise<string> => {
         setLoading(true);
         setError(null);
         setTimedOut(false);
+        setShowFallback(false);
+        setEditorReady(false);
 
         const publicKey = import.meta.env.VITE_COMPDFKIT_PUBLIC_KEY;
 
@@ -105,17 +112,24 @@ const resolveSdkPath = async (): Promise<string> => {
         }
 
         const rect = containerRef.current.getBoundingClientRect();
-        console.log("[PDFEditor] Container rect", rect);
+        const computedWidth = containerRef.current.offsetWidth;
+        const computedHeight = containerRef.current.offsetHeight;
+        console.log("[PDFEditor] Container dimensions:", { 
+          width: computedWidth, 
+          height: computedHeight,
+          rect 
+        });
 
         // Verify container has valid dimensions
-        if (!rect.width || !rect.height || rect.width < 100 || rect.height < 100) {
-          console.error("[PDFEditor] Container has invalid dimensions:", rect);
+        if (!computedWidth || !computedHeight || computedWidth < 200 || computedHeight < 200) {
+          console.error("[PDFEditor] Container has invalid dimensions:", { computedWidth, computedHeight });
           setError("PDF viewer container not properly sized. Please refresh the page.");
           setLoading(false);
+          setShowFallback(true);
           return;
         }
 
-        // Auto-detect the correct SDK path
+        // Try local paths first (from postinstall script)
         const sdkPath = await resolveSdkPath();
 
         // Dynamic import from npm package
@@ -143,17 +157,30 @@ const options = {
         timeoutId = window.setTimeout(() => {
           console.warn("[PDFEditor] Viewer timed out after 15s");
           setTimedOut(true);
+          setLoading(false);
         }, 15000);
+
+        // Show fallback after 5s if editor hasn't loaded
+        fallbackTimeoutId = window.setTimeout(() => {
+          if (!editorReady) {
+            console.log("[PDFEditor] Showing fallback viewer after 5s");
+            setShowFallback(true);
+          }
+        }, 5000);
 
         const instance = await WebViewer.init(options, containerRef.current!);
         console.log("[PDFEditor] ComPDFKit ready", { instance });
         if (timeoutId) clearTimeout(timeoutId);
+        if (fallbackTimeoutId) clearTimeout(fallbackTimeoutId);
+        setEditorReady(true);
         setLoading(false);
       } catch (error: any) {
         console.error("Error initializing PDF viewer:", error);
         if (timeoutId) clearTimeout(timeoutId);
+        if (fallbackTimeoutId) clearTimeout(fallbackTimeoutId);
         setLoading(false);
         setError(error?.message || "Failed to initialize PDF viewer");
+        setShowFallback(true);
         toast({
           variant: "destructive",
           title: "Error loading PDF editor",
@@ -166,21 +193,47 @@ const options = {
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
+      if (fallbackTimeoutId) clearTimeout(fallbackTimeoutId);
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
       }
     };
   }, [pdfUrl, toast]);
 
+  const handleRetry = () => {
+    setError(null);
+    setTimedOut(false);
+    setShowFallback(false);
+    setLoading(true);
+    window.location.reload();
+  };
+
   return (
-    <>
+    <div className="relative w-full h-full flex flex-col">
+      {showFallback && (
+        <div className="flex-1">
+          <div className="bg-muted/50 px-4 py-2 border-b border-border flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              {loading ? "Editor is loading..." : "Viewing in fallback mode"}
+            </p>
+            {(error || timedOut) && (
+              <Button onClick={handleRetry} variant="outline" size="sm" className="gap-2">
+                <RefreshCw className="h-3 w-3" />
+                Retry Editor
+              </Button>
+            )}
+          </div>
+          <SimplePdfViewer pdfUrl={pdfUrl} />
+        </div>
+      )}
+
       <div
         ref={containerRef}
-        className="relative w-full bg-background overflow-hidden"
-        style={{ height: "calc(100vh - 140px)", minHeight: "600px" }}
+        className={`relative w-full bg-background overflow-hidden min-h-[700px] ${showFallback ? 'hidden' : 'flex-1'}`}
+        style={{ height: showFallback ? 0 : "calc(100vh - 140px)" }}
       >
-        {(loading || error || timedOut) && (
-          <div className="absolute inset-0 grid place-items-center bg-background/60 backdrop-blur-sm">
+        {(loading || error || timedOut) && !showFallback && (
+          <div className="absolute inset-0 grid place-items-center bg-background/60 backdrop-blur-sm z-50">
             {loading && !timedOut && !error && (
               <div className="flex flex-col items-center gap-3">
                 <div className="h-8 w-8 rounded-full border-2 border-muted-foreground border-t-transparent animate-spin" />
@@ -193,14 +246,20 @@ const options = {
                 <p className="text-sm text-muted-foreground">
                   {error || "The editor is taking longer than expected to load."}
                 </p>
-                <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="secondary" size="sm">Open PDF in new tab</Button>
-                </a>
+                <div className="flex gap-2">
+                  <Button onClick={handleRetry} variant="default" size="sm" className="gap-2">
+                    <RefreshCw className="h-3 w-3" />
+                    Retry
+                  </Button>
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                    <Button variant="secondary" size="sm">Open PDF in new tab</Button>
+                  </a>
+                </div>
               </div>
             )}
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
