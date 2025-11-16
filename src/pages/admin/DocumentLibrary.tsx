@@ -9,9 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Upload, FileText, Trash2, ExternalLink, Loader2, Star, Pencil, Eye } from "lucide-react";
+import { Upload, FileText, Trash2, ExternalLink, Loader2, Star, Pencil, Eye, CheckSquare, Square } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { AuthModal } from "@/components/AuthModal";
 
 interface Category {
@@ -50,6 +51,8 @@ export default function DocumentLibrary() {
   const [uploading, setUploading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<Template | null>(null);
+  const [selectedTemplates, setSelectedTemplates] = useState<Set<string>>(new Set());
+  const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -344,6 +347,92 @@ export default function DocumentLibrary() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this template?")) return;
+
+    const { error } = await supabase
+      .from("document_templates")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Failed to delete template");
+      return;
+    }
+
+    toast.success("Template deleted successfully");
+    loadTemplates();
+  };
+
+  // Bulk action handlers
+  const toggleSelectTemplate = (id: string) => {
+    const newSelection = new Set(selectedTemplates);
+    if (newSelection.has(id)) {
+      newSelection.delete(id);
+    } else {
+      newSelection.add(id);
+    }
+    setSelectedTemplates(newSelection);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedTemplates.size === templates.length) {
+      setSelectedTemplates(new Set());
+    } else {
+      setSelectedTemplates(new Set(templates.map(t => t.id)));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedTemplates.size === 0) {
+      toast.error("No templates selected");
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${selectedTemplates.size} template(s)?`)) {
+      return;
+    }
+
+    setIsPerformingBulkAction(true);
+    const { error } = await supabase
+      .from("document_templates")
+      .delete()
+      .in("id", Array.from(selectedTemplates));
+
+    if (error) {
+      toast.error("Failed to delete templates");
+      setIsPerformingBulkAction(false);
+      return;
+    }
+
+    toast.success(`Successfully deleted ${selectedTemplates.size} template(s)`);
+    setSelectedTemplates(new Set());
+    setIsPerformingBulkAction(false);
+    loadTemplates();
+  };
+
+  const handleBulkFeature = async (featured: boolean) => {
+    if (selectedTemplates.size === 0) {
+      toast.error("No templates selected");
+      return;
+    }
+
+    setIsPerformingBulkAction(true);
+    const { error } = await supabase
+      .from("document_templates")
+      .update({ is_featured: featured })
+      .in("id", Array.from(selectedTemplates));
+
+    if (error) {
+      toast.error(`Failed to ${featured ? 'feature' : 'unfeature'} templates`);
+      setIsPerformingBulkAction(false);
+      return;
+    }
+
+    toast.success(`Successfully ${featured ? 'featured' : 'unfeatured'} ${selectedTemplates.size} template(s)`);
+    setSelectedTemplates(new Set());
+    setIsPerformingBulkAction(false);
+    loadTemplates();
+  };
     if (!confirm("Are you sure you want to delete this template?")) return;
 
     const { error } = await supabase
@@ -723,10 +812,50 @@ export default function DocumentLibrary() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Templates ({templates.length})</CardTitle>
-          <CardDescription>
-            All document templates in the library
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Templates ({templates.length})</CardTitle>
+              <CardDescription>
+                All document templates in the library
+              </CardDescription>
+            </div>
+            {selectedTemplates.size > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  {selectedTemplates.size} selected
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleBulkFeature(true)}
+                  disabled={isPerformingBulkAction}
+                >
+                  {isPerformingBulkAction && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+                  <Star className="h-3 w-3 mr-1" />
+                  Feature
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleBulkFeature(false)}
+                  disabled={isPerformingBulkAction}
+                >
+                  {isPerformingBulkAction && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+                  Unfeature
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={handleBulkDelete}
+                  disabled={isPerformingBulkAction}
+                >
+                  {isPerformingBulkAction && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Delete
+                </Button>
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           {loading ? (
@@ -743,6 +872,13 @@ export default function DocumentLibrary() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-[50px]">
+                      <Checkbox
+                        checked={selectedTemplates.size === templates.length && templates.length > 0}
+                        onCheckedChange={toggleSelectAll}
+                        aria-label="Select all templates"
+                      />
+                    </TableHead>
                     <TableHead>Title</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Type</TableHead>
@@ -756,6 +892,13 @@ export default function DocumentLibrary() {
                 <TableBody>
                   {templates.map((template) => (
                     <TableRow key={template.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedTemplates.has(template.id)}
+                          onCheckedChange={() => toggleSelectTemplate(template.id)}
+                          aria-label={`Select ${template.title}`}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium">
                         {template.title}
                       </TableCell>
