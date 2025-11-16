@@ -51,6 +51,18 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/compdfkit": {
+        target: "https://unpkg.com/@compdfkit_pdf_sdk@2.8.3/webviewer",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/compdfkit/, ""),
+      },
+      "/@compdfkit/webviewer": {
+        target: "https://unpkg.com/@compdfkit_pdf_sdk@2.8.3/webviewer",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/@compdfkit\/webviewer/, ""),
+      },
+    },
   },
   plugins: [
     react(),
