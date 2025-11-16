@@ -208,13 +208,15 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="bg-background/50"
-                autoComplete="off"
+                autoComplete="new-password"
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
                 inputMode="email"
                 name="sb-email-unique"
                 data-form-type="other"
+                data-lpignore="true"
+                data-1p-ignore="true"
               />
             </div>
           )}
@@ -254,9 +256,11 @@ export const AuthModal = ({ open, onClose, defaultView = "login", onSuccess, pre
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="bg-background/50 pr-10"
-                  autoComplete="off"
+                  autoComplete="new-password"
                   name="sb-password-unique"
                   data-form-type="other"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
                 />
                 <button
                   type="button"
