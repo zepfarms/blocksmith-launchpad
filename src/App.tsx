@@ -15,7 +15,12 @@ import AdminCategories from "./pages/admin/Categories";
 import FailedPayments from "./pages/admin/FailedPayments";
 import Analytics from "./pages/admin/Analytics";
 import AdminBlocks from "./pages/admin/Blocks";
+import Overview from "./pages/dashboard/Overview";
+import MyApps from "./pages/dashboard/MyApps";
+import Briefcase from "./pages/dashboard/Briefcase";
 import AppStore from "./pages/dashboard/AppStore";
+import DashboardSettings from "./pages/dashboard/DashboardSettings";
+import Help from "./pages/dashboard/Help";
 import Subscriptions from "./pages/dashboard/Subscriptions";
 import { PurchaseHistory } from "./pages/dashboard/PurchaseHistory";
 import { SubscriptionCheckout } from "./pages/dashboard/SubscriptionCheckout";
@@ -58,14 +63,17 @@ function App() {
               
               {/* Dashboard routes with shared layout */}
               <Route path="/dashboard" element={<DashboardLayout />}>
-                <Route index element={<Dashboard />} />
+                <Route index element={<MyApps />} />
+                <Route path="briefcase" element={<Briefcase />} />
+                <Route path="app-store" element={<AppStore />} />
+                <Route path="settings" element={<DashboardSettings />} />
+                <Route path="help" element={<Help />} />
                 <Route path="logos" element={<LogoGeneration />} />
                 <Route path="business-name-generator" element={<BusinessNameGenerator />} />
                 <Route path="business-plan-generator" element={<BusinessPlanGenerator />} />
                 <Route path="social-media-checker" element={<SocialMediaChecker />} />
-              <Route path="qr-code-generator" element={<QRCodeGenerator />} />
-              <Route path="email-signature-generator" element={<EmailSignatureGenerator />} />
-                <Route path="app-store" element={<AppStore />} />
+                <Route path="qr-code-generator" element={<QRCodeGenerator />} />
+                <Route path="email-signature-generator" element={<EmailSignatureGenerator />} />
                 <Route path="subscriptions" element={<Subscriptions />} />
                 <Route path="subscription-checkout" element={<SubscriptionCheckout />} />
                 <Route path="purchase-history" element={<PurchaseHistory />} />

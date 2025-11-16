@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ export const Header = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const sidebar = useSidebar();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -40,7 +42,10 @@ export const Header = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-[100] px-4 sm:px-6 py-2 bg-black border-b border-white/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <img 
+          {user && sidebar && (
+            <SidebarTrigger className="md:hidden mr-2 text-white" />
+          )}
+          <img
             src="/acari-logo.png" 
             alt="Acari" 
             className="h-16 sm:h-20 md:h-24 w-auto cursor-pointer hover:opacity-80 transition-opacity"
