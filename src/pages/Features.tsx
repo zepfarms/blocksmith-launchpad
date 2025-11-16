@@ -227,9 +227,9 @@ const Features = () => {
           <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4 justify-center">
             <button 
               onClick={() => navigate("/start")}
-              className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
+              className="group px-5 py-3 sm:px-10 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
             >
-              Start Building Free
+              Get Started
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </button>
             <button 
@@ -292,8 +292,96 @@ const Features = () => {
         </div>
       </section>
 
-      {/* Feature Categories */}
+      {/* Partner Tools Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-acari-green">Partner</span> Tools
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Powerful integrations from trusted partners
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Lovable Website Builder Card */}
+            <Card className="group bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-acari-green/50 transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <CardHeader className="relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-acari-green/20 to-acari-green/5">
+                    <Globe className="w-6 h-6 text-acari-green" />
+                  </div>
+                  <Badge variant="secondary" className="text-xs bg-acari-green/20 text-acari-green border-acari-green/30">
+                    Partner
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-3 mb-2">
+                  <img src="/lovable-icon.png" alt="Lovable" className="w-8 h-8 rounded" />
+                  <CardTitle className="text-xl group-hover:text-acari-green transition-colors">
+                    Lovable Website Builder
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Build beautiful websites with AI - no coding required. The most powerful AI web builder.
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="relative pt-0">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-acari-green" />
+                  <span className="text-sm text-muted-foreground">No-code AI builder</span>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <CheckCircle className="w-4 h-4 text-acari-green" />
+                  <span className="text-sm text-muted-foreground">Free to start</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tailor Brands Card */}
+            <Card className="group bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-acari-green/50 transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <CardHeader className="relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-acari-green/20 to-acari-green/5">
+                    <Shield className="w-6 h-6 text-acari-green" />
+                  </div>
+                  <Badge variant="secondary" className="text-xs bg-acari-green/20 text-acari-green border-acari-green/30">
+                    Partner
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-3 mb-2">
+                  <img src="/tailor-brands-logo.png" alt="Tailor Brands" className="w-8 h-8 rounded" />
+                  <CardTitle className="text-xl group-hover:text-acari-green transition-colors">
+                    Tailor Brands LLC Formation
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Start your LLC for $0 in 3 Steps. Pay only the state fee. We'll guide you through every step.
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="relative pt-0">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-acari-green" />
+                  <span className="text-sm text-muted-foreground">$0 platform fee</span>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <CheckCircle className="w-4 h-4 text-acari-green" />
+                  <span className="text-sm text-muted-foreground">State fee only</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Categories */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-900 to-black">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
@@ -407,9 +495,9 @@ const Features = () => {
           <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4 justify-center mb-8">
             <button 
               onClick={() => navigate("/start")}
-              className="group px-5 py-3 sm:px-10 sm:py-5 bg-acari-green text-black rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/90 transition-all duration-200 flex items-center justify-center gap-2"
+              className="group px-5 py-3 sm:px-10 sm:py-5 bg-black border-2 border-acari-green text-acari-green rounded-full font-medium text-sm sm:text-lg hover:bg-acari-green/10 transition-all duration-200 flex items-center justify-center gap-2"
             >
-              Start Building Free
+              Get Started
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </button>
             <button 
