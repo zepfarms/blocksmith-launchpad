@@ -370,31 +370,57 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
   }, [starterBlockList.length]);
 
   return (
-    <section className="relative pt-44 pb-20 px-4 sm:px-6 bg-background">
-      <div className="max-w-7xl mx-auto space-y-12">
+    <section className="relative pt-24 pb-20 px-4 sm:px-6 bg-background">
+      <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight">
-            Here's your starter plan
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <div className="text-center space-y-3">
+          {/* Animated icon */}
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-acari-green/20 blur-xl rounded-full animate-pulse" />
+              <div className="relative text-6xl">
+                {businessType === 'existing' ? '⚡' : '🚀'}
+              </div>
+            </div>
+          </div>
+          
+          {/* Exciting headline with gradient */}
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white via-acari-green to-white bg-clip-text text-transparent animate-fade-in">
             {businessType === 'existing' 
-              ? 'Based on your business information, we\'ve curated some tools that might help you run your business more smoothly. You can add or remove any tools now, and you can always add more later from your dashboard.'
-              : 'Based on your business idea, we\'ve selected some essential tools to help you get started. Feel free to customize your selection - you can always add more tools later from your dashboard.'}
+              ? 'Power Up Your Business!' 
+              : 'Your Business Toolkit Awaits!'}
+          </h2>
+          
+          {/* Concise, benefit-driven copy */}
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            {businessType === 'existing' 
+              ? (
+                <>
+                  We've handpicked <span className="text-acari-green font-semibold">powerful tools</span> to streamline your business. 
+                  Mix and match to create your <span className="text-acari-green font-semibold">perfect toolkit</span> - you can always add more later!
+                </>
+              )
+              : (
+                <>
+                  Here are <span className="text-acari-green font-semibold">essential tools</span> to launch faster. 
+                  Choose what you need now, unlock <span className="text-acari-green font-semibold">more anytime</span> from your dashboard!
+                </>
+              )}
           </p>
-          <p className="text-base text-muted-foreground/80 max-w-2xl mx-auto mt-2">
-            💡 Don't see any tools you like? Click "See More Blocks" below to browse our complete collection.
+          
+          {/* Exciting CTA for more blocks */}
+          <p className="text-base text-muted-foreground/90 max-w-xl mx-auto mt-2 font-medium">
+            <span className="text-acari-green">Want more?</span> Browse <span className="text-acari-green font-bold">100+ tools</span> below to supercharge your business! ⚡
           </p>
-
         </div>
 
         {/* Recommended Blocks - Merge starter and growth */}
         {(starterBlockList.length > 0 || growthBlockList.length > 0) && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <h3 className="text-2xl font-bold">Recommended Blocks</h3>
-              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/30">
-                AI-Selected for Your Business
+            <div className="flex items-center justify-center gap-3">
+              <h3 className="text-2xl md:text-3xl font-bold">Starter Tools</h3>
+              <Badge variant="secondary" className="bg-acari-green/10 text-acari-green border-acari-green/30 animate-pulse">
+                ✨ AI-Curated Just for You
               </Badge>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -432,12 +458,12 @@ export const SmartBlockSelector = ({ starterBlocks = "", growthBlocks = "", busi
           >
             {showAllBlocks ? (
               <>
-                Show Less
+                Show Starter Tools
                 <ChevronUp className="w-5 h-5 ml-2" />
               </>
             ) : (
               <>
-                See More Blocks
+                Explore 100+ More Tools
                 <ChevronDown className="w-5 h-5 ml-2" />
               </>
             )}
