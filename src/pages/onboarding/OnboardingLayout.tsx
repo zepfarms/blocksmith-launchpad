@@ -36,7 +36,7 @@ const stepLabels = [
   "Describe",
   "Confirm",
   "Name",
-  "Blocks",
+  "Tools",
   "Sign Up"
 ];
 
