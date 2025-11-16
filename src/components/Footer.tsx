@@ -74,7 +74,7 @@ export const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/start/browse" className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors">
+                  <Link to="/business-ideas" className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors">
                     Business Ideas
                   </Link>
                 </li>

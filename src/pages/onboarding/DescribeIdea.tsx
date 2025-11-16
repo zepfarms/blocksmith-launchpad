@@ -20,29 +20,7 @@ export const DescribeIdea = () => {
   const { data, updateData } = useOnboarding();
   const [businessIdea, setBusinessIdea] = useState(data.businessIdea);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [businessIdeas, setBusinessIdeas] = useState<BusinessIdea[]>([]);
-
-  // Load business ideas from database
-  useEffect(() => {
-    const loadIdeas = async () => {
-      const { data, error } = await supabase
-        .from('business_ideas')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true });
-
-      if (error) {
-        console.error('Error loading business ideas:', error);
-        return;
-      }
-
-      if (data) {
-        setBusinessIdeas(data);
-      }
-    };
-
-    loadIdeas();
-  }, []);
+  const [businessIdeas] = useState<BusinessIdea[]>([]);
 
   const handleSubmitIdea = async () => {
     if (!businessIdea.trim()) return;
