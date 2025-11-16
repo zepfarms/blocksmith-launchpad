@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
-import WebViewer from "@compdfkit_pdf_sdk/webviewer";
 
 interface PDFEditorViewerProps {
   pdfUrl: string;
@@ -26,11 +25,29 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           return;
         }
 
-        await WebViewer({
-          pdfUrl: pdfUrl,
-          license: publicKey,
-          path: "/compdfkit",
-        }, containerRef.current);
+        // Preflight check: ensure SDK assets are available
+        const probe = await fetch("/compdfkit/webviewer.js", { method: "HEAD" });
+        if (!probe.ok) {
+          throw new Error("ComPDFKit assets not found at /compdfkit. Please contact support.");
+        }
+
+        // Dynamic import and normalize module shape
+        const mod = await import("@compdfkit_pdf_sdk/webviewer");
+        const ComPDFKitViewer: any = (mod as any)?.default ?? (mod as any);
+        
+        if (typeof ComPDFKitViewer?.init !== "function") {
+          console.error("Unexpected ComPDFKit module shape:", mod);
+          throw new Error("ComPDFKitViewer.init not found. Please contact support.");
+        }
+
+        await ComPDFKitViewer.init(
+          {
+            pdfUrl: pdfUrl,
+            license: publicKey,
+            path: "/compdfkit",
+          },
+          containerRef.current!
+        );
 
       } catch (error: any) {
         console.error("Error initializing PDF viewer:", error);
