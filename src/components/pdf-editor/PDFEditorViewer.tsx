@@ -86,8 +86,25 @@ export function PDFEditorViewer({ pdfUrl }: PDFEditorViewerProps) {
           return;
         }
 
+        // Wait for container to be ready with proper dimensions
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        
+        if (!containerRef.current) {
+          setError("PDF container not ready");
+          setLoading(false);
+          return;
+        }
+
         const rect = containerRef.current.getBoundingClientRect();
         console.log("[PDFEditor] Container rect", rect);
+
+        // Verify container has valid dimensions
+        if (!rect.width || !rect.height || rect.width < 100 || rect.height < 100) {
+          console.error("[PDFEditor] Container has invalid dimensions:", rect);
+          setError("PDF viewer container not properly sized. Please refresh the page.");
+          setLoading(false);
+          return;
+        }
 
         // Auto-detect the correct SDK path
         const sdkPath = await resolveSdkPath();
