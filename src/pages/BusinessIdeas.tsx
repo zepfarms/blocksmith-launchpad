@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lightbulb, Rocket, TrendingUp, Search, Sparkles, Target } from "lucide-react";
+import { Lightbulb, Rocket, TrendingUp, Search, Sparkles, Target, Store, Heart, Laptop, UtensilsCrossed, GraduationCap, Leaf, Dumbbell, Palette, Home, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -58,12 +58,16 @@ const BusinessIdeas = () => {
   };
 
   const popularCategories = [
-    "E-commerce",
-    "Health & Wellness",
-    "Technology",
-    "Food & Beverage",
-    "Education",
-    "Sustainability",
+    { name: "E-commerce", icon: Store, color: "text-blue-500" },
+    { name: "Health & Wellness", icon: Heart, color: "text-pink-500" },
+    { name: "Technology", icon: Laptop, color: "text-purple-500" },
+    { name: "Food & Beverage", icon: UtensilsCrossed, color: "text-orange-500" },
+    { name: "Education", icon: GraduationCap, color: "text-green-500" },
+    { name: "Sustainability", icon: Leaf, color: "text-emerald-500" },
+    { name: "Fitness", icon: Dumbbell, color: "text-red-500" },
+    { name: "Creative Services", icon: Palette, color: "text-indigo-500" },
+    { name: "Home Services", icon: Home, color: "text-yellow-500" },
+    { name: "Consulting", icon: Users, color: "text-cyan-500" },
   ];
 
   const difficultyColors = {
@@ -124,18 +128,24 @@ const BusinessIdeas = () => {
 
           {/* Popular Categories */}
           <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-3">Popular categories:</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {popularCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setCategory(cat)}
-                  className="px-4 py-2 rounded-full text-sm border border-border hover:bg-accent transition-colors"
-                  disabled={isLoading}
-                >
-                  {cat}
-                </button>
-              ))}
+            <p className="text-sm text-muted-foreground mb-6">Or choose a popular category:</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {popularCategories.map((cat) => {
+                const IconComponent = cat.icon;
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() => setCategory(cat.name)}
+                    className="flex flex-col items-center gap-3 p-4 rounded-xl border border-border hover:border-primary hover:bg-accent/50 transition-all group"
+                    disabled={isLoading}
+                  >
+                    <div className={`p-3 rounded-full bg-background border border-border group-hover:border-primary transition-colors ${cat.color}`}>
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+                    <span className="text-sm font-medium text-center">{cat.name}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
