@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { QuickActionsGrid } from "@/components/dashboard/QuickActionsGrid";
 import { RecentActivityFeed } from "@/components/dashboard/RecentActivityFeed";

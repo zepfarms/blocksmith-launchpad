@@ -1,4 +1,4 @@
-import { Users, DollarSign, FolderTree, AlertCircle, BarChart3, Globe, Package, FileText, Code } from "lucide-react";
+import { Users, DollarSign, FolderTree, AlertCircle, BarChart3, Globe, Package, FileText, Code, Server } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -15,6 +15,7 @@ import {
 
 const adminItems = [
   { title: "Dashboard", url: "/admin", icon: Users, end: true },
+  { title: "Backend", url: "/admin/backend", icon: Server },
   { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
   { title: "Code Editor", url: "/admin/code-editor", icon: Code },
   { title: "Document Library", url: "/admin/document-library", icon: FileText },

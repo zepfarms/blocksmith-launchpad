@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { AssetCard } from "@/components/dashboard/AssetCard";
 import { AssetPreviewModal } from "@/components/dashboard/AssetPreviewModal";
 import { Loader2, FileX } from "lucide-react";

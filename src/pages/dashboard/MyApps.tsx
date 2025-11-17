@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { UnifiedBlockCard } from "@/components/UnifiedBlockCard";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 
 interface Block {
   id: string;

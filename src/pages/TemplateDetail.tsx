@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { DownloadButton } from "@/components/templates/DownloadButton";
 import { RelatedTemplates } from "@/components/templates/RelatedTemplates";
 import { Badge } from "@/components/ui/badge";

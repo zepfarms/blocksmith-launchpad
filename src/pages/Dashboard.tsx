@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LayoutDashboard, User, Briefcase, Trash2, Eye, Store } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { VerificationBanner } from "@/components/VerificationBanner";

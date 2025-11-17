@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { UnifiedBlockCard } from "@/components/UnifiedBlockCard";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";

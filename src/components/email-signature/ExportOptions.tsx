@@ -3,7 +3,7 @@ import { SignatureData, SignatureStyle } from "@/pages/dashboard/EmailSignatureG
 import { Button } from "@/components/ui/button";
 import { Copy, Download, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { generateSignatureHTML } from "./signatureTemplates";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 

@@ -5,7 +5,7 @@ import { ArrowLeft, Rocket, Globe, Clock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Careers() {
