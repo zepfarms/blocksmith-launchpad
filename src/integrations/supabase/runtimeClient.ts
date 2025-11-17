@@ -6,9 +6,9 @@ import { getBackendConfig } from '@/lib/backendConfig';
 
 let clientInstance: SupabaseClient<Database> | null = null;
 
-// Initialize client synchronously with env fallback, then upgrade when config loads
-const initializeClientSync = (): SupabaseClient<Database> => {
-  // Check localStorage overrides first
+// Initialize client with localStorage override support
+const initializeClient = (): SupabaseClient<Database> => {
+  // Check localStorage overrides first (for admin testing)
   const overrideUrl = localStorage.getItem('acari.backend.url');
   const overrideKey = localStorage.getItem('acari.backend.key');
   
@@ -20,13 +20,10 @@ const initializeClientSync = (): SupabaseClient<Database> => {
     url = overrideUrl;
     anonKey = overrideKey;
   } else {
-    // Use env as immediate fallback (will be replaced when config loads)
+    // Use env vars (which match config.json in production)
     url = import.meta.env.VITE_SUPABASE_URL || '';
     anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
-    console.log('[Supabase] Initializing with env fallback, will load config.json...');
-    
-    // Asynchronously load config and upgrade client
-    upgradeToConfigClient();
+    console.log('[Supabase] Initialized with backend:', url);
   }
   
   const client = createClient<Database>(url, anonKey, {
@@ -40,30 +37,8 @@ const initializeClientSync = (): SupabaseClient<Database> => {
   return client;
 };
 
-// Upgrade to config.json when it loads
-const upgradeToConfigClient = async () => {
-  try {
-    const config = await getBackendConfig();
-    
-    // Only upgrade if we're not using localStorage override
-    const overrideUrl = localStorage.getItem('acari.backend.url');
-    if (!overrideUrl) {
-      console.log('[Supabase] Upgrading to config.json:', config.url);
-      clientInstance = createClient<Database>(config.url, config.anonKey, {
-        auth: {
-          storage: localStorage,
-          persistSession: true,
-          autoRefreshToken: true,
-        }
-      });
-    }
-  } catch (error) {
-    console.warn('[Supabase] Failed to load config.json, keeping env fallback:', error);
-  }
-};
-
 // Initialize immediately on module load
-clientInstance = initializeClientSync();
+clientInstance = initializeClient();
 
 // Export the client instance directly (always available)
 export const supabase = clientInstance;
