@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { useToast } from "@/hooks/use-toast";
 import { SignatureForm } from "@/components/email-signature/SignatureForm";
 import { SignaturePreview } from "@/components/email-signature/SignaturePreview";

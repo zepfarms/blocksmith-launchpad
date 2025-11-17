@@ -21,6 +21,7 @@ import BlogCategories from "./pages/admin/BlogCategories";
 import DocumentLibrary from "./pages/admin/DocumentLibrary";
 import TemplateAnalytics from "./pages/admin/TemplateAnalytics";
 import BlockCategoryManagement from "./pages/admin/BlockCategoryManagement";
+import { BackendSettings } from "./pages/admin/BackendSettings";
 import Overview from "./pages/dashboard/Overview";
 import MyApps from "./pages/dashboard/MyApps";
 import Briefcase from "./pages/dashboard/Briefcase";
@@ -104,6 +105,7 @@ function App() {
               <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
               <Route path="/admin/blog/categories" element={<BlogCategories />} />
               <Route path="/admin/failed-payments" element={<FailedPayments />} />
+              <Route path="/admin/backend" element={<BackendSettings />} />
               
               {/* Other pages */}
         <Route path="/features" element={<Features />} />

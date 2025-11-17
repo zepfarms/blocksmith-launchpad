@@ -10,7 +10,8 @@ import { Header } from "@/components/Header";
 import { FeaturedTemplates } from "@/components/templates/FeaturedTemplates";
 import { AuthModal } from "@/components/AuthModal";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
+import { BackendBadge } from "@/components/BackendBadge";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -104,6 +105,7 @@ const Index = () => {
         defaultView="signup"
         onSuccess={handleAuthSuccess}
       />
+      <BackendBadge />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, ArrowLeft, Sparkles, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { AuthModal } from "@/components/AuthModal";
 import { useNavigate } from "react-router-dom";
 import { User } from "@supabase/supabase-js";

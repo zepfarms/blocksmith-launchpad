@@ -1,7 +1,7 @@
 import { ExternalLink, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/runtimeClient";
 import { toast } from "sonner";
 
 interface Block {
