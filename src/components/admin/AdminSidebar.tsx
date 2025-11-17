@@ -22,9 +22,6 @@ const adminItems = [
   { title: "Affiliate Analytics", url: "/admin/affiliate-analytics", icon: BarChart3 },
   { title: "Blog Posts", url: "/admin/blog", icon: FileText },
   { title: "Blog Categories", url: "/admin/blog/categories", icon: FolderTree },
-  { title: "Blocks", url: "/admin/blocks", icon: Package },
-  { title: "Categories", url: "/admin/categories", icon: FolderTree },
-  { title: "Pricing", url: "/admin/pricing", icon: DollarSign },
   { title: "Failed Payments", url: "/admin/failed-payments", icon: AlertCircle },
 ];
 
