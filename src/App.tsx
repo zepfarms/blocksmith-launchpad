@@ -10,6 +10,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import CodeEditor from "./pages/admin/CodeEditor";
 import FailedPayments from "./pages/admin/FailedPayments";
 import Analytics from "./pages/admin/Analytics";
 import AffiliateBlocks from "./pages/admin/AffiliateBlocks";
@@ -92,6 +93,7 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/analytics" element={<Analytics />} />
+              <Route path="/admin/code-editor" element={<CodeEditor />} />
               <Route path="/admin/document-library" element={<DocumentLibrary />} />
               <Route path="/admin/template-analytics" element={<TemplateAnalytics />} />
               <Route path="/admin/affiliate-blocks" element={<AffiliateBlocks />} />
