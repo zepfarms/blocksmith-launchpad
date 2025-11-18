@@ -86,7 +86,7 @@ const Index = () => {
       
       <IdeaToLaunchFlow />
       
-      <GrantSection />
+     
       
       <div id="business-ideas">
       
