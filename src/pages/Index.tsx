@@ -89,7 +89,7 @@ const Index = () => {
       <GrantSection />
       
       <div id="business-ideas">
-        <BetaSection />
+      
       </div>
     
       
