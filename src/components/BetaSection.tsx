@@ -44,8 +44,7 @@ export const BetaSection = () => {
                 </p>
               </div>
 
-              {/* CTA Button */}
-              </button>
+
               </div>
             </div>
           </div>
