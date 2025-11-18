@@ -91,8 +91,7 @@ const Index = () => {
       <div id="business-ideas">
         <BetaSection />
       </div>
-      
-      <FeaturedTemplates />
+    
       
       <CTASection />
       
