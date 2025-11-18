@@ -45,15 +45,7 @@ export const BetaSection = () => {
               </div>
 
               {/* CTA Button */}
-              <div className="flex justify-center items-center pt-6 sm:pt-8">
-                <button
-                  onClick={() => navigate("/start")}
-                  className="group relative px-8 py-4 sm:px-12 sm:py-6 bg-gradient-to-r from-acari-green to-neon-cyan text-background rounded-full font-bold text-base sm:text-xl hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] transition-all duration-300 flex items-center justify-center gap-3 animate-glow-pulse"
-                >
-                  <span className="relative z-10">Be One of the First</span>
-                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 relative z-10" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-acari-green rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                </button>
+              </button>
               </div>
             </div>
           </div>
